@@ -1,4 +1,4 @@
-import { Component, computed, HostListener, inject, input, OnDestroy, output, signal } from '@angular/core';
+import { Component, computed, effect, HostListener, inject, input, OnDestroy, OnInit, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import type { AtlasItem, AtlasSpeechVoiceConfig } from '../atlas.models';
 import { AtlasService, type AtlasSpeechAudioResponse } from '../atlas.service';
@@ -10,6 +10,7 @@ import {
   type StackNarratorVoice,
 } from '../boards/stack-voice';
 import type { TalkingCardEditorResult } from '../boards/talking-card';
+import { TalkingCardDraftStore, type TalkingCardDraftRecord } from './talking-card-draft.store';
 
 type EditorMode = 'existing' | 'new';
 type VoiceChoice = 'default' | 'catalog' | 'saved';
@@ -20,14 +21,17 @@ type VoiceChoice = 'default' | 'catalog' | 'saved';
   templateUrl: './talking-card-editor.html',
   styleUrl: './talking-card-editor.css',
 })
-export class TalkingCardEditorComponent implements OnDestroy {
+export class TalkingCardEditorComponent implements OnDestroy, OnInit {
   private readonly atlasService = inject(AtlasService);
   private readonly documentsService = inject(DocumentsService);
-  private createdAtlasId = '';
+  private readonly draftStore = inject(TalkingCardDraftStore);
+  private readonly createdAtlasId = signal('');
   private previewAudio: HTMLAudioElement | null = null;
   private previewRun = 0;
   private readonly previewUrlCache = new Map<string, string>();
+  private draftSaveChain = Promise.resolve();
 
+  readonly boardId = input('');
   readonly boardTitle = input('Board');
   readonly boardVisibility = input<'private' | 'public' | 'unlisted'>('private');
   readonly closed = output<void>();
@@ -56,12 +60,18 @@ export class TalkingCardEditorComponent implements OnDestroy {
   readonly documentFiles = signal<File[]>([]);
   readonly saving = signal(false);
   readonly errorMessage = signal<string | null>(null);
+  readonly publicAtlases = signal<AtlasItem[]>([]);
+  readonly publicAtlasesLoading = signal(false);
+  readonly draftReady = signal(false);
+  readonly draftStatus = signal<'restored' | 'saved' | null>(null);
 
-  readonly availableAtlases = computed(() =>
-    this.atlasService.atlases()
-      .filter((atlas) => this.atlasService.canAdminAtlas(atlas))
-      .sort((left, right) => left.name.localeCompare(right.name)),
-  );
+  readonly ownedAtlases = computed(() => this.atlasService.atlases()
+    .filter((atlas) => this.atlasService.canAdminAtlas(atlas)));
+  readonly availableAtlases = computed(() => {
+    const byId = new Map<string, AtlasItem>();
+    for (const atlas of [...this.ownedAtlases(), ...this.publicAtlases()]) byId.set(atlas.id, atlas);
+    return [...byId.values()].sort((left, right) => left.name.localeCompare(right.name));
+  });
   readonly selectedAtlas = computed<AtlasItem | null>(() =>
     this.availableAtlases().find((atlas) => atlas.id === this.selectedAtlasId()) ?? null,
   );
@@ -99,6 +109,10 @@ export class TalkingCardEditorComponent implements OnDestroy {
   });
   readonly publicBoard = computed(() => this.boardVisibility() === 'public');
   readonly needsPublication = computed(() => this.publicBoard() && this.selectedAtlas()?.is_public !== true);
+  readonly selectedAtlasEditable = computed(() => {
+    const atlas = this.selectedAtlas();
+    return !!atlas && this.atlasService.canAdminAtlas(atlas);
+  });
   readonly canSave = computed(() => {
     if (this.saving() || this.voiceConfigLoading()) return false;
     if (!this.openingMessage().trim()) return false;
@@ -107,6 +121,23 @@ export class TalkingCardEditorComponent implements OnDestroy {
     }
     return !!this.name().trim() && !!this.personaPrompt().trim();
   });
+
+  constructor() {
+    effect((onCleanup) => {
+      if (!this.draftReady()) return;
+      const record = this.currentDraftRecord();
+      if (!record) return;
+      const timeout = setTimeout(() => {
+        void this.queueDraftSave(record);
+      }, 300);
+      onCleanup(() => clearTimeout(timeout));
+    });
+  }
+
+  async ngOnInit(): Promise<void> {
+    await this.restoreDraft();
+    void this.loadPublicAvatars();
+  }
 
   setMode(mode: EditorMode): void {
     if (this.mode() === mode) return;
@@ -119,7 +150,7 @@ export class TalkingCardEditorComponent implements OnDestroy {
       this.initialVoiceConfig.set(null);
       this.voiceChoice.set('default');
       this.catalogVoiceId.set('');
-    } else if (this.selectedAtlasId()) {
+    } else if (this.selectedAtlasId() && this.selectedAtlasEditable()) {
       void this.loadExistingVoiceConfig(this.selectedAtlasId());
     }
   }
@@ -147,6 +178,10 @@ export class TalkingCardEditorComponent implements OnDestroy {
     this.documentFiles.set(files);
   }
 
+  isEditableAtlas(atlas: AtlasItem): boolean {
+    return this.atlasService.canAdminAtlas(atlas);
+  }
+
   selectExistingAtlas(atlasId: string): void {
     this.stopVoicePreview();
     this.selectedAtlasId.set(atlasId);
@@ -157,7 +192,14 @@ export class TalkingCardEditorComponent implements OnDestroy {
     this.imagePreviewUrl.set(atlas.chat_guide?.image_url?.trim() || atlas.logo_url?.trim() || atlas.hero_url?.trim() || '');
     this.publishAvatar.set(false);
     this.avatarSearch.set('');
-    void this.loadExistingVoiceConfig(atlasId);
+    if (this.atlasService.canAdminAtlas(atlas)) {
+      void this.loadExistingVoiceConfig(atlasId);
+    } else {
+      this.initialVoiceConfig.set(null);
+      this.voiceChoice.set('default');
+      this.catalogVoiceId.set('');
+      this.voiceConfigLoading.set(false);
+    }
   }
 
   selectDefaultVoice(): void {
@@ -236,16 +278,17 @@ export class TalkingCardEditorComponent implements OnDestroy {
     }
   }
 
-  close(): void {
+  async close(): Promise<void> {
     if (!this.saving()) {
       this.stopVoicePreview();
+      await this.persistDraftNow();
       this.closed.emit();
     }
   }
 
   @HostListener('document:keydown.escape')
   onEscape(): void {
-    this.close();
+    void this.close();
   }
 
   ngOnDestroy(): void {
@@ -266,14 +309,14 @@ export class TalkingCardEditorComponent implements OnDestroy {
       let imageUrl = atlas?.chat_guide?.image_url?.trim() || atlas?.logo_url?.trim() || atlas?.hero_url?.trim() || '';
 
       if (this.mode() === 'new') {
-        atlasId = this.createdAtlasId || (await this.atlasService.createTalkingCardAtlas({
+        atlasId = this.createdAtlasId() || (await this.atlasService.createTalkingCardAtlas({
           name: this.name(),
           role: this.role(),
           personaPrompt: this.personaPrompt(),
           isPublic: false,
         }) ?? '');
         if (!atlasId) throw new Error('The conversational avatar could not be created.');
-        this.createdAtlasId = atlasId;
+        this.createdAtlasId.set(atlasId);
         title = this.name().trim();
         subtitle = this.role().trim() || 'Conversational guide';
 
@@ -285,7 +328,7 @@ export class TalkingCardEditorComponent implements OnDestroy {
 
         const imageFile = this.imageFile();
         if (imageFile) {
-          imageUrl = await this.atlasService.uploadAtlasImage(atlasId, 'chat-guide', imageFile);
+          imageUrl = await this.atlasService.uploadTalkingCardAvatarImage(atlasId, imageFile);
           await Promise.all([
             this.atlasService.updateAtlas(atlasId, { logo_url: imageUrl }),
             this.atlasService.updateChatGuideConfig(atlasId, {
@@ -312,9 +355,13 @@ export class TalkingCardEditorComponent implements OnDestroy {
         if (this.needsPublication() && this.publishAvatar()) {
           await this.atlasService.updateAtlas(atlas.id, { is_public: true });
         }
-        await this.saveExistingVoiceIfChanged(atlas.id);
+        if (this.atlasService.canAdminAtlas(atlas)) {
+          await this.saveExistingVoiceIfChanged(atlas.id);
+        }
       }
 
+      this.draftReady.set(false);
+      await this.draftStore.delete(this.draftStorageKey());
       this.saved.emit({
         atlasId,
         title,
@@ -325,10 +372,121 @@ export class TalkingCardEditorComponent implements OnDestroy {
         placement: this.placement(),
       });
     } catch (error) {
-      this.errorMessage.set(error instanceof Error ? error.message : 'The Talking Card could not be saved.');
+      this.errorMessage.set(this.saveErrorMessage(error));
     } finally {
       this.saving.set(false);
     }
+  }
+
+  private async loadPublicAvatars(): Promise<void> {
+    this.publicAtlasesLoading.set(true);
+    try {
+      const atlases = await this.atlasService.listPublicAtlases();
+      this.publicAtlases.set(atlases.filter((atlas) => atlas.is_public && atlas.wiki_type === 'person'));
+    } catch {
+      this.publicAtlases.set([]);
+    } finally {
+      this.publicAtlasesLoading.set(false);
+    }
+  }
+
+  private async restoreDraft(): Promise<void> {
+    const key = this.draftStorageKey();
+    if (!key) {
+      this.draftReady.set(true);
+      return;
+    }
+    const record = await this.draftStore.load(key);
+    if (record) {
+      this.mode.set(record.mode);
+      this.selectedAtlasId.set(record.selectedAtlasId);
+      this.createdAtlasId.set(record.createdAtlasId);
+      this.name.set(record.name);
+      this.role.set(record.role);
+      this.personaPrompt.set(record.personaPrompt);
+      this.openingMessage.set(record.openingMessage);
+      this.ctaLabel.set(record.ctaLabel);
+      this.placement.set(record.placement);
+      this.catalogVoiceId.set(record.catalogVoiceId);
+      this.voiceChoice.set(record.voiceChoice);
+      this.publishAvatar.set(record.publishAvatar);
+      this.imageFile.set(record.imageFile);
+      this.documentFiles.set(record.documentFiles);
+      if (record.imageFile) {
+        const previous = this.imagePreviewUrl();
+        if (previous.startsWith('blob:')) URL.revokeObjectURL(previous);
+        this.imagePreviewUrl.set(URL.createObjectURL(record.imageFile));
+      }
+      const selected = this.ownedAtlases().find((atlas) => atlas.id === record.selectedAtlasId);
+      if (record.mode === 'existing' && selected) {
+        await this.loadExistingVoiceConfig(selected.id);
+        this.voiceChoice.set(record.voiceChoice);
+        this.catalogVoiceId.set(record.catalogVoiceId);
+      }
+      this.draftStatus.set('restored');
+    }
+    this.draftReady.set(true);
+  }
+
+  private currentDraftRecord(): TalkingCardDraftRecord | null {
+    const key = this.draftStorageKey();
+    if (!key) return null;
+    return {
+      key,
+      version: 1,
+      boardId: this.boardId().trim(),
+      mode: this.mode(),
+      selectedAtlasId: this.selectedAtlasId(),
+      createdAtlasId: this.createdAtlasId(),
+      name: this.name(),
+      role: this.role(),
+      personaPrompt: this.personaPrompt(),
+      openingMessage: this.openingMessage(),
+      ctaLabel: this.ctaLabel(),
+      placement: this.placement(),
+      catalogVoiceId: this.catalogVoiceId(),
+      voiceChoice: this.voiceChoice(),
+      publishAvatar: this.publishAvatar(),
+      imageFile: this.imageFile(),
+      documentFiles: this.documentFiles(),
+      updatedAt: new Date().toISOString(),
+    };
+  }
+
+  private draftStorageKey(): string {
+    const boardId = this.boardId().trim();
+    if (boardId) return `board:${boardId}`;
+    const title = this.boardTitle().trim().toLocaleLowerCase().replace(/[^a-z0-9]+/g, '-');
+    return title ? `board-title:${title}` : '';
+  }
+
+  private queueDraftSave(record: TalkingCardDraftRecord): Promise<void> {
+    this.draftSaveChain = this.draftSaveChain
+      .catch(() => undefined)
+      .then(async () => {
+        await this.draftStore.save(record);
+        if (this.draftReady()) this.draftStatus.set('saved');
+      });
+    return this.draftSaveChain;
+  }
+
+  private async persistDraftNow(): Promise<void> {
+    if (!this.draftReady()) return;
+    const record = this.currentDraftRecord();
+    if (!record) return;
+    await this.queueDraftSave(record);
+  }
+
+  private saveErrorMessage(error: unknown): string {
+    const code = error && typeof error === 'object' && 'code' in error && typeof error.code === 'string'
+      ? error.code
+      : '';
+    if (code === 'storage/unauthorized') {
+      return 'Your draft is safe. The avatar image could not be uploaded because Storage denied access. Please try again after refreshing.';
+    }
+    return error instanceof Error && error.message.trim()
+      ? error.message
+      : 'The Talking Card could not be saved.';
   }
 
   private async loadExistingVoiceConfig(atlasId: string): Promise<void> {

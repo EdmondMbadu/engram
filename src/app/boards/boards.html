@@ -10849,6 +10849,7 @@
 
 @if (talkingCardEditorBoard(); as talkingBoard) {
   <app-talking-card-editor
+    [boardId]="talkingBoard.id"
     [boardTitle]="talkingBoard.title"
     [boardVisibility]="talkingBoard.visibility"
     (closed)="closeTalkingCardEditor()"

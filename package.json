@@ -19,6 +19,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:firestore-rules": "node scripts/run-firestore-rule-tests.mjs",
+    "test:storage-rules": "node scripts/run-storage-rule-tests.mjs",
     "university-boards:worker": "npm --prefix functions run build && node scripts/run-university-board-worker.mjs",
     "university-boards:set-worker": "npm --prefix functions run build && node scripts/run-university-board-set-worker.mjs",
     "university-boards:free-worker": "npm --prefix functions run build && node scripts/run-university-board-set-worker.mjs",

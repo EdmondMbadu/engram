@@ -1010,6 +1010,23 @@ export class AtlasService {
     kind: 'logo' | 'hero' | 'chat-guide',
     file: File,
   ): Promise<string> {
+    return this.uploadAtlasBitmap(`atlases/${atlasId}/${kind}`, file);
+  }
+
+  /**
+   * Stores a newly-created Talking Card portrait under the signed-in user's namespace.
+   * This avoids making a Storage Rules decision depend on a just-created Firestore Atlas
+   * document while keeping writes restricted to the avatar owner.
+   */
+  async uploadTalkingCardAvatarImage(atlasId: string, file: File): Promise<string> {
+    const uid = this.authService.uid();
+    if (!uid) throw new Error('Sign in again before uploading an avatar image.');
+    const safeAtlasId = atlasId.trim().replace(/[^A-Za-z0-9_-]/g, '');
+    if (!safeAtlasId) throw new Error('The avatar is missing its storage identifier.');
+    return this.uploadAtlasBitmap(`users/${uid}/avatars/${safeAtlasId}/chat-guide`, file);
+  }
+
+  private async uploadAtlasBitmap(pathPrefix: string, file: File): Promise<string> {
     if (!this.storage) throw new Error('Storage unavailable.');
     if (!file.type.startsWith('image/')) {
       throw new Error('Only image files are supported.');
@@ -1018,7 +1035,7 @@ export class AtlasService {
       throw new Error('Image must be under 10 MB.');
     }
     const ext = (file.name.split('.').pop() || 'png').toLowerCase().replace(/[^a-z0-9]/g, '') || 'png';
-    const path = `atlases/${atlasId}/${kind}-${Date.now()}.${ext}`;
+    const path = `${pathPrefix}-${Date.now()}.${ext}`;
     const ref = storageRef(this.storage, path);
     await uploadBytes(ref, file, { contentType: file.type });
     return await getDownloadURL(ref);

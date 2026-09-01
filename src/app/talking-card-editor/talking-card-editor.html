@@ -58,17 +58,22 @@
                     <strong>{{ atlas.chat_guide?.name || atlas.name }}</strong>
                     <small>{{ atlas.chat_guide?.label || atlas.description || atlas.name }}</small>
                   </span>
-                  <span class="talking-editor__visibility" [class.is-public]="atlas.is_public">{{ atlas.is_public ? 'Public' : 'Private' }}</span>
+                  <span class="talking-editor__visibility" [class.is-public]="atlas.is_public">
+                    {{ isEditableAtlas(atlas) ? (atlas.is_public ? 'Your public avatar' : 'Your private avatar') : 'Public library' }}
+                  </span>
                 </button>
               } @empty {
                 <p>No avatars match “{{ avatarSearch().trim() }}”.</p>
               }
             </div>
           } @else if (!selectedAtlas()) {
-            <small class="talking-editor__search-hint">Start typing to find one of your {{ availableAtlases().length }} avatars.</small>
+            <small class="talking-editor__search-hint">
+              @if (publicAtlasesLoading()) { Loading the public avatar library… }
+              @else { Search {{ availableAtlases().length }} avatars from your workspace and the public library. }
+            </small>
           }
         </div>
-        @if (!availableAtlases().length) {
+        @if (!availableAtlases().length && !publicAtlasesLoading()) {
           <p class="talking-editor__notice">You do not have an avatar yet. Choose “Create a new avatar” to make one here.</p>
         }
         @if (selectedAtlas(); as avatar) {
@@ -84,6 +89,9 @@
               <input type="checkbox" [ngModel]="publishAvatar()" (ngModelChange)="publishAvatar.set($event)" />
               <span>Publish this avatar so visitors to this public board can talk to it.</span>
             </label>
+          }
+          @if (!selectedAtlasEditable()) {
+            <p class="talking-editor__notice"><span class="material-symbols-outlined" aria-hidden="true">public</span> This public avatar keeps the persona and voice chosen by its creator.</p>
           }
         }
       } @else {
@@ -105,7 +113,7 @@
         }
       }
 
-      @if (mode() === 'new' || selectedAtlas()) {
+      @if (mode() === 'new' || (selectedAtlas() && selectedAtlasEditable())) {
         <section class="talking-editor__voice-picker" aria-labelledby="talking-editor-voice-title">
           <header>
             <div>
@@ -204,6 +212,10 @@
     </div>
 
     <footer class="talking-editor__footer">
+      <span class="talking-editor__draft-state" aria-live="polite">
+        @if (draftStatus() === 'restored') { <span class="material-symbols-outlined" aria-hidden="true">history</span> Draft restored }
+        @else if (draftStatus() === 'saved') { <span class="material-symbols-outlined" aria-hidden="true">cloud_done</span> Draft saved on this device }
+      </span>
       <button type="button" class="talking-editor__secondary" (click)="close()">Cancel</button>
       <button type="button" class="talking-editor__primary" [disabled]="!canSave()" (click)="save()">
         @if (saving()) { <span class="material-symbols-outlined talking-editor__spin">progress_activity</span> Saving… }

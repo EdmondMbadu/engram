@@ -4,6 +4,7 @@ import type { AtlasItem } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
 import { DocumentsService } from '../documents.service';
 import { STACK_NARRATOR_VOICES } from '../boards/stack-voice';
+import { TalkingCardDraftStore, type TalkingCardDraftRecord } from './talking-card-draft.store';
 import { TalkingCardEditorComponent } from './talking-card-editor';
 
 describe('TalkingCardEditorComponent', () => {
@@ -29,9 +30,15 @@ describe('TalkingCardEditorComponent', () => {
     makeAtlas('james', 'James Madison', false),
     makeAtlas('philadelphia', 'Philadelphia', true),
   ]);
+  const publicGlover: AtlasItem = {
+    ...makeAtlas('john-glover', 'Colonel John Glover', true),
+    user_id: 'public-avatar-owner',
+    description: 'Marblehead commander and maritime guide',
+  };
   const atlasService = {
     atlases,
-    canAdminAtlas: jasmine.createSpy('canAdminAtlas').and.returnValue(true),
+    canAdminAtlas: jasmine.createSpy('canAdminAtlas').and.callFake((atlas: AtlasItem) => atlas.user_id === 'owner-1'),
+    listPublicAtlases: jasmine.createSpy('listPublicAtlases').and.resolveTo([publicGlover]),
     getAtlasSpeechVoiceConfig: jasmine.createSpy('getAtlasSpeechVoiceConfig').and.resolveTo({
       source: 'default', provider: 'elevenlabs', catalogVoiceId: null, name: 'Default voice',
       description: null, previewUrl: null, designModel: null, createdAt: null, updatedAt: null,
@@ -45,18 +52,31 @@ describe('TalkingCardEditorComponent', () => {
     createTalkingCardAtlas: jasmine.createSpy('createTalkingCardAtlas').and.resolveTo('new-avatar'),
     updatePersonaSettings: jasmine.createSpy('updatePersonaSettings'),
     updateAtlas: jasmine.createSpy('updateAtlas'),
+    updateChatGuideConfig: jasmine.createSpy('updateChatGuideConfig'),
+    uploadTalkingCardAvatarImage: jasmine.createSpy('uploadTalkingCardAvatarImage').and.resolveTo('https://example.com/avatar.png'),
+  };
+  const draftStore = {
+    load: jasmine.createSpy('load').and.resolveTo(null),
+    save: jasmine.createSpy('save').and.resolveTo(),
+    delete: jasmine.createSpy('delete').and.resolveTo(),
   };
 
   beforeEach(async () => {
     Object.values(atlasService).forEach((value) => {
       if (jasmine.isSpy(value)) value.calls.reset();
     });
+    Object.values(draftStore).forEach((value) => {
+      if (jasmine.isSpy(value)) value.calls.reset();
+    });
+    atlasService.listPublicAtlases.and.resolveTo([publicGlover]);
+    draftStore.load.and.resolveTo(null);
     await TestBed.configureTestingModule({
       imports: [TalkingCardEditorComponent],
       providers: [
         provideZonelessChangeDetection(),
         { provide: AtlasService, useValue: atlasService },
         { provide: DocumentsService, useValue: {} },
+        { provide: TalkingCardDraftStore, useValue: draftStore },
       ],
     }).compileComponents();
   });
@@ -87,6 +107,28 @@ describe('TalkingCardEditorComponent', () => {
     expect(fixture.componentInstance.selectedAtlasId()).toBe('james');
     expect(fixture.componentInstance.avatarSearch()).toBe('');
     expect(fixture.nativeElement.textContent).toContain('Selected avatar');
+  });
+
+  it('includes public avatars in search without allowing their voice configuration to be changed', async () => {
+    const fixture = TestBed.createComponent(TalkingCardEditorComponent);
+    fixture.componentRef.setInput('boardId', 'board-public-avatar');
+    fixture.detectChanges();
+    await draftStore.load.calls.mostRecent().returnValue;
+    await Promise.resolve();
+    await atlasService.listPublicAtlases.calls.mostRecent().returnValue;
+    fixture.componentInstance.avatarSearch.set('glover');
+    fixture.detectChanges();
+
+    const result = fixture.nativeElement.querySelector('#talking-avatar-results [role="option"]') as HTMLButtonElement;
+    expect(result.textContent).toContain('Colonel John Glover');
+    expect(result.textContent).toContain('Public library');
+    result.click();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.selectedAtlasEditable()).toBeFalse();
+    expect(fixture.nativeElement.textContent).toContain('keeps the persona and voice chosen by its creator');
+    await fixture.componentInstance.save();
+    expect(atlasService.selectAtlasCatalogVoice).not.toHaveBeenCalled();
   });
 
   it('previews an included voice without changing the avatar selection', async () => {
@@ -131,5 +173,63 @@ describe('TalkingCardEditorComponent', () => {
 
     expect(atlasService.createTalkingCardAtlas).toHaveBeenCalled();
     expect(atlasService.selectAtlasCatalogVoice).toHaveBeenCalledWith('new-avatar', voice.id);
+  });
+
+  it('uploads a new avatar image through the user-owned avatar path', async () => {
+    const fixture = TestBed.createComponent(TalkingCardEditorComponent);
+    fixture.componentRef.setInput('boardId', 'board-image-upload');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.componentInstance.setMode('new');
+    fixture.componentInstance.name.set('Colonel John Glover');
+    fixture.componentInstance.personaPrompt.set('You are Colonel John Glover.');
+    const image = new File(['portrait'], 'glover.png', { type: 'image/png' });
+    fixture.componentInstance.imageFile.set(image);
+
+    await fixture.componentInstance.save();
+
+    expect(atlasService.uploadTalkingCardAvatarImage).toHaveBeenCalledWith('new-avatar', image);
+    expect(atlasService.updateChatGuideConfig).toHaveBeenCalled();
+  });
+
+  it('restores and saves a board-scoped local draft, including selected files', async () => {
+    const image = new File(['portrait'], 'glover.png', { type: 'image/png' });
+    const document = new File(['facts'], 'glover-facts.txt', { type: 'text/plain' });
+    const restored: TalkingCardDraftRecord = {
+      key: 'board:board-draft',
+      version: 1,
+      boardId: 'board-draft',
+      mode: 'new',
+      selectedAtlasId: '',
+      createdAtlasId: 'partially-created-atlas',
+      name: 'Colonel John Glover',
+      role: 'Marblehead commander',
+      personaPrompt: 'You are Colonel John Glover.',
+      openingMessage: 'We have an army to move before daylight.',
+      ctaLabel: 'Talk to Glover',
+      placement: 'end',
+      catalogVoiceId: '',
+      voiceChoice: 'default',
+      publishAvatar: false,
+      imageFile: image,
+      documentFiles: [document],
+      updatedAt: '2026-08-31T00:00:00.000Z',
+    };
+    draftStore.load.and.resolveTo(restored);
+    const fixture = TestBed.createComponent(TalkingCardEditorComponent);
+    fixture.componentRef.setInput('boardId', 'board-draft');
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(fixture.componentInstance.name()).toBe('Colonel John Glover');
+    expect(fixture.componentInstance.imageFile()?.name).toBe('glover.png');
+    expect(fixture.componentInstance.documentFiles()[0]?.name).toBe('glover-facts.txt');
+    await fixture.componentInstance.close();
+
+    expect(draftStore.save).toHaveBeenCalledWith(jasmine.objectContaining({
+      key: 'board:board-draft',
+      createdAtlasId: 'partially-created-atlas',
+      name: 'Colonel John Glover',
+    }));
   });
 });
