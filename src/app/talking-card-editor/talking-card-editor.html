@@ -170,10 +170,10 @@
             <div class="talking-editor__voice-library">
               <div class="talking-editor__voice-search">
                 <span class="material-symbols-outlined" aria-hidden="true">search</span>
-                <input type="search" autocomplete="off" placeholder="Search 41 voices by name, accent, or style…" [ngModel]="voiceSearch()" (ngModelChange)="voiceSearch.set($event)" />
+                <input type="search" autocomplete="off" [placeholder]="'Search ' + catalogVoiceCount + ' voices by name, accent, or style…'" [ngModel]="voiceSearch()" (ngModelChange)="voiceSearch.set($event)" />
                 @if (voiceSearch()) { <button type="button" aria-label="Clear voice search" (click)="voiceSearch.set('')"><span class="material-symbols-outlined">close</span></button> }
               </div>
-              <small class="talking-editor__voice-library-label">{{ voiceSearch().trim() ? displayedVoices().length + ' matching voices' : 'Recommended voices' }}</small>
+              <small class="talking-editor__voice-library-label">{{ voiceSearch().trim() ? displayedVoices().length + ' matching voices' : 'All ' + catalogVoiceCount + ' voices' }}</small>
               <div class="talking-editor__voice-results" role="radiogroup" aria-label="Included conversation voices">
                 @for (voice of displayedVoices(); track voice.id) {
                   <div class="talking-editor__voice-option" [class.is-selected]="voiceChoice() === 'catalog' && catalogVoiceId() === voice.id">

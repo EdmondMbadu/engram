@@ -1597,7 +1597,6 @@ const STACK_LINK_SHARE_TARGETS: Array<{ id: StackLinkShareTarget; label: string;
 const STACK_VIDEO_MAX_CARDS = 30;
 const BOARD_GALLERY_PAGE_SIZE = DEFAULT_INCREMENTAL_PAGE_SIZE;
 const BOARD_ROUTE_UNAVAILABLE_GRACE_MS = 1500;
-const STACK_VOICE_LIBRARY_PAGE_SIZE = 12;
 
 type BoardLoadContext = {
   uid: string;
@@ -2141,7 +2140,6 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly stackVoiceLibraryOpen = signal(false);
   readonly stackVoiceLibrarySearchQuery = signal('');
   readonly stackVoiceLibraryFilter = signal<StackVoiceLibraryFilter>('All');
-  readonly stackVoiceLibraryVisibleLimit = signal(STACK_VOICE_LIBRARY_PAGE_SIZE);
   readonly stackSoundTab = signal<StackSoundTab>('voice');
   readonly stackScriptBoardTitle = signal('');
   readonly stackScriptBoardDescription = signal('');
@@ -3002,12 +3000,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       this.stackVoiceLibraryFilter(),
     );
   });
-  readonly stackVisibleNarratorVoices = computed(() =>
-    incrementalSlice(this.stackFilteredNarratorVoices(), this.stackVoiceLibraryVisibleLimit()),
-  );
-  readonly stackVoiceLibraryHasMore = computed(() =>
-    this.stackVisibleNarratorVoices().length < this.stackFilteredNarratorVoices().length,
-  );
+  readonly stackVisibleNarratorVoices = computed(() => this.stackFilteredNarratorVoices());
   readonly stackSelectedNarratorName = computed(() =>
     !this.stackVideoNarrationEnabled()
       ? $localize`No narration`
@@ -14624,7 +14617,6 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   openStackVoiceLibrary(): void {
     this.stackVoiceLibrarySearchQuery.set('');
     this.stackVoiceLibraryFilter.set('All');
-    this.stackVoiceLibraryVisibleLimit.set(STACK_VOICE_LIBRARY_PAGE_SIZE);
     this.stackVoiceLibraryOpen.set(true);
     if (this.isBrowser) {
       this.stackVoiceLibraryReturnFocus = document.activeElement instanceof HTMLElement
@@ -14646,31 +14638,10 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
 
   onStackVoiceLibrarySearch(value: string): void {
     this.stackVoiceLibrarySearchQuery.set(value);
-    this.stackVoiceLibraryVisibleLimit.set(STACK_VOICE_LIBRARY_PAGE_SIZE);
   }
 
   selectStackVoiceLibraryFilter(filter: StackVoiceLibraryFilter): void {
     this.stackVoiceLibraryFilter.set(filter);
-    this.stackVoiceLibraryVisibleLimit.set(STACK_VOICE_LIBRARY_PAGE_SIZE);
-  }
-
-  onStackVoiceLibraryScroll(event: Event): void {
-    const viewport = event.currentTarget as HTMLElement;
-    if (this.stackVoiceLibraryHasMore() && incrementalViewportNearEnd(
-      viewport.scrollHeight,
-      viewport.scrollTop,
-      viewport.clientHeight,
-      240,
-    )) {
-      this.loadMoreStackVoices();
-    }
-  }
-
-  loadMoreStackVoices(): void {
-    if (!this.stackVoiceLibraryHasMore()) return;
-    this.stackVoiceLibraryVisibleLimit.update((limit) =>
-      nextIncrementalLimit(limit, STACK_VOICE_LIBRARY_PAGE_SIZE),
-    );
   }
 
   setStackVideoNarrationEnabled(enabled: boolean): void {

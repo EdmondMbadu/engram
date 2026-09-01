@@ -7519,7 +7519,7 @@
                               <span i18n>Select a voice or preview it first</span>
                             </div>
 
-                            <div class="stack-voice-library__viewport" (scroll)="onStackVoiceLibraryScroll($event)">
+                            <div class="stack-voice-library__viewport">
                               @if (stackVisibleNarratorVoices().length) {
                                 <div class="stack-voice-grid stack-voice-grid--library" role="radiogroup" aria-label="All narrator voices" i18n-aria-label>
                                   @for (voice of stackVisibleNarratorVoices(); track voice.id) {
@@ -7555,10 +7555,7 @@
                                   }
                                 </div>
                                 <footer class="stack-voice-library__more">
-                                  <span>Showing {{ stackVisibleNarratorVoices().length }} of {{ stackFilteredNarratorVoices().length }}</span>
-                                  @if (stackVoiceLibraryHasMore()) {
-                                    <button type="button" (click)="loadMoreStackVoices()" i18n>Show more voices</button>
-                                  }
+                                  <span>Showing all {{ stackFilteredNarratorVoices().length }} voices</span>
                                 </footer>
                               } @else {
                                 <div class="stack-voice-library__empty">

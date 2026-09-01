@@ -5,7 +5,6 @@ import type { AtlasItem, AtlasSpeechVoiceConfig } from '../atlas.models';
 import { AtlasService, type AtlasSpeechAudioResponse } from '../atlas.service';
 import { DocumentsService } from '../documents.service';
 import {
-  RECOMMENDED_STACK_NARRATOR_VOICES,
   STACK_NARRATOR_VOICES,
   stackNarratorVoiceById,
   type StackNarratorVoice,
@@ -76,10 +75,11 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
   readonly selectedAtlas = computed<AtlasItem | null>(() =>
     this.availableAtlases().find((atlas) => atlas.id === this.selectedAtlasId()) ?? null,
   );
+  readonly catalogVoiceCount = STACK_NARRATOR_VOICES.length;
   readonly selectedCatalogVoice = computed(() => stackNarratorVoiceById(this.catalogVoiceId()));
   readonly displayedVoices = computed(() => {
     const query = this.voiceSearch().trim().toLocaleLowerCase();
-    if (!query) return RECOMMENDED_STACK_NARRATOR_VOICES;
+    if (!query) return STACK_NARRATOR_VOICES;
     const terms = query.split(/\s+/).filter(Boolean);
     return STACK_NARRATOR_VOICES.filter((voice) => {
       const searchable = [voice.name, voice.presentation, voice.accent, voice.style, voice.description]

@@ -131,6 +131,20 @@ describe('TalkingCardEditorComponent', () => {
     expect(atlasService.selectAtlasCatalogVoice).not.toHaveBeenCalled();
   });
 
+  it('shows the full included voice catalog before the user searches', () => {
+    const fixture = TestBed.createComponent(TalkingCardEditorComponent);
+    fixture.detectChanges();
+    fixture.componentInstance.setMode('new');
+    fixture.detectChanges();
+
+    const options = fixture.nativeElement.querySelectorAll('.talking-editor__voice-results [role="radio"]');
+    const label = fixture.nativeElement.querySelector('.talking-editor__voice-library-label') as HTMLElement;
+
+    expect(options.length).toBe(STACK_NARRATOR_VOICES.length);
+    expect(options[options.length - 1].textContent).toContain(STACK_NARRATOR_VOICES.at(-1)?.name);
+    expect(label.textContent).toContain(`All ${STACK_NARRATOR_VOICES.length} voices`);
+  });
+
   it('previews an included voice without changing the avatar selection', async () => {
     const play = spyOn(HTMLMediaElement.prototype, 'play').and.resolveTo();
     spyOn(HTMLMediaElement.prototype, 'pause');
