@@ -363,6 +363,16 @@
           }
           @if (selectedBoard(); as topBoard) {
             @if (canEditBoard(topBoard)) {
+              <button
+                type="button"
+                class="boards-ghost-action"
+                [id]="'board-settings-trigger-' + topBoard.id"
+                aria-label="Board settings"
+                (click)="openBoardSettings(topBoard, $event)"
+              >
+                <span class="material-symbols-outlined" aria-hidden="true">settings</span>
+                <span class="hidden sm:inline">Board settings</span>
+              </button>
               <button type="button" class="boards-primary-action" (click)="openCreateCard(topBoard.id)">
                 <span class="material-symbols-outlined">add</span>
                 <span class="hidden sm:inline" i18n>New Card</span>
@@ -1490,6 +1500,16 @@
               </div>
 
               <div class="board-editorial-hero__actions" aria-label="Board actions">
+                @if (canEditBoard(board)) {
+                  <button
+                    type="button"
+                    class="board-editorial-hero__action--active"
+                    (click)="openBoardSettings(board, $event)"
+                  >
+                    <span class="material-symbols-outlined" aria-hidden="true">settings</span>
+                    <span>Board settings</span>
+                  </button>
+                }
                 <button
                   type="button"
                   [class.board-editorial-hero__action--active]="isBoardLiked(board)"
@@ -1962,15 +1982,6 @@
             @if (!exploredRelatedCardParent() && (board.cards.length || canEditBoard(board) || board.kind === 'off-grid')) {
               <div class="board-detail__actions">
                 @if (canEditBoard(board)) {
-                  <button
-                    type="button"
-                    class="boards-ghost-action"
-                    [id]="'board-settings-trigger-' + board.id"
-                    (click)="openBoardSettings(board, $event)"
-                  >
-                    <span class="material-symbols-outlined">settings</span>
-                    Board settings
-                  </button>
                   @if (board.cards.length) {
                     <button type="button" class="boards-ghost-action" (click)="toggleCardManageMode(board, $event)">
                       <span class="material-symbols-outlined">{{ isManagingBoard(board.id) ? 'close' : 'checklist' }}</span>
@@ -8860,6 +8871,23 @@
             ></textarea>
           </label>
 
+          <section class="board-settings-talking-card" aria-labelledby="board-settings-talking-card-title">
+            <span class="board-settings-talking-card__icon material-symbols-outlined" aria-hidden="true">record_voice_over</span>
+            <span class="board-settings-talking-card__copy">
+              <strong id="board-settings-talking-card-title">Talking Card</strong>
+              <small>Add a conversational avatar that visitors can talk to in Live View.</small>
+            </span>
+            <button
+              type="button"
+              class="boards-talking-action"
+              [disabled]="boardSettingsSaving()"
+              (click)="openTalkingCardEditorFromSettings(settingsBoard, $event)"
+            >
+              <span class="material-symbols-outlined" aria-hidden="true">add</span>
+              Add Talking Card
+            </button>
+          </section>
+
           <section class="board-inside-display board-settings-choice" style="margin: 0;" aria-labelledby="board-settings-card-numbers-title">
             <div class="board-inside-display__copy board-settings-choice__copy">
               <span class="material-symbols-outlined" aria-hidden="true">format_list_numbered</span>
@@ -8891,6 +8919,40 @@
               </button>
             </div>
           </section>
+
+          @if (isTourBoard(settingsBoard)) {
+            <section class="board-inside-display board-settings-choice" style="margin: 0;" aria-labelledby="board-settings-tour-view-title">
+              <div class="board-inside-display__copy board-settings-choice__copy">
+                <span class="material-symbols-outlined" aria-hidden="true">route</span>
+                <span>
+                  <strong id="board-settings-tour-view-title">Tour view</strong>
+                  <small>Switch between the route and the card view for this tour.</small>
+                </span>
+              </div>
+              <div class="board-inside-display__switch board-settings-segmented" role="group" aria-label="Tour view">
+                <button
+                  type="button"
+                  [class.board-inside-display__option--active]="tourBoardView() === 'route'"
+                  [attr.aria-pressed]="tourBoardView() === 'route'"
+                  [disabled]="boardSettingsSaving()"
+                  (click)="setTourBoardView('route', $event)"
+                >
+                  <span class="material-symbols-outlined" aria-hidden="true">map</span>
+                  <span><strong>Route &amp; map</strong><small>See the guided route</small></span>
+                </button>
+                <button
+                  type="button"
+                  [class.board-inside-display__option--active]="tourBoardView() === 'cards'"
+                  [attr.aria-pressed]="tourBoardView() === 'cards'"
+                  [disabled]="boardSettingsSaving()"
+                  (click)="setTourBoardView('cards', $event)"
+                >
+                  <span class="material-symbols-outlined" aria-hidden="true">dashboard</span>
+                  <span><strong>Cards</strong><small>Browse every stop</small></span>
+                </button>
+              </div>
+            </section>
+          }
 
           @if (boardHasCardsInside(settingsBoard)) {
             <section class="board-inside-display board-settings-choice" style="margin: 0;" aria-labelledby="board-settings-inside-title">
@@ -8995,23 +9057,6 @@
               <span>{{ boardSettingsSaving() ? 'Saving…' : 'Save changes' }}</span>
             </button>
           </footer>
-
-          <section class="board-settings-talking-card" aria-labelledby="board-settings-talking-card-title">
-            <span class="board-settings-talking-card__icon material-symbols-outlined" aria-hidden="true">record_voice_over</span>
-            <span class="board-settings-talking-card__copy">
-              <strong id="board-settings-talking-card-title">Talking Card</strong>
-              <small>Add a conversational avatar that visitors can talk to in Live View.</small>
-            </span>
-            <button
-              type="button"
-              class="boards-talking-action"
-              [disabled]="boardSettingsSaving()"
-              (click)="openTalkingCardEditorFromSettings(settingsBoard, $event)"
-            >
-              <span class="material-symbols-outlined" aria-hidden="true">add</span>
-              Add Talking Card
-            </button>
-          </section>
         </form>
       </section>
     </div>

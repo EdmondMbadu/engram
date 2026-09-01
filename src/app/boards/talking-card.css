@@ -5,10 +5,10 @@
   gap: .45rem;
   min-height: 2.55rem;
   padding: 0 .9rem;
-  border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--line));
+  border: 1px solid color-mix(in srgb, var(--accent) 52%, var(--line));
   border-radius: 999px;
   color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+  background: color-mix(in srgb, var(--accent) 11%, var(--surface));
   font-size: .78rem;
   font-weight: 900;
   cursor: pointer;
@@ -23,9 +23,9 @@
   gap: .8rem;
   margin-top: .15rem;
   padding: 1rem;
-  border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--line));
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--line));
   border-radius: 1rem;
-  background: color-mix(in srgb, var(--accent) 5%, var(--surface));
+  background: color-mix(in srgb, var(--accent) 7%, var(--surface));
 }
 .board-settings-talking-card__icon {
   display: grid;
