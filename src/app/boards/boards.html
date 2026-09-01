@@ -3619,7 +3619,7 @@
   }
 
   @if (boardLearnOpen() && boardLearnBoard(); as learnBoard) {
-    <div class="board-learning" (click)="closeBoardLearn($event)">
+    <div class="board-learning" appBackdropDismiss (backdropDismiss)="closeBoardLearn()">
       <section
         class="board-learning__dialog"
         role="dialog"
@@ -4288,7 +4288,7 @@
       </section>
 
       @if (boardLearnQuizShareMode(); as shareMode) {
-        <div class="board-quiz-share" (click)="closeBoardQuizShare($event)">
+        <div class="board-quiz-share" appBackdropDismiss (backdropDismiss)="closeBoardQuizShare()">
           <section
             class="board-quiz-share__sheet"
             role="dialog"
@@ -4378,7 +4378,7 @@
   }
 
   @if (cardVideoViewerCard(); as videoCard) {
-    <div class="card-video-lightbox" (click)="closeCardVideoViewer($event)">
+    <div class="card-video-lightbox" appBackdropDismiss (backdropDismiss)="closeCardVideoViewer()">
       <section
         class="card-video-lightbox__dialog"
         role="dialog"
@@ -4437,7 +4437,7 @@
   }
 
   @if (cardPhotoViewerCard(); as photoCard) {
-    <div class="card-photo-lightbox" (click)="closeCardPhotoViewer($event)">
+    <div class="card-photo-lightbox" appBackdropDismiss (backdropDismiss)="closeCardPhotoViewer()">
       <section
         class="card-photo-lightbox__dialog"
         role="dialog"
@@ -4510,7 +4510,7 @@
   }
 
   @if (wizardOpen()) {
-    <div class="boards-modal-backdrop" (click)="closeBoardWizard()">
+    <div class="boards-modal-backdrop" appBackdropDismiss (backdropDismiss)="closeBoardWizard()">
       <section
         class="boards-modal boards-modal--wizard"
         [class.boards-modal--nearby-gems]="wizardMode() === 'nearby-gems' && wizardStep() === 'configure'"
@@ -6811,7 +6811,7 @@
   }
 
   @if (tourGuideOpen()) {
-    <div class="boards-modal-backdrop boards-modal-backdrop--tour-guide" (click)="closeTourGuide()">
+    <div class="boards-modal-backdrop boards-modal-backdrop--tour-guide" appBackdropDismiss (backdropDismiss)="closeTourGuide()">
       <section class="boards-modal boards-modal--tour-guide" aria-label="Guided tour" (click)="$event.stopPropagation()" i18n-aria-label>
         <div class="boards-modal__head">
           <div>
@@ -6873,7 +6873,7 @@
 
   @if (stackStudioOpen()) {
     @if (stackBoard(); as board) {
-      <div class="boards-modal-backdrop boards-modal-backdrop--stack-studio" (click)="closeStackStudio()">
+      <div class="boards-modal-backdrop boards-modal-backdrop--stack-studio" appBackdropDismiss (backdropDismiss)="closeStackStudio()">
         <section class="boards-modal boards-modal--stack-studio" aria-label="Stack Studio" (click)="$event.stopPropagation()" i18n-aria-label>
           <div class="boards-modal__head">
             <div>
@@ -7461,7 +7461,7 @@
                       </section>
 
                       @if (stackVoiceLibraryOpen()) {
-                        <div class="stack-voice-library-backdrop" (click)="closeStackVoiceLibrary()">
+                        <div class="stack-voice-library-backdrop" appBackdropDismiss (backdropDismiss)="closeStackVoiceLibrary()">
                           <section
                             #stackVoiceLibrary
                             class="stack-voice-library"
@@ -8033,7 +8033,7 @@
 
   @if (stackStudioOpen() && stackDocsExportDialogOpen()) {
     @if (stackBoard(); as board) {
-      <div class="boards-modal-backdrop stack-doc-export-backdrop" (click)="closeStackDocsExportDialog()">
+      <div class="boards-modal-backdrop stack-doc-export-backdrop" appBackdropDismiss (backdropDismiss)="closeStackDocsExportDialog()">
         <section
           class="boards-modal stack-doc-export-dialog"
           role="dialog"
@@ -8177,7 +8177,7 @@
   }
 
   @if (stackStudioOpen() && stackScriptDiscardConfirmOpen()) {
-    <div class="boards-modal-backdrop stack-script-discard-backdrop" (click)="keepEditingStackScript()">
+    <div class="boards-modal-backdrop stack-script-discard-backdrop" appBackdropDismiss (backdropDismiss)="keepEditingStackScript()">
       <section class="boards-modal boards-modal--confirm stack-script-discard" aria-label="Unsaved Studio changes" (click)="$event.stopPropagation()">
         <span class="stack-script-discard__icon material-symbols-outlined">edit_note</span>
         <h3>Keep your Studio changes?</h3>
@@ -8192,7 +8192,7 @@
 
   @if (stackShareDialogOpen()) {
     @if (stackBoard(); as board) {
-      <div class="boards-modal-backdrop boards-modal-backdrop--stack-share" (click)="closeStackShareDialog($event)">
+      <div class="boards-modal-backdrop boards-modal-backdrop--stack-share" appBackdropDismiss (backdropDismiss)="closeStackShareDialog()">
         <section class="boards-modal boards-modal--stack-share" aria-label="Share Stack" (click)="$event.stopPropagation()" i18n-aria-label>
           <div class="boards-modal__head">
             <div>
@@ -8706,7 +8706,7 @@
   }
 
   @if (boardDeleteCandidate(); as board) {
-    <div class="boards-modal-backdrop" (click)="closeBoardDeleteDialog($event)">
+    <div class="boards-modal-backdrop" appBackdropDismiss (backdropDismiss)="closeBoardDeleteDialog()">
       <section class="boards-modal boards-modal--confirm" aria-label="Delete board confirmation" (click)="$event.stopPropagation()" i18n-aria-label>
         <div class="boards-modal__head">
           <div>
@@ -8738,7 +8738,7 @@
   }
 
   @if (cardDeleteCandidate(); as candidate) {
-    <div class="boards-modal-backdrop" (click)="closeCardDeleteDialog($event)">
+    <div class="boards-modal-backdrop" appBackdropDismiss (backdropDismiss)="closeCardDeleteDialog()">
       <section
         class="boards-modal boards-modal--confirm"
         [attr.aria-label]="isSongDeleteCandidate(candidate) ? 'Delete song confirmation' : 'Delete card confirmation'"
@@ -8774,7 +8774,7 @@
   }
 
   @if (cardBulkDeleteCandidate(); as candidate) {
-    <div class="boards-modal-backdrop" (click)="closeBulkCardDeleteDialog($event)">
+    <div class="boards-modal-backdrop" appBackdropDismiss (backdropDismiss)="closeBulkCardDeleteDialog()">
       <section class="boards-modal boards-modal--confirm" aria-label="Delete selected cards confirmation" (click)="$event.stopPropagation()" i18n-aria-label>
         <div class="boards-modal__head">
           <div>
@@ -8803,7 +8803,7 @@
   }
 
   @if (boardSettingsBoard(); as settingsBoard) {
-    <div class="boards-modal-backdrop board-settings-backdrop" style="background: rgba(7, 25, 18, .48); backdrop-filter: blur(4px);" (click)="closeBoardSettings($event)">
+    <div class="boards-modal-backdrop board-settings-backdrop" style="background: rgba(7, 25, 18, .48); backdrop-filter: blur(4px);" appBackdropDismiss (backdropDismiss)="closeBoardSettings()">
       <section
         class="boards-modal boards-modal--wide board-settings-modal"
         style="width: min(100%, 45rem); border-width: 1px; border-radius: 1.35rem; box-shadow: 0 28px 80px rgba(4, 31, 21, .34);"
@@ -9063,7 +9063,7 @@
   }
 
   @if (boardDialogOpen()) {
-    <div class="boards-modal-backdrop" (click)="closeBoardDialog()">
+    <div class="boards-modal-backdrop" appBackdropDismiss (backdropDismiss)="closeBoardDialog()">
       <section class="boards-modal" aria-label="Board form" (click)="$event.stopPropagation()" i18n-aria-label>
         <div class="boards-modal__head">
           <div>
@@ -9371,7 +9371,7 @@
   }
 
   @if (cardDialogOpen()) {
-    <div class="boards-modal-backdrop" (click)="closeCardDialog()">
+    <div class="boards-modal-backdrop" appBackdropDismiss (backdropDismiss)="closeCardDialog()">
       <section class="boards-modal boards-modal--wide" aria-label="Card form" (click)="$event.stopPropagation()" i18n-aria-label>
         <div class="boards-modal__head">
           <div>
@@ -10006,7 +10006,7 @@
 </div>
 
 @if (tourStopEditorOpen() && originalSelectedBoard(); as tourStopBoard) {
-  <div class="tour-stop-editor-backdrop" (click)="closeTourStopEditor($event)">
+  <div class="tour-stop-editor-backdrop" appBackdropDismiss (backdropDismiss)="closeTourStopEditor()">
     <section
       class="tour-stop-editor"
       role="dialog"
@@ -10278,7 +10278,7 @@
 }
 
 @if (relatedCardEditorOpen() && relatedCardEditorParent(); as relatedParent) {
-  <div class="related-card-editor-backdrop" (click)="closeRelatedCardEditor($event)">
+  <div class="related-card-editor-backdrop" appBackdropDismiss (backdropDismiss)="closeRelatedCardEditor()">
     <section
       class="related-card-editor"
       role="dialog"
@@ -10452,7 +10452,7 @@
 
 @if (visitPlanDialogOpen() && visitPlanBoard(); as goThereBoard) {
   @if (visitPlanCard(); as goThereCard) {
-    <div class="go-there-backdrop" role="presentation" (click)="closeGoThere($event)">
+    <div class="go-there-backdrop" role="presentation" appBackdropDismiss (backdropDismiss)="closeGoThere()">
       <section
         class="go-there-sheet"
         role="dialog"

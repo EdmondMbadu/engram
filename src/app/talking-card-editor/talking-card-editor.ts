@@ -1,5 +1,6 @@
 import { Component, computed, effect, HostListener, inject, input, OnDestroy, OnInit, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { BackdropDismissDirective } from '../backdrop-dismiss.directive';
 import type { AtlasItem, AtlasSpeechVoiceConfig } from '../atlas.models';
 import { AtlasService, type AtlasSpeechAudioResponse } from '../atlas.service';
 import { DocumentsService } from '../documents.service';
@@ -17,7 +18,7 @@ type VoiceChoice = 'default' | 'catalog' | 'saved';
 
 @Component({
   selector: 'app-talking-card-editor',
-  imports: [FormsModule],
+  imports: [FormsModule, BackdropDismissDirective],
   templateUrl: './talking-card-editor.html',
   styleUrl: './talking-card-editor.css',
 })

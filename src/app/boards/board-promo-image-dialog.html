@@ -1,4 +1,4 @@
-<div class="board-promo-backdrop" role="presentation" (mousedown)="$event.target === $event.currentTarget && close()">
+<div class="board-promo-backdrop" role="presentation" appBackdropDismiss (backdropDismiss)="close()">
   <section
     #dialog
     class="board-promo-dialog"

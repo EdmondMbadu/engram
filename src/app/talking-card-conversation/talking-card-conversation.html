@@ -1,4 +1,4 @@
-<div class="talking-chat-backdrop" (click)="close()">
+<div class="talking-chat-backdrop" appBackdropDismiss (backdropDismiss)="close()">
   <section
     class="talking-chat"
     [class.is-voice-mode]="conversationMode() === 'voice'"

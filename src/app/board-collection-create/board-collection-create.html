@@ -1,4 +1,4 @@
-<div class="collection-create-overlay" role="presentation" (click)="$event.target === $event.currentTarget && close()">
+<div class="collection-create-overlay" role="presentation" appBackdropDismiss (backdropDismiss)="close()">
   <section
     class="collection-create-dialog"
     role="dialog"

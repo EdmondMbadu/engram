@@ -1,5 +1,6 @@
 import { Component, computed, HostListener, inject, input, OnDestroy, OnInit, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { BackdropDismissDirective } from '../backdrop-dismiss.directive';
 import type { AtlasItem } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
 import { ChatService } from '../chat.service';
@@ -54,7 +55,7 @@ export function buildTalkingCardVoiceContext(
 
 @Component({
   selector: 'app-talking-card-conversation',
-  imports: [FormsModule, VoiceFluidVisualComponent],
+  imports: [FormsModule, VoiceFluidVisualComponent, BackdropDismissDirective],
   templateUrl: './talking-card-conversation.html',
   styleUrl: './talking-card-conversation.css',
 })

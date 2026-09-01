@@ -10,6 +10,7 @@ import {
   input,
   signal,
 } from '@angular/core';
+import { BackdropDismissDirective } from '../backdrop-dismiss.directive';
 import {
   boardPromoFileName,
   renderBoardPromoImage,
@@ -18,6 +19,7 @@ import {
 
 @Component({
   selector: 'app-board-promo-image-dialog',
+  imports: [BackdropDismissDirective],
   templateUrl: './board-promo-image-dialog.html',
   styleUrl: './board-promo-image-dialog.css',
 })

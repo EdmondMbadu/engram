@@ -1,4 +1,4 @@
-<div class="custom-url-backdrop" role="presentation" (mousedown)="$event.target === $event.currentTarget && close()">
+<div class="custom-url-backdrop" role="presentation" appBackdropDismiss (backdropDismiss)="close()">
   <section class="custom-url-dialog" role="dialog" aria-modal="true" aria-labelledby="custom-url-title" (keydown)="onDialogKeydown($event)">
     <header>
       <span class="custom-url-dialog__icon material-symbols-outlined" aria-hidden="true">link</span>

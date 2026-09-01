@@ -1,4 +1,4 @@
-<div class="talking-editor-backdrop" (click)="close()">
+<div class="talking-editor-backdrop" appBackdropDismiss (backdropDismiss)="close()">
   <section class="talking-editor" role="dialog" aria-modal="true" aria-labelledby="talking-editor-title" (click)="$event.stopPropagation()">
     <header class="talking-editor__header">
       <div>

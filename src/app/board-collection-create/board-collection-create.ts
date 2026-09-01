@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Output, ViewChild, computed, inject, input, signal } from '@angular/core';
+import { BackdropDismissDirective } from '../backdrop-dismiss.directive';
 import {
   BOARD_COLLECTION_MAX_BOARDS,
   BoardCollectionsService,
@@ -9,6 +10,7 @@ import {
 
 @Component({
   selector: 'app-board-collection-create',
+  imports: [BackdropDismissDirective],
   templateUrl: './board-collection-create.html',
   styleUrl: './board-collection-create.css',
 })

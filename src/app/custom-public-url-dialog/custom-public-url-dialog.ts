@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild, computed, inject, input, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { BackdropDismissDirective } from '../backdrop-dismiss.directive';
 import {
   CustomPublicUrlService,
   customPublicUrlPath,
@@ -11,7 +12,7 @@ import {
 
 @Component({
   selector: 'app-custom-public-url-dialog',
-  imports: [RouterLink],
+  imports: [RouterLink, BackdropDismissDirective],
   templateUrl: './custom-public-url-dialog.html',
   styleUrl: './custom-public-url-dialog.css',
 })

@@ -45,6 +45,7 @@ import {
 } from './nearby-gems-board/nearby-gems-board';
 import { VideoLibraryService } from '../video-library/video-library.service';
 import { BoardPromoImageDialogComponent } from './board-promo-image-dialog';
+import { BackdropDismissDirective } from '../backdrop-dismiss.directive';
 import { TalkingCardEditorComponent } from '../talking-card-editor/talking-card-editor';
 import { TalkingCardConversationComponent } from '../talking-card-conversation/talking-card-conversation';
 import { SpotifyPlaybackService, type SpotifyTrack } from '../spotify-playback.service';
@@ -1607,7 +1608,7 @@ type BoardLoadContext = {
 
 @Component({
   selector: 'app-boards',
-  imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink, BoardCollectionCreateComponent, BoardCollectionListComponent, CustomPublicUrlDialogComponent, BoardPromoImageDialogComponent, NearbyGemsBoardComponent, TalkingCardEditorComponent, TalkingCardConversationComponent],
+  imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink, BoardCollectionCreateComponent, BoardCollectionListComponent, CustomPublicUrlDialogComponent, BoardPromoImageDialogComponent, NearbyGemsBoardComponent, TalkingCardEditorComponent, TalkingCardConversationComponent, BackdropDismissDirective],
   providers: [DocxExportService],
   templateUrl: './boards.html',
   styleUrls: ['./boards.css', './tour-experience.css', './board-wizard-drafts.css', './board-wizard-media-mode.css', './board-narration-style.css', './board-wizard-redesign.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css', './stack-script.css', './stack-cover-final.css', './stack-doc-export.css', './board-city-tag.css', './board-custom-link.css', './nearby-gems-gallery.css', './talking-card.css'],
