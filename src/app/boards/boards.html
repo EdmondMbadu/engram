@@ -1598,7 +1598,7 @@
                     @if (canUseStackStudio(board)) {
                       <button type="button" (click)="openStackStudio(board, $event)">
                         <span class="material-symbols-outlined" aria-hidden="true">auto_awesome_motion</span>
-                        <span>{{ isPhotoStoryBoard(board) ? 'Edit stories' : 'Stack Studio' }}</span>
+                        <span i18n>Stack Studio</span>
                       </button>
                     }
                     @if (board.stackCtaLabel && stackCtaHref(board)) {
@@ -1779,8 +1779,8 @@
                   </button>
                   @if (canUseStackStudio(board)) {
                     <button type="button" class="board-detail__studio-entry" (click)="openStackStudio(board, $event)">
-                      <span class="material-symbols-outlined">{{ isPhotoStoryBoard(board) ? 'edit_note' : 'auto_awesome_motion' }}</span>
-                      {{ isPhotoStoryBoard(board) ? 'Edit stories' : 'Studio' }}
+                      <span class="material-symbols-outlined" aria-hidden="true">auto_awesome_motion</span>
+                      <span i18n>Stack Studio</span>
                     </button>
                   }
                 </div>
@@ -1936,8 +1936,8 @@
                     </button>
                     @if (canUseStackStudio(board)) {
                       <button type="button" class="board-share-panel__studio" (click)="openStackStudio(board, $event)">
-                        <span class="material-symbols-outlined">{{ isPhotoStoryBoard(board) ? 'edit_note' : 'auto_awesome_motion' }}</span>
-                        {{ isPhotoStoryBoard(board) ? 'Edit stories' : 'Stack Studio' }}
+                        <span class="material-symbols-outlined" aria-hidden="true">auto_awesome_motion</span>
+                        <span i18n>Stack Studio</span>
                       </button>
                     }
                     <button type="button" (click)="nativeShareBoard(board)" i18n>
