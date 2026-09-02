@@ -105,6 +105,8 @@ export type VoiceSummaryTranscriptItem = {
   text: string;
 };
 
+export type VoiceConversationSummarySource = 'wiki_voice' | 'talking_card';
+
 export type SendVoiceConversationSummaryResponse = {
   sent: boolean;
   summaryId?: string;
@@ -670,6 +672,10 @@ export class ChatService {
     language?: string | null;
     country?: string | null;
     createAnswerCard?: boolean;
+    source?: VoiceConversationSummarySource;
+    boardId?: string | null;
+    cardId?: string | null;
+    completionReason?: 'ended' | 'closed' | 'interrupted' | null;
   }): Promise<SendVoiceConversationSummaryResponse | null> {
     if (!this.functions) {
       return null;
@@ -690,6 +696,10 @@ export class ChatService {
         language?: string | null;
         country?: string | null;
         createAnswerCard?: boolean;
+        source?: VoiceConversationSummarySource;
+        boardId?: string | null;
+        cardId?: string | null;
+        completionReason?: 'ended' | 'closed' | 'interrupted' | null;
       },
       SendVoiceConversationSummaryResponse
     >(this.functions, 'sendVoiceConversationSummary');
@@ -708,6 +718,10 @@ export class ChatService {
       language: options.language ?? null,
       country: options.country ?? null,
       createAnswerCard: options.createAnswerCard !== false,
+      source: options.source ?? 'wiki_voice',
+      boardId: options.boardId ?? null,
+      cardId: options.cardId ?? null,
+      completionReason: options.completionReason ?? null,
     });
     return data;
   }

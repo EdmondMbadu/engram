@@ -4122,6 +4122,8 @@ type VoiceSummaryTranscriptEntry = {
   text: string;
 };
 
+type VoiceConversationSummarySource = 'wiki_voice' | 'talking_card';
+
 type VoiceConversationSummary = {
   title: string;
   summary: string;
@@ -4188,10 +4190,13 @@ function shortVoiceSummaryLine(value: string, maxLength = 180): string {
 function buildVoiceConversationSummary(params: {
   atlasName: string;
   cityName: string | null;
+  subjectName?: string | null;
+  source?: VoiceConversationSummarySource;
   transcript: VoiceSummaryTranscriptEntry[];
   recap?: VoiceConversationRecapInput | null;
 }): VoiceConversationSummary {
-  const placeName = params.cityName || params.atlasName || 'this wiki';
+  const placeName = params.subjectName || params.cityName || params.atlasName || 'this wiki';
+  const isTalkingCard = params.source === 'talking_card';
   const userMessages = params.transcript.filter((item) => item.role === 'user').map((item) => item.text);
   const agentMessages = params.transcript.filter((item) => item.role === 'agent').map((item) => item.text);
   const fallbackKeyQuestions = userMessages.slice(0, 4).map((text) => shortVoiceSummaryLine(text, 160));
@@ -4200,15 +4205,19 @@ function buildVoiceConversationSummary(params: {
     .slice(0, 4)
     .map((text) => shortVoiceSummaryLine(text, 190));
   const summaryParts = [
-    userMessages[0] ? `You asked about ${shortVoiceSummaryLine(userMessages[0], 120)}` : `You had a voice conversation about ${placeName}.`,
-    agentMessages[0] ? `The wiki responded with local context for ${placeName}.` : '',
+    userMessages[0] ? `You asked about ${shortVoiceSummaryLine(userMessages[0], 120)}` : `You had a conversation about ${placeName}.`,
+    agentMessages[0]
+      ? isTalkingCard
+        ? `${placeName} responded with context from the Living Wiki.`
+        : `The wiki responded with local context for ${placeName}.`
+      : '',
   ].filter(Boolean);
   const transcriptText = params.transcript
     .map((item) => `${item.role === 'user' ? 'You' : 'Living Wiki'}: ${item.text}`)
     .join('\n');
 
   return {
-    title: params.recap?.title?.trim() || `${placeName} voice chat recap`,
+    title: params.recap?.title?.trim() || `${placeName} ${isTalkingCard ? 'conversation' : 'voice chat'} recap`,
     summary: params.recap?.summary?.trim() || summaryParts.join(' '),
     keyQuestions: params.recap?.key_questions?.length ? params.recap.key_questions : fallbackKeyQuestions,
     takeaways: params.recap?.useful_takeaways?.length ? params.recap.useful_takeaways : fallbackTakeaways,
@@ -4222,13 +4231,17 @@ function buildVoiceConversationSummaryEmail(params: {
   recipientName: string | null;
   atlasName: string;
   cityName: string | null;
+  subjectName?: string | null;
+  source?: VoiceConversationSummarySource;
   summary: VoiceConversationSummary;
   answerCardUrl: string | null;
   placeLinks: VoiceConversationPlaceLink[];
   continueChatUrl: string;
 }) {
-  const placeName = params.cityName || params.atlasName || 'this wiki';
-  const subject = `Your Living Wiki voice recap for ${placeName}`;
+  const isTalkingCard = params.source === 'talking_card';
+  const placeName = params.subjectName || params.cityName || params.atlasName || 'this wiki';
+  const recapLabel = isTalkingCard ? 'conversation recap' : 'voice recap';
+  const subject = `Your Living Wiki ${recapLabel} for ${placeName}`;
   const greetingName = params.recipientName || params.recipientEmail;
   const safeGreetingName = escapeHtml(greetingName);
   const safePlaceName = escapeHtml(placeName);
@@ -4262,10 +4275,10 @@ function buildVoiceConversationSummaryEmail(params: {
     : '';
   const keyQuestionsHtml = params.summary.keyQuestions.length
     ? params.summary.keyQuestions.map((text) => `<li style="margin:0 0 8px;">${escapeHtml(text)}</li>`).join('')
-    : '<li style="margin:0 0 8px;">Your voice questions are included in the transcript below.</li>';
+    : `<li style="margin:0 0 8px;">Your ${isTalkingCard ? 'questions' : 'voice questions'} are included in the transcript below.</li>`;
   const takeawaysHtml = params.summary.takeaways.length
     ? params.summary.takeaways.map((text) => `<li style="margin:0 0 8px;">${escapeHtml(text)}</li>`).join('')
-    : '<li style="margin:0 0 8px;">Open the chat page to continue exploring this wiki.</li>';
+    : `<li style="margin:0 0 8px;">${isTalkingCard ? 'Return to the board' : 'Open the chat page'} to continue exploring this wiki.</li>`;
   const transcriptHtml = params.summary.transcriptText
     .split('\n')
     .slice(0, 16)
@@ -4274,7 +4287,7 @@ function buildVoiceConversationSummaryEmail(params: {
 
   const text = `Hi ${greetingName},
 
-Here is your Living Wiki voice recap for ${placeName}.
+Here is your Living Wiki ${recapLabel} for ${placeName}.
 
 ${params.summary.summary}
 
@@ -4282,9 +4295,9 @@ Questions and prompts:
 ${params.summary.keyQuestions.map((item) => `- ${item}`).join('\n') || '- See transcript below.'}
 
 Useful takeaways:
-${params.summary.takeaways.map((item) => `- ${item}`).join('\n') || '- Continue in the wiki chat.'}
+${params.summary.takeaways.map((item) => `- ${item}`).join('\n') || (isTalkingCard ? '- Return to the board to continue the conversation.' : '- Continue in the wiki chat.')}
 
-${params.placeLinks.length ? `Places and links:\n${params.placeLinks.map((place) => `- ${place.name}${place.address ? `, ${place.address}` : ''}${place.websiteUrl ? `\n  Website: ${place.websiteUrl}` : ''}\n  Maps: ${place.googleMapsUrl}`).join('\n')}\n\n` : ''}${params.answerCardUrl ? `Open the full recap card:\n${params.answerCardUrl}\n\n` : ''}Continue the chat:
+${params.placeLinks.length ? `Places and links:\n${params.placeLinks.map((place) => `- ${place.name}${place.address ? `, ${place.address}` : ''}${place.websiteUrl ? `\n  Website: ${place.websiteUrl}` : ''}\n  Maps: ${place.googleMapsUrl}`).join('\n')}\n\n` : ''}${params.answerCardUrl ? `Open the full recap card:\n${params.answerCardUrl}\n\n` : ''}${isTalkingCard ? 'Return to the board' : 'Continue the chat'}:
 ${params.continueChatUrl}
 
 Transcript:
@@ -4296,7 +4309,7 @@ The Living Wiki Team`;
     <div style="font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;max-width:680px;margin:0 auto;padding:0;background:#f6f8f5;">
       <div style="background:linear-gradient(135deg,#07160f 0%,#1c7c41 68%,#d6a94a 100%);padding:34px 30px;border-radius:20px 20px 0 0;">
         <h1 style="color:#ffffff;margin:0;font-size:27px;font-weight:900;letter-spacing:-0.02em;">Living Wiki</h1>
-        <p style="color:rgba(255,255,255,0.78);margin:10px 0 0;font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;">Voice recap</p>
+        <p style="color:rgba(255,255,255,0.78);margin:10px 0 0;font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;">${isTalkingCard ? 'Conversation recap' : 'Voice recap'}</p>
       </div>
       <div style="background:#ffffff;padding:30px;border:1px solid #e3e8df;border-top:none;border-radius:0 0 20px 20px;">
         <p style="color:#111827;font-size:15px;line-height:1.65;margin:0 0 18px;">Hi <strong>${safeGreetingName}</strong>,</p>
@@ -4321,7 +4334,7 @@ The Living Wiki Team`;
         ` : ''}
         <div style="text-align:center;margin:26px 0;">
           ${safeAnswerCardUrl ? `<a href="${safeAnswerCardUrl}" style="background:#0f2417;color:#ffffff;text-decoration:none;padding:14px 24px;border-radius:999px;font-weight:900;display:inline-block;font-size:14px;margin:0 6px 10px;">Open Full Recap Card</a>` : ''}
-          <a href="${safeContinueChatUrl}" style="background:#1c7c41;color:#ffffff;text-decoration:none;padding:14px 24px;border-radius:999px;font-weight:900;display:inline-block;font-size:14px;margin:0 6px 10px;">Continue in ${safePlaceName}</a>
+          <a href="${safeContinueChatUrl}" style="background:#1c7c41;color:#ffffff;text-decoration:none;padding:14px 24px;border-radius:999px;font-weight:900;display:inline-block;font-size:14px;margin:0 6px 10px;">${isTalkingCard ? 'Return to board' : `Continue in ${safePlaceName}`}</a>
         </div>
         <div style="border-top:1px solid #e5e7eb;margin:24px 0 0;padding-top:20px;">
           <p style="margin:0 0 12px;color:#0d1f15;font-size:13px;font-weight:900;letter-spacing:.13em;text-transform:uppercase;">Transcript excerpt</p>
@@ -18730,6 +18743,72 @@ function getPublicChatVisitorContext(request: {
   };
 }
 
+type TalkingCardSummaryContext = {
+  boardId: string;
+  boardTitle: string;
+  cardId: string;
+  cardTitle: string;
+  boardUrl: string;
+};
+
+async function loadTalkingCardSummaryContext(params: {
+  boardId: unknown;
+  cardId: unknown;
+  atlasId: string | null;
+  requesterUid: string | null;
+}): Promise<TalkingCardSummaryContext> {
+  const target = normalizeBoardLikeTarget({ boardId: params.boardId, cardId: params.cardId });
+  if (!target.cardId) {
+    throw new HttpsError('invalid-argument', 'cardId is required for a Talking Card recap.');
+  }
+
+  const boardSnapshot = await db.collection('boards').doc(target.boardId).get();
+  if (!boardSnapshot.exists) {
+    throw new HttpsError('not-found', 'This Talking Card board is no longer available.');
+  }
+  const board = boardSnapshot.data() as Record<string, unknown>;
+  const isPublic = board.visibility === 'public';
+  const isOwner = !!params.requesterUid && board.owner_user_id === params.requesterUid;
+  if (!isPublic && !isOwner) {
+    throw new HttpsError('permission-denied', 'You do not have access to this Talking Card board.');
+  }
+
+  const cards = Array.isArray(board.cards) ? board.cards : [];
+  const card = cards.find((value): value is Record<string, unknown> => {
+    if (!value || typeof value !== 'object') return false;
+    return String((value as Record<string, unknown>).id ?? '') === target.cardId;
+  });
+  if (!card) {
+    throw new HttpsError('not-found', 'This Talking Card is no longer on the board.');
+  }
+  const conversation = card.conversation && typeof card.conversation === 'object'
+    ? card.conversation as Record<string, unknown>
+    : null;
+  const linkedAtlasId = typeof conversation?.atlasId === 'string'
+    ? conversation.atlasId.trim()
+    : '';
+  if (conversation?.provider !== 'atlas' || !params.atlasId || linkedAtlasId !== params.atlasId) {
+    throw new HttpsError('permission-denied', 'This Talking Card is not connected to the requested wiki.');
+  }
+
+  const boardTitle = typeof board.title === 'string' && board.title.trim()
+    ? board.title.replace(/\s+/g, ' ').trim().slice(0, 120)
+    : 'LivingWiki board';
+  const cardTitle = typeof card.title === 'string' && card.title.trim()
+    ? card.title.replace(/\s+/g, ' ').trim().slice(0, 120)
+    : 'Talking Card';
+  const routeKey = isPublic
+    ? publicBoardRouteKey(target.boardId, board.custom_slug)
+    : target.boardId;
+  return {
+    boardId: target.boardId,
+    boardTitle,
+    cardId: target.cardId,
+    cardTitle,
+    boardUrl: `${publicAppUrl}/boards/${encodeURIComponent(routeKey)}`,
+  };
+}
+
 export const sendVoiceConversationSummary = onCall(
   {
     region: callableRegion,
@@ -18740,6 +18819,12 @@ export const sendVoiceConversationSummary = onCall(
   },
   async (request) => {
     const requesterUid = request.auth?.uid ?? null;
+    const source: VoiceConversationSummarySource = request.data?.source === 'talking_card'
+      ? 'talking_card'
+      : 'wiki_voice';
+    const completionReason = ['ended', 'closed', 'interrupted'].includes(String(request.data?.completionReason ?? ''))
+      ? String(request.data?.completionReason)
+      : null;
     const anonymousVisitorId = normalizeAnonymousVisitorId(request.data?.anonymousVisitorId);
     if (!requesterUid && !anonymousVisitorId) {
       throw new HttpsError('unauthenticated', 'Authentication or an anonymous visitor session is required.');
@@ -18759,11 +18844,22 @@ export const sendVoiceConversationSummary = onCall(
     const hasUserTurn = transcript.some((item) => item.role === 'user');
     const hasAgentTurn = transcript.some((item) => item.role === 'agent');
     if (transcript.length < 2 || !hasUserTurn || !hasAgentTurn) {
-      throw new HttpsError('invalid-argument', 'A voice recap needs at least one user message and one wiki response.');
+      throw new HttpsError(
+        'invalid-argument',
+        `${source === 'talking_card' ? 'A conversation' : 'A voice'} recap needs at least one user message and one wiki response.`,
+      );
     }
 
     const atlasId = normalizeAtlasId(request.data?.atlasId);
     const atlas = await loadAnswerCardAtlas(atlasId, requesterUid);
+    const talkingCardContext = source === 'talking_card'
+      ? await loadTalkingCardSummaryContext({
+          boardId: request.data?.boardId,
+          cardId: request.data?.cardId,
+          atlasId,
+          requesterUid,
+        })
+      : null;
     const requestAtlasName = typeof request.data?.atlasName === 'string' ? request.data.atlasName.trim().slice(0, 160) : '';
     const requestCityName = typeof request.data?.cityName === 'string' ? request.data.cityName.trim().slice(0, 120) : '';
     const requestCountryName = typeof request.data?.cityCountry === 'string' ? request.data.cityCountry.trim().slice(0, 120) : '';
@@ -18783,18 +18879,22 @@ export const sendVoiceConversationSummary = onCall(
     const atlasSlug = typeof atlas?.slug === 'string' && atlas.slug.trim()
       ? atlas.slug.trim()
       : requestAtlasSlug || null;
-    const continueChatUrl = atlasSlug
-      ? `${publicAppUrl}/chat/${encodeURIComponent(atlasSlug)}`
-      : publicAppUrl;
+    const subjectName = talkingCardContext?.cardTitle || cityName || atlasName;
+    const continueChatUrl = talkingCardContext?.boardUrl
+      ?? (atlasSlug ? `${publicAppUrl}/chat/${encodeURIComponent(atlasSlug)}` : publicAppUrl);
     const cityHint = [cityName, regionName].filter(Boolean).join(', ') || null;
     const recap = await generateVoiceConversationRecap({
       atlasName,
       cityHint,
+      subjectName,
+      experience: source,
       transcript,
     });
     const summary = buildVoiceConversationSummary({
       atlasName,
       cityName,
+      subjectName,
+      source,
       transcript,
       recap,
     });
@@ -18808,7 +18908,9 @@ export const sendVoiceConversationSummary = onCall(
       ...(recap.suggested_places ?? []),
       ...extractedLocations.map((location) => ({
         name: location.name,
-        reason: 'Mentioned in your voice conversation.',
+        reason: source === 'talking_card'
+          ? 'Mentioned in your Talking Card conversation.'
+          : 'Mentioned in your voice conversation.',
         search_query: location.search_query,
       })),
     ];
@@ -18818,7 +18920,7 @@ export const sendVoiceConversationSummary = onCall(
       suggestedPlaces,
     });
     const firstUserQuestion = transcript.find((item) => item.role === 'user')?.text
-      ?? `Voice conversation about ${cityName || atlasName}`;
+      ?? `${source === 'talking_card' ? 'Conversation' : 'Voice conversation'} about ${subjectName}`;
     const cardAnswer = [
       summary.contextualAnswer,
       summary.summary,
@@ -18864,6 +18966,8 @@ export const sendVoiceConversationSummary = onCall(
       recipientName,
       atlasName,
       cityName,
+      subjectName,
+      source,
       summary,
       answerCardUrl,
       placeLinks: resolvedPlaces.links,
@@ -18889,6 +18993,12 @@ export const sendVoiceConversationSummary = onCall(
       atlas_id: atlasId,
       atlas_name: atlasName,
       atlas_slug: atlasSlug,
+      source,
+      board_id: talkingCardContext?.boardId ?? null,
+      board_title: talkingCardContext?.boardTitle ?? null,
+      card_id: talkingCardContext?.cardId ?? null,
+      card_title: talkingCardContext?.cardTitle ?? null,
+      completion_reason: completionReason,
       city_name: cityName,
       city_region: regionName,
       language: typeof request.data?.language === 'string' ? request.data.language.trim().slice(0, 80) : null,
@@ -18912,6 +19022,9 @@ export const sendVoiceConversationSummary = onCall(
     logger.info('Voice conversation summary email accepted by SendGrid.', {
       summaryId: docRef.id,
       atlasId,
+      source,
+      boardId: talkingCardContext?.boardId ?? null,
+      cardId: talkingCardContext?.cardId ?? null,
       recipientEmail,
       statusCode: response.statusCode,
       answerCardId,

@@ -1,15 +1,45 @@
 import { Component, computed, HostListener, inject, input, OnDestroy, OnInit, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import type { DisconnectionDetails } from '@elevenlabs/client';
 import { BackdropDismissDirective } from '../backdrop-dismiss.directive';
 import type { AtlasItem } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
-import { ChatService } from '../chat.service';
+import { AuthService } from '../auth.service';
+import { ChatService, type VoiceSummaryTranscriptItem } from '../chat.service';
 import { VoiceFluidVisualComponent } from '../chat/voice-fluid-visual';
 
 type ConversationMessage = { id: string; role: 'user' | 'agent'; text: string };
 type VoiceConversation = Awaited<ReturnType<typeof import('@elevenlabs/client').Conversation.startSession>>;
 type ConversationMode = 'voice' | 'text';
 type VoiceMode = 'speaking' | 'listening' | null;
+type ConversationCompletionReason = 'ended' | 'closed' | 'interrupted';
+type ConversationStage = 'conversation' | 'recap' | 'sent';
+
+const TALKING_CARD_RECAP_MIN_LENGTH = 40;
+const TALKING_CARD_RECAP_MAX_MESSAGES = 40;
+
+export function meaningfulTalkingCardTranscript(
+  transcript: VoiceSummaryTranscriptItem[],
+): VoiceSummaryTranscriptItem[] {
+  const normalized = transcript
+    .map((item) => ({
+      role: item.role,
+      text: item.text.replace(/\s+/g, ' ').trim().slice(0, 1000),
+    }))
+    .filter((item) => item.text && !/^voice session ended:/i.test(item.text))
+    .slice(-TALKING_CARD_RECAP_MAX_MESSAGES);
+  const firstUserIndex = normalized.findIndex((item) => item.role === 'user');
+  return firstUserIndex >= 0 ? normalized.slice(firstUserIndex) : [];
+}
+
+export function shouldOfferTalkingCardRecap(
+  transcript: VoiceSummaryTranscriptItem[],
+): boolean {
+  const meaningful = meaningfulTalkingCardTranscript(transcript);
+  return meaningful.some((item) => item.role === 'user')
+    && meaningful.some((item) => item.role === 'agent')
+    && meaningful.reduce((length, item) => length + item.text.length, 0) >= TALKING_CARD_RECAP_MIN_LENGTH;
+}
 
 export function buildTalkingCardVoiceContext(
   atlas: Pick<AtlasItem, 'name' | 'wiki_type' | 'response_perspective'>,
@@ -62,13 +92,21 @@ export function buildTalkingCardVoiceContext(
 export class TalkingCardConversationComponent implements OnInit, OnDestroy {
   private readonly atlasService = inject(AtlasService);
   private readonly chatService = inject(ChatService);
+  private readonly authService = inject(AuthService);
   private voiceConversation: VoiceConversation | null = null;
   private threadId: string | null = null;
   private voiceMeterFrame: number | null = null;
   private voiceMeterLastSampleAt = 0;
   private voiceAttempt = 0;
+  private voiceActivityActive = false;
+  private finishingConversation = false;
+  private recapOffered = false;
+  private destroyed = false;
 
   readonly atlasId = input.required<string>();
+  readonly boardId = input('');
+  readonly boardTitle = input('');
+  readonly cardId = input('');
   readonly cardTitle = input('Conversational guide');
   readonly cardSubtitle = input('');
   readonly imageUrl = input('');
@@ -81,6 +119,7 @@ export class TalkingCardConversationComponent implements OnInit, OnDestroy {
   readonly loadingAtlas = signal(true);
   readonly unavailable = signal(false);
   readonly messages = signal<ConversationMessage[]>([]);
+  readonly recapTranscript = signal<VoiceSummaryTranscriptItem[]>([]);
   readonly draft = signal('');
   readonly submitting = signal(false);
   readonly errorMessage = signal<string | null>(null);
@@ -91,6 +130,16 @@ export class TalkingCardConversationComponent implements OnInit, OnDestroy {
   readonly voiceInputLevel = signal(0);
   readonly voiceOutputLevel = signal(0);
   readonly voiceEnergyLevel = signal(0);
+  readonly conversationStage = signal<ConversationStage>('conversation');
+  readonly completionReason = signal<ConversationCompletionReason>('ended');
+  readonly recapEmail = signal('');
+  readonly recapSending = signal(false);
+  readonly recapError = signal<string | null>(null);
+  readonly recapSentTo = signal('');
+  readonly recapAnswerCardUrl = signal<string | null>(null);
+  readonly recapBoardUrl = signal<string | null>(null);
+  readonly voiceConversationId = signal<string | null>(null);
+  readonly isSignedIn = this.authService.isAuthenticated;
   readonly avatarName = computed(() => this.atlas()?.chat_guide?.name?.trim() || this.cardTitle());
   readonly avatarImage = computed(() => this.atlas()?.chat_guide?.image_url?.trim() || this.imageUrl());
   readonly voiceVisualGlow = computed(() => `${18 + this.voiceEnergyLevel() * 30}px`);
@@ -107,6 +156,17 @@ export class TalkingCardConversationComponent implements OnInit, OnDestroy {
     if (this.voiceMuted()) return 'Your microphone is muted';
     return this.voiceMode() === 'speaking' ? 'The avatar is answering you' : 'Go ahead—ask your question';
   });
+  readonly recapPreview = computed(() => {
+    const firstQuestion = meaningfulTalkingCardTranscript(this.recapTranscript())
+      .find((item) => item.role === 'user')?.text;
+    if (!firstQuestion) {
+      return `A concise summary and transcript from your conversation with ${this.avatarName()}.`;
+    }
+    const compact = firstQuestion.length > 132
+      ? `${firstQuestion.slice(0, 129).trim()}…`
+      : firstQuestion;
+    return `Your recap will include the conversation that began with “${compact}”`;
+  });
 
   async ngOnInit(): Promise<void> {
     const opening = this.openingMessage().trim();
@@ -121,6 +181,7 @@ export class TalkingCardConversationComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.destroyed = true;
     void this.endVoice();
   }
 
@@ -130,7 +191,7 @@ export class TalkingCardConversationComponent implements OnInit, OnDestroy {
     if (!question || !atlas || this.submitting()) return;
     this.draft.set('');
     this.errorMessage.set(null);
-    this.messages.update((messages) => [...messages, { id: this.id(), role: 'user', text: question }]);
+    this.appendMessage('user', question, false, false);
     this.submitting.set(true);
     try {
       const response = this.atlasService.canAdminAtlas(atlas)
@@ -144,7 +205,7 @@ export class TalkingCardConversationComponent implements OnInit, OnDestroy {
         throw new Error(this.chatService.submitError() || 'The avatar could not answer right now.');
       }
       this.threadId = response.threadId ?? this.threadId;
-      this.messages.update((messages) => [...messages, { id: this.id(), role: 'agent', text: response.answer }]);
+      this.appendMessage('agent', response.answer, true, false);
       this.activity.emit('message');
     } catch (error) {
       this.errorMessage.set(error instanceof Error ? error.message : 'The avatar could not answer right now.');
@@ -154,6 +215,7 @@ export class TalkingCardConversationComponent implements OnInit, OnDestroy {
   }
 
   async setConversationMode(mode: ConversationMode): Promise<void> {
+    if (this.conversationStage() !== 'conversation') return;
     if (this.conversationMode() === mode) {
       if (mode === 'voice' && this.voiceStatus() !== 'connected' && this.voiceStatus() !== 'connecting') {
         await this.startVoice();
@@ -181,7 +243,8 @@ export class TalkingCardConversationComponent implements OnInit, OnDestroy {
 
   async startVoice(): Promise<void> {
     const atlas = this.atlas();
-    if (!atlas || this.voiceStatus() === 'connecting' || this.voiceStatus() === 'connected') return;
+    if (!atlas || this.conversationStage() !== 'conversation'
+      || this.voiceStatus() === 'connecting' || this.voiceStatus() === 'connected') return;
     if (typeof navigator === 'undefined' || !navigator.mediaDevices?.getUserMedia) {
       this.voiceStatus.set('error');
       this.errorMessage.set('This browser does not support microphone conversations. You can still type below.');
@@ -236,18 +299,15 @@ export class TalkingCardConversationComponent implements OnInit, OnDestroy {
           city_context_instruction: voiceContext.instruction,
         },
         ...(Object.keys(overrides).length ? { overrides } : {}),
-        onConnect: () => {
+        onConnect: ({ conversationId }) => {
           if (attempt !== this.voiceAttempt || this.conversationMode() !== 'voice') return;
+          this.voiceConversationId.set(conversationId || null);
+          this.voiceActivityActive = true;
           this.voiceStatus.set('connected');
           this.activity.emit('voice_start');
         },
-        onDisconnect: () => {
-          if (attempt !== this.voiceAttempt) return;
-          this.voiceConversation = null;
-          this.stopVoiceMeter();
-          this.voiceStatus.set('idle');
-          this.voiceMode.set(null);
-          this.voiceMuted.set(false);
+        onDisconnect: (details) => {
+          this.handleVoiceDisconnect(attempt, details);
         },
         onStatusChange: ({ status }) => {
           if (attempt !== this.voiceAttempt) return;
@@ -308,13 +368,85 @@ export class TalkingCardConversationComponent implements OnInit, OnDestroy {
     this.voiceMuted.set(false);
     if (conversation) {
       try { await conversation.endSession(); } catch { /* already disconnected */ }
-      this.activity.emit('voice_end');
     }
+    this.emitVoiceEndIfActive();
   }
 
   close(): void {
-    void this.endVoice();
+    if (this.recapSending()) return;
+    if (this.conversationStage() !== 'conversation') {
+      this.dismissRecap();
+      return;
+    }
+    void this.finishConversation('closed');
+  }
+
+  async finishConversation(reason: ConversationCompletionReason = 'ended'): Promise<void> {
+    if (this.conversationStage() !== 'conversation' || this.finishingConversation) return;
+    this.finishingConversation = true;
+    try {
+      await this.endVoice();
+      if (!this.offerRecap(reason) && !this.destroyed) {
+        this.closed.emit();
+      }
+    } finally {
+      this.finishingConversation = false;
+    }
+  }
+
+  dismissRecap(): void {
+    if (this.recapSending()) return;
     this.closed.emit();
+  }
+
+  onRecapEmailInput(event: Event): void {
+    this.recapEmail.set((event.target as HTMLInputElement).value);
+    this.recapError.set(null);
+  }
+
+  async sendRecap(event: Event): Promise<void> {
+    event.preventDefault();
+    if (this.recapSending() || this.conversationStage() !== 'recap') return;
+    const email = this.recapEmail().trim().toLowerCase();
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      this.recapError.set('Enter a valid email address.');
+      return;
+    }
+    const transcript = meaningfulTalkingCardTranscript(this.recapTranscript());
+    if (!shouldOfferTalkingCardRecap(transcript)) {
+      this.recapError.set('There is not enough conversation to create a recap yet.');
+      return;
+    }
+
+    this.recapSending.set(true);
+    this.recapError.set(null);
+    try {
+      const atlas = this.atlas();
+      const result = await this.chatService.sendVoiceConversationSummary({
+        atlasId: atlas?.id ?? this.atlasId(),
+        atlasName: atlas?.name ?? this.avatarName(),
+        atlasSlug: atlas?.slug ?? null,
+        anonymousVisitorId: this.isSignedIn() ? null : this.anonymousVisitorId(),
+        recipientEmail: email,
+        recipientName: this.authService.displayName() || null,
+        transcript,
+        conversationId: this.voiceConversationId(),
+        createAnswerCard: true,
+        source: 'talking_card',
+        boardId: this.boardId(),
+        cardId: this.cardId(),
+        completionReason: this.completionReason(),
+      });
+      if (!result?.sent) throw new Error('The recap could not be sent.');
+      this.recapSentTo.set(result.recipientEmail);
+      this.recapAnswerCardUrl.set(result.answerCardUrl ?? null);
+      this.recapBoardUrl.set(result.continueChatUrl ?? null);
+      this.conversationStage.set('sent');
+    } catch (error) {
+      this.recapError.set(this.authService.toFriendlyError(error));
+    } finally {
+      this.recapSending.set(false);
+    }
   }
 
   @HostListener('document:keydown.escape')
@@ -328,17 +460,51 @@ export class TalkingCardConversationComponent implements OnInit, OnDestroy {
       : `talk-${Date.now()}-${Math.random().toString(36).slice(2)}`;
   }
 
-  private appendMessage(role: ConversationMessage['role'], text: string): boolean {
+  private appendMessage(
+    role: ConversationMessage['role'],
+    text: string,
+    preserveFormatting = false,
+    capVisible = true,
+  ): boolean {
     const normalized = text.replace(/\s+/g, ' ').trim();
     if (!normalized) return false;
+    const displayText = preserveFormatting ? text.trim() : normalized;
     let appended = false;
     this.messages.update((messages) => {
       const last = messages[messages.length - 1];
       if (last?.role === role && last.text.replace(/\s+/g, ' ').trim() === normalized) return messages;
       appended = true;
-      return [...messages.slice(-19), { id: this.id(), role, text: normalized }];
+      const retained = capVisible ? messages.slice(-19) : messages;
+      return [...retained, { id: this.id(), role, text: displayText }];
     });
+    if (appended) {
+      this.recapTranscript.update((transcript) => [
+        ...transcript.slice(-(TALKING_CARD_RECAP_MAX_MESSAGES - 1)),
+        { role, text: normalized.slice(0, 1000) },
+      ]);
+    }
     return appended;
+  }
+
+  private offerRecap(reason: ConversationCompletionReason): boolean {
+    if (this.destroyed || this.recapOffered || !shouldOfferTalkingCardRecap(this.recapTranscript())) {
+      return false;
+    }
+    this.recapOffered = true;
+    this.completionReason.set(reason);
+    this.recapEmail.set(this.authService.email().trim());
+    this.recapError.set(null);
+    this.conversationStage.set('recap');
+    if (typeof document !== 'undefined') {
+      queueMicrotask(() => document.getElementById('talking-card-recap-email')?.focus());
+    }
+    return true;
+  }
+
+  private emitVoiceEndIfActive(): void {
+    if (!this.voiceActivityActive) return;
+    this.voiceActivityActive = false;
+    this.activity.emit('voice_end');
   }
 
   private startVoiceMeter(conversation: VoiceConversation): void {
@@ -408,7 +574,26 @@ export class TalkingCardConversationComponent implements OnInit, OnDestroy {
     this.voiceMode.set(null);
     this.voiceMuted.set(false);
     this.errorMessage.set(message);
+    this.emitVoiceEndIfActive();
+    this.offerRecap('interrupted');
     if (conversation) void conversation.endSession().catch(() => undefined);
+  }
+
+  private handleVoiceDisconnect(attempt: number, details: DisconnectionDetails): void {
+    if (attempt !== this.voiceAttempt) return;
+    this.voiceAttempt += 1;
+    this.voiceConversation = null;
+    this.stopVoiceMeter();
+    this.voiceStatus.set(details.reason === 'error' ? 'error' : 'idle');
+    this.voiceMode.set(null);
+    this.voiceMuted.set(false);
+    this.emitVoiceEndIfActive();
+    if (details.reason === 'error') {
+      this.errorMessage.set(details.message || details.closeReason || 'The voice conversation was interrupted.');
+    }
+    if (details.reason !== 'user') {
+      this.offerRecap(details.reason === 'error' ? 'interrupted' : 'ended');
+    }
   }
 
   private anonymousVisitorId(): string | null {

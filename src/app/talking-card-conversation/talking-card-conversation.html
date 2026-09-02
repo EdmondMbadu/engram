@@ -1,7 +1,8 @@
 <div class="talking-chat-backdrop" appBackdropDismiss (backdropDismiss)="close()">
   <section
     class="talking-chat"
-    [class.is-voice-mode]="conversationMode() === 'voice'"
+    [class.is-voice-mode]="conversationStage() === 'conversation' && conversationMode() === 'voice'"
+    [class.has-recap]="conversationStage() !== 'conversation'"
     role="dialog"
     aria-modal="true"
     aria-labelledby="talking-chat-title"
@@ -16,34 +17,117 @@
         </div>
         <div><span>Talking Card</span><h2 id="talking-chat-title">{{ avatarName() }}</h2><p>{{ cardSubtitle() }}</p></div>
       </div>
-      <button type="button" class="talking-chat__close" aria-label="Close conversation" (click)="close()"><span class="material-symbols-outlined">close</span></button>
+      <button
+        type="button"
+        class="talking-chat__close"
+        [disabled]="recapSending()"
+        [attr.aria-label]="conversationStage() === 'conversation' ? 'Close conversation' : 'Close recap'"
+        (click)="close()"
+      ><span class="material-symbols-outlined">close</span></button>
     </header>
 
-    <div class="talking-chat__mode-switch" role="tablist" aria-label="Conversation mode">
-      <button
-        type="button"
-        role="tab"
-        [attr.aria-selected]="conversationMode() === 'voice'"
-        [class.is-active]="conversationMode() === 'voice'"
-        [disabled]="loadingAtlas() || unavailable()"
-        (click)="setConversationMode('voice')"
-      ><span class="material-symbols-outlined" aria-hidden="true">graphic_eq</span>Voice</button>
-      <button
-        type="button"
-        role="tab"
-        [attr.aria-selected]="conversationMode() === 'text'"
-        [class.is-active]="conversationMode() === 'text'"
-        [disabled]="loadingAtlas() || unavailable()"
-        (click)="setConversationMode('text')"
-      ><span class="material-symbols-outlined" aria-hidden="true">chat_bubble</span>Text</button>
-    </div>
+    @if (conversationStage() === 'recap') {
+      <div class="talking-chat__recap" aria-live="polite">
+        <div class="talking-chat__recap-intro">
+          <span class="talking-chat__recap-icon material-symbols-outlined" aria-hidden="true">mark_email_read</span>
+          <p class="talking-chat__recap-eyebrow">Conversation recap</p>
+          <h3>{{ completionReason() === 'interrupted' ? 'Your conversation ended unexpectedly' : 'Keep what you talked about' }}</h3>
+          <p>
+            {{ completionReason() === 'interrupted'
+              ? 'The call stopped, but your conversation is safe and can still be summarized.'
+              : 'Send yourself a clear recap before you return to ' + (boardTitle() || 'the board') + '.' }}
+          </p>
+        </div>
 
-    @if (loadingAtlas()) {
+        <div class="talking-chat__recap-preview">
+          <span class="material-symbols-outlined" aria-hidden="true">summarize</span>
+          <p>{{ recapPreview() }}</p>
+        </div>
+
+        <form class="talking-chat__recap-form" (submit)="sendRecap($event)">
+          <label for="talking-card-recap-email">{{ isSignedIn() ? 'Send to' : 'Email address' }}</label>
+          <div class="talking-chat__recap-email-row">
+            <input
+              id="talking-card-recap-email"
+              type="email"
+              autocomplete="email"
+              placeholder="you@example.com"
+              [value]="recapEmail()"
+              [disabled]="recapSending()"
+              (input)="onRecapEmailInput($event)"
+              required
+            />
+            <button type="submit" class="talking-chat__recap-send" [disabled]="recapSending() || !recapEmail().trim()">
+              @if (recapSending()) {
+                <span class="material-symbols-outlined talking-chat__spin" aria-hidden="true">progress_activity</span>
+                Sending…
+              } @else {
+                <span class="material-symbols-outlined" aria-hidden="true">send</span>
+                Send recap
+              }
+            </button>
+          </div>
+          @if (!isSignedIn()) {
+            <p class="talking-chat__recap-privacy">
+              <span class="material-symbols-outlined" aria-hidden="true">lock</span>
+              We’ll use this email only to send this recap. No account is required.
+            </p>
+          }
+          @if (recapError()) {
+            <p class="talking-chat__recap-error" role="alert">{{ recapError() }}</p>
+          }
+        </form>
+
+        <button type="button" class="talking-chat__recap-skip" [disabled]="recapSending()" (click)="dismissRecap()">Not now</button>
+      </div>
+    } @else if (conversationStage() === 'sent') {
+      <div class="talking-chat__recap talking-chat__recap--sent" aria-live="polite">
+        <span class="talking-chat__recap-success material-symbols-outlined" aria-hidden="true">check_circle</span>
+        <p class="talking-chat__recap-eyebrow">Recap sent</p>
+        <h3>It’s on the way</h3>
+        <p class="talking-chat__recap-sent-copy">We sent the conversation summary and transcript to <strong>{{ recapSentTo() }}</strong>.</p>
+        <div class="talking-chat__recap-links">
+          @if (recapAnswerCardUrl()) {
+            <a [href]="recapAnswerCardUrl()" target="_blank" rel="noopener">
+              <span class="material-symbols-outlined" aria-hidden="true">open_in_new</span>
+              Open recap card
+            </a>
+          }
+          @if (recapBoardUrl()) {
+            <a class="is-secondary" [href]="recapBoardUrl()">
+              <span class="material-symbols-outlined" aria-hidden="true">dashboard</span>
+              Return to board
+            </a>
+          }
+        </div>
+        <button type="button" class="talking-chat__recap-done" (click)="dismissRecap()">Done</button>
+      </div>
+    } @else {
+      <div class="talking-chat__mode-switch" role="tablist" aria-label="Conversation mode">
+        <button
+          type="button"
+          role="tab"
+          [attr.aria-selected]="conversationMode() === 'voice'"
+          [class.is-active]="conversationMode() === 'voice'"
+          [disabled]="loadingAtlas() || unavailable()"
+          (click)="setConversationMode('voice')"
+        ><span class="material-symbols-outlined" aria-hidden="true">graphic_eq</span>Voice</button>
+        <button
+          type="button"
+          role="tab"
+          [attr.aria-selected]="conversationMode() === 'text'"
+          [class.is-active]="conversationMode() === 'text'"
+          [disabled]="loadingAtlas() || unavailable()"
+          (click)="setConversationMode('text')"
+        ><span class="material-symbols-outlined" aria-hidden="true">chat_bubble</span>Text</button>
+      </div>
+
+      @if (loadingAtlas()) {
       <div class="talking-chat__state"><span class="material-symbols-outlined talking-chat__spin">progress_activity</span><p>Preparing the conversation…</p></div>
-    } @else if (unavailable()) {
-      <div class="talking-chat__state"><span class="material-symbols-outlined">lock</span><h3>This avatar is unavailable</h3><p>It may be private, unpublished, or no longer exist. The card remains visible, but conversation is disabled.</p></div>
-    } @else if (conversationMode() === 'voice') {
-      <div class="talking-chat__voice-experience" role="tabpanel" aria-label="Voice conversation">
+      } @else if (unavailable()) {
+        <div class="talking-chat__state"><span class="material-symbols-outlined">lock</span><h3>This avatar is unavailable</h3><p>It may be private, unpublished, or no longer exist. The card remains visible, but conversation is disabled.</p></div>
+      } @else if (conversationMode() === 'voice') {
+        <div class="talking-chat__voice-experience" role="tabpanel" aria-label="Voice conversation">
         <div class="talking-chat__voice-stage">
           <div
             class="talking-chat__presence"
@@ -84,7 +168,7 @@
               <button type="button" class="talking-chat__round-control" [attr.aria-label]="voiceMuted() ? 'Unmute microphone' : 'Mute microphone'" (click)="toggleMute()">
                 <span class="material-symbols-outlined">{{ voiceMuted() ? 'mic_off' : 'mic' }}</span>
               </button>
-              <button type="button" class="talking-chat__end-call" (click)="endVoice()"><span class="material-symbols-outlined">call_end</span>End</button>
+              <button type="button" class="talking-chat__end-call" (click)="finishConversation('ended')"><span class="material-symbols-outlined">call_end</span>End</button>
             } @else if (voiceStatus() !== 'connecting') {
               <button type="button" class="talking-chat__retry-voice" (click)="startVoice()"><span class="material-symbols-outlined">mic</span>{{ voiceStatus() === 'error' ? 'Try voice again' : 'Start voice' }}</button>
             }
@@ -107,9 +191,9 @@
           <button type="submit" [disabled]="voiceStatus() !== 'connected' || !draft().trim()" aria-label="Send message"><span class="material-symbols-outlined">arrow_upward</span></button>
         </form>
         <p class="talking-chat__disclaimer">AI can make mistakes. Verify important information.</p>
-      </div>
-    } @else {
-      <div class="talking-chat__text-experience" role="tabpanel" aria-label="Text conversation">
+        </div>
+      } @else {
+        <div class="talking-chat__text-experience" role="tabpanel" aria-label="Text conversation">
         <div class="talking-chat__messages" aria-live="polite">
           @for (message of messages(); track message.id) {
             <div class="talking-chat__message" [class.is-user]="message.role === 'user'">
@@ -125,7 +209,8 @@
           <button type="submit" [disabled]="!draft().trim() || submitting()" aria-label="Send message"><span class="material-symbols-outlined">arrow_upward</span></button>
         </form>
         <p class="talking-chat__disclaimer">AI can make mistakes. Verify important information.</p>
-      </div>
+        </div>
+      }
     }
   </section>
 </div>

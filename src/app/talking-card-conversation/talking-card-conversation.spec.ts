@@ -1,9 +1,15 @@
-import { provideZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import type { AtlasItem } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
+import { AuthService } from '../auth.service';
 import { ChatService } from '../chat.service';
-import { buildTalkingCardVoiceContext, TalkingCardConversationComponent } from './talking-card-conversation';
+import {
+  buildTalkingCardVoiceContext,
+  meaningfulTalkingCardTranscript,
+  shouldOfferTalkingCardRecap,
+  TalkingCardConversationComponent,
+} from './talking-card-conversation';
 
 describe('TalkingCardConversationComponent', () => {
   const atlas: AtlasItem = {
@@ -36,17 +42,39 @@ describe('TalkingCardConversationComponent', () => {
     askScoped: jasmine.createSpy('askScoped'),
     askPublic: jasmine.createSpy('askPublic'),
     createElevenLabsVoiceSession: jasmine.createSpy('createElevenLabsVoiceSession'),
+    sendVoiceConversationSummary: jasmine.createSpy('sendVoiceConversationSummary'),
     submitError: jasmine.createSpy('submitError').and.returnValue(null),
+  };
+  const signedIn = signal(false);
+  const userEmail = signal('');
+  const userName = signal('');
+  const authService = {
+    isAuthenticated: signedIn,
+    email: userEmail,
+    displayName: userName,
+    toFriendlyError: jasmine.createSpy('toFriendlyError').and.callFake((error: unknown) =>
+      error instanceof Error ? error.message : 'Something went wrong.'),
   };
 
   beforeEach(async () => {
     atlasService.getAccessibleAtlasById.calls.reset();
     atlasService.getAccessibleAtlasById.and.resolveTo(atlas);
+    chatService.askScoped.calls.reset();
+    chatService.askPublic.calls.reset();
+    chatService.createElevenLabsVoiceSession.calls.reset();
+    chatService.sendVoiceConversationSummary.calls.reset();
+    chatService.submitError.calls.reset();
+    chatService.submitError.and.returnValue(null);
+    authService.toFriendlyError.calls.reset();
+    signedIn.set(false);
+    userEmail.set('');
+    userName.set('');
     await TestBed.configureTestingModule({
       imports: [TalkingCardConversationComponent],
       providers: [
         provideZonelessChangeDetection(),
         { provide: AtlasService, useValue: atlasService },
+        { provide: AuthService, useValue: authService },
         { provide: ChatService, useValue: chatService },
       ],
     }).compileComponents();
@@ -64,6 +92,19 @@ describe('TalkingCardConversationComponent', () => {
     expect(context.instruction).toContain('Speak as George Washington in the first person');
     expect(context.instruction).toContain('not a city');
     expect(context.instruction).toContain('Never describe the subject as a city');
+  });
+
+  it('builds a meaningful recap only from the first visitor turn onward', () => {
+    const transcript = meaningfulTalkingCardTranscript([
+      { role: 'agent', text: 'Welcome to the conversation.' },
+      { role: 'user', text: 'What did you learn while leading the Continental Army?' },
+      { role: 'agent', text: 'I learned that patience and a dependable command structure mattered greatly.' },
+    ]);
+
+    expect(transcript.length).toBe(2);
+    expect(transcript[0].role).toBe('user');
+    expect(shouldOfferTalkingCardRecap(transcript)).toBeTrue();
+    expect(shouldOfferTalkingCardRecap([{ role: 'user', text: 'Hello?' }])).toBeFalse();
   });
 
   it('opens voice mode by default and starts voice after loading the avatar', async () => {
@@ -96,6 +137,25 @@ describe('TalkingCardConversationComponent', () => {
     expect(endVoice).toHaveBeenCalledTimes(1);
     expect(fixture.componentInstance.conversationMode()).toBe('text');
     expect(fixture.nativeElement.querySelector('.talking-chat__text-experience')).not.toBeNull();
+  });
+
+  it('keeps typed answer formatting while storing a normalized recap transcript', async () => {
+    chatService.askPublic.and.resolveTo({
+      answer: 'First point.\n\nSecond point.',
+      threadId: 'thread-1',
+    });
+    const fixture = TestBed.createComponent(TalkingCardConversationComponent);
+    fixture.componentRef.setInput('atlasId', 'atlas-1');
+    spyOn(fixture.componentInstance, 'startVoice').and.resolveTo();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.componentInstance.conversationMode.set('text');
+    fixture.componentInstance.draft.set('What should I remember from this discussion?');
+
+    await fixture.componentInstance.send();
+
+    expect(fixture.componentInstance.messages().at(-1)?.text).toBe('First point.\n\nSecond point.');
+    expect(fixture.componentInstance.recapTranscript().at(-1)?.text).toBe('First point. Second point.');
   });
 
   it('reflects actual speaking state in the ambient voice UI', async () => {
@@ -137,5 +197,147 @@ describe('TalkingCardConversationComponent', () => {
     expect(component.voiceConversation).toBeNull();
     expect(fixture.componentInstance.voiceStatus()).toBe('error');
     expect(fixture.componentInstance.errorMessage()).toBe('Voice transport failed.');
+  });
+
+  it('offers the recap when the voice provider ends a meaningful conversation', async () => {
+    const fixture = TestBed.createComponent(TalkingCardConversationComponent);
+    fixture.componentRef.setInput('atlasId', 'atlas-1');
+    spyOn(fixture.componentInstance, 'startVoice').and.resolveTo();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.componentInstance.recapTranscript.set([
+      { role: 'user', text: 'How did you decide which risks were worth taking?' },
+      { role: 'agent', text: 'I compared the army’s immediate needs with the long-term purpose of the campaign.' },
+    ]);
+    const component = fixture.componentInstance as unknown as {
+      handleVoiceDisconnect(attempt: number, details: { reason: 'agent' }): void;
+    };
+
+    component.handleVoiceDisconnect(0, { reason: 'agent' });
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.conversationStage()).toBe('recap');
+    expect(fixture.componentInstance.completionReason()).toBe('ended');
+  });
+
+  it('offers a recap in place instead of closing after a meaningful conversation', async () => {
+    const fixture = TestBed.createComponent(TalkingCardConversationComponent);
+    fixture.componentRef.setInput('atlasId', 'atlas-1');
+    spyOn(fixture.componentInstance, 'startVoice').and.resolveTo();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const closed = spyOn(fixture.componentInstance.closed, 'emit');
+    fixture.componentInstance.recapTranscript.set([
+      { role: 'user', text: 'What was the most difficult decision you made during the war?' },
+      { role: 'agent', text: 'Keeping the army together through the winter demanded persistence and trust.' },
+    ]);
+
+    await fixture.componentInstance.finishConversation('ended');
+    fixture.detectChanges();
+
+    expect(closed).not.toHaveBeenCalled();
+    expect(fixture.componentInstance.conversationStage()).toBe('recap');
+    expect(fixture.nativeElement.textContent).toContain('Keep what you talked about');
+    expect(fixture.nativeElement.textContent).toContain('No account is required');
+  });
+
+  it('closes without a recap when there is no completed exchange', async () => {
+    const fixture = TestBed.createComponent(TalkingCardConversationComponent);
+    fixture.componentRef.setInput('atlasId', 'atlas-1');
+    spyOn(fixture.componentInstance, 'startVoice').and.resolveTo();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const closed = spyOn(fixture.componentInstance.closed, 'emit');
+    fixture.componentInstance.recapTranscript.set([
+      { role: 'user', text: 'Can you hear me?' },
+    ]);
+
+    await fixture.componentInstance.finishConversation('closed');
+
+    expect(closed).toHaveBeenCalledTimes(1);
+    expect(fixture.componentInstance.conversationStage()).toBe('conversation');
+  });
+
+  it('prefills a signed-in email but still waits for explicit consent', async () => {
+    signedIn.set(true);
+    userEmail.set('member@example.com');
+    const fixture = TestBed.createComponent(TalkingCardConversationComponent);
+    fixture.componentRef.setInput('atlasId', 'atlas-1');
+    spyOn(fixture.componentInstance, 'startVoice').and.resolveTo();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.componentInstance.recapTranscript.set([
+      { role: 'user', text: 'How did you hold the army together during the winter?' },
+      { role: 'agent', text: 'Discipline, shared purpose, and support from local communities all mattered.' },
+    ]);
+
+    await fixture.componentInstance.finishConversation('ended');
+    fixture.detectChanges();
+
+    const input = fixture.nativeElement.querySelector('#talking-card-recap-email') as HTMLInputElement;
+    expect(input.value).toBe('member@example.com');
+    expect(chatService.sendVoiceConversationSummary).not.toHaveBeenCalled();
+    expect(fixture.nativeElement.textContent).not.toContain('No account is required');
+  });
+
+  it('sends the Talking Card and board context with the recap', async () => {
+    signedIn.set(true);
+    userEmail.set('member@example.com');
+    userName.set('Ada Member');
+    chatService.sendVoiceConversationSummary.and.resolveTo({
+      sent: true,
+      recipientEmail: 'member@example.com',
+      summary: 'A useful recap.',
+      answerCardUrl: 'https://livingwiki.com/answer-card/answer-1',
+      continueChatUrl: 'https://livingwiki.com/boards/history-board',
+    });
+    const fixture = TestBed.createComponent(TalkingCardConversationComponent);
+    fixture.componentRef.setInput('atlasId', 'atlas-1');
+    fixture.componentRef.setInput('boardId', 'board-1');
+    fixture.componentRef.setInput('boardTitle', 'Early American History');
+    fixture.componentRef.setInput('cardId', 'card-1');
+    spyOn(fixture.componentInstance, 'startVoice').and.resolveTo();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.componentInstance.recapTranscript.set([
+      { role: 'user', text: 'What was the most difficult decision you made during the war?' },
+      { role: 'agent', text: 'Keeping the army together through the winter demanded persistence and trust.' },
+    ]);
+    await fixture.componentInstance.finishConversation('interrupted');
+
+    await fixture.componentInstance.sendRecap(new Event('submit'));
+    fixture.detectChanges();
+
+    expect(chatService.sendVoiceConversationSummary).toHaveBeenCalledOnceWith(jasmine.objectContaining({
+      source: 'talking_card',
+      boardId: 'board-1',
+      cardId: 'card-1',
+      completionReason: 'interrupted',
+      recipientEmail: 'member@example.com',
+      recipientName: 'Ada Member',
+    }));
+    expect(fixture.componentInstance.conversationStage()).toBe('sent');
+    expect(fixture.nativeElement.textContent).toContain('It’s on the way');
+    expect(fixture.nativeElement.textContent).toContain('Return to board');
+  });
+
+  it('keeps the recap open when the email is invalid', async () => {
+    const fixture = TestBed.createComponent(TalkingCardConversationComponent);
+    fixture.componentRef.setInput('atlasId', 'atlas-1');
+    spyOn(fixture.componentInstance, 'startVoice').and.resolveTo();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.componentInstance.recapTranscript.set([
+      { role: 'user', text: 'What should I remember from our discussion today?' },
+      { role: 'agent', text: 'Remember the decisions, their context, and the next actions we identified.' },
+    ]);
+    await fixture.componentInstance.finishConversation('ended');
+    fixture.componentInstance.recapEmail.set('not-an-email');
+
+    await fixture.componentInstance.sendRecap(new Event('submit'));
+
+    expect(fixture.componentInstance.conversationStage()).toBe('recap');
+    expect(fixture.componentInstance.recapError()).toBe('Enter a valid email address.');
+    expect(chatService.sendVoiceConversationSummary).not.toHaveBeenCalled();
   });
 });

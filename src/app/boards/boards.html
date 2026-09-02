@@ -10936,6 +10936,9 @@
   @if (talkingCard.conversation; as conversation) {
     <app-talking-card-conversation
       [atlasId]="conversation.atlasId"
+      [boardId]="talkingConversationBoard()?.id || ''"
+      [boardTitle]="talkingConversationBoard()?.title || ''"
+      [cardId]="talkingCard.id"
       [cardTitle]="talkingCard.title"
       [cardSubtitle]="talkingCard.subtitle"
       [imageUrl]="talkingCard.imageUrl"

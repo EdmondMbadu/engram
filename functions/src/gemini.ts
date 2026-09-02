@@ -2945,16 +2945,19 @@ function normalizeVoiceConversationRecap(
 export async function generateVoiceConversationRecap(params: {
   atlasName?: string | null;
   cityHint?: string | null;
+  subjectName?: string | null;
+  experience?: 'wiki_voice' | 'talking_card';
   transcript: Array<{ role: 'user' | 'agent'; text: string }>;
 }): Promise<GeneratedVoiceConversationRecap> {
   const transcript = params.transcript
     .map((item) => `${item.role === 'user' ? 'User' : 'Living Wiki'}: ${item.text}`)
     .join('\n')
     .trim();
-  const placeName = params.cityHint || params.atlasName || 'this wiki';
+  const isTalkingCard = params.experience === 'talking_card';
+  const placeName = params.subjectName || params.cityHint || params.atlasName || 'this wiki';
   const fallback = {
-    title: `${placeName} voice chat recap`,
-    summary: `A recap of the voice conversation about ${placeName}.`,
+    title: `${placeName} ${isTalkingCard ? 'conversation' : 'voice chat'} recap`,
+    summary: `A recap of the ${isTalkingCard ? 'Talking Card conversation' : 'voice conversation'} about ${placeName}.`,
     contextualAnswer: transcript.slice(0, 3500),
   };
   if (!transcript) {
@@ -2968,13 +2971,15 @@ export async function generateVoiceConversationRecap(params: {
   }
 
   const context = [
+    isTalkingCard ? 'Experience: Talking Card on a LivingWiki board' : 'Experience: Living Wiki voice chat',
+    params.subjectName ? `Conversation subject: ${params.subjectName}` : null,
     params.atlasName ? `Wiki: ${params.atlasName}` : null,
     params.cityHint ? `City/region: ${params.cityHint}` : null,
   ].filter(Boolean).join('\n');
   const prompt = [
-    'You are the post-call cleanup editor for Living Wiki.',
-    'Turn this voice transcript into a polished, useful email recap and answer-card source.',
-    'Be contextual: preserve the city/wiki context, the user intent, and the most useful recommendations.',
+    'You are the post-conversation cleanup editor for Living Wiki.',
+    `Turn this ${isTalkingCard ? 'Talking Card' : 'voice'} transcript into a polished, useful email recap and answer-card source.`,
+    'Be contextual: preserve the subject/wiki context, the user intent, and the most useful recommendations.',
     'Do not invent places, claims, addresses, prices, rankings, or facts not supported by the transcript.',
     'For suggested_places, include only real physical locations that were explicitly mentioned, recommended, compared, or clearly requested in the conversation.',
     'For each suggested place, write a Google Maps-friendly search_query with the city/region when helpful. If no specific locations were mentioned, return [].',

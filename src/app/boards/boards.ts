@@ -1846,6 +1846,11 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     if (!cardId) return null;
     return this.boards().flatMap((board) => board.cards).find((card) => card.id === cardId) ?? null;
   });
+  readonly talkingConversationBoard = computed(() => {
+    const cardId = this.talkingConversationCardId();
+    if (!cardId) return null;
+    return this.boards().find((board) => board.cards.some((card) => card.id === cardId)) ?? null;
+  });
   readonly relatedCardEditorOpen = signal(false);
   readonly relatedCardParentId = signal<string | null>(null);
   readonly relatedCardEditingId = signal<string | null>(null);
