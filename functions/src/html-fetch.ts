@@ -67,6 +67,14 @@ export function looksLikeAntiBotChallenge(html: string): boolean {
     '_cf_chl_opt',
     'cf-mitigated',
     'challenge-platform',
+    // Lofty/Chime brokerage sites answer ordinary HTTP clients with a small
+    // nonstandard 218 proof-of-work document. Treat it as a challenge so the
+    // browser strategy can execute the script, reload, and capture the real
+    // server-rendered listing rather than handing the challenge to generation.
+    "var key = 'cf_retry'",
+    'cf_pow',
+    'cf_pass',
+    'lofty does not support embedding its pages inside iframes or framesets',
   ];
 
   if (

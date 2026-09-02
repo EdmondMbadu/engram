@@ -23,6 +23,53 @@ assert.equal(isBoardWizardZillowListingPageUrl('https://www.zillow.com/homedetai
 assert.equal(isBoardWizardZillowListingPageUrl('https://www.airbnb.com/rooms/1684310791539108474'), false);
 assert.equal(isLikelyBoardWizardRealEstateUrl('https://cmc.exprealty.com/property/26-261262-example'), true);
 assert.equal(isLikelyBoardWizardRealEstateUrl('https://www.airbnb.com/rooms/1684310791539108474'), false);
+const loftyListingUrl = 'https://findcapemayhomes.com/listing-detail/1188241439/8-Galloping-Way-Cape-May-Court-House-NJ?source=feature_listing&page=1';
+assert.equal(isBoardWizardListingPageUrl(loftyListingUrl), true, 'white-label /listing-detail routes should be protected as property pages');
+assert.equal(isLikelyBoardWizardRealEstateUrl(loftyListingUrl), true, 'white-label listing-detail routes should enter real-estate recovery');
+assert.equal(isBoardWizardListingPageUrl('https://findcapemayhomes.com/NJ/Cape-May-Court-House'), false, 'custom-domain search pages must remain generic');
+const loftyPhotos = Array.from({ length: 50 }, (_, index) =>
+  `https://img.chime.me/imageemb/mls-listing/276/262374/photo-${index + 1}.jpg`,
+);
+const loftyHtml = `<!doctype html><html><head>
+  <title>Homes for sale - 8 Galloping Way, Cape May Court House, NJ 08210</title>
+  <meta property="og:site_name" content="Jersey Shore Real Estate Experts">
+  <script type="application/ld+json">${JSON.stringify([{
+    '@context': 'https://schema.org',
+    '@type': 'RealEstateListing',
+    name: '8 Galloping Way, Cape May Court House, NJ 08210',
+    description: 'Metadata summary.',
+    image: loftyPhotos,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: '8 Galloping Way',
+      addressLocality: 'Cape May Court House',
+      addressRegion: 'NJ',
+      postalCode: '08210',
+    },
+    offers: { price: '799900', priceCurrency: 'USD' },
+    numberOfBedrooms: 4,
+    numberOfBathroomsTotal: 2.1,
+    yearBuilt: 2004,
+    additionalProperty: [{ '@type': 'PropertyValue', name: 'Property Type', value: 'Single Family Home' }],
+  }])}</script>
+</head><body>
+  <p class="detail-title">Property Description</p><div class="info-des">Full Galloping Way property description.</div>
+  <p class="info-content"><span class="info-title">MLS Listing ID</span><span class="info-data">262374</span></p>
+  <p class="info-content"><span class="info-title">Listing Status</span><span class="info-data">Under Contract</span></p>
+  <p class="info-content"><span class="info-title">Annual Tax Amount</span><span class="info-data">$8,673</span></p>
+  <section class="similar-gallery"><img alt="47 Fishing Creek Road property photo" src="https://img.chime.me/unrelated-similar-home.jpg"></section>
+</body></html>`;
+const loftyListing = extractBoardWizardListing(loftyListingUrl, loftyListingUrl, loftyHtml);
+assert.ok(loftyListing, 'Lofty/Chime custom-domain detail pages should extract as real estate');
+assert.equal(loftyListing.listingName, '8 Galloping Way, Cape May Court House, NJ 08210');
+assert.equal(loftyListing.images.length, 50, 'the complete structured listing gallery should be retained');
+assert.ok(loftyListing.images.every((image) => image.url.includes('/mls-listing/276/262374/')), 'similar and hot-listing photos must not enter the target gallery');
+assert.equal(loftyListing.description, 'Full Galloping Way property description.');
+assert.equal(loftyListing.realEstate.mlsId, '262374');
+assert.equal(loftyListing.realEstate.listingStatus, 'Under Contract');
+assert.equal(loftyListing.realEstate.propertyType, 'Single Family Home');
+assert.equal(loftyListing.realEstate.yearBuilt, '2004');
+assert.equal(loftyListing.realEstate.taxes, '$8,673');
 assert.deepEqual(normalizeBoardWizardListingMarketingOptions({ style: 'luxury', direction: '  Lead with the deck.  ' }), {
   enabled: true,
   style: 'luxury',

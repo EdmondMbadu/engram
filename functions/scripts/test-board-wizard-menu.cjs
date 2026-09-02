@@ -140,6 +140,15 @@ assert.equal(
   'still rejects a small challenge-only page',
 );
 assert.equal(
+  looksLikeAntiBotChallenge(`<html><body><script>
+    var key = 'cf_retry';
+    window.crypto.subtle.digest('SHA-1', new TextEncoder().encode('nonce'));
+    document.cookie = 'cf_pow=answer; path=/';
+  </script><p>Lofty does not support embedding its pages inside iframes or framesets.</p></body></html>`),
+  true,
+  'Lofty proof-of-work responses must trigger the browser fallback instead of generation',
+);
+assert.equal(
   isBoardWizardMenuActionCard({
     title: 'Open Menu',
     type: 'note',

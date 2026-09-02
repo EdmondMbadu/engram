@@ -96,7 +96,14 @@ export function boardWizardListingPreview(
 }
 
 export function isLikelyBoardWizardRealEstateUrl(value: string): boolean {
-  return /(^|\.)(?:zillow|trulia|hotpads|realtor|redfin|apartments|homes|rent|zumper|apartmentlist|exprealty)\./i.test(safeHostname(value));
+  if (/(^|\.)(?:zillow|trulia|hotpads|realtor|redfin|apartments|homes|rent|zumper|apartmentlist|exprealty)\./i.test(safeHostname(value))) {
+    return true;
+  }
+  try {
+    return /^\/listing-detail\/\d{6,}\/[A-Za-z0-9][A-Za-z0-9-]{5,}\/?$/i.test(new URL(value).pathname);
+  } catch {
+    return false;
+  }
 }
 
 /** Pure story-composition seam used by regression tests and the AI fallback. */

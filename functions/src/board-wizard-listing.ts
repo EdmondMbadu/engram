@@ -1041,15 +1041,22 @@ function extractListingImages(options: {
     add(src, alt || 'Property photo', 'listing-gallery', 85);
   }
 
-  candidates.sort((a, b) => b.priority - a.priority || imageResolutionScore(b.url) - imageResolutionScore(a.url));
+  const structuredCandidates = candidates.filter((candidate) => candidate.evidence === 'structured-data');
+  const distinctStructuredAssets = new Set(
+    structuredCandidates.map((candidate) => imageAssetKey(candidate.url)).filter(Boolean),
+  ).size;
+  const rankedCandidates = options.kind === 'real-estate' && distinctStructuredAssets >= 2
+    ? structuredCandidates
+    : candidates;
+  rankedCandidates.sort((a, b) => b.priority - a.priority || imageResolutionScore(b.url) - imageResolutionScore(a.url));
   const seen = new Set<string>();
   const result: BoardWizardListingImage[] = [];
-  for (const candidate of candidates) {
+  for (const candidate of rankedCandidates) {
     const key = imageAssetKey(candidate.url);
     if (!key || seen.has(key)) continue;
     seen.add(key);
     result.push({ url: candidate.url, alt: candidate.alt, evidence: candidate.evidence });
-    if (result.length >= 12) break;
+    if (result.length >= (options.kind === 'real-estate' ? BOARD_WIZARD_SOURCE_GALLERY_LIMIT : 12)) break;
   }
   return result;
 }
@@ -1353,16 +1360,21 @@ function extractRealEstateDetails(
     8,
   );
   return {
-    mlsId: firstText(labeledValue(pairs, 'MLS#', 'MLS ID'), primary.identifier),
+    mlsId: firstText(labeledValue(pairs, 'MLS#', 'MLS ID', 'MLS Listing ID'), primary.identifier),
     listingStatus: firstText(labeledValue(pairs, 'Listing Status', 'Status'), statusFromText(pageText)),
-    propertyType: firstText(labeledValue(pairs, 'Style', 'Type', 'Class'), about.additionalType),
+    propertyType: firstText(
+      labeledValue(pairs, 'Property Type', 'Sub Type', 'Property Sub-Type', 'Style', 'Type', 'Class'),
+      structuredPropertyValue(primary, 'Property Type'),
+      structuredPropertyValue(about, 'Property Type'),
+      about.additionalType,
+    ),
     bedrooms: firstText(labeledValue(pairs, 'Bedrooms', 'Beds'), primary.numberOfBedrooms, about.numberOfBedrooms),
     bathrooms,
     fullBathrooms,
     halfBathrooms,
-    yearBuilt: labeledValue(pairs, 'Year Built'),
+    yearBuilt: firstText(labeledValue(pairs, 'Year Built'), primary.yearBuilt, about.yearBuilt),
     hoaFee: normalizeCurrency(labeledValue(pairs, 'HOA Fee'), true),
-    taxes: normalizeCurrency(labeledValue(pairs, 'Taxes'), true),
+    taxes: normalizeCurrency(labeledValue(pairs, 'Taxes', 'Annual Tax Amount'), true),
     agentName: contact.name,
     agentRole: contact.name ? 'Site contact' : '',
     agentProfileUrl: contact.profileUrl,
@@ -1388,11 +1400,25 @@ function extractListingLabelValues(document: Document): ListingLabelValue[] {
     const valueElement = labelElement?.nextElementSibling;
     if (labelElement && valueElement) add(labelElement.textContent || '', valueElement.textContent || '');
   }
+  for (const item of Array.from(document.querySelectorAll('.info-content'))) {
+    const labelElement = item.querySelector('.info-title');
+    const valueElement = item.querySelector('.info-data');
+    if (labelElement && valueElement) add(labelElement.textContent || '', valueElement.textContent || '');
+  }
   for (const row of Array.from(document.querySelectorAll('tr, [role="row"]'))) {
     const cells = Array.from(row.querySelectorAll(':scope > th, :scope > td, :scope > [role="cell"], :scope > [role="gridcell"]'));
     if (cells.length >= 2) add(cells[0].textContent || '', cells.slice(1).map((cell) => cell.textContent || '').join(' '));
   }
   return pairs;
+}
+
+function structuredPropertyValue(node: JsonRecord, name: string): string {
+  const wanted = normalizeText(name);
+  for (const value of arrayValue(node.additionalProperty)) {
+    const property = recordValue(value);
+    if (normalizeText(firstText(property.name)) === wanted) return firstText(property.value);
+  }
+  return '';
 }
 
 function labeledValues(pairs: ListingLabelValue[], ...labels: string[]): string[] {
@@ -1441,7 +1467,7 @@ function extractDataSource(document: Document): string {
 }
 
 function extractSectionText(document: Document, headingText: string): string {
-  const heading = Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6'))
+  const heading = Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6, .detail-title'))
     .find((element) => normalizeText(element.textContent || '') === normalizeText(headingText));
   if (!heading) return '';
   let sibling = heading.nextElementSibling;
@@ -1682,6 +1708,7 @@ function formatAddress(value: unknown): string {
 }
 
 function listingKindFromUrl(value: string): BoardWizardListingKind | null {
+  if (isCustomDomainRealEstateListingUrl(value)) return 'real-estate';
   const hostname = safeHostname(value);
   if (VACATION_HOSTS.test(hostname)) return 'vacation-rental';
   if (REAL_ESTATE_HOSTS.test(hostname)) return 'real-estate';
@@ -1690,10 +1717,11 @@ function listingKindFromUrl(value: string): BoardWizardListingKind | null {
 }
 
 function isStrongListingUrl(value: string): boolean {
-  const kind = listingKindFromUrl(value);
-  if (!kind) return false;
   try {
     const url = new URL(value);
+    if (isCustomDomainRealEstateListingUrl(url.toString())) return true;
+    const kind = listingKindFromUrl(url.toString());
+    if (!kind) return false;
     if (/airbnb\./i.test(url.hostname)) return /\/rooms\/\d+/i.test(url.pathname);
     if (/zillow\./i.test(url.hostname)) {
       return /\/homedetails\//i.test(url.pathname)
@@ -1703,6 +1731,19 @@ function isStrongListingUrl(value: string): boolean {
     if (/exprealty\./i.test(url.hostname)) return isBoldTrailPropertyUrl(url.toString());
     if (/(?:^|\/)(?:search|vacation-rentals|category|browse|s\/homes)(?:\/|$)/i.test(url.pathname)) return false;
     return url.pathname.split('/').filter(Boolean).length >= 2;
+  } catch {
+    return false;
+  }
+}
+
+function isCustomDomainRealEstateListingUrl(value: string): boolean {
+  try {
+    const url = new URL(value);
+    // Lofty/Chime and similar white-label brokerage sites use this stable
+    // detail route on arbitrary customer domains. Requiring both a long
+    // numeric listing id and an address-like slug avoids classifying their
+    // search, county, and featured-listing pages as a single property.
+    return /^\/listing-detail\/\d{6,}\/[A-Za-z0-9][A-Za-z0-9-]{5,}\/?$/i.test(url.pathname);
   } catch {
     return false;
   }
