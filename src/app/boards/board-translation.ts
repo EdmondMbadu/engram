@@ -78,7 +78,7 @@ export function boardTranslationLanguageName(language: BoardTranslationLanguage)
 }
 
 function validTranslationPath(path: string): boolean {
-  return /^(?:board\.(?:title|description|backNote|stackCtaLabel|tourMeta\.(?:paceOrRouteStyle|extras\.\d+)|learningQuiz\.(?:title|description|questions\.\d+\.(?:sourceCardTitle|prompt|explanation|options\.\d+\.text)))|cards\.\d+\.(?:title|subtitle|notes|shortSummary|availability|productCategory|tags\.\d+|conversation\.openingMessage|tour\.(?:guideScript|legToNext\.(?:instruction|navScript))))$/u.test(path);
+  return /^(?:board\.(?:title|description|backNote|stackCtaLabel|tourMeta\.(?:paceOrRouteStyle|extras\.\d+)|learningQuiz\.(?:title|description|questions\.\d+\.(?:sourceCardTitle|prompt|explanation|options\.\d+\.text)))|cards\.\d+\.(?:title|subtitle|notes|shortSummary|availability|productCategory|tags\.\d+|conversation\.(?:openingMessage|ctaLabel|actions\.\d+\.(?:label|description))|tour\.(?:guideScript|legToNext\.(?:instruction|navScript))))$/u.test(path);
 }
 
 function setExistingStringPath(value: unknown, rawPath: string[], text: string): void {

@@ -16,6 +16,12 @@ describe('duplicateCardRecord', () => {
         provider: 'atlas',
         atlasId: 'atlas-wynton',
         openingMessage: 'Welcome to the conversation.',
+        actions: [{
+          id: 'schedule-1',
+          kind: 'schedule',
+          label: 'Book a session',
+          url: 'https://cal.com/wynton',
+        }],
       },
       listingPresentation: {
         kind: 'listing-group',
@@ -49,6 +55,8 @@ describe('duplicateCardRecord', () => {
     expect(copy.title).toBe('Wynton Marsalis (copy)');
     expect(copy.conversation).toEqual(source.conversation);
     expect(copy.conversation).not.toBe(source.conversation);
+    expect(copy.conversation?.actions).not.toBe(source.conversation.actions);
+    expect(copy.conversation?.actions?.[0]).not.toBe(source.conversation.actions[0]);
     expect(copy.listingPresentation).toEqual(source.listingPresentation);
     expect(copy.listingPresentation).not.toBe(source.listingPresentation);
     expect(copy.listingPresentation?.presentationImageUrls).not.toBe(source.listingPresentation?.presentationImageUrls);

@@ -296,6 +296,10 @@ describe('TalkingCardConversationComponent', () => {
     fixture.componentRef.setInput('boardId', 'board-1');
     fixture.componentRef.setInput('boardTitle', 'Early American History');
     fixture.componentRef.setInput('cardId', 'card-1');
+    fixture.componentRef.setInput('actions', [
+      { id: 'schedule-1', kind: 'schedule', label: 'Schedule a meeting', url: 'https://cal.com/ada' },
+      { id: 'details-1', kind: 'link', label: 'View details', url: 'https://example.com/details' },
+    ]);
     spyOn(fixture.componentInstance, 'startVoice').and.resolveTo();
     fixture.detectChanges();
     await fixture.whenStable();
@@ -318,6 +322,8 @@ describe('TalkingCardConversationComponent', () => {
     }));
     expect(fixture.componentInstance.conversationStage()).toBe('sent');
     expect(fixture.nativeElement.textContent).toContain('It’s on the way');
+    expect(fixture.nativeElement.querySelector('.talking-chat__recap-schedule').textContent).toContain('Schedule a meeting');
+    expect(fixture.nativeElement.textContent).toContain('View details');
     expect(fixture.nativeElement.textContent).toContain('Return to board');
   });
 

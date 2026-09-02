@@ -7,6 +7,7 @@ import { AtlasService } from '../atlas.service';
 import { AuthService } from '../auth.service';
 import { ChatService, type VoiceSummaryTranscriptItem } from '../chat.service';
 import { VoiceFluidVisualComponent } from '../chat/voice-fluid-visual';
+import type { TalkingCardAction } from '../boards/talking-card';
 
 type ConversationMessage = { id: string; role: 'user' | 'agent'; text: string };
 type VoiceConversation = Awaited<ReturnType<typeof import('@elevenlabs/client').Conversation.startSession>>;
@@ -111,6 +112,7 @@ export class TalkingCardConversationComponent implements OnInit, OnDestroy {
   readonly cardSubtitle = input('');
   readonly imageUrl = input('');
   readonly openingMessage = input('Hi! What would you like to know?');
+  readonly actions = input<TalkingCardAction[]>([]);
   readonly surface = input<'board' | 'live'>('board');
   readonly closed = output<void>();
   readonly activity = output<'message' | 'voice_start' | 'voice_end'>();

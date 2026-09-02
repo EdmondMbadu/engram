@@ -83,6 +83,19 @@
 .talking-card-cta--live { width: max-content; max-width: 100%; margin: .75rem auto 0; padding: .7rem 1rem; border: 1px solid rgba(255,255,255,.45); border-radius: 999px; background: rgba(18,103,66,.88); backdrop-filter: blur(10px); }
 .talking-card-cta--live > .material-symbols-outlined:first-child { width: auto; height: auto; color: #fff; background: transparent; }
 .talking-card-cta--back { margin-top: 0; }
+.talking-card-action-row { display: flex; flex-wrap: wrap; align-items: stretch; gap: .55rem; margin-top: .7rem; }
+.talking-card-action-row .talking-card-cta { flex: 1 1 58%; min-width: 11rem; margin-top: 0; }
+.talking-card-link { display: flex; flex: 1 1 42%; min-width: 7.5rem; align-items: center; justify-content: center; gap: .45rem; border: 1px solid color-mix(in srgb, var(--accent) 38%, var(--line)); border-radius: 14px; padding: .72rem .8rem; color: var(--accent); background: color-mix(in srgb, var(--accent) 6%, var(--surface)); text-align: left; text-decoration: none; }
+.talking-card-link.is-schedule { border-color: color-mix(in srgb, #d6a94a 62%, var(--line)); color: #74540c; background: color-mix(in srgb, #f1d68a 17%, var(--surface)); }
+.talking-card-link > .material-symbols-outlined { flex: 0 0 auto; font-size: 1.2rem; }
+.talking-card-link > span:last-child { display: grid; min-width: 0; gap: .12rem; }
+.talking-card-link strong { overflow: hidden; font-size: .75rem; text-overflow: ellipsis; white-space: nowrap; }
+.talking-card-link small { display: -webkit-box; overflow: hidden; color: var(--muted); font-size: .58rem; line-height: 1.3; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.talking-card-live-actions { display: grid; width: max-content; max-width: 100%; gap: .45rem; margin: .75rem auto 0; }
+.talking-card-live-actions .talking-card-cta--live { width: 100%; margin: 0; }
+.talking-card-link--live { min-height: 2.55rem; border-color: rgba(255,255,255,.52); border-radius: 999px; color: #fff; background: rgba(10,31,21,.52); backdrop-filter: blur(10px); font-weight: 900; }
+.talking-card-link--live.is-schedule { border-color: rgba(239,207,124,.8); color: #fff8dc; background: rgba(89,64,12,.48); }
+.talking-card-link--back { min-height: 3rem; }
 @media (max-width: 640px) {
   .boards-talking-action { min-width: 2.55rem; padding-inline: .7rem; }
   .board-settings-talking-card { grid-template-columns: auto minmax(0, 1fr); }
@@ -96,4 +109,10 @@
 .specialty-talking-cards article > .material-symbols-outlined { display: grid; place-items: center; color: var(--accent); background: var(--surface); }
 .specialty-talking-cards article > span { display: grid; min-width: 0; }.specialty-talking-cards small{color:var(--accent);font-size:.58rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase}.specialty-talking-cards strong,.specialty-talking-cards em{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.specialty-talking-cards em{color:var(--muted);font-size:.72rem;font-style:normal}
 .specialty-talking-cards button { border: 0; border-radius: 999px; padding: .65rem .85rem; color: #fff; background: #187a50; font-weight: 900; cursor: pointer; }
-@media (max-width: 540px) { .specialty-talking-cards article { grid-template-columns: 42px minmax(0,1fr); }.specialty-talking-cards article > button { grid-column: 1 / -1; width: 100%; }.specialty-talking-cards article > img,.specialty-talking-cards article > .material-symbols-outlined{width:42px;height:42px} }
+.specialty-talking-cards__actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .38rem; }
+.specialty-talking-cards__actions > a { display: inline-flex; align-items: center; border: 1px solid color-mix(in srgb, var(--accent) 38%, var(--line)); border-radius: 999px; padding: .58rem .75rem; color: var(--accent); background: var(--surface); font-size: .7rem; font-weight: 900; text-decoration: none; }
+.specialty-talking-cards__actions > a.is-schedule { border-color: color-mix(in srgb, #d6a94a 60%, var(--line)); color: #74540c; background: color-mix(in srgb, #f1d68a 15%, var(--surface)); }
+.specialty-talking-cards__actions > .specialty-talking-cards__edit { display: grid; width: 2.25rem; height: 2.25rem; place-items: center; padding: 0; border: 1px solid var(--line); color: var(--muted); background: var(--surface); }
+.specialty-talking-cards__edit .material-symbols-outlined { font-size: 1rem; }
+@media (max-width: 720px) { .talking-card-action-row { flex-direction: column; }.talking-card-link { width: 100%; flex-basis: auto; }.detail-card__go-there-bar:has(.talking-card-cta) { flex-wrap: wrap; }.talking-card-link--back { flex: 1 1 100%; } }
+@media (max-width: 540px) { .specialty-talking-cards article { grid-template-columns: 42px minmax(0,1fr); }.specialty-talking-cards__actions { grid-column: 1 / -1; justify-content: stretch; }.specialty-talking-cards__actions > button:not(.specialty-talking-cards__edit),.specialty-talking-cards__actions > a { flex: 1 1 auto; justify-content: center; }.specialty-talking-cards article > img,.specialty-talking-cards article > .material-symbols-outlined{width:42px;height:42px} }

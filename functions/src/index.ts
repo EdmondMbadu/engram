@@ -4237,6 +4237,7 @@ function buildVoiceConversationSummaryEmail(params: {
   answerCardUrl: string | null;
   placeLinks: VoiceConversationPlaceLink[];
   continueChatUrl: string;
+  talkingCardActions?: TalkingCardSummaryAction[];
 }) {
   const isTalkingCard = params.source === 'talking_card';
   const placeName = params.subjectName || params.cityName || params.atlasName || 'this wiki';
@@ -4249,6 +4250,23 @@ function buildVoiceConversationSummaryEmail(params: {
   const safeSummary = escapeHtml(params.summary.summary);
   const safeContinueChatUrl = escapeHtml(params.continueChatUrl);
   const safeAnswerCardUrl = params.answerCardUrl ? escapeHtml(params.answerCardUrl) : null;
+  const talkingCardActions = isTalkingCard ? params.talkingCardActions ?? [] : [];
+  const scheduleAction = talkingCardActions.find((action) => action.kind === 'schedule') ?? null;
+  const additionalActions = talkingCardActions.filter((action) => action.kind === 'link');
+  const scheduleActionHtml = scheduleAction ? `
+    <div style="background:#fffaf0;border:1px solid #e4c86d;border-radius:16px;padding:20px;margin:0 0 20px;text-align:center;">
+      <p style="margin:0 0 5px;color:#74540c;font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;">Continue the conversation</p>
+      <h3 style="margin:0 0 7px;color:#0d1f15;font-size:20px;line-height:1.2;">${escapeHtml(scheduleAction.label)}</h3>
+      ${scheduleAction.description ? `<p style="margin:0 0 15px;color:#526057;font-size:14px;line-height:1.55;">${escapeHtml(scheduleAction.description)}</p>` : ''}
+      <a href="${escapeHtml(scheduleAction.url)}" style="display:inline-block;border-radius:999px;padding:13px 22px;color:#ffffff;background:#187a50;text-decoration:none;font-size:14px;font-weight:900;">${escapeHtml(scheduleAction.label)}</a>
+    </div>
+  ` : '';
+  const additionalActionsHtml = additionalActions.length ? `
+    <div style="margin:0 0 20px;padding:16px 18px;border:1px solid #e2e8df;border-radius:15px;background:#f8faf7;">
+      <p style="margin:0 0 10px;color:#0d1f15;font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;">More from this guide</p>
+      ${additionalActions.map((action) => `<p style="margin:0 0 8px;"><a href="${escapeHtml(action.url)}" style="color:#1c7c41;text-decoration:none;font-size:14px;font-weight:850;">${escapeHtml(action.label)} →</a>${action.description ? `<br><span style="color:#6f7d74;font-size:12px;">${escapeHtml(action.description)}</span>` : ''}</p>`).join('')}
+    </div>
+  ` : '';
   const placeLinksHtml = params.placeLinks.length
     ? params.placeLinks.map((place) => {
         const safeName = escapeHtml(place.name);
@@ -4297,7 +4315,7 @@ ${params.summary.keyQuestions.map((item) => `- ${item}`).join('\n') || '- See tr
 Useful takeaways:
 ${params.summary.takeaways.map((item) => `- ${item}`).join('\n') || (isTalkingCard ? '- Return to the board to continue the conversation.' : '- Continue in the wiki chat.')}
 
-${params.placeLinks.length ? `Places and links:\n${params.placeLinks.map((place) => `- ${place.name}${place.address ? `, ${place.address}` : ''}${place.websiteUrl ? `\n  Website: ${place.websiteUrl}` : ''}\n  Maps: ${place.googleMapsUrl}`).join('\n')}\n\n` : ''}${params.answerCardUrl ? `Open the full recap card:\n${params.answerCardUrl}\n\n` : ''}${isTalkingCard ? 'Return to the board' : 'Continue the chat'}:
+${scheduleAction ? `${scheduleAction.label}:\n${scheduleAction.description ? `${scheduleAction.description}\n` : ''}${scheduleAction.url}\n\n` : ''}${additionalActions.length ? `More links:\n${additionalActions.map((action) => `- ${action.label}: ${action.url}${action.description ? ` — ${action.description}` : ''}`).join('\n')}\n\n` : ''}${params.placeLinks.length ? `Places and links:\n${params.placeLinks.map((place) => `- ${place.name}${place.address ? `, ${place.address}` : ''}${place.websiteUrl ? `\n  Website: ${place.websiteUrl}` : ''}\n  Maps: ${place.googleMapsUrl}`).join('\n')}\n\n` : ''}${params.answerCardUrl ? `Open the full recap card:\n${params.answerCardUrl}\n\n` : ''}${isTalkingCard ? 'Return to the board' : 'Continue the chat'}:
 ${params.continueChatUrl}
 
 Transcript:
@@ -4318,6 +4336,8 @@ The Living Wiki Team`;
         <div style="background:#f8faf7;border:1px solid #dfe8dc;border-radius:16px;padding:18px 20px;margin:0 0 20px;">
           <p style="margin:0;color:#2f3d35;font-size:14px;line-height:1.65;">${escapeHtml(params.summary.contextualAnswer).replace(/\n/g, '<br>')}</p>
         </div>
+        ${scheduleActionHtml}
+        ${additionalActionsHtml}
         <div style="background:#f8faf7;border:1px solid #dfe8dc;border-radius:16px;padding:18px 20px;margin:0 0 20px;">
           <p style="margin:0 0 10px;color:#0d1f15;font-size:13px;font-weight:900;letter-spacing:.13em;text-transform:uppercase;">Questions and prompts</p>
           <ul style="margin:0;padding-left:20px;color:#2f3d35;font-size:14px;line-height:1.55;">${keyQuestionsHtml}</ul>
@@ -18749,7 +18769,71 @@ type TalkingCardSummaryContext = {
   cardId: string;
   cardTitle: string;
   boardUrl: string;
+  actions: TalkingCardSummaryAction[];
 };
+
+type TalkingCardSummaryAction = {
+  kind: 'schedule' | 'link';
+  label: string;
+  url: string;
+  description: string | null;
+};
+
+function safeTalkingCardActionUrl(value: unknown): string | null {
+  const raw = typeof value === 'string' ? value.trim().slice(0, 2000) : '';
+  if (!raw) return null;
+  try {
+    const url = new URL(raw);
+    const hostname = url.hostname.toLowerCase().replace(/^\[|\]$/g, '');
+    const ipv4 = hostname.split('.').map((part) => Number(part));
+    const privateIpv4 = ipv4.length === 4
+      && ipv4.every((part) => Number.isInteger(part) && part >= 0 && part <= 255)
+      && (ipv4[0] === 10
+        || ipv4[0] === 127
+        || ipv4[0] === 0
+        || (ipv4[0] === 169 && ipv4[1] === 254)
+        || (ipv4[0] === 172 && ipv4[1] >= 16 && ipv4[1] <= 31)
+        || (ipv4[0] === 192 && ipv4[1] === 168));
+    const privateIpv6 = hostname.includes(':') && (
+      hostname === '::1'
+      || hostname.startsWith('fc')
+      || hostname.startsWith('fd')
+      || hostname.startsWith('fe8')
+      || hostname.startsWith('fe9')
+      || hostname.startsWith('fea')
+      || hostname.startsWith('feb')
+    );
+    const blockedHostname = hostname === 'localhost'
+      || hostname.endsWith('.localhost')
+      || hostname.endsWith('.local')
+      || privateIpv6
+      || privateIpv4;
+    if (url.protocol !== 'https:' || !hostname || blockedHostname || url.username || url.password) return null;
+    return url.toString().slice(0, 2000);
+  } catch {
+    return null;
+  }
+}
+
+function talkingCardSummaryActions(value: unknown): TalkingCardSummaryAction[] {
+  if (!Array.isArray(value)) return [];
+  let scheduleSeen = false;
+  return value.flatMap((item): TalkingCardSummaryAction[] => {
+    if (!item || typeof item !== 'object') return [];
+    const data = item as Record<string, unknown>;
+    const kind = data.kind === 'schedule' ? 'schedule' : 'link';
+    if (kind === 'schedule' && scheduleSeen) return [];
+    const url = safeTalkingCardActionUrl(data.url);
+    if (!url) return [];
+    const label = (typeof data.label === 'string' ? data.label : '')
+      .replace(/\s+/g, ' ').trim().slice(0, 48)
+      || (kind === 'schedule' ? 'Schedule a meeting' : 'Open link');
+    const description = (typeof data.description === 'string' ? data.description : '')
+      .replace(/\s+/g, ' ').trim().slice(0, 180) || null;
+    if (kind === 'schedule') scheduleSeen = true;
+    return [{ kind, label, url, description }];
+  }).slice(0, 4);
+}
 
 async function loadTalkingCardSummaryContext(params: {
   boardId: unknown;
@@ -18806,6 +18890,7 @@ async function loadTalkingCardSummaryContext(params: {
     cardId: target.cardId,
     cardTitle,
     boardUrl: `${publicAppUrl}/boards/${encodeURIComponent(routeKey)}`,
+    actions: talkingCardSummaryActions(conversation?.actions),
   };
 }
 
@@ -18972,6 +19057,7 @@ export const sendVoiceConversationSummary = onCall(
       answerCardUrl,
       placeLinks: resolvedPlaces.links,
       continueChatUrl,
+      talkingCardActions: talkingCardContext?.actions ?? [],
     });
     const [response] = await sgMail.send({
       to: recipientEmail,
@@ -18998,6 +19084,7 @@ export const sendVoiceConversationSummary = onCall(
       board_title: talkingCardContext?.boardTitle ?? null,
       card_id: talkingCardContext?.cardId ?? null,
       card_title: talkingCardContext?.cardTitle ?? null,
+      talking_card_actions: talkingCardContext?.actions ?? [],
       completion_reason: completionReason,
       city_name: cityName,
       city_region: regionName,

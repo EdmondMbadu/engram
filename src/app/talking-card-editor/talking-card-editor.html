@@ -3,21 +3,64 @@
     <header class="talking-editor__header">
       <div>
         <span class="talking-editor__eyebrow">{{ boardTitle() }}</span>
-        <h2 id="talking-editor-title">Add a Talking Card</h2>
-        <p>Add a conversational guide anywhere in this board’s flow.</p>
+        <h2 id="talking-editor-title">{{ isEditing() ? 'Edit Talking Card' : 'Add a Talking Card' }}</h2>
+        <p>{{ isEditing() ? 'Refine the card, its knowledge, voice, and visitor actions.' : 'Add a conversational guide anywhere in this board’s flow.' }}</p>
       </div>
       <button type="button" class="talking-editor__icon" aria-label="Close Talking Card editor" (click)="close()">
         <span class="material-symbols-outlined">close</span>
       </button>
     </header>
 
-    <div class="talking-editor__tabs" role="tablist" aria-label="Avatar source">
-      <button type="button" role="tab" [attr.aria-selected]="mode() === 'existing'" [class.is-active]="mode() === 'existing'" (click)="setMode('existing')">Use existing avatar</button>
-      <button type="button" role="tab" [attr.aria-selected]="mode() === 'new'" [class.is-active]="mode() === 'new'" (click)="setMode('new')">Create a new avatar</button>
-    </div>
+    @if (isEditing()) {
+      <div class="talking-editor__scope-note">
+        <span class="material-symbols-outlined">info</span>
+        <span><strong>Card details and links</strong> affect this board. <strong>Prompt, knowledge, and voice</strong> affect this avatar wherever it speaks.</span>
+      </div>
+      <div class="talking-editor__tabs talking-editor__tabs--sections" role="tablist" aria-label="Talking Card settings">
+        <button type="button" role="tab" [attr.aria-selected]="editorSection() === 'card'" [class.is-active]="editorSection() === 'card'" (click)="setEditorSection('card')">Card</button>
+        <button type="button" role="tab" [attr.aria-selected]="editorSection() === 'knowledge'" [class.is-active]="editorSection() === 'knowledge'" (click)="setEditorSection('knowledge')">Knowledge</button>
+        <button type="button" role="tab" [attr.aria-selected]="editorSection() === 'voice'" [class.is-active]="editorSection() === 'voice'" (click)="setEditorSection('voice')">Voice</button>
+        <button type="button" role="tab" [attr.aria-selected]="editorSection() === 'actions'" [class.is-active]="editorSection() === 'actions'" (click)="setEditorSection('actions')">Actions</button>
+      </div>
+    } @else {
+      <div class="talking-editor__tabs" role="tablist" aria-label="Avatar source">
+        <button type="button" role="tab" [attr.aria-selected]="mode() === 'existing'" [class.is-active]="mode() === 'existing'" (click)="setMode('existing')">Use existing avatar</button>
+        <button type="button" role="tab" [attr.aria-selected]="mode() === 'new'" [class.is-active]="mode() === 'new'" (click)="setMode('new')">Create a new avatar</button>
+      </div>
+    }
 
     <div class="talking-editor__body">
-      @if (mode() === 'existing') {
+      @if (isEditing() && editorSection() === 'card') {
+        <section class="talking-editor__edit-section" aria-labelledby="talking-editor-card-heading">
+          <header class="talking-editor__section-heading">
+            <span class="material-symbols-outlined">badge</span>
+            <span><strong id="talking-editor-card-heading">Card details</strong><small>How this guide appears and greets visitors on this board.</small></span>
+          </header>
+          <div class="talking-editor__grid">
+            <label><span>Display name *</span><input maxlength="120" [ngModel]="name()" (ngModelChange)="name.set($event)" /></label>
+            <label><span>Role or subtitle</span><input maxlength="240" [ngModel]="role()" (ngModelChange)="role.set($event)" /></label>
+          </div>
+          <div class="talking-editor__portrait-editor">
+            <div class="talking-editor__avatar-image">
+              @if (imagePreviewUrl()) { <img [src]="imagePreviewUrl()" [alt]="name()" /> }
+              @else { <span class="material-symbols-outlined">record_voice_over</span> }
+            </div>
+            <label class="talking-editor__portrait-button">
+              <span class="material-symbols-outlined">add_photo_alternate</span>
+              {{ imagePreviewUrl() ? 'Replace portrait' : 'Add portrait' }}
+              <input type="file" accept="image/*" [disabled]="imageProcessing()" (change)="onImageSelected($event)" />
+            </label>
+            @if (imageProcessing()) { <small><span class="material-symbols-outlined talking-editor__spin">progress_activity</span> Optimizing portrait…</small> }
+          </div>
+          <label><span>Opening message *</span><textarea rows="3" maxlength="500" [ngModel]="openingMessage()" (ngModelChange)="openingMessage.set($event)"></textarea></label>
+          <label><span>Card position</span><select [ngModel]="placement()" (ngModelChange)="placement.set($event)"><option value="keep">Keep current position</option><option value="start">Move to beginning</option><option value="end">Move to end</option></select></label>
+          @if (selectedAtlasEditable()) {
+            <small class="talking-editor__shared-note"><span class="material-symbols-outlined">hub</span>Name, role, and portrait also update the shared avatar profile.</small>
+          } @else {
+            <small class="talking-editor__shared-note"><span class="material-symbols-outlined">lock</span>The linked public avatar remains unchanged; these presentation edits apply only to this card.</small>
+          }
+        </section>
+      } @else if (!isEditing() && mode() === 'existing') {
         <div class="talking-editor__avatar-search">
           <label for="talking-avatar-search"><span>Conversational avatar</span></label>
           <div class="talking-editor__search-field">
@@ -95,7 +138,7 @@
             <p class="talking-editor__notice"><span class="material-symbols-outlined" aria-hidden="true">public</span> This public avatar keeps the persona and voice chosen by its creator.</p>
           }
         }
-      } @else {
+      } @else if (!isEditing()) {
         <div class="talking-editor__grid">
           <label><span>Name *</span><input maxlength="120" [ngModel]="name()" (ngModelChange)="name.set($event)" placeholder="Maya Chen" /></label>
           <label><span>Role or subtitle</span><input maxlength="240" [ngModel]="role()" (ngModelChange)="role.set($event)" placeholder="Listing specialist" /></label>
@@ -115,12 +158,53 @@
         }
       }
 
-      @if (mode() === 'new' || (selectedAtlas() && selectedAtlasEditable())) {
+      @if (isEditing() && editorSection() === 'knowledge') {
+        <section class="talking-editor__edit-section" aria-labelledby="talking-editor-knowledge-heading">
+          <header class="talking-editor__section-heading">
+            <span class="material-symbols-outlined">library_books</span>
+            <span><strong id="talking-editor-knowledge-heading">Prompt and knowledge</strong><small>Shared by every Talking Card that uses this avatar.</small></span>
+          </header>
+          @if (selectedAtlasEditable()) {
+            <label>
+              <span>System prompt *</span>
+              <textarea rows="8" maxlength="40000" [ngModel]="personaPrompt()" (ngModelChange)="personaPrompt.set($event)" placeholder="Describe who this avatar is, how it should answer, and what it must never invent."></textarea>
+              <small>Grounding, citations, and safety rules still remain automatic.</small>
+            </label>
+          } @else {
+            <p class="talking-editor__notice"><span class="material-symbols-outlined">lock</span>The avatar creator manages its system prompt and knowledge.</p>
+          }
+
+          @if (selectedAtlasOwned()) {
+            <div class="talking-editor__documents">
+              <header><span><strong>Knowledge documents</strong><small>Add up to 10 files at a time.</small></span><span>{{ existingDocuments().length }} saved</span></header>
+              @if (documentsLoading()) {
+                <p class="talking-editor__document-empty"><span class="material-symbols-outlined talking-editor__spin">progress_activity</span>Loading knowledge…</p>
+              } @else {
+                @for (document of existingDocuments(); track document.id) {
+                  <article>
+                    <span class="material-symbols-outlined">{{ document.source_type === 'url' ? 'link' : 'description' }}</span>
+                    <span><strong>{{ document.title || document.filename }}</strong><small>{{ document.status }}</small></span>
+                    <button type="button" [disabled]="!!documentDeletingId()" [attr.aria-label]="'Remove ' + (document.title || document.filename)" (click)="deleteKnowledgeDocument(document)"><span class="material-symbols-outlined">delete</span></button>
+                  </article>
+                } @empty {
+                  <p class="talking-editor__document-empty">No knowledge documents have been added yet.</p>
+                }
+              }
+              <label class="talking-editor__document-add"><span class="material-symbols-outlined">upload_file</span><span>Add documents</span><input type="file" multiple (change)="onDocumentsSelected($event)" /></label>
+              @if (documentFiles().length) { <small>{{ documentFiles().length }} new file(s) will be uploaded when you save.</small> }
+            </div>
+          } @else if (selectedAtlasEditable()) {
+            <p class="talking-editor__notice"><span class="material-symbols-outlined">admin_panel_settings</span>Only the avatar owner can add or remove source documents. Avatar admins can still update the system prompt and voice.</p>
+          }
+        </section>
+      }
+
+      @if ((mode() === 'new' || (selectedAtlas() && selectedAtlasEditable())) && (!isEditing() || editorSection() === 'voice')) {
         <section class="talking-editor__voice-picker" aria-labelledby="talking-editor-voice-title">
           <header>
             <div>
               <span class="material-symbols-outlined" aria-hidden="true">graphic_eq</span>
-              <span><strong id="talking-editor-voice-title">Conversation voice</strong><small>Choose a voice and preview it before adding the card.</small></span>
+              <span><strong id="talking-editor-voice-title">Conversation voice</strong><small>Choose a voice and preview it before {{ isEditing() ? 'saving' : 'adding the card' }}.</small></span>
             </div>
             @if (voiceConfigLoading()) { <span class="talking-editor__voice-loading"><span class="material-symbols-outlined talking-editor__spin">progress_activity</span>Loading saved voice…</span> }
           </header>
@@ -284,14 +368,55 @@
           @if (voiceErrorMessage()) { <p class="talking-editor__error" role="alert">{{ voiceErrorMessage() }}</p> }
         </section>
       }
+      @if (isEditing() && editorSection() === 'voice' && !selectedAtlasEditable()) {
+        <p class="talking-editor__notice"><span class="material-symbols-outlined">lock</span>This public avatar’s voice is managed by its creator. You can still edit this card’s presentation and links.</p>
+      }
 
+      @if (!isEditing()) {
       <div class="talking-editor__grid">
         <label><span>Opening message *</span><textarea rows="3" maxlength="500" [ngModel]="openingMessage()" (ngModelChange)="openingMessage.set($event)"></textarea></label>
         <div>
-          <label><span>Button label</span><input maxlength="48" [ngModel]="ctaLabel()" (ngModelChange)="ctaLabel.set($event)" /></label>
           <label><span>Place card</span><select [ngModel]="placement()" (ngModelChange)="placement.set($event)"><option value="end">At the end</option><option value="start">At the beginning</option></select></label>
         </div>
       </div>
+      }
+
+      @if (!isEditing() || editorSection() === 'actions') {
+        <section class="talking-editor__edit-section talking-editor__actions-section" aria-labelledby="talking-editor-actions-heading">
+          <header class="talking-editor__section-heading">
+            <span class="material-symbols-outlined">ads_click</span>
+            <span><strong id="talking-editor-actions-heading">Visitor actions</strong><small>Add scheduling or other useful links without changing the conversation.</small></span>
+          </header>
+          <label><span>Conversation button</span><input maxlength="48" [ngModel]="ctaLabel()" (ngModelChange)="ctaLabel.set($event)" placeholder="Talk to me" /></label>
+
+          <div class="talking-editor__action-list">
+            @for (action of actions(); track action.id; let actionIndex = $index) {
+              <article class="talking-editor__action-card" [class.is-schedule]="action.kind === 'schedule'">
+                <header>
+                  <span class="material-symbols-outlined">{{ action.kind === 'schedule' ? 'calendar_month' : 'link' }}</span>
+                  <span><strong>{{ action.kind === 'schedule' ? 'Scheduling' : 'Additional link' }}</strong><small>{{ action.kind === 'schedule' ? 'Shown prominently in recap emails.' : 'Shown with the Talking Card actions.' }}</small></span>
+                  <button type="button" aria-label="Remove action" (click)="removeAction(actionIndex)"><span class="material-symbols-outlined">close</span></button>
+                </header>
+                <div class="talking-editor__grid">
+                  <label><span>Button label</span><input maxlength="48" [ngModel]="action.label" (ngModelChange)="updateAction(actionIndex, 'label', $event)" /></label>
+                  <label><span>Secure link</span><input type="url" maxlength="2000" inputmode="url" placeholder="https://calendly.com/your-name" [ngModel]="action.url" (ngModelChange)="updateAction(actionIndex, 'url', $event)" /></label>
+                </div>
+                <label><span>Supporting text</span><input maxlength="180" [ngModel]="action.description || ''" (ngModelChange)="updateAction(actionIndex, 'description', $event)" [placeholder]="action.kind === 'schedule' ? 'Choose a time to continue the conversation.' : 'Optional context for visitors'" /></label>
+                <button type="button" class="talking-editor__test-link" (click)="testAction(action)"><span class="material-symbols-outlined">open_in_new</span>Test link</button>
+              </article>
+            } @empty {
+              <p class="talking-editor__action-empty">No extra actions yet. The conversation button will remain the only visitor action.</p>
+            }
+          </div>
+          <div class="talking-editor__action-adds">
+            <button type="button" [disabled]="!!scheduleAction() || actions().length >= 4" (click)="addAction('schedule')"><span class="material-symbols-outlined">calendar_add_on</span>Add scheduling</button>
+            <button type="button" [disabled]="actions().length >= 4" (click)="addAction('link')"><span class="material-symbols-outlined">add_link</span>Add another link</button>
+            <small>Up to four secure public links, including one scheduling action.</small>
+          </div>
+          @if (actionFormMessage()) { <small class="talking-editor__field-warning"><span class="material-symbols-outlined">info</span>{{ actionFormMessage() }}</small> }
+          @if (actionValidationMessage()) { <p class="talking-editor__error" role="alert">{{ actionValidationMessage() }}</p> }
+        </section>
+      }
       @if (errorMessage()) { <p class="talking-editor__error" role="alert">{{ errorMessage() }}</p> }
     </div>
 
@@ -303,7 +428,7 @@
       <button type="button" class="talking-editor__secondary" (click)="close()">Cancel</button>
       <button type="button" class="talking-editor__primary" [disabled]="!canSave()" (click)="save()">
         @if (saving()) { <span class="material-symbols-outlined talking-editor__spin">progress_activity</span> {{ saveStage() || 'Saving…' }} }
-        @else { <span class="material-symbols-outlined">record_voice_over</span> Add Talking Card }
+        @else { <span class="material-symbols-outlined">{{ isEditing() ? 'save' : 'record_voice_over' }}</span> {{ isEditing() ? 'Save changes' : 'Add Talking Card' }} }
       </button>
     </footer>
   </section>

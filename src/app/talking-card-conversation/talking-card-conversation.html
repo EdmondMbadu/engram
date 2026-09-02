@@ -86,6 +86,15 @@
         <p class="talking-chat__recap-eyebrow">Recap sent</p>
         <h3>It’s on the way</h3>
         <p class="talking-chat__recap-sent-copy">We sent the conversation summary and transcript to <strong>{{ recapSentTo() }}</strong>.</p>
+        @for (action of actions(); track action.id) {
+          @if (action.kind === 'schedule') {
+            <a class="talking-chat__recap-schedule" [href]="action.url" target="_blank" rel="noopener noreferrer">
+              <span class="material-symbols-outlined">calendar_month</span>
+              <span><strong>{{ action.label }}</strong>@if (action.description) { <small>{{ action.description }}</small> }</span>
+              <span class="material-symbols-outlined">arrow_forward</span>
+            </a>
+          }
+        }
         <div class="talking-chat__recap-links">
           @if (recapAnswerCardUrl()) {
             <a [href]="recapAnswerCardUrl()" target="_blank" rel="noopener">
@@ -98,6 +107,14 @@
               <span class="material-symbols-outlined" aria-hidden="true">dashboard</span>
               Return to board
             </a>
+          }
+          @for (action of actions(); track action.id) {
+            @if (action.kind === 'link') {
+              <a class="is-secondary" [href]="action.url" target="_blank" rel="noopener noreferrer">
+                <span class="material-symbols-outlined" aria-hidden="true">open_in_new</span>
+                {{ action.label }}
+              </a>
+            }
           }
         </div>
         <button type="button" class="talking-chat__recap-done" (click)="dismissRecap()">Done</button>

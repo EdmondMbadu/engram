@@ -7,6 +7,7 @@ import { DocumentsService } from '../documents.service';
 import { STACK_NARRATOR_VOICES } from '../boards/stack-voice';
 import { TalkingCardDraftStore, type TalkingCardDraftRecord } from './talking-card-draft.store';
 import { TalkingCardEditorComponent } from './talking-card-editor';
+import { TalkingCardKnowledgeService } from './talking-card-knowledge.service';
 import { PersonalVoiceService, type PersonalVoiceLibrary } from '../personal-voice.service';
 
 describe('TalkingCardEditorComponent', () => {
@@ -57,6 +58,9 @@ describe('TalkingCardEditorComponent', () => {
   const atlasService = {
     atlases,
     canAdminAtlas: jasmine.createSpy('canAdminAtlas').and.callFake((atlas: AtlasItem) => atlas.user_id === 'owner-1'),
+    isAtlasOwner: jasmine.createSpy('isAtlasOwner').and.callFake((atlas: AtlasItem) => atlas.user_id === 'owner-1'),
+    getAccessibleAtlasById: jasmine.createSpy('getAccessibleAtlasById').and.callFake(async (atlasId: string) =>
+      [...atlases(), publicGlover].find((atlas) => atlas.id === atlasId) ?? null),
     listPublicAtlases: jasmine.createSpy('listPublicAtlases').and.resolveTo([publicGlover]),
     getAtlasSpeechVoiceConfig: jasmine.createSpy('getAtlasSpeechVoiceConfig').and.resolveTo({
       source: 'default', provider: 'elevenlabs', catalogVoiceId: null, personalVoiceId: null, name: 'Default voice',
@@ -74,9 +78,18 @@ describe('TalkingCardEditorComponent', () => {
     resetAtlasSpeechVoice: jasmine.createSpy('resetAtlasSpeechVoice'),
     createTalkingCardAtlas: jasmine.createSpy('createTalkingCardAtlas').and.resolveTo('new-avatar'),
     updatePersonaSettings: jasmine.createSpy('updatePersonaSettings'),
+    updatePersonaPrompt: jasmine.createSpy('updatePersonaPrompt'),
     updateAtlas: jasmine.createSpy('updateAtlas'),
     updateChatGuideConfig: jasmine.createSpy('updateChatGuideConfig'),
     uploadTalkingCardAvatarImage: jasmine.createSpy('uploadTalkingCardAvatarImage').and.resolveTo('https://example.com/avatar.png'),
+  };
+  const documentsService = {
+    uploadError: signal<string | null>(null),
+    uploadFiles: jasmine.createSpy('uploadFiles').and.resolveTo(),
+    deleteDocument: jasmine.createSpy('deleteDocument').and.resolveTo(),
+  };
+  const talkingCardKnowledgeService = {
+    listOwnedAtlasDocuments: jasmine.createSpy('listOwnedAtlasDocuments').and.resolveTo([]),
   };
   const draftStore = {
     load: jasmine.createSpy('load').and.resolveTo(null),
@@ -101,6 +114,11 @@ describe('TalkingCardEditorComponent', () => {
     Object.values(personalVoiceService).forEach((value) => {
       if (jasmine.isSpy(value)) value.calls.reset();
     });
+    Object.values(documentsService).forEach((value) => {
+      if (jasmine.isSpy(value)) value.calls.reset();
+    });
+    talkingCardKnowledgeService.listOwnedAtlasDocuments.calls.reset();
+    documentsService.uploadError.set(null);
     router.navigate.calls.reset();
     atlasService.listPublicAtlases.and.resolveTo([publicGlover]);
     draftStore.load.and.resolveTo(null);
@@ -109,7 +127,8 @@ describe('TalkingCardEditorComponent', () => {
       providers: [
         provideZonelessChangeDetection(),
         { provide: AtlasService, useValue: atlasService },
-        { provide: DocumentsService, useValue: {} },
+        { provide: DocumentsService, useValue: documentsService },
+        { provide: TalkingCardKnowledgeService, useValue: talkingCardKnowledgeService },
         { provide: TalkingCardDraftStore, useValue: draftStore },
         { provide: PersonalVoiceService, useValue: personalVoiceService },
         { provide: Router, useValue: router },
@@ -404,6 +423,7 @@ describe('TalkingCardEditorComponent', () => {
       openingMessage: 'We have an army to move before daylight.',
       ctaLabel: 'Talk to Glover',
       placement: 'end',
+      actions: [{ id: 'schedule-1', kind: 'schedule', label: 'Book a tour', url: 'https://cal.com/glover' }],
       catalogVoiceId: '',
       personalVoiceId: 'voice-1',
       voiceChoice: 'personal',
@@ -424,6 +444,7 @@ describe('TalkingCardEditorComponent', () => {
     expect(fixture.componentInstance.documentFiles()[0]?.name).toBe('glover-facts.txt');
     expect(fixture.componentInstance.voiceChoice()).toBe('personal');
     expect(fixture.componentInstance.personalVoiceId()).toBe('voice-1');
+    expect(fixture.componentInstance.actions()[0]?.url).toBe('https://cal.com/glover');
     await fixture.componentInstance.close();
 
     expect(draftStore.save).toHaveBeenCalledWith(jasmine.objectContaining({
@@ -432,6 +453,99 @@ describe('TalkingCardEditorComponent', () => {
       name: 'Colonel John Glover',
       personalVoiceId: 'voice-1',
       voiceChoice: 'personal',
+      actions: [jasmine.objectContaining({ kind: 'schedule', url: 'https://cal.com/glover' })],
     }));
+  });
+
+  it('edits the card presentation, shared persona, and conversation actions in one flow', async () => {
+    const fixture = TestBed.createComponent(TalkingCardEditorComponent);
+    fixture.componentRef.setInput('boardId', 'board-edit');
+    fixture.componentRef.setInput('editingCard', {
+      id: 'card-1',
+      title: 'George Washington',
+      subtitle: 'Historical guide',
+      imageUrl: 'https://example.com/george.png',
+      placement: 'keep',
+      conversation: {
+        version: 1,
+        provider: 'atlas',
+        atlasId: 'george',
+        openingMessage: 'Welcome to Mount Vernon.',
+        ctaLabel: 'Talk to George',
+        actions: [{
+          id: 'schedule-1',
+          kind: 'schedule',
+          label: 'Book a tour',
+          url: 'https://cal.com/mount-vernon',
+          description: 'Choose a time for a private tour.',
+        }],
+      },
+    });
+    let emitted: unknown;
+    fixture.componentInstance.saved.subscribe((value) => { emitted = value; });
+    fixture.detectChanges();
+    await fixture.whenStable();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.textContent).toContain('Edit Talking Card');
+    expect(fixture.componentInstance.name()).toBe('George Washington');
+    expect(talkingCardKnowledgeService.listOwnedAtlasDocuments).toHaveBeenCalledOnceWith('george');
+
+    fixture.componentInstance.name.set('George at Mount Vernon');
+    fixture.componentInstance.personaPrompt.set('Answer as George Washington and cite the supplied documents.');
+    fixture.componentInstance.updateAction(0, 'label', 'Schedule a private tour');
+    fixture.componentInstance.addAction('link');
+    fixture.componentInstance.updateAction(1, 'label', 'View the property guide');
+    fixture.componentInstance.updateAction(1, 'url', 'https://example.com/property-guide');
+
+    await fixture.componentInstance.save();
+
+    expect(atlasService.updatePersonaPrompt).toHaveBeenCalledWith(
+      'george',
+      'Answer as George Washington and cite the supplied documents.',
+    );
+    expect(atlasService.updateChatGuideConfig).toHaveBeenCalled();
+    expect(emitted).toEqual(jasmine.objectContaining({
+      cardId: 'card-1',
+      atlasId: 'george',
+      title: 'George at Mount Vernon',
+      placement: 'keep',
+      actions: [
+        jasmine.objectContaining({ kind: 'schedule', label: 'Schedule a private tour' }),
+        jasmine.objectContaining({ kind: 'link', url: 'https://example.com/property-guide' }),
+      ],
+    }));
+  });
+
+  it('keeps a public library avatar locked while allowing card-only presentation and actions', async () => {
+    const fixture = TestBed.createComponent(TalkingCardEditorComponent);
+    fixture.componentRef.setInput('editingCard', {
+      id: 'card-public',
+      title: 'Colonel John Glover',
+      subtitle: 'Marblehead commander',
+      imageUrl: '',
+      placement: 'keep',
+      conversation: {
+        version: 1,
+        provider: 'atlas',
+        atlasId: publicGlover.id,
+        openingMessage: 'How can I help?',
+        ctaLabel: 'Talk to Glover',
+      },
+    });
+    fixture.detectChanges();
+    await fixture.whenStable();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    fixture.componentInstance.setEditorSection('knowledge');
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.textContent).toContain('avatar creator manages its system prompt and knowledge');
+    expect(talkingCardKnowledgeService.listOwnedAtlasDocuments).not.toHaveBeenCalled();
+
+    await fixture.componentInstance.save();
+
+    expect(atlasService.updatePersonaPrompt).not.toHaveBeenCalled();
+    expect(atlasService.updateChatGuideConfig).not.toHaveBeenCalled();
   });
 });

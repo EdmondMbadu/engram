@@ -101,10 +101,18 @@
                         <h4 [class]="stackTitleClass(card.title)">{{ card.title }}</h4>
                         <p>{{ stackCardSummary(board, card) }}</p>
                         @if (isTalkingCard(card)) {
-                          <button type="button" class="talking-card-cta talking-card-cta--live" (click)="openTalkingCardConversation(card, $event, 'live')">
-                            <span class="material-symbols-outlined">graphic_eq</span>
-                            <strong>{{ talkingCardButtonLabel(card) }}</strong>
-                          </button>
+                          <div class="talking-card-live-actions">
+                            <button type="button" class="talking-card-cta talking-card-cta--live" (click)="openTalkingCardConversation(card, $event, 'live')">
+                              <span class="material-symbols-outlined">graphic_eq</span>
+                              <strong>{{ talkingCardButtonLabel(card) }}</strong>
+                            </button>
+                            @for (action of talkingCardActionLinks(card); track action.id) {
+                              <a class="talking-card-link talking-card-link--live" [class.is-schedule]="action.kind === 'schedule'" [href]="action.url" target="_blank" rel="noopener noreferrer" (click)="trackTalkingCardAction(card, action, $event)">
+                                <span class="material-symbols-outlined">{{ action.kind === 'schedule' ? 'calendar_month' : 'open_in_new' }}</span>
+                                <strong>{{ action.label }}</strong>
+                              </a>
+                            }
+                          </div>
                         }
                         @if (stackCardHasMore(board, card) || stackPlaying() || tourSpeechPlaying() || stackNarrationLoading()) {
                           <div class="stack-preview__inline-actions">
@@ -2714,7 +2722,15 @@
                         @if (guide.imageUrl) { <img [src]="guide.imageUrl" [alt]="guide.title" /> }
                         @else { <span class="material-symbols-outlined">record_voice_over</span> }
                         <span><small>Talking Card</small><strong>{{ guide.title }}</strong><em>{{ guide.subtitle }}</em></span>
-                        <button type="button" (click)="openTalkingCardConversation(guide, $event, 'board')">{{ talkingCardButtonLabel(guide) }}</button>
+                        <div class="specialty-talking-cards__actions">
+                          <button type="button" (click)="openTalkingCardConversation(guide, $event, 'board')">{{ talkingCardButtonLabel(guide) }}</button>
+                          @for (action of talkingCardActionLinks(guide); track action.id) {
+                            <a [class.is-schedule]="action.kind === 'schedule'" [href]="action.url" target="_blank" rel="noopener noreferrer" (click)="trackTalkingCardAction(guide, action, $event)">{{ action.label }}</a>
+                          }
+                          @if (canEditBoard(board)) {
+                            <button type="button" class="specialty-talking-cards__edit" [attr.aria-label]="'Edit Talking Card ' + guide.title" (click)="openEditTalkingCard(guide, board, $event)"><span class="material-symbols-outlined">edit</span></button>
+                          }
+                        </div>
                       </article>
                     }
                   </div>
@@ -3131,7 +3147,15 @@
                           @if (guide.imageUrl) { <img [src]="guide.imageUrl" [alt]="guide.title" /> }
                           @else { <span class="material-symbols-outlined">record_voice_over</span> }
                           <span><small>Talking Card</small><strong>{{ guide.title }}</strong><em>{{ guide.subtitle }}</em></span>
-                          <button type="button" (click)="openTalkingCardConversation(guide, $event, 'board')">{{ talkingCardButtonLabel(guide) }}</button>
+                          <div class="specialty-talking-cards__actions">
+                            <button type="button" (click)="openTalkingCardConversation(guide, $event, 'board')">{{ talkingCardButtonLabel(guide) }}</button>
+                            @for (action of talkingCardActionLinks(guide); track action.id) {
+                              <a [class.is-schedule]="action.kind === 'schedule'" [href]="action.url" target="_blank" rel="noopener noreferrer" (click)="trackTalkingCardAction(guide, action, $event)">{{ action.label }}</a>
+                            }
+                            @if (canEditBoard(board)) {
+                              <button type="button" class="specialty-talking-cards__edit" [attr.aria-label]="'Edit Talking Card ' + guide.title" (click)="openEditTalkingCard(guide, board, $event)"><span class="material-symbols-outlined">edit</span></button>
+                            }
+                          </div>
                         </article>
                       }
                     </div>
@@ -3277,9 +3301,9 @@
                               </button>
                             }
                           } @else {
-                            <button type="button" role="menuitem" (click)="closeCardActionMenu(); openEditCard(card, cardHostBoard(board, card))">
+                            <button type="button" role="menuitem" (click)="closeCardActionMenu(); isTalkingCard(card) ? openEditTalkingCard(card, cardHostBoard(board, card)) : openEditCard(card, cardHostBoard(board, card))">
                               <span class="material-symbols-outlined">edit</span>
-                              <span i18n>Edit card</span>
+                              <span>{{ isTalkingCard(card) ? 'Edit Talking Card' : 'Edit card' }}</span>
                             </button>
                             @if (isTourBoard(board) && card.tour) {
                               <button type="button" role="menuitem" (click)="openAddTourStop(card.id, $event)">
@@ -3519,11 +3543,19 @@
                           <p class="detail-card__notes">{{ card.notes }}</p>
                         }
                         @if (isTalkingCard(card)) {
-                          <button type="button" class="talking-card-cta" (click)="openTalkingCardConversation(card, $event, 'board')">
-                            <span class="material-symbols-outlined">mic</span>
-                            <span><strong>{{ talkingCardButtonLabel(card) }}</strong><small>Text or voice conversation</small></span>
-                            <span class="material-symbols-outlined">arrow_forward</span>
-                          </button>
+                          <div class="talking-card-action-row">
+                            <button type="button" class="talking-card-cta" (click)="openTalkingCardConversation(card, $event, 'board')">
+                              <span class="material-symbols-outlined">mic</span>
+                              <span><strong>{{ talkingCardButtonLabel(card) }}</strong><small>Text or voice conversation</small></span>
+                              <span class="material-symbols-outlined">arrow_forward</span>
+                            </button>
+                            @for (action of talkingCardActionLinks(card); track action.id) {
+                              <a class="talking-card-link" [class.is-schedule]="action.kind === 'schedule'" [href]="action.url" target="_blank" rel="noopener noreferrer" (click)="trackTalkingCardAction(card, action, $event)">
+                                <span class="material-symbols-outlined">{{ action.kind === 'schedule' ? 'calendar_month' : 'open_in_new' }}</span>
+                                <span><strong>{{ action.label }}</strong>@if (action.description) { <small>{{ action.description }}</small> }</span>
+                              </a>
+                            }
+                          </div>
                         }
                         @if (card.tags.length) {
                           <div class="detail-card__tags">
@@ -3606,6 +3638,12 @@
                           <span><strong>{{ talkingCardButtonLabel(card) }}</strong><small>Text or voice conversation</small></span>
                           <span class="material-symbols-outlined">arrow_forward</span>
                         </button>
+                        @for (action of talkingCardActionLinks(card); track action.id) {
+                          <a class="talking-card-link talking-card-link--back" [class.is-schedule]="action.kind === 'schedule'" [href]="action.url" target="_blank" rel="noopener noreferrer" (click)="trackTalkingCardAction(card, action, $event)">
+                            <span class="material-symbols-outlined">{{ action.kind === 'schedule' ? 'calendar_month' : 'open_in_new' }}</span>
+                            <span><strong>{{ action.label }}</strong></span>
+                          </a>
+                        }
                       }
                       @if (canGoThere(card)) {
                         <button
@@ -10927,6 +10965,7 @@
     [boardId]="talkingBoard.id"
     [boardTitle]="talkingBoard.title"
     [boardVisibility]="talkingBoard.visibility"
+    [editingCard]="talkingCardEditorValue()"
     (closed)="closeTalkingCardEditor()"
     (saved)="addTalkingCard($event)"
   ></app-talking-card-editor>
@@ -10943,6 +10982,7 @@
       [cardSubtitle]="talkingCard.subtitle"
       [imageUrl]="talkingCard.imageUrl"
       [openingMessage]="conversation.openingMessage"
+      [actions]="talkingCardActionLinks(talkingCard)"
       [surface]="talkingConversationSurface()"
       (activity)="trackTalkingCardActivity(talkingCard, $event)"
       (closed)="closeTalkingCardConversation()"

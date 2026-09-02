@@ -1,5 +1,6 @@
 import { isPlatformBrowser } from '@angular/common';
 import { inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { normalizeTalkingCardActions, type TalkingCardAction } from '../boards/talking-card';
 
 export type TalkingCardDraftMode = 'existing' | 'new';
 export type TalkingCardDraftVoiceChoice = 'default' | 'catalog' | 'personal' | 'saved';
@@ -8,6 +9,7 @@ export interface TalkingCardDraftRecord {
   key: string;
   version: 1;
   boardId: string;
+  cardId?: string;
   mode: TalkingCardDraftMode;
   selectedAtlasId: string;
   createdAtlasId: string;
@@ -16,7 +18,8 @@ export interface TalkingCardDraftRecord {
   personaPrompt: string;
   openingMessage: string;
   ctaLabel: string;
-  placement: 'start' | 'end';
+  placement: 'start' | 'end' | 'keep';
+  actions?: TalkingCardAction[];
   catalogVoiceId: string;
   personalVoiceId?: string;
   voiceChoice: TalkingCardDraftVoiceChoice;
@@ -160,7 +163,7 @@ export class TalkingCardDraftStore {
     const record = value as Partial<TalkingCardDraftRecord>;
     if (record.version !== 1 || record.key !== key || typeof record.boardId !== 'string') return null;
     const mode: TalkingCardDraftMode = record.mode === 'new' ? 'new' : 'existing';
-    const placement = record.placement === 'start' ? 'start' : 'end';
+    const placement = record.placement === 'start' || record.placement === 'keep' ? record.placement : 'end';
     const voiceChoice: TalkingCardDraftVoiceChoice = record.voiceChoice === 'catalog'
       || record.voiceChoice === 'personal'
       || record.voiceChoice === 'saved'
@@ -174,6 +177,7 @@ export class TalkingCardDraftStore {
       key,
       version: 1,
       boardId: record.boardId,
+      cardId: this.stringValue(record.cardId),
       mode,
       selectedAtlasId: this.stringValue(record.selectedAtlasId),
       createdAtlasId: this.stringValue(record.createdAtlasId),
@@ -183,6 +187,7 @@ export class TalkingCardDraftStore {
       openingMessage: this.stringValue(record.openingMessage).slice(0, 500),
       ctaLabel: this.stringValue(record.ctaLabel).slice(0, 48),
       placement,
+      actions: normalizeTalkingCardActions(record.actions),
       catalogVoiceId: this.stringValue(record.catalogVoiceId),
       personalVoiceId: this.stringValue(record.personalVoiceId),
       voiceChoice,

@@ -9,6 +9,10 @@
 .talking-editor__tabs { display: flex; gap: 6px; margin: 0 30px; padding: 5px; border-radius: 15px; background: var(--soft-fill); }
 .talking-editor__tabs button { flex: 1; padding: 11px 14px; border: 0; border-radius: 11px; color: var(--muted); background: transparent; font-weight: 800; cursor: pointer; }
 .talking-editor__tabs button.is-active { color: var(--text); background: var(--surface); box-shadow: 0 2px 10px rgba(0,0,0,.08); }
+.talking-editor__tabs--sections button { min-width: 0; padding-inline: 8px; }
+.talking-editor__scope-note { display: flex; align-items: flex-start; gap: 9px; margin: 0 30px 14px; padding: 11px 13px; border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--line)); border-radius: 13px; color: var(--muted); background: color-mix(in srgb, var(--accent) 5%, var(--surface)); font-size: .72rem; line-height: 1.5; }
+.talking-editor__scope-note > .material-symbols-outlined { flex: 0 0 auto; color: var(--accent); font-size: 1.05rem; }
+.talking-editor__scope-note strong { color: var(--text); }
 .talking-editor__body { display: grid; gap: 18px; padding: 24px 30px 28px; }
 .talking-editor label { display: grid; gap: 7px; min-width: 0; }
 .talking-editor label > span { font-size: .74rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
@@ -16,6 +20,56 @@
 .talking-editor textarea { resize: vertical; line-height: 1.5; }
 .talking-editor small { color: var(--muted); font-size: .75rem; line-height: 1.45; }
 .talking-editor__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.talking-editor__edit-section { display: grid; gap: 16px; }
+.talking-editor__section-heading { display: flex; align-items: center; gap: 11px; padding-bottom: 13px; border-bottom: 1px solid var(--line); }
+.talking-editor__section-heading > .material-symbols-outlined { display: grid; width: 40px; height: 40px; flex: 0 0 auto; place-items: center; border-radius: 12px; color: var(--accent); background: color-mix(in srgb, var(--accent) 11%, var(--surface)); }
+.talking-editor__section-heading > span:last-child { display: grid; gap: 2px; }
+.talking-editor__section-heading strong { font-size: .9rem; }
+.talking-editor__section-heading small { font-size: .69rem; }
+.talking-editor__portrait-editor { display: flex; align-items: center; gap: 12px; }
+.talking-editor__portrait-button,
+.talking-editor__document-add { position: relative; display: inline-flex !important; width: max-content; min-height: 39px; align-items: center; grid-auto-flow: column; gap: 6px !important; overflow: hidden; border: 1px solid var(--line); border-radius: 11px; padding: 0 12px; color: var(--accent); background: var(--soft-fill); font-size: .7rem; font-weight: 900; cursor: pointer; }
+.talking-editor__portrait-button > span,
+.talking-editor__document-add > span { font-size: inherit !important; letter-spacing: 0 !important; text-transform: none !important; }
+.talking-editor__portrait-button > .material-symbols-outlined,
+.talking-editor__document-add > .material-symbols-outlined { font-size: 1rem !important; }
+.talking-editor__portrait-button input,
+.talking-editor__document-add input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.talking-editor__shared-note { display: flex; align-items: flex-start; gap: 6px; padding: 10px 12px; border-radius: 11px; background: var(--soft-fill); }
+.talking-editor__shared-note .material-symbols-outlined { color: var(--accent); font-size: 1rem; }
+.talking-editor__documents { display: grid; gap: 8px; padding: 14px; border: 1px solid var(--line); border-radius: 16px; background: var(--soft-fill); }
+.talking-editor__documents > header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.talking-editor__documents > header > span:first-child { display: grid; gap: 2px; }
+.talking-editor__documents > header > span:last-child { color: var(--muted); font-size: .65rem; font-weight: 850; }
+.talking-editor__documents article { display: grid; grid-template-columns: auto minmax(0,1fr) auto; align-items: center; gap: 9px; padding: 9px 10px; border: 1px solid var(--line); border-radius: 11px; background: var(--surface); }
+.talking-editor__documents article > .material-symbols-outlined { color: var(--accent); font-size: 1.1rem; }
+.talking-editor__documents article > span:nth-child(2) { display: grid; min-width: 0; gap: 1px; }
+.talking-editor__documents article strong { overflow: hidden; font-size: .72rem; text-overflow: ellipsis; white-space: nowrap; }
+.talking-editor__documents article small { font-size: .6rem; text-transform: capitalize; }
+.talking-editor__documents article button { display: grid; width: 30px; height: 30px; place-items: center; border: 0; border-radius: 8px; color: var(--danger-text, #b42318); background: var(--soft-fill); cursor: pointer; }
+.talking-editor__documents article button .material-symbols-outlined { font-size: 1rem; }
+.talking-editor__document-empty { display: flex; align-items: center; gap: 6px; margin: 0; padding: 13px; color: var(--muted); font-size: .72rem; text-align: center; }
+.talking-editor__actions-section { border: 1px solid color-mix(in srgb, var(--accent) 20%, var(--line)); border-radius: 18px; padding: 16px; background: color-mix(in srgb, var(--accent) 3%, var(--surface)); }
+.talking-editor__action-list { display: grid; gap: 10px; }
+.talking-editor__action-card { display: grid; gap: 11px; padding: 13px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+.talking-editor__action-card.is-schedule { border-color: color-mix(in srgb, var(--accent) 38%, var(--line)); box-shadow: inset 3px 0 0 var(--accent); }
+.talking-editor__action-card > header { display: grid; grid-template-columns: auto minmax(0,1fr) auto; align-items: center; gap: 9px; }
+.talking-editor__action-card > header > .material-symbols-outlined { color: var(--accent); }
+.talking-editor__action-card > header > span:nth-child(2) { display: grid; gap: 1px; }
+.talking-editor__action-card > header strong { font-size: .78rem; }
+.talking-editor__action-card > header small { font-size: .61rem; }
+.talking-editor__action-card > header button { display: grid; width: 29px; height: 29px; place-items: center; border: 0; border-radius: 50%; color: var(--muted); background: var(--soft-fill); cursor: pointer; }
+.talking-editor__action-card > header button .material-symbols-outlined { font-size: 1rem; }
+.talking-editor__test-link { display: inline-flex; width: max-content; align-items: center; gap: 4px; border: 0; padding: 0; color: var(--accent); background: transparent; font-size: .67rem; font-weight: 900; cursor: pointer; }
+.talking-editor__test-link .material-symbols-outlined { font-size: .95rem; }
+.talking-editor__action-empty { margin: 0; padding: 16px; border: 1px dashed var(--line); border-radius: 13px; color: var(--muted); font-size: .72rem; text-align: center; }
+.talking-editor__action-adds { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; }
+.talking-editor__action-adds button { display: inline-flex; min-height: 37px; align-items: center; gap: 5px; border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--line)); border-radius: 999px; padding: 0 11px; color: var(--accent); background: var(--surface); font-size: .68rem; font-weight: 900; cursor: pointer; }
+.talking-editor__action-adds button:disabled { cursor: not-allowed; opacity: .42; }
+.talking-editor__action-adds .material-symbols-outlined { font-size: 1rem; }
+.talking-editor__action-adds small { flex-basis: 100%; }
+.talking-editor__field-warning { display: flex; align-items: center; gap: 5px; color: #8a5b00 !important; }
+.talking-editor__field-warning .material-symbols-outlined { font-size: .95rem; }
 .talking-editor__avatar-search { display: grid; gap: 7px; }
 .talking-editor__avatar-search > label > span { font-size: .74rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
 .talking-editor__search-field { position: relative; display: flex; align-items: center; }
@@ -162,4 +216,4 @@
 .talking-editor__primary:disabled { opacity: .5; cursor: not-allowed; }
 .talking-editor__spin { animation: talking-spin 1s linear infinite; }
 @keyframes talking-spin { to { transform: rotate(360deg); } }
-@media (max-width: 650px) { .talking-editor-backdrop { padding: 0; place-items: end stretch; } .talking-editor { max-height: 94vh; border-radius: 24px 24px 0 0; } .talking-editor__header, .talking-editor__body, .talking-editor__footer { padding-left: 18px; padding-right: 18px; } .talking-editor__tabs { margin-inline: 18px; } .talking-editor__grid { grid-template-columns: 1fr; } .talking-editor__voice-picker > header { align-items: flex-start; flex-direction: column; } .talking-editor__voice-option { grid-template-columns: minmax(0, 1fr); } .talking-editor__voice-preview { min-height: 38px; } .talking-editor__selected-voice { grid-template-columns: auto minmax(0, 1fr); } .talking-editor__selected-voice button { grid-column: 1 / -1; min-height: 38px; } .talking-editor__personal-library > header { align-items: flex-start; } .talking-editor__personal-actions { padding-left: 10px; } .talking-editor__voice-capture { align-items: stretch; flex-direction: column; } .talking-editor__voice-capture > span { text-align: center; } .talking-editor__footer { flex-wrap: wrap; } .talking-editor__draft-state { flex: 1 0 100%; } }
+@media (max-width: 650px) { .talking-editor-backdrop { padding: 0; place-items: end stretch; } .talking-editor { max-height: 94vh; border-radius: 24px 24px 0 0; } .talking-editor__header, .talking-editor__body, .talking-editor__footer { padding-left: 18px; padding-right: 18px; } .talking-editor__tabs,.talking-editor__scope-note { margin-inline: 18px; } .talking-editor__tabs--sections { overflow-x: auto; } .talking-editor__tabs--sections button { flex: 0 0 auto; min-width: 88px; } .talking-editor__grid { grid-template-columns: 1fr; } .talking-editor__portrait-editor { align-items: flex-start; flex-wrap: wrap; } .talking-editor__voice-picker > header { align-items: flex-start; flex-direction: column; } .talking-editor__voice-option { grid-template-columns: minmax(0, 1fr); } .talking-editor__voice-preview { min-height: 38px; } .talking-editor__selected-voice { grid-template-columns: auto minmax(0, 1fr); } .talking-editor__selected-voice button { grid-column: 1 / -1; min-height: 38px; } .talking-editor__personal-library > header { align-items: flex-start; } .talking-editor__personal-actions { padding-left: 10px; } .talking-editor__voice-capture { align-items: stretch; flex-direction: column; } .talking-editor__voice-capture > span { text-align: center; } .talking-editor__footer { flex-wrap: wrap; } .talking-editor__draft-state { flex: 1 0 100%; } }

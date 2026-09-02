@@ -165,9 +165,12 @@ import {
 import { canReorderCardSurface } from './card-interaction';
 import {
   normalizeBoardCardConversation,
+  talkingCardActions,
   talkingCardCtaLabel,
   type BoardCardConversation,
+  type TalkingCardAction,
   type TalkingCardEditorResult,
+  type TalkingCardEditorValue,
 } from './talking-card';
 import { cardPresentationSubtitle } from './card-numbering';
 import { cardNotesForPersistence, cardNotesSummary } from './card-notes';
@@ -1835,11 +1838,26 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly creatingBoardInside = signal<BoardInsideContext | null>(null);
   readonly cardDialogOpen = signal(false);
   readonly talkingCardEditorBoardId = signal<string | null>(null);
+  readonly talkingCardEditingCardId = signal<string | null>(null);
   readonly talkingConversationCardId = signal<string | null>(null);
   readonly talkingConversationSurface = signal<'board' | 'live'>('board');
   readonly talkingCardEditorBoard = computed(() => {
     const boardId = this.talkingCardEditorBoardId();
     return boardId ? this.boards().find((board) => board.id === boardId) ?? null : null;
+  });
+  readonly talkingCardEditorValue = computed<TalkingCardEditorValue | null>(() => {
+    const board = this.talkingCardEditorBoard();
+    const cardId = this.talkingCardEditingCardId();
+    const card = board?.cards.find((candidate) => candidate.id === cardId);
+    if (!board || !card?.conversation) return null;
+    return {
+      id: card.id,
+      title: card.title,
+      subtitle: card.subtitle,
+      imageUrl: card.imageUrl,
+      placement: 'keep',
+      conversation: card.conversation,
+    };
   });
   readonly talkingConversationCard = computed(() => {
     const cardId = this.talkingConversationCardId();
@@ -6915,6 +6933,19 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       this.boardsSyncError.set('Only the board owner can add Talking Cards.');
       return;
     }
+    this.talkingCardEditingCardId.set(null);
+    this.talkingCardEditorBoardId.set(board.id);
+  }
+
+  openEditTalkingCard(card: BoardCard, boardOverride?: Board, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const board = boardOverride ?? this.boards().find((candidate) => candidate.cards.some((item) => item.id === card.id));
+    if (!board || !this.canEditBoard(board) || !card.conversation?.atlasId) {
+      this.boardsSyncError.set('Only the board owner can edit this Talking Card.');
+      return;
+    }
+    this.talkingCardEditingCardId.set(card.id);
     this.talkingCardEditorBoardId.set(board.id);
   }
 
@@ -6927,17 +6958,52 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     }
     this.boardSettingsBoardId.set(null);
     this.boardSettingsError.set(null);
+    this.talkingCardEditingCardId.set(null);
     this.talkingCardEditorBoardId.set(board.id);
   }
 
   closeTalkingCardEditor(): void {
     this.talkingCardEditorBoardId.set(null);
+    this.talkingCardEditingCardId.set(null);
   }
 
   async addTalkingCard(result: TalkingCardEditorResult): Promise<void> {
     const board = this.talkingCardEditorBoard();
     if (!board || !this.canEditBoard(board)) return;
     const now = new Date().toISOString();
+    if (result.cardId) {
+      const existing = board.cards.find((card) => card.id === result.cardId);
+      if (!existing?.conversation) return;
+      const updated: BoardCard = {
+        ...existing,
+        title: result.title,
+        subtitle: result.subtitle,
+        notes: result.openingMessage,
+        imageUrl: result.imageUrl,
+        imageUrls: result.imageUrl
+          ? [result.imageUrl, ...existing.imageUrls.filter((url) => url !== existing.imageUrl && url !== result.imageUrl)]
+          : existing.imageUrls.filter((url) => url !== existing.imageUrl),
+        conversation: {
+          version: 1,
+          provider: 'atlas',
+          atlasId: result.atlasId,
+          openingMessage: result.openingMessage,
+          ctaLabel: result.ctaLabel,
+          ...(result.actions.length ? { actions: result.actions } : {}),
+        },
+        updatedAt: now,
+      };
+      let cards = board.cards.map((card) => card.id === updated.id ? updated : card);
+      if (result.placement !== 'keep') {
+        cards = cards.filter((card) => card.id !== updated.id);
+        cards = result.placement === 'start' ? [updated, ...cards] : [...cards, updated];
+      }
+      const nextBoard = { ...board, cards, updatedAt: now };
+      this.boards.update((boards) => boards.map((item) => item.id === board.id ? nextBoard : item));
+      this.closeTalkingCardEditor();
+      await this.persistAndReplaceBoard(nextBoard);
+      return;
+    }
     const card = this.cardFromRecord({
       id: this.createId(),
       title: result.title,
@@ -6957,6 +7023,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         atlasId: result.atlasId,
         openingMessage: result.openingMessage,
         ctaLabel: result.ctaLabel,
+        ...(result.actions.length ? { actions: result.actions } : {}),
       },
       createdAt: now,
       updatedAt: now,
@@ -6975,6 +7042,15 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
 
   talkingCardButtonLabel(card: Pick<BoardCard, 'conversation'>): string {
     return talkingCardCtaLabel(card.conversation);
+  }
+
+  talkingCardActionLinks(card: Pick<BoardCard, 'conversation'>): TalkingCardAction[] {
+    return talkingCardActions(card.conversation);
+  }
+
+  trackTalkingCardAction(card: BoardCard, action: TalkingCardAction, event?: Event): void {
+    event?.stopPropagation();
+    this.boardAnalytics.trackOutboundClick(card.id, action.url);
   }
 
   openTalkingCardConversation(card: BoardCard, event?: Event, surface: 'board' | 'live' = 'board'): void {

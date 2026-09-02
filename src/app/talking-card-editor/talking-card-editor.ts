@@ -2,7 +2,7 @@ import { Component, computed, effect, HostListener, inject, input, OnDestroy, On
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BackdropDismissDirective } from '../backdrop-dismiss.directive';
-import type { AtlasItem, AtlasSpeechVoiceConfig } from '../atlas.models';
+import type { AtlasItem, AtlasSpeechVoiceConfig, DocumentItem } from '../atlas.models';
 import { AtlasService, type AtlasSpeechAudioResponse } from '../atlas.service';
 import { DocumentsService } from '../documents.service';
 import {
@@ -11,16 +11,25 @@ import {
   stackNarratorVoiceById,
   type StackNarratorVoice,
 } from '../boards/stack-voice';
-import type { TalkingCardEditorResult } from '../boards/talking-card';
+import {
+  normalizeTalkingCardActions,
+  normalizeTalkingCardActionUrl,
+  type TalkingCardAction,
+  type TalkingCardActionKind,
+  type TalkingCardEditorResult,
+  type TalkingCardEditorValue,
+} from '../boards/talking-card';
 import {
   PersonalVoiceService,
   type PersonalVoice,
   type PersonalVoiceLibrary,
 } from '../personal-voice.service';
 import { TalkingCardDraftStore, type TalkingCardDraftRecord } from './talking-card-draft.store';
+import { TalkingCardKnowledgeService } from './talking-card-knowledge.service';
 
 type EditorMode = 'existing' | 'new';
 type VoiceChoice = 'default' | 'catalog' | 'personal' | 'saved';
+type EditorSection = 'card' | 'knowledge' | 'voice' | 'actions';
 
 @Component({
   selector: 'app-talking-card-editor',
@@ -31,6 +40,7 @@ type VoiceChoice = 'default' | 'catalog' | 'personal' | 'saved';
 export class TalkingCardEditorComponent implements OnDestroy, OnInit {
   private readonly atlasService = inject(AtlasService);
   private readonly documentsService = inject(DocumentsService);
+  private readonly talkingCardKnowledgeService = inject(TalkingCardKnowledgeService);
   private readonly draftStore = inject(TalkingCardDraftStore);
   private readonly personalVoiceService = inject(PersonalVoiceService);
   private readonly router = inject(Router);
@@ -51,10 +61,12 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
   readonly boardId = input('');
   readonly boardTitle = input('Board');
   readonly boardVisibility = input<'private' | 'public' | 'unlisted'>('private');
+  readonly editingCard = input<TalkingCardEditorValue | null>(null);
   readonly closed = output<void>();
   readonly saved = output<TalkingCardEditorResult>();
 
   readonly mode = signal<EditorMode>('existing');
+  readonly editorSection = signal<EditorSection>('card');
   readonly selectedAtlasId = signal('');
   readonly avatarSearch = signal('');
   readonly name = signal('');
@@ -62,7 +74,7 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
   readonly personaPrompt = signal('');
   readonly openingMessage = signal('Hi! I’m here to help. What would you like to know?');
   readonly ctaLabel = signal('Talk to me');
-  readonly placement = signal<'start' | 'end'>('end');
+  readonly placement = signal<'start' | 'end' | 'keep'>('end');
   readonly catalogVoiceId = signal('');
   readonly personalVoiceId = signal('');
   readonly voiceChoice = signal<VoiceChoice>('default');
@@ -96,6 +108,11 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
   readonly imageProcessing = signal(false);
   readonly uploadedImageUrl = signal('');
   readonly documentFiles = signal<File[]>([]);
+  readonly existingDocuments = signal<DocumentItem[]>([]);
+  readonly documentsLoading = signal(false);
+  readonly documentDeletingId = signal<string | null>(null);
+  readonly actions = signal<TalkingCardAction[]>([]);
+  readonly actionValidationMessage = signal<string | null>(null);
   readonly saving = signal(false);
   readonly saveStage = signal('');
   readonly errorMessage = signal<string | null>(null);
@@ -104,6 +121,7 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
   readonly publicAtlasesLoaded = signal(false);
   readonly draftReady = signal(false);
   readonly draftStatus = signal<'restored' | 'saved' | null>(null);
+  readonly isEditing = computed(() => !!this.editingCard());
 
   readonly ownedAtlases = computed(() => this.atlasService.atlases()
     .filter((atlas) => this.atlasService.canAdminAtlas(atlas)));
@@ -157,9 +175,22 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
     const atlas = this.selectedAtlas();
     return !!atlas && this.atlasService.canAdminAtlas(atlas);
   });
+  readonly selectedAtlasOwned = computed(() => {
+    const atlas = this.selectedAtlas();
+    return !!atlas && this.atlasService.isAtlasOwner(atlas);
+  });
+  readonly scheduleAction = computed(() => this.actions().find((action) => action.kind === 'schedule') ?? null);
+  readonly actionFormMessage = computed(() => {
+    for (const action of this.actions()) {
+      if (!action.label.trim()) return 'Give each action a button label.';
+      if (!normalizeTalkingCardActionUrl(action.url)) return 'Each action needs a secure public HTTPS link.';
+    }
+    return null;
+  });
   readonly canSave = computed(() => {
     if (this.saving() || this.imageProcessing() || this.voiceConfigLoading() || this.personalVoiceCreating()) return false;
-    if (!this.openingMessage().trim()) return false;
+    if (!this.openingMessage().trim() || !!this.actionFormMessage()) return false;
+    if (this.isEditing() && !this.name().trim()) return false;
     if (this.mode() === 'existing') {
       return !!this.selectedAtlas() && (!this.needsPublication() || this.publishAvatar());
     }
@@ -179,10 +210,14 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
   }
 
   async ngOnInit(): Promise<void> {
+    if (this.editingCard()) {
+      await this.initializeEditingCard();
+    }
     await Promise.all([this.restoreDraft(), this.loadPersonalVoices()]);
   }
 
   setMode(mode: EditorMode): void {
+    if (this.isEditing()) return;
     if (this.mode() === mode) return;
     this.stopVoicePreview();
     this.mode.set(mode);
@@ -196,6 +231,97 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
       this.personalVoiceId.set('');
     } else if (this.selectedAtlasId() && this.selectedAtlasEditable()) {
       void this.loadExistingVoiceConfig(this.selectedAtlasId());
+    }
+  }
+
+  setEditorSection(section: EditorSection): void {
+    this.stopVoicePreview();
+    this.editorSection.set(section);
+    this.errorMessage.set(null);
+    this.actionValidationMessage.set(null);
+  }
+
+  addAction(kind: TalkingCardActionKind): void {
+    if (this.actions().length >= 4 || (kind === 'schedule' && this.scheduleAction())) return;
+    const id = `${kind}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
+    this.actions.update((actions) => [...actions, {
+      id,
+      kind,
+      label: kind === 'schedule' ? 'Schedule a meeting' : 'Open link',
+      url: '',
+      ...(kind === 'schedule' ? { description: 'Choose a time to continue the conversation.' } : {}),
+    }]);
+  }
+
+  updateAction(index: number, key: 'label' | 'url' | 'description', value: string): void {
+    this.actions.update((actions) => actions.map((action, actionIndex) =>
+      actionIndex === index ? { ...action, [key]: value } : action));
+    this.actionValidationMessage.set(null);
+  }
+
+  removeAction(index: number): void {
+    this.actions.update((actions) => actions.filter((_action, actionIndex) => actionIndex !== index));
+    this.actionValidationMessage.set(null);
+  }
+
+  testAction(action: TalkingCardAction): void {
+    const url = normalizeTalkingCardActionUrl(action.url);
+    if (!url) {
+      this.actionValidationMessage.set('Enter a secure public HTTPS link before testing it.');
+      return;
+    }
+    if (typeof window !== 'undefined') window.open(url, '_blank', 'noopener,noreferrer');
+  }
+
+  async deleteKnowledgeDocument(document: DocumentItem): Promise<void> {
+    if (!this.selectedAtlasOwned() || this.documentDeletingId()) return;
+    if (typeof window !== 'undefined' && !window.confirm(`Remove “${document.title || document.filename}” from this avatar’s knowledge?`)) return;
+    this.documentDeletingId.set(document.id);
+    this.errorMessage.set(null);
+    try {
+      await this.documentsService.deleteDocument(document.id);
+      this.existingDocuments.update((documents) => documents.filter((item) => item.id !== document.id));
+    } catch (error) {
+      this.errorMessage.set(error instanceof Error ? error.message : 'That knowledge document could not be removed.');
+    } finally {
+      this.documentDeletingId.set(null);
+    }
+  }
+
+  private async initializeEditingCard(): Promise<void> {
+    const card = this.editingCard();
+    if (!card) return;
+    this.mode.set('existing');
+    this.selectedAtlasId.set(card.conversation.atlasId);
+    this.name.set(card.title);
+    this.role.set(card.subtitle);
+    this.imagePreviewUrl.set(card.imageUrl);
+    this.openingMessage.set(card.conversation.openingMessage || 'Hi! I’m here to help. What would you like to know?');
+    this.ctaLabel.set(card.conversation.ctaLabel?.trim() || 'Talk to me');
+    this.actions.set(normalizeTalkingCardActions(card.conversation.actions));
+    this.placement.set(card.placement);
+    try {
+      const atlas = await this.atlasService.getAccessibleAtlasById(card.conversation.atlasId);
+      if (!atlas) throw new Error('The avatar connected to this Talking Card is unavailable.');
+      if (!this.availableAtlases().some((candidate) => candidate.id === atlas.id)) {
+        this.publicAtlases.update((items) => [...items, atlas]);
+      }
+      this.personaPrompt.set(atlas.persona_prompt ?? '');
+      if (this.atlasService.canAdminAtlas(atlas)) await this.loadExistingVoiceConfig(atlas.id);
+      if (this.atlasService.isAtlasOwner(atlas)) await this.loadExistingDocuments(atlas.id);
+    } catch (error) {
+      this.errorMessage.set(error instanceof Error ? error.message : 'The Talking Card could not be loaded for editing.');
+    }
+  }
+
+  private async loadExistingDocuments(atlasId: string): Promise<void> {
+    this.documentsLoading.set(true);
+    try {
+      this.existingDocuments.set(await this.talkingCardKnowledgeService.listOwnedAtlasDocuments(atlasId));
+    } catch (error) {
+      this.errorMessage.set(error instanceof Error ? error.message : 'Knowledge documents could not be loaded.');
+    } finally {
+      this.documentsLoading.set(false);
     }
   }
 
@@ -569,12 +695,26 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
     this.saving.set(true);
     this.saveStage.set('Preparing avatar…');
     this.errorMessage.set(null);
+    this.actionValidationMessage.set(null);
     try {
       let atlas: AtlasItem | null = this.selectedAtlas();
       let atlasId = atlas?.id ?? '';
-      let title = atlas?.chat_guide?.name?.trim() || atlas?.name || this.name().trim();
-      let subtitle = atlas?.chat_guide?.label?.trim() || atlas?.description || this.role().trim();
-      let imageUrl = atlas?.chat_guide?.image_url?.trim() || atlas?.logo_url?.trim() || atlas?.hero_url?.trim() || '';
+      let title = this.isEditing()
+        ? this.name().trim()
+        : atlas?.chat_guide?.name?.trim() || atlas?.name || this.name().trim();
+      let subtitle = this.isEditing()
+        ? this.role().trim()
+        : atlas?.chat_guide?.label?.trim() || atlas?.description || this.role().trim();
+      let imageUrl = this.isEditing()
+        ? this.uploadedImageUrl() || this.imagePreviewUrl()
+        : atlas?.chat_guide?.image_url?.trim() || atlas?.logo_url?.trim() || atlas?.hero_url?.trim() || '';
+      const rawActions = this.actions();
+      const actions = normalizeTalkingCardActions(rawActions);
+      if (actions.length !== rawActions.length) {
+        const message = this.actionFormMessage() || 'Fix the action links before saving.';
+        this.actionValidationMessage.set(message);
+        throw new Error(message);
+      }
 
       if (this.mode() === 'new') {
         const resumedAtlasId = this.createdAtlasId();
@@ -636,24 +776,60 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
           await this.atlasService.updateAtlas(atlasId, { is_public: true });
         }
       } else if (atlas) {
+        const imageFile = this.imageFile();
+        if (this.isEditing() && imageFile && !this.uploadedImageUrl()) {
+          this.saveStage.set('Uploading optimized portrait…');
+          imageUrl = await this.atlasService.uploadTalkingCardAvatarImage(atlas.id, imageFile);
+          this.uploadedImageUrl.set(imageUrl);
+        }
         if (this.needsPublication() && this.publishAvatar()) {
           await this.atlasService.updateAtlas(atlas.id, { is_public: true });
         }
         if (this.atlasService.canAdminAtlas(atlas)) {
+          if (this.isEditing()) {
+            this.saveStage.set('Saving avatar profile…');
+            await Promise.all([
+              this.atlasService.updateChatGuideConfig(atlas.id, {
+                name: title || atlas.name,
+                label: subtitle || null,
+                image_url: imageUrl || null,
+                banner_url: atlas.chat_guide?.banner_url ?? null,
+              }),
+              this.atlasService.updateAtlas(atlas.id, {
+                description: subtitle || null,
+                landing_summary: subtitle || null,
+                ...(imageUrl ? { logo_url: imageUrl } : {}),
+              }),
+              this.atlasService.updatePersonaPrompt(atlas.id, this.personaPrompt()),
+            ]);
+          }
           await this.saveExistingVoiceIfChanged(atlas.id);
+        }
+        if (this.isEditing() && this.documentFiles().length) {
+          if (!this.atlasService.isAtlasOwner(atlas)) {
+            throw new Error('Only the avatar owner can add knowledge documents.');
+          }
+          this.saveStage.set('Uploading knowledge documents…');
+          await this.documentsService.uploadFiles(this.documentFiles(), { atlasId: atlas.id });
+          if (this.documentsService.uploadError()) {
+            throw new Error(this.documentsService.uploadError() || 'One or more knowledge files could not be uploaded.');
+          }
         }
       }
 
-      this.saveStage.set('Adding Talking Card…');
+      this.saveStage.set(this.isEditing() ? 'Saving Talking Card…' : 'Adding Talking Card…');
       this.draftReady.set(false);
       await this.draftStore.delete(this.draftStorageKey());
       this.saved.emit({
+        ...(this.editingCard()?.id ? { cardId: this.editingCard()!.id } : {}),
         atlasId,
         title,
         subtitle,
         imageUrl,
+        ...(this.isEditing() ? { personaPrompt: this.personaPrompt().trim().slice(0, 40000) } : {}),
         openingMessage: this.openingMessage().trim().slice(0, 500),
         ctaLabel: this.ctaLabel().trim().slice(0, 48) || 'Talk to me',
+        actions,
         placement: this.placement(),
       });
     } catch (error) {
@@ -698,6 +874,7 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
       this.personaPrompt.set(record.personaPrompt);
       this.openingMessage.set(record.openingMessage);
       this.ctaLabel.set(record.ctaLabel);
+      this.actions.set(normalizeTalkingCardActions(record.actions));
       this.placement.set(record.placement);
       this.catalogVoiceId.set(record.catalogVoiceId);
       this.personalVoiceId.set(record.personalVoiceId ?? '');
@@ -711,7 +888,7 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
         if (previous.startsWith('blob:')) URL.revokeObjectURL(previous);
         this.imagePreviewUrl.set(URL.createObjectURL(record.imageFile));
       }
-      const selected = this.ownedAtlases().find((atlas) => atlas.id === record.selectedAtlasId);
+      const selected = this.availableAtlases().find((atlas) => atlas.id === record.selectedAtlasId);
       if (record.mode === 'existing' && selected) {
         await this.loadExistingVoiceConfig(selected.id);
         this.voiceChoice.set(record.voiceChoice);
@@ -730,6 +907,7 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
       key,
       version: 1,
       boardId: this.boardId().trim(),
+      cardId: this.editingCard()?.id ?? '',
       mode: this.mode(),
       selectedAtlasId: this.selectedAtlasId(),
       createdAtlasId: this.createdAtlasId(),
@@ -738,6 +916,7 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
       personaPrompt: this.personaPrompt(),
       openingMessage: this.openingMessage(),
       ctaLabel: this.ctaLabel(),
+      actions: this.actions(),
       placement: this.placement(),
       catalogVoiceId: this.catalogVoiceId(),
       personalVoiceId: this.personalVoiceId(),
@@ -752,7 +931,9 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
 
   private draftStorageKey(): string {
     const boardId = this.boardId().trim();
-    if (boardId) return `board:${boardId}`;
+    if (boardId) return this.editingCard()?.id
+      ? `board:${boardId}:card:${this.editingCard()!.id}`
+      : `board:${boardId}`;
     const title = this.boardTitle().trim().toLocaleLowerCase().replace(/[^a-z0-9]+/g, '-');
     return title ? `board-title:${title}` : '';
   }

@@ -1,4 +1,8 @@
-import { normalizeBoardCardConversation, talkingCardCtaLabel } from './talking-card';
+import {
+  normalizeBoardCardConversation,
+  normalizeTalkingCardActions,
+  talkingCardCtaLabel,
+} from './talking-card';
 
 describe('Talking Card model', () => {
   it('normalizes a valid Atlas reference without retaining unknown fields', () => {
@@ -27,5 +31,30 @@ describe('Talking Card model', () => {
   it('uses an accessible default call to action', () => {
     expect(talkingCardCtaLabel(null)).toBe('Talk to me');
     expect(talkingCardCtaLabel({ version: 1, provider: 'atlas', atlasId: 'a', openingMessage: '' })).toBe('Talk to me');
+  });
+
+  it('normalizes scheduling and additional links while rejecting unsafe URLs', () => {
+    expect(normalizeTalkingCardActions([
+      { id: 'schedule-1', kind: 'schedule', label: ' Book a showing ', url: 'https://calendly.com/maya/showing', description: ' Pick a time. ' },
+      { id: 'listing', kind: 'link', label: 'View listing', url: 'https://example.com/listing' },
+      { id: 'fcc', kind: 'link', label: 'FCC', url: 'https://fcc.gov/consumer' },
+      { id: 'unsafe', kind: 'link', label: 'Unsafe', url: 'javascript:alert(1)' },
+      { id: 'private', kind: 'link', label: 'Private', url: 'https://127.0.0.1/admin' },
+    ])).toEqual([
+      { id: 'schedule-1', kind: 'schedule', label: 'Book a showing', url: 'https://calendly.com/maya/showing', description: 'Pick a time.' },
+      { id: 'listing', kind: 'link', label: 'View listing', url: 'https://example.com/listing' },
+      { id: 'fcc', kind: 'link', label: 'FCC', url: 'https://fcc.gov/consumer' },
+    ]);
+  });
+
+  it('preserves normalized actions on the board conversation model', () => {
+    expect(normalizeBoardCardConversation({
+      provider: 'atlas',
+      atlasId: 'avatar-1',
+      openingMessage: 'Hello',
+      actions: [{ kind: 'schedule', label: 'Schedule', url: 'https://cal.com/maya' }],
+    })?.actions).toEqual([
+      { id: 'schedule-1', kind: 'schedule', label: 'Schedule', url: 'https://cal.com/maya' },
+    ]);
   });
 });

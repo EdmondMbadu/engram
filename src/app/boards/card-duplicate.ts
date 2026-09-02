@@ -33,6 +33,11 @@ export function duplicateCardRecord<T extends DuplicableCard>(
     ...duplicateCardRecord(relatedCard, createId, now, false),
     rank: index + 1,
   }));
+  const conversation = card.conversation ? { ...card.conversation } as Record<string, unknown> : null;
+  if (conversation && Array.isArray(conversation['actions'])) {
+    conversation['actions'] = conversation['actions'].map((action) =>
+      action && typeof action === 'object' ? { ...action } : action);
+  }
 
   return {
     ...card,
@@ -45,7 +50,7 @@ export function duplicateCardRecord<T extends DuplicableCard>(
     tour: card.tour ? { ...card.tour, legToNext: null } : null,
     childBoardId: '',
     relatedCards,
-    conversation: card.conversation ? { ...card.conversation } : null,
+    conversation,
     listingPresentation: card.listingPresentation ? {
       ...card.listingPresentation,
       presentationImageUrls: [...(card.listingPresentation.presentationImageUrls ?? [])],

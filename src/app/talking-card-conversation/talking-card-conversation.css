@@ -413,6 +413,12 @@
 .talking-chat__recap-skip:disabled { cursor: wait; opacity: .5; }
 .talking-chat__recap--sent { gap: 0; }
 .talking-chat__recap-sent-copy strong { color: var(--text); }
+.talking-chat__recap-schedule { display: flex; width: min(100%, 30rem); align-items: center; gap: .7rem; border: 1px solid color-mix(in srgb, #d6a94a 65%, var(--line)); border-radius: 15px; padding: .8rem .9rem; color: #fff; background: linear-gradient(135deg, #126742, #229b68); box-shadow: 0 12px 26px rgba(18,103,66,.2); text-align: left; text-decoration: none; }
+.talking-chat__recap-schedule > .material-symbols-outlined:first-child { display: grid; width: 2.1rem; height: 2.1rem; flex: 0 0 auto; place-items: center; border-radius: 50%; color: #74540c; background: #fff4c9; }
+.talking-chat__recap-schedule > span:nth-child(2) { display: grid; flex: 1; gap: .12rem; }
+.talking-chat__recap-schedule strong { font-size: .84rem; }
+.talking-chat__recap-schedule small { color: rgba(255,255,255,.78); font-size: .65rem; line-height: 1.4; }
+.talking-chat__recap-schedule > .material-symbols-outlined:last-child { font-size: 1.15rem; }
 .talking-chat__recap-links {
   display: flex;
   flex-wrap: wrap;
