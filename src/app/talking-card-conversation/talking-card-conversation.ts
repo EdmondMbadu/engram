@@ -65,6 +65,7 @@ export class TalkingCardConversationComponent implements OnInit, OnDestroy {
   private voiceConversation: VoiceConversation | null = null;
   private threadId: string | null = null;
   private voiceMeterFrame: number | null = null;
+  private voiceMeterLastSampleAt = 0;
   private voiceAttempt = 0;
 
   readonly atlasId = input.required<string>();
@@ -256,14 +257,6 @@ export class TalkingCardConversationComponent implements OnInit, OnDestroy {
           if (attempt !== this.voiceAttempt) return;
           this.voiceMode.set(mode);
         },
-        onVadScore: ({ vadScore }) => {
-          if (attempt !== this.voiceAttempt || this.voiceMuted()) return;
-          this.voiceInputLevel.set(Math.max(this.voiceInputLevel(), this.clampVoiceLevel(vadScore)));
-        },
-        onAudio: () => {
-          if (attempt !== this.voiceAttempt) return;
-          this.voiceOutputLevel.set(Math.max(this.voiceOutputLevel(), 0.42));
-        },
         onMessage: ({ role, message }) => {
           if (attempt !== this.voiceAttempt) return;
           const text = String(message ?? '').trim();
@@ -273,11 +266,7 @@ export class TalkingCardConversationComponent implements OnInit, OnDestroy {
           if (messageRole === 'user' && appended) this.activity.emit('message');
         },
         onError: (message) => {
-          if (attempt !== this.voiceAttempt) return;
-          this.stopVoiceMeter();
-          this.voiceStatus.set('error');
-          this.voiceMode.set(null);
-          this.errorMessage.set(String(message || 'The voice conversation was interrupted.'));
+          this.handleVoiceError(attempt, String(message || 'The voice conversation was interrupted.'));
         },
       });
       if (attempt !== this.voiceAttempt || this.conversationMode() !== 'voice') {
@@ -355,19 +344,25 @@ export class TalkingCardConversationComponent implements OnInit, OnDestroy {
   private startVoiceMeter(conversation: VoiceConversation): void {
     this.stopVoiceMeter();
     if (typeof window === 'undefined') return;
-    const tick = () => {
+    const tick = (timestamp: number) => {
       if (this.voiceConversation !== conversation || this.voiceStatus() === 'idle') {
         this.stopVoiceMeter();
         return;
       }
-      const rawInput = this.voiceMuted() ? 0 : this.safeVoiceVolume(() => conversation.getInputVolume());
-      const rawOutput = this.safeVoiceVolume(() => conversation.getOutputVolume());
-      const input = this.smoothVoiceLevel(this.voiceInputLevel(), rawInput, .28);
-      const output = this.smoothVoiceLevel(this.voiceOutputLevel(), rawOutput, .24);
-      const active = this.voiceMode() === 'speaking' ? output : Math.max(input, output * .36);
-      this.voiceInputLevel.set(input);
-      this.voiceOutputLevel.set(output);
-      this.voiceEnergyLevel.set(this.smoothVoiceLevel(this.voiceEnergyLevel(), active, .34));
+      // Volume analysis is visual feedback, not audio processing. Sampling it at
+      // 12.5fps avoids driving the entire board view through Angular change
+      // detection for every browser animation frame and every SDK audio packet.
+      if (timestamp - this.voiceMeterLastSampleAt >= 80) {
+        const rawInput = this.voiceMuted() ? 0 : this.safeVoiceVolume(() => conversation.getInputVolume());
+        const rawOutput = this.safeVoiceVolume(() => conversation.getOutputVolume());
+        const input = this.smoothVoiceLevel(this.voiceInputLevel(), rawInput, .42);
+        const output = this.smoothVoiceLevel(this.voiceOutputLevel(), rawOutput, .38);
+        const active = this.voiceMode() === 'speaking' ? output : Math.max(input, output * .36);
+        this.setVoiceLevel(this.voiceInputLevel, input);
+        this.setVoiceLevel(this.voiceOutputLevel, output);
+        this.setVoiceLevel(this.voiceEnergyLevel, this.smoothVoiceLevel(this.voiceEnergyLevel(), active, .46));
+        this.voiceMeterLastSampleAt = timestamp;
+      }
       this.voiceMeterFrame = window.requestAnimationFrame(tick);
     };
     this.voiceMeterFrame = window.requestAnimationFrame(tick);
@@ -378,6 +373,7 @@ export class TalkingCardConversationComponent implements OnInit, OnDestroy {
       window.cancelAnimationFrame(this.voiceMeterFrame);
     }
     this.voiceMeterFrame = null;
+    this.voiceMeterLastSampleAt = 0;
     this.voiceInputLevel.set(0);
     this.voiceOutputLevel.set(0);
     this.voiceEnergyLevel.set(0);
@@ -393,6 +389,26 @@ export class TalkingCardConversationComponent implements OnInit, OnDestroy {
 
   private smoothVoiceLevel(current: number, next: number, amount: number): number {
     return current + (next - current) * amount;
+  }
+
+  private setVoiceLevel(target: { set(value: number): void; (): number }, value: number): void {
+    if (Math.abs(target() - value) >= .01) target.set(value);
+  }
+
+  private handleVoiceError(attempt: number, message: string): void {
+    if (attempt !== this.voiceAttempt) return;
+    const conversation = this.voiceConversation;
+    this.voiceConversation = null;
+    // Invalidate every callback owned by this session before teardown. The SDK
+    // error callback does not itself guarantee that the microphone, WebSocket,
+    // AudioContext, worklet, and hidden audio element are released.
+    this.voiceAttempt += 1;
+    this.stopVoiceMeter();
+    this.voiceStatus.set('error');
+    this.voiceMode.set(null);
+    this.voiceMuted.set(false);
+    this.errorMessage.set(message);
+    if (conversation) void conversation.endSession().catch(() => undefined);
   }
 
   private anonymousVisitorId(): string | null {

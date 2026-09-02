@@ -115,4 +115,27 @@ describe('TalkingCardConversationComponent', () => {
     expect(fixture.nativeElement.textContent).toContain('George Washington is speaking');
     expect(presence.style.getPropertyValue('--voice-energy')).toBe('0.7');
   });
+
+  it('tears down the active SDK session when voice reports an error', async () => {
+    const fixture = TestBed.createComponent(TalkingCardConversationComponent);
+    fixture.componentRef.setInput('atlasId', 'atlas-1');
+    spyOn(fixture.componentInstance, 'startVoice').and.resolveTo();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const endSession = jasmine.createSpy('endSession').and.resolveTo();
+    const component = fixture.componentInstance as unknown as {
+      voiceConversation: { endSession(): Promise<void> } | null;
+      handleVoiceError(attempt: number, message: string): void;
+    };
+    component.voiceConversation = { endSession };
+
+    component.handleVoiceError(0, 'Voice transport failed.');
+    await Promise.resolve();
+
+    expect(endSession).toHaveBeenCalledTimes(1);
+    expect(component.voiceConversation).toBeNull();
+    expect(fixture.componentInstance.voiceStatus()).toBe('error');
+    expect(fixture.componentInstance.errorMessage()).toBe('Voice transport failed.');
+  });
 });

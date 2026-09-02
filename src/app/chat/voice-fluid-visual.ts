@@ -92,6 +92,7 @@ export class VoiceFluidVisualComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (this.reducedMotion) return;
     this.animationFrame = window.requestAnimationFrame(this.tick);
   }
 
@@ -102,9 +103,11 @@ export class VoiceFluidVisualComponent implements AfterViewInit, OnDestroy {
   }
 
   private readonly tick = (timestamp: number): void => {
-    if (timestamp - this.lastFrameAt >= 28) {
+    // This is decorative SVG motion. Fifteen updates per second remain fluid
+    // while avoiding hundreds of path-string allocations during a long call.
+    if (timestamp - this.lastFrameAt >= 66) {
       const activity = Math.max(0.1, Math.pow(Math.min(1, Math.max(0, this.energy())), 0.58));
-      const phase = this.reducedMotion ? 0 : timestamp * (this.speaking() ? 0.0046 : 0.0038);
+      const phase = timestamp * (this.speaking() ? 0.0046 : 0.0038);
       this.fluidPath.set(fluidPath(activity, phase, this.speaking()));
       this.ribbonPath.set(ribbonPath(activity, phase, 0));
       this.secondaryRibbonPath.set(ribbonPath(activity, phase, 1.7));
