@@ -537,6 +537,15 @@ export type GeneratedBoardWizardCard = {
   place_query: string;
   imageUrl?: string;
   imageUrls?: string[];
+  listingPresentation?: {
+    kind: 'listing-group';
+    groupKey: string;
+    label: string;
+    confidence: number;
+    reviewStatus: 'verified' | 'needs-review';
+    sourcePhotoCount: number;
+    presentationImageUrls: string[];
+  };
   audioPreviewUrl?: string;
   spotifyTrackId?: string;
   spotifyTrackUrl?: string;

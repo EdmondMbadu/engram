@@ -17,6 +17,13 @@ describe('duplicateCardRecord', () => {
         atlasId: 'atlas-wynton',
         openingMessage: 'Welcome to the conversation.',
       },
+      listingPresentation: {
+        kind: 'listing-group',
+        groupKey: 'living',
+        label: 'Living Areas',
+        sourcePhotoCount: 2,
+        presentationImageUrls: ['avatar.jpg', 'stage.jpg'],
+      },
       relatedCards: [{
         id: 'related-1',
         title: 'Early years',
@@ -42,6 +49,9 @@ describe('duplicateCardRecord', () => {
     expect(copy.title).toBe('Wynton Marsalis (copy)');
     expect(copy.conversation).toEqual(source.conversation);
     expect(copy.conversation).not.toBe(source.conversation);
+    expect(copy.listingPresentation).toEqual(source.listingPresentation);
+    expect(copy.listingPresentation).not.toBe(source.listingPresentation);
+    expect(copy.listingPresentation?.presentationImageUrls).not.toBe(source.listingPresentation?.presentationImageUrls);
     expect(copy.imageUrls).toEqual(source.imageUrls);
     expect(copy.imageUrls).not.toBe(source.imageUrls);
     expect(copy.tags).not.toBe(source.tags);

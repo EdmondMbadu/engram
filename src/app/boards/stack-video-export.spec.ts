@@ -9,6 +9,7 @@ import {
   preferredRecorderMimeType,
   publishedStackVideoStoragePath,
   stackVideoCardVisibleText,
+  stackVideoCardImageAtProgressUrl,
   stackVideoCardImageCandidates,
   stackVideoClosingDurationMs,
   stackVideoContainRect,
@@ -220,6 +221,13 @@ describe('Stack video card images', () => {
       'https://images.example/primary.jpg',
       'https://images.example/fallback.jpg',
     ]);
+  });
+
+  it('moves through a grouped card image plan without creating extra card frames', () => {
+    const card = { imageUrl: 'one.jpg', imageUrls: ['one.jpg', 'two.jpg', 'three.jpg'] };
+    expect(stackVideoCardImageAtProgressUrl(card, 0)).toBe('one.jpg');
+    expect(stackVideoCardImageAtProgressUrl(card, 0.34)).toBe('two.jpg');
+    expect(stackVideoCardImageAtProgressUrl(card, 0.99)).toBe('three.jpg');
   });
 
   it('keeps each card image attached after the cards are reordered', () => {

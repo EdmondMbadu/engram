@@ -1,0 +1,65 @@
+.stack-card-photo-nav {
+  position: absolute;
+  right: 1.2rem;
+  bottom: max(4.8rem, calc(env(safe-area-inset-bottom) + 4rem));
+  left: 1.2rem;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  min-width: 0;
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  border-radius: 999px;
+  background: rgba(3, 7, 18, 0.66);
+  color: #fff;
+  padding: 0.5rem 0.65rem 0.5rem 0.8rem;
+  backdrop-filter: blur(16px);
+}
+
+.stack-card-photo-nav__label {
+  display: grid;
+  min-width: 0;
+  line-height: 1.15;
+}
+
+.stack-card-photo-nav__label strong,
+.stack-card-photo-nav__label small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stack-card-photo-nav__label strong {
+  font-size: 0.68rem;
+  font-weight: 950;
+}
+
+.stack-card-photo-nav__label small {
+  margin-top: 0.12rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.58rem;
+  font-weight: 800;
+}
+
+.stack-card-photo-nav__dots {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.34rem;
+}
+
+.stack-card-photo-nav__dots button {
+  width: 0.56rem;
+  height: 0.56rem;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 999px;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
+.stack-card-photo-nav__dots button.stack-card-photo-nav__dot--active {
+  background: #fff;
+  box-shadow: 0 0 0 0.16rem rgba(255, 255, 255, 0.18);
+}

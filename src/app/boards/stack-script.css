@@ -427,6 +427,11 @@
   font-size: 0.64rem;
 }
 
+.stack-script-card__copy .stack-script-card__photo-plan {
+  color: var(--accent);
+  font-weight: 900;
+}
+
 .stack-script-card__duration {
   border-radius: 999px;
   background: var(--soft-fill);

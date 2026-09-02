@@ -583,15 +583,21 @@ const expStory = buildBoardWizardListingMarketingBatchFromAnalyses({
   style: 'warm',
   analyses: expStoryAnalyses,
 });
-assert.equal(expStory.cards.length, 10, 'the specialist should create the requested number of distinct story scenes');
+assert.equal(expStory.cards.length, 11, 'the specialist should preserve every identified space group plus overview and next step');
 assert.equal(expStory.cards[0].imageUrls.length, 43, 'the story opener must retain the entire source gallery');
-assert.match(expStory.cards[0].tags.join(' '), /listing-story story-hook/);
-assert.match(expStory.cards[0].title, /Begin at 3721 Pacific Avenue/);
-assert.ok(expStory.cards.some((card) => card.tags.includes('story-kitchen')), 'the story should include an identified kitchen in sequence');
-assert.ok(expStory.cards.some((card) => card.tags.includes('story-balcony')), 'the story should include available outdoor living');
-assert.equal(new Set(expStory.cards.map((card) => card.imageUrl)).size, expStory.cards.length, 'story cards must not reuse primary photos');
+assert.match(expStory.cards[0].tags.join(' '), /listing-story listing-group group-overview/);
+assert.equal(expStory.cards[0].title, expListing.listingName);
+assert.equal(expStory.cards[0].listingPresentation.presentationImageUrls.length, 3, 'the overview Live View must not replay the complete gallery');
+assert.ok(expStory.cards.some((card) => card.tags.includes('group-kitchen')), 'the story should include an identified kitchen group');
+assert.ok(expStory.cards.some((card) => card.tags.includes('group-outdoor')), 'the story should combine available outdoor living into one group');
+const bedroomGroup = expStory.cards.find((card) => card.tags.includes('group-bedrooms'));
+assert.equal(bedroomGroup.imageUrls.length, 2, 'multiple bedroom photographs should become one chapter');
+assert.equal(bedroomGroup.listingPresentation.presentationImageUrls.length, 2);
+const additionalGroup = expStory.cards.find((card) => card.tags.includes('group-additional'));
+assert.equal(additionalGroup.listingPresentation.reviewStatus, 'needs-review');
+assert.match(additionalGroup.subtitle, /Needs review/);
 assert.equal(expStory.cards.some((card) => /profiles|agent portrait|brokerage logo/i.test(`${card.imageUrl} ${card.title}`)), false, 'agent and logo images must never enter the property story');
-assert.ok(expStory.cards.at(-1).tags.includes('story-next-step'));
+assert.ok(expStory.cards.at(-1).tags.includes('group-next-step'));
 assert.match(expStory.cards.at(-1).title, /\$729,000/);
 assert.match(expStory.cards.at(-1).notes, /current price, status, disclosures, fees, showing availability/i);
 assert.match(expStory.cards.at(-1).notes, /Site contact/i);

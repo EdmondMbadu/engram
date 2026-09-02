@@ -9,6 +9,10 @@ export type DuplicableCard = {
   childBoardId?: string;
   relatedCards?: readonly DuplicableCard[];
   conversation?: object | null;
+  listingPresentation?: {
+    presentationImageUrls?: readonly string[];
+    [key: string]: unknown;
+  } | null;
   nearby?: object;
   createdAt: string;
   updatedAt: string;
@@ -42,6 +46,10 @@ export function duplicateCardRecord<T extends DuplicableCard>(
     childBoardId: '',
     relatedCards,
     conversation: card.conversation ? { ...card.conversation } : null,
+    listingPresentation: card.listingPresentation ? {
+      ...card.listingPresentation,
+      presentationImageUrls: [...(card.listingPresentation.presentationImageUrls ?? [])],
+    } : card.listingPresentation,
     createdAt: now,
     updatedAt: now,
   } as T;

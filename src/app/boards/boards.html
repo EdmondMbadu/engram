@@ -89,8 +89,8 @@
                   </div>
                 } @else if (frame.kind === 'card') {
                   @if (frame.card; as card) {
-                    @if (card.imageUrl) {
-                      <img class="stack-preview__media" [src]="card.imageUrl" [alt]="card.title" />
+                    @if (stackCurrentCardImage(); as activeCardImage) {
+                      <img class="stack-preview__media" [src]="activeCardImage" [alt]="card.title + (stackCardPhotoPosition() ? ' · photo ' + stackCardPhotoPosition() : '')" decoding="async" />
                     }
                     @if (!isPhotoOnlyCard(card)) {
                       <div class="stack-preview__shade"></div>
@@ -202,6 +202,27 @@
                           </button>
                         }
                       </div>
+                    }
+                    @if (stackCardPresentationImages(card); as presentationImages) {
+                      @if (presentationImages.length > 1) {
+                        <nav class="stack-card-photo-nav" [attr.aria-label]="'Photos in ' + card.title">
+                          <span class="stack-card-photo-nav__label">
+                            <strong>{{ stackListingGroupLabel(card) }}</strong>
+                            <small>{{ stackCardPhotoPosition() }} used in Live View</small>
+                          </span>
+                          <span class="stack-card-photo-nav__dots">
+                            @for (imageUrl of presentationImages; track imageUrl; let photoIndex = $index) {
+                              <button
+                                type="button"
+                                [class.stack-card-photo-nav__dot--active]="photoIndex === stackCardPhotoIndex()"
+                                [attr.aria-label]="'Show photo ' + (photoIndex + 1) + ' of ' + presentationImages.length"
+                                [attr.aria-current]="photoIndex === stackCardPhotoIndex() ? 'true' : null"
+                                (click)="selectStackCardPhoto(photoIndex, $event)"
+                              ></button>
+                            }
+                          </span>
+                        </nav>
+                      }
                     }
                   }
                 } @else if (frame.kind === 'handoff') {
@@ -5922,29 +5943,29 @@
               <div class="boards-listing-story-controls">
                 <section class="boards-listing-story-control-panel" aria-labelledby="listing-story-scenes-label">
                   <div class="boards-listing-story-control-label">
-                    <strong id="listing-story-scenes-label">Story scenes</strong>
+                    <strong id="listing-story-scenes-label">Narrative photos</strong>
                     <small>Recommended: 8–12</small>
                   </div>
                   <div class="boards-listing-story-stepper">
                     <button
                       type="button"
-                      aria-label="Use one fewer story scene"
+                      aria-label="Use one fewer narrative photo"
                       [disabled]="wizardCount() <= wizardListingSceneMin"
                       (click)="setWizardListingSceneCount(wizardCount() - 1)"
                     >
                       <span class="material-symbols-outlined">remove</span>
                     </button>
-                    <output aria-live="polite">{{ wizardCount() }} scenes</output>
+                    <output aria-live="polite">{{ wizardCount() }} photos</output>
                     <button
                       type="button"
-                      aria-label="Use one more story scene"
+                      aria-label="Use one more narrative photo"
                       [disabled]="wizardCount() >= wizardListingSceneMax"
                       (click)="setWizardListingSceneCount(wizardCount() + 1)"
                     >
                       <span class="material-symbols-outlined">add</span>
                     </button>
                   </div>
-                  <small class="boards-listing-story-helper">All {{ listing.imageCount || 'source' }} photos remain available on the opening card.</small>
+                  <small class="boards-listing-story-helper">All {{ listing.imageCount || 'source' }} photos will be classified into space groups. The strongest {{ wizardCount() }} guide the narration.</small>
                 </section>
                 <label class="boards-listing-story-control-panel boards-listing-story-direction">
                   <span class="boards-listing-story-control-label">
@@ -7129,6 +7150,12 @@
                               <span class="stack-script-card__copy">
                                 <strong>{{ stackScriptTitle(card) }}</strong>
                                 <small>{{ stackScriptNarration(card) || 'Narration needed' }}</small>
+                                @if (card.listingPresentation; as listingPresentation) {
+                                  <small class="stack-script-card__photo-plan">
+                                    {{ listingPresentation.sourcePhotoCount }} photos · {{ stackCardPresentationImages(card).length }} used in Live View
+                                    @if (listingPresentation.reviewStatus === 'needs-review') { · Needs review }
+                                  </small>
+                                }
                               </span>
                               <span class="stack-script-card__duration">~{{ stackScriptCardEstimatedSeconds(card) }}s</span>
                               <span class="material-symbols-outlined">{{ stackScriptCardIsExpanded(card.id) ? 'expand_less' : 'expand_more' }}</span>

@@ -277,6 +277,16 @@ export function stackVideoCardImageCandidates(card: Pick<StackVideoCard, 'imageU
   ));
 }
 
+export function stackVideoCardImageAtProgressUrl(
+  card: Pick<StackVideoCard, 'imageUrl' | 'imageUrls'>,
+  progress: number,
+): string {
+  const candidates = stackVideoCardImageCandidates(card);
+  if (!candidates.length) return '';
+  const safeProgress = Math.max(0, Math.min(0.999999, Number.isFinite(progress) ? progress : 0));
+  return candidates[Math.min(candidates.length - 1, Math.floor(safeProgress * candidates.length))] ?? candidates[0];
+}
+
 export function stackVideoNarrationFrameDurationMs(durationSeconds: number, baseDurationMs = FRAME_DURATION_MS): number {
   if (!Number.isFinite(durationSeconds) || durationSeconds <= 0) return baseDurationMs;
   return Math.max(baseDurationMs, Math.ceil(durationSeconds * 1000) + NARRATION_LEAD_MS + NARRATION_TAIL_MS);
@@ -354,17 +364,16 @@ export async function generateStackVideo(
     if (image) images.set(url, image);
     return image;
   };
-  await Promise.all([
-    loadCachedImage(board.coverImageUrl),
-    loadCachedImage(board.qrImageUrl),
-    loadCachedImage(branding.logoUrl),
-    loadCachedImage(normalizeStackVideoClosingScreen(board.closingScreen).customImageUrl),
-    ...board.cards.map(async (card) => {
-      for (const imageUrl of stackVideoCardImageCandidates(card)) {
-        if (await loadCachedImage(imageUrl)) return;
-      }
-    }),
-  ]);
+  const renderImageUrls = Array.from(new Set([
+    board.coverImageUrl,
+    board.qrImageUrl,
+    branding.logoUrl,
+    normalizeStackVideoClosingScreen(board.closingScreen).customImageUrl,
+    ...board.cards.flatMap(stackVideoCardImageCandidates),
+  ].filter(Boolean)));
+  // Decode sequentially and downsample in loadImage. Large listing galleries
+  // otherwise create a short but severe memory spike before recording starts.
+  for (const imageUrl of renderImageUrls) await loadCachedImage(imageUrl);
   if (branding.mode === 'custom') {
     const brandingImage = images.get(branding.logoUrl);
     if (!brandingImage) {
@@ -488,15 +497,12 @@ export async function generateStackTrailer(
     if (image) images.set(url, image);
     return image;
   };
-  await Promise.all([
-    loadCachedImage(board.coverImageUrl),
-    loadCachedImage(branding.logoUrl),
-    ...cards.map(async (card) => {
-      for (const imageUrl of stackVideoCardImageCandidates(card)) {
-        if (await loadCachedImage(imageUrl)) return;
-      }
-    }),
-  ]);
+  const renderImageUrls = Array.from(new Set([
+    board.coverImageUrl,
+    branding.logoUrl,
+    ...cards.flatMap(stackVideoCardImageCandidates),
+  ].filter(Boolean)));
+  for (const imageUrl of renderImageUrls) await loadCachedImage(imageUrl);
   if (branding.mode === 'custom') {
     const brandingImage = images.get(branding.logoUrl);
     if (!brandingImage) {
@@ -608,7 +614,17 @@ async function loadImage(url: string): Promise<LoadedImage | null> {
   try {
     const response = await fetch(url, { mode: 'cors', credentials: 'omit' });
     if (!response.ok) return null;
-    const bitmap = await createImageBitmap(await response.blob());
+    const source = await createImageBitmap(await response.blob());
+    const maxDimension = 1280;
+    const scale = Math.min(1, maxDimension / Math.max(source.width, source.height));
+    const bitmap = scale < 1
+      ? await createImageBitmap(source, {
+          resizeWidth: Math.max(1, Math.round(source.width * scale)),
+          resizeHeight: Math.max(1, Math.round(source.height * scale)),
+          resizeQuality: 'high',
+        })
+      : source;
+    if (bitmap !== source) source.close();
     return {
       source: bitmap,
       width: bitmap.width,
@@ -896,7 +912,7 @@ function renderFrame(
       height,
       board,
       frame.card,
-      firstLoadedCardImage(frame.card, images),
+      loadedCardImageAtProgress(frame.card, images, progress),
       progress,
     );
   } else {
@@ -949,7 +965,7 @@ function renderTrailerFrame(
       cards[cardIndex],
       cardIndex,
       cards.length,
-      firstLoadedCardImage(cards[cardIndex], images),
+      loadedCardImageAtProgress(cards[cardIndex], images, progress),
       progress,
     );
   } else if (frameIndex === cards.length + 1) {
@@ -1192,6 +1208,15 @@ function firstLoadedCardImage(
     if (image) return image;
   }
   return undefined;
+}
+
+function loadedCardImageAtProgress(
+  card: Pick<StackVideoCard, 'imageUrl' | 'imageUrls'>,
+  images: ReadonlyMap<string, LoadedImage>,
+  progress: number,
+): LoadedImage | undefined {
+  const preferredUrl = stackVideoCardImageAtProgressUrl(card, progress);
+  return images.get(preferredUrl) ?? firstLoadedCardImage(card, images);
 }
 
 function drawBackdrop(context: CanvasRenderingContext2D, width: number, height: number): void {

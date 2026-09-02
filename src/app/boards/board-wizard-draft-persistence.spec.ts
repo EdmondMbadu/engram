@@ -34,6 +34,25 @@ describe('board wizard draft persistence contract', () => {
     ]);
   });
 
+  it('keeps a listing Live View plan attached after local images are persisted', async () => {
+    const primary = 'data:image/jpeg;base64,primary';
+    const secondary = 'data:image/jpeg;base64,secondary';
+    const card = await boardWizardDraftCardWithPersistedImages({
+      imageUrl: primary,
+      imageUrls: [primary, secondary],
+      listingPresentation: {
+        kind: 'listing-group',
+        groupKey: 'kitchen',
+        presentationImageUrls: [primary, secondary],
+      },
+    }, 12, async (_imageUrl, index) => `https://storage.example/${index}.jpg`);
+
+    expect(card.listingPresentation?.presentationImageUrls).toEqual([
+      'https://storage.example/0.jpg',
+      'https://storage.example/1.jpg',
+    ]);
+  });
+
   it('nests optional preferences inside the established result field', () => {
     const payload = boardWizardDraftPayloadWithPreferences({
       id: 'draft-1',

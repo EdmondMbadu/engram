@@ -55,6 +55,10 @@ export type BoardWizardPersistedListingIntent = 'default' | 'real-estate' | 'ren
 type BoardWizardDraftCardImages = {
   imageUrl?: string;
   imageUrls?: string[];
+  listingPresentation?: {
+    presentationImageUrls?: string[];
+    [key: string]: unknown;
+  } | null;
 };
 
 /**
@@ -78,10 +82,18 @@ export async function boardWizardDraftCardWithPersistedImages<
   );
   const imageUrls = persistedImages
     .filter((imageUrl, index, images) => !!imageUrl && images.indexOf(imageUrl) === index);
+  const persistedBySource = new Map(sourceImages.map((imageUrl, index) => [imageUrl, persistedImages[index] || imageUrl]));
   return {
     ...card,
     imageUrl: imageUrls[0] ?? '',
     imageUrls,
+    ...(card.listingPresentation ? {
+      listingPresentation: {
+        ...card.listingPresentation,
+        presentationImageUrls: (card.listingPresentation.presentationImageUrls ?? [])
+          .map((imageUrl) => persistedBySource.get(imageUrl) || imageUrl),
+      },
+    } : {}),
   };
 }
 

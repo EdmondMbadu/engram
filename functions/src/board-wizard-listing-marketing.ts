@@ -61,6 +61,47 @@ const ALLOWED_PROPERTY_STORY_ROLES = new Set([
   'amenity', 'floor-plan', 'property-view', 'facts', 'fact-and-action', 'action', 'next-step',
 ]);
 
+type ListingGroupKey =
+  | 'overview'
+  | 'exterior'
+  | 'living'
+  | 'kitchen'
+  | 'dining'
+  | 'bedrooms'
+  | 'bathrooms'
+  | 'work-utility'
+  | 'outdoor'
+  | 'amenities'
+  | 'floor-plans'
+  | 'additional'
+  | 'next-step';
+
+type ListingPhotoGroup = {
+  key: ListingGroupKey;
+  label: string;
+  priority: number;
+  reviewStatus: 'verified' | 'needs-review';
+  analyses: BoardWizardListingPhotoAnalysis[];
+};
+
+const LISTING_GROUP_DEFINITIONS: Record<ListingGroupKey, { label: string; priority: number }> = {
+  overview: { label: 'Property Overview', priority: 0 },
+  exterior: { label: 'Exterior & Arrival', priority: 10 },
+  living: { label: 'Living Areas', priority: 20 },
+  kitchen: { label: 'Kitchen', priority: 30 },
+  dining: { label: 'Dining Areas', priority: 35 },
+  bedrooms: { label: 'Bedrooms', priority: 40 },
+  bathrooms: { label: 'Bathrooms', priority: 50 },
+  'work-utility': { label: 'More Spaces', priority: 60 },
+  outdoor: { label: 'Outdoor Spaces & Views', priority: 70 },
+  amenities: { label: 'Amenities', priority: 80 },
+  'floor-plans': { label: 'Floor Plans', priority: 90 },
+  additional: { label: 'Additional Photos', priority: 95 },
+  'next-step': { label: 'Next Step', priority: 100 },
+};
+
+const LISTING_PRESENTATION_IMAGE_LIMIT = 4;
+
 export function normalizeBoardWizardListingMarketingOptions(value: unknown): BoardWizardListingMarketingOptions {
   const record = value && typeof value === 'object' ? value as Record<string, unknown> : {};
   const style: BoardWizardListingMarketingStyle = record.style === 'guided'
@@ -146,6 +187,8 @@ export function buildBoardWizardListingMarketingBatchFromAnalyses(options: {
     extraction: options.extraction,
     targetBoardTitle: options.targetBoardTitle,
     scenes,
+    analyses: allAnalyses,
+    maxCards: Math.max(1, Math.min(24, Math.round(options.count) || 12)),
     listingIntent,
   });
 }
@@ -241,6 +284,8 @@ export async function generateBoardWizardListingMarketingBatch(options: {
     extraction,
     targetBoardTitle: options.targetBoardTitle,
     scenes,
+    analyses: allAnalyses,
+    maxCards: sceneCount,
     listingIntent,
   });
 }
@@ -472,46 +517,122 @@ function buildMarketingBatch(options: {
   extraction: BoardWizardListingExtraction;
   targetBoardTitle: string;
   scenes: BoardWizardListingStoryScene[];
+  analyses: BoardWizardListingPhotoAnalysis[];
+  maxCards: number;
   listingIntent: BoardWizardListingIntent;
 }): GeneratedBoardWizardBatch {
   const extractedAt = new Date().toISOString();
   const gallery = options.extraction.images.map((image) => image.url).slice(0, BOARD_WIZARD_SOURCE_GALLERY_LIMIT);
-  const cards = options.scenes.map((scene, position): GeneratedBoardWizardCard => {
-    const image = options.extraction.images[scene.photoIndex];
-    const role = normalizedRole(scene.role);
+  const groups = listingPhotoGroups(options.analyses)
+    .filter((group) => group.analyses.some((analysis) => !!options.extraction.images[analysis.index]))
+    .sort((left, right) => left.priority - right.priority);
+  const sceneByPhotoIndex = new Map(options.scenes.map((scene) => [scene.photoIndex, scene]));
+  const knownAnalyses = groups.flatMap((group) => group.reviewStatus === 'verified' ? group.analyses : []);
+  const heroAnalyses = [...knownAnalyses].sort((left, right) =>
+    right.heroScore - left.heroScore || right.qualityScore - left.qualityScore || left.index - right.index);
+  const fallbackAnalyses = [...options.analyses]
+    .filter((analysis) => !DISALLOWED_STORY_SCENES.has(analysis.sceneType))
+    .sort((left, right) => right.qualityScore - left.qualityScore || left.index - right.index);
+  const overviewAnalyses = uniqueAnalyses([...heroAnalyses, ...fallbackAnalyses]).slice(0, 3);
+  const overviewUrls = listingAnalysisUrls(options.extraction, overviewAnalyses);
+  const overviewScene = overviewAnalyses.map((analysis) => sceneByPhotoIndex.get(analysis.index)).find(Boolean)
+    ?? options.scenes[0];
+  const maxCards = Math.max(1, options.maxCards);
+  const reserveNextStep = maxCards > 1;
+  // Once grouping is enabled, every confidently identified space remains
+  // represented. The requested scene count controls narrative depth, not
+  // whether a bedroom or bathroom silently disappears from the board.
+  const selectedGroups = maxCards > 1 ? groups : [];
+  const rentalTag = options.listingIntent === 'rental' ? 'rental' : 'real-estate';
+  const shared = {
+    scope: 'place' as const,
+    place_query: options.extraction.address || options.extraction.listingName,
+    entity_name: options.extraction.listingName,
+    entity_type: 'place' as const,
+    image_intent: 'place' as const,
+    sourceUrl: options.extraction.sourceUrl,
+    extractionConfidence: options.extraction.confidence,
+    extractedAt,
+  };
+  const overview: GeneratedBoardWizardCard = {
+    ...shared,
+    title: options.extraction.listingName.slice(0, 80),
+    subtitle: (overviewScene?.subtitle || listingOverviewSubtitleForStory(options.extraction)).slice(0, 120),
+    notes: (overviewScene?.narration || options.extraction.description || `Explore ${options.extraction.listingName} through its verified listing gallery.`).slice(0, 3600),
+    type: 'place',
+    status: 'saved',
+    rating: 5,
+    tags: ['listing', rentalTag, 'listing-story', 'listing-group', 'group-overview', 'source-image'],
+    image_query: `${options.extraction.listingName} property overview`.slice(0, 120),
+    image_context: options.extraction.address || options.extraction.listingName,
+    short_summary: (overviewScene?.subtitle || listingOverviewSubtitleForStory(options.extraction)).slice(0, 160),
+    rank: 1,
+    imageUrl: overviewUrls[0] || gallery[0],
+    // Preserve the complete exact gallery on the opening card for board browsing
+    // and existing exports. Live View uses the explicit presentation subset.
+    imageUrls: gallery,
+    imageSource: gallery.length ? 'source-page' : 'missing',
+    locationLat: options.extraction.latitude,
+    locationLng: options.extraction.longitude,
+    listingPresentation: {
+      ...listingPresentation('overview', overviewUrls, overviewAnalyses, 'verified'),
+      sourcePhotoCount: gallery.length,
+    },
+  };
+  const groupCards = selectedGroups.map((group, index): GeneratedBoardWizardCard => {
+    const ordered = [...group.analyses].sort((left, right) =>
+      right.qualityScore - left.qualityScore || right.heroScore - left.heroScore || left.index - right.index);
+    const urls = listingAnalysisUrls(options.extraction, ordered);
+    const representative = ordered.map((analysis) => sceneByPhotoIndex.get(analysis.index)).find(Boolean);
+    const subtitle = listingGroupSubtitle(group, ordered);
+    const notes = group.reviewStatus === 'needs-review'
+      ? 'These verified source photographs could not be classified confidently. Review them before assigning a specific room label.'
+      : representative?.narration || `Continue the property tour through ${group.label.toLowerCase()}, using only details visible in the source photographs.`;
     return {
-      title: scene.title.slice(0, 80),
-      subtitle: scene.subtitle.slice(0, 120),
-      notes: scene.narration.slice(0, 3600),
-      type: position === 0 ? 'place' : 'note',
-      scope: 'place',
-      status: position === options.scenes.length - 1 ? 'planned' : 'saved',
-      rating: position === 0 ? 5 : 4,
-      tags: [
-        'listing',
-        options.listingIntent === 'rental' ? 'rental' : 'real-estate',
-        'listing-story',
-        `story-${role}`,
-        'source-image',
-      ],
-      image_query: `${options.extraction.listingName} ${scene.title}`.slice(0, 120),
-      place_query: options.extraction.address || options.extraction.listingName,
-      entity_name: options.extraction.listingName,
-      entity_type: 'place',
-      image_intent: 'place',
-      image_context: image?.alt || scene.subtitle,
-      short_summary: scene.subtitle.slice(0, 160),
-      rank: position + 1,
-      imageUrl: image?.url,
-      imageUrls: position === 0 ? gallery : image ? [image.url] : [],
-      sourceUrl: options.extraction.sourceUrl,
-      imageSource: image ? 'source-page' : 'missing',
-      extractionConfidence: options.extraction.confidence,
-      extractedAt,
-      locationLat: position === 0 ? options.extraction.latitude : undefined,
-      locationLng: position === 0 ? options.extraction.longitude : undefined,
+      ...shared,
+      title: group.label,
+      subtitle,
+      notes: notes.slice(0, 3600),
+      type: 'note',
+      status: 'saved',
+      rating: 4,
+      tags: ['listing', rentalTag, 'listing-story', 'listing-group', `group-${group.key}`, 'source-image'],
+      image_query: `${options.extraction.listingName} ${group.label}`.slice(0, 120),
+      image_context: group.reviewStatus === 'needs-review' ? 'Unclassified source listing photographs' : group.label,
+      short_summary: subtitle.slice(0, 160),
+      rank: index + 2,
+      imageUrl: urls[0],
+      imageUrls: urls,
+      imageSource: urls.length ? 'source-page' : 'missing',
+      listingPresentation: listingPresentation(group.key, urls, ordered, group.reviewStatus),
     };
   });
+  const cards = [overview, ...groupCards];
+  if (reserveNextStep) {
+    const finalScene = options.scenes.at(-1);
+    const nextStepImage = overviewUrls[0] || gallery[0];
+    const nextStepTitle = options.listingIntent === 'rental'
+      ? options.extraction.kind === 'vacation-rental' ? 'Check availability & book' : 'Check availability & apply'
+      : options.extraction.price ? `The next step · ${options.extraction.price}` : 'See the full listing';
+    cards.push({
+      ...shared,
+      title: nextStepTitle.slice(0, 80),
+      subtitle: closingSubtitle(options.extraction, options.listingIntent).slice(0, 120),
+      notes: (finalScene?.narration || listingClose(options.extraction, options.listingIntent, boardWizardListingFurnishingsIncluded(options.extraction))).slice(0, 3600),
+      type: 'note',
+      status: 'planned',
+      rating: 4,
+      tags: ['listing', rentalTag, 'listing-story', 'listing-group', 'group-next-step', 'action'],
+      image_query: `${options.extraction.listingName} next step`.slice(0, 120),
+      image_context: options.extraction.address || options.extraction.listingName,
+      short_summary: closingSubtitle(options.extraction, options.listingIntent).slice(0, 160),
+      rank: cards.length + 1,
+      imageUrl: nextStepImage,
+      imageUrls: nextStepImage ? [nextStepImage] : [],
+      imageSource: nextStepImage ? 'source-page' : 'missing',
+      listingPresentation: listingPresentation('next-step', nextStepImage ? [nextStepImage] : [], [], 'verified'),
+    });
+  }
   return {
     board: {
       title: (options.targetBoardTitle || options.extraction.listingName).slice(0, 90),
@@ -521,6 +642,107 @@ function buildMarketingBatch(options: {
     },
     cards,
   };
+}
+
+function listingPhotoGroups(analyses: BoardWizardListingPhotoAnalysis[]): ListingPhotoGroup[] {
+  const groups = new Map<ListingGroupKey, ListingPhotoGroup>();
+  for (const analysis of analyses) {
+    if (DISALLOWED_STORY_SCENES.has(analysis.sceneType)) continue;
+    const key = listingGroupKey(analysis);
+    const definition = LISTING_GROUP_DEFINITIONS[key];
+    const group = groups.get(key) ?? {
+      key,
+      label: definition.label,
+      priority: definition.priority,
+      reviewStatus: key === 'additional' ? 'needs-review' : 'verified',
+      analyses: [],
+    };
+    group.analyses.push(analysis);
+    groups.set(key, group);
+  }
+  return Array.from(groups.values());
+}
+
+function listingGroupKey(analysis: BoardWizardListingPhotoAnalysis): ListingGroupKey {
+  if (analysis.confidence < 0.65 || analysis.sceneType === 'unknown') return 'additional';
+  switch (analysis.sceneType) {
+    case 'exterior':
+    case 'aerial':
+    case 'entry': return 'exterior';
+    case 'living': return 'living';
+    case 'kitchen': return 'kitchen';
+    case 'dining': return 'dining';
+    case 'bedroom': return 'bedrooms';
+    case 'bathroom': return 'bathrooms';
+    case 'office':
+    case 'flex':
+    case 'laundry':
+    case 'garage': return 'work-utility';
+    case 'outdoor':
+    case 'balcony':
+    case 'view': return 'outdoor';
+    case 'amenity': return 'amenities';
+    case 'floor-plan': return 'floor-plans';
+    default: return 'additional';
+  }
+}
+
+function listingAnalysisUrls(
+  extraction: BoardWizardListingExtraction,
+  analyses: BoardWizardListingPhotoAnalysis[],
+): string[] {
+  return Array.from(new Set(analyses
+    .map((analysis) => extraction.images[analysis.index]?.url || '')
+    .filter(Boolean)));
+}
+
+function uniqueAnalyses(analyses: BoardWizardListingPhotoAnalysis[]): BoardWizardListingPhotoAnalysis[] {
+  const seen = new Set<number>();
+  return analyses.filter((analysis) => {
+    if (seen.has(analysis.index)) return false;
+    seen.add(analysis.index);
+    return true;
+  });
+}
+
+function listingPresentation(
+  key: ListingGroupKey,
+  imageUrls: string[],
+  analyses: BoardWizardListingPhotoAnalysis[],
+  reviewStatus: 'verified' | 'needs-review',
+): NonNullable<GeneratedBoardWizardCard['listingPresentation']> {
+  const definition = LISTING_GROUP_DEFINITIONS[key];
+  const confidence = analyses.length
+    ? analyses.reduce((sum, analysis) => sum + analysis.confidence, 0) / analyses.length
+    : 1;
+  return {
+    kind: 'listing-group',
+    groupKey: key,
+    label: definition.label,
+    confidence: Math.max(0, Math.min(1, confidence)),
+    reviewStatus,
+    sourcePhotoCount: imageUrls.length,
+    presentationImageUrls: imageUrls.slice(0, key === 'overview' ? 3 : LISTING_PRESENTATION_IMAGE_LIMIT),
+  };
+}
+
+function listingGroupSubtitle(group: ListingPhotoGroup, analyses: BoardWizardListingPhotoAnalysis[]): string {
+  const features = Array.from(new Set(analyses.flatMap(listingFixedFeatures))).slice(0, 3);
+  if (group.reviewStatus === 'needs-review') {
+    return `${analyses.length} source ${analyses.length === 1 ? 'photo' : 'photos'} · Needs review`;
+  }
+  return [
+    `${analyses.length} ${analyses.length === 1 ? 'photo' : 'photos'}`,
+    features.join(' · '),
+  ].filter(Boolean).join(' · ').slice(0, 120);
+}
+
+function listingOverviewSubtitleForStory(extraction: BoardWizardListingExtraction): string {
+  return [
+    extraction.price,
+    extraction.realEstate.bedrooms ? `${extraction.realEstate.bedrooms} beds` : '',
+    extraction.realEstate.bathrooms ? `${extraction.realEstate.bathrooms} baths` : '',
+  ].filter(Boolean).join(' · ') || extraction.address || 'Property overview';
 }
 
 function orderedAnalyses(analyses: BoardWizardListingPhotoAnalysis[]): BoardWizardListingPhotoAnalysis[] {
