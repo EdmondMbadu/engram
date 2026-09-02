@@ -5949,6 +5949,18 @@ async function analyzeBoardWizardSourcePreview(
       allowBrowserFallback: true,
     });
     const blocked = looksLikeAntiBotChallenge(fetched.html);
+    logger.info('Board wizard source preview fetch completed.', {
+      sourceHost: safeCommerceHostname(sourceUrl),
+      finalHost: safeCommerceHostname(fetched.finalUrl || sourceUrl),
+      status: fetched.status,
+      method: fetched.method,
+      blocked,
+      htmlCharacters: fetched.html.length,
+      fetchAttempts: fetched.attempts,
+      hasLoftyPageState: /window\.sitePageJSON\s*=/.test(fetched.html),
+      hasRealEstateJsonLd: /"@type"\s*:\s*"RealEstateListing"/i.test(fetched.html),
+      listingImageReferences: fetched.html.match(/\/mls-listing\//gi)?.length ?? 0,
+    });
     if (fetched.status >= 200 && fetched.status < 400 && !blocked) {
       const extraction = await buildBoardWizardUrlContext(sourceUrl, fetched.finalUrl || sourceUrl, fetched.html);
       if (extraction.restaurantLike && extraction.menuItems.length >= 3) {
@@ -5964,6 +5976,17 @@ async function analyzeBoardWizardSourcePreview(
         if (recovered && recovered.images.length > listing.images.length) {
           listing = await recoverBoardWizardBoldTrailGallery(recovered);
         }
+      }
+      if (listing && isUnreliableLoftyListingExtraction(sourceUrl, listing, listingIntent)) {
+        logger.warn('Board wizard rejected an incomplete Lofty listing preview.', {
+          sourceHost: safeCommerceHostname(sourceUrl),
+          listingPrice: listing.price,
+          listingBedrooms: listing.realEstate.bedrooms,
+          listingBathrooms: listing.realEstate.bathrooms,
+          listingImageCount: listing.images.length,
+          listingMlsId: listing.realEstate.mlsId,
+        });
+        listing = null;
       }
       if (listing) {
         return boardWizardListingSourcePreview(listing, listingIntent);
@@ -6022,6 +6045,27 @@ async function analyzeBoardWizardSourcePreview(
       ? 'The publisher blocked source reading. LivingWiki will use verified public indexing and clearly mark the result for review.'
       : 'LivingWiki could not identify a reliable ordered list before generation. The full card preview will require careful review.',
   };
+}
+
+function isUnreliableLoftyListingExtraction(
+  sourceUrl: string,
+  listing: BoardWizardListingExtraction,
+  listingIntent: BoardWizardListingIntent,
+): boolean {
+  if (listing.kind !== 'real-estate' || listingIntent === 'rental') return false;
+  try {
+    if (!/^\/listing-detail\/\d{6,}\/[A-Za-z0-9][A-Za-z0-9-]{5,}\/?$/i.test(new URL(sourceUrl).pathname)) {
+      return false;
+    }
+  } catch {
+    return false;
+  }
+  const price = Number(listing.price.replace(/[^\d.]/g, ''));
+  const bedrooms = Number(listing.realEstate.bedrooms);
+  const bathrooms = Number(listing.realEstate.bathrooms);
+  return (Number.isFinite(price) && price > 0 && price < 10_000)
+    || (Number.isFinite(bedrooms) && bedrooms > 0 && Number.isFinite(bathrooms) && bathrooms <= 0)
+    || listing.images.length === 0;
 }
 
 function buildArticleManifestUrlExtraction(manifest: BoardWizardSourceManifest): BoardWizardUrlExtraction {
@@ -7465,6 +7509,11 @@ export const previewBoardWizardSource = onCall(
       expectedCount: analysis.manifest?.expectedCount ?? null,
       confidence: analysis.manifest?.confidence ?? 0,
       method: analysis.manifest?.method ?? null,
+      listingPrice: analysis.listingPreview?.price ?? '',
+      listingBedrooms: analysis.listingPreview?.bedrooms ?? '',
+      listingBathrooms: analysis.listingPreview?.bathrooms ?? '',
+      listingImageCount: analysis.listingPreview?.imageCount ?? 0,
+      listingMlsId: analysis.listingPreview?.mlsId ?? '',
       durationMs: Date.now() - startedAt,
     });
     return {
@@ -7729,6 +7778,18 @@ export const generateBoardWizardBatch = onCall(
                   errorMessage: error instanceof Error ? error.message : String(error),
                 });
               }
+            }
+            if (listingExtraction && isUnreliableLoftyListingExtraction(url, listingExtraction, listingIntent)) {
+              logger.warn('Board wizard rejected incomplete Lofty listing generation data.', {
+                userId,
+                urlHost: safeCommerceHostname(url),
+                listingPrice: listingExtraction.price,
+                listingBedrooms: listingExtraction.realEstate.bedrooms,
+                listingBathrooms: listingExtraction.realEstate.bathrooms,
+                listingImageCount: listingExtraction.images.length,
+                listingMlsId: listingExtraction.realEstate.mlsId,
+              });
+              listingExtraction = null;
             }
             if (!listingExtraction && !isBoardWizardListingPageUrl(url)) {
               const commerce = extractCommercePage(url, fetched.finalUrl || url, fetched.html);

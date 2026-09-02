@@ -34,14 +34,11 @@ const rawHtmlHeaders = {
   'Cache-Control': 'no-cache',
   Pragma: 'no-cache',
 };
-const linkPreviewHtmlHeaders = {
-  ...rawHtmlHeaders,
-  // Lofty/Chime publishes a complete server-rendered representation for link
-  // preview clients even when its ordinary HTML endpoint challenges cloud
-  // traffic. Use that public representation only after the site's own proof
-  // challenge could not be completed.
-  'User-Agent': 'Slackbot-LinkExpanding 1.0 (+https://api.slack.com/robots)',
-};
+const linkPreviewUserAgents = [
+  'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)',
+  'Twitterbot/1.0',
+  'Slackbot-LinkExpanding 1.0 (+https://api.slack.com/robots)',
+];
 
 export function looksLikeAntiBotChallenge(html: string): boolean {
   const normalized = html.toLowerCase();
@@ -197,6 +194,8 @@ async function fetchHtmlRaw(url: string, timeoutMs: number): Promise<HtmlFetchRe
       headers: rawHtmlHeaders,
     });
     const html = await response.text();
+    let bestHtml = html;
+    let bestResponse = response;
     const proofStartedAt = Date.now();
     const proofCookie = buildLoftyProofOfWorkCookie(html, 1);
     if (proofCookie) {
@@ -212,6 +211,14 @@ async function fetchHtmlRaw(url: string, timeoutMs: number): Promise<HtmlFetchRe
       });
       const solvedHtml = await solvedResponse.text();
       if (solvedResponse.status >= 200 && solvedResponse.status < 400 && !looksLikeAntiBotChallenge(solvedHtml)) {
+        bestHtml = solvedHtml;
+        bestResponse = solvedResponse;
+      }
+      if (solvedResponse.status >= 200 && solvedResponse.status < 400 && !looksLikeAntiBotChallenge(solvedHtml)) {
+        if (isLoftyListingUrl(response.url || url) && !hasAuthoritativeLoftyListingPayload(solvedHtml)) {
+          // The proof passed but the cloud-specific response is still only a
+          // visible carousel shell. Continue into link-preview recovery below.
+        } else {
         return {
           html: solvedHtml,
           contentType: solvedResponse.headers.get('content-type'),
@@ -220,38 +227,24 @@ async function fetchHtmlRaw(url: string, timeoutMs: number): Promise<HtmlFetchRe
           method: 'raw',
           attempts: [],
         };
-      }
-
-      const previewUrl = canonicalLoftyListingUrl(response.url || url);
-      const previewResponse = await fetch(previewUrl, {
-        method: 'GET',
-        redirect: 'follow',
-        signal: controller.signal,
-        headers: linkPreviewHtmlHeaders,
-      });
-      const previewHtml = await previewResponse.text();
-      if (
-        previewResponse.status >= 200
-        && previewResponse.status < 400
-        && !looksLikeAntiBotChallenge(previewHtml)
-        && /window\.sitePageJSON\s*=|"@type"\s*:\s*"RealEstateListing"/i.test(previewHtml)
-      ) {
-        return {
-          html: previewHtml,
-          contentType: previewResponse.headers.get('content-type'),
-          finalUrl: previewResponse.url || previewUrl,
-          status: previewResponse.status,
-          method: 'raw',
-          attempts: [],
-        };
+        }
       }
     }
 
+    // Some cloud egress addresses receive a plausible HTTP 200 page from
+    // Lofty that contains only the visible carousel and "price per sqft".
+    // Because it is not an anti-bot page, recover every incomplete Lofty
+    // detail response rather than limiting this path to explicit challenges.
+    if (isLoftyListingUrl(response.url || url) && !hasAuthoritativeLoftyListingPayload(bestHtml)) {
+      const preview = await fetchLoftyLinkPreview(response.url || url, controller.signal);
+      if (preview) return preview;
+    }
+
     return {
-      html,
-      contentType: response.headers.get('content-type'),
-      finalUrl: response.url || url,
-      status: response.status,
+      html: bestHtml,
+      contentType: bestResponse.headers.get('content-type'),
+      finalUrl: bestResponse.url || response.url || url,
+      status: bestResponse.status,
       method: 'raw',
       attempts: [],
     };
@@ -260,10 +253,57 @@ async function fetchHtmlRaw(url: string, timeoutMs: number): Promise<HtmlFetchRe
   }
 }
 
+async function fetchLoftyLinkPreview(url: string, signal: AbortSignal): Promise<HtmlFetchResult | null> {
+  const previewUrl = canonicalLoftyListingUrl(url);
+  for (const userAgent of linkPreviewUserAgents) {
+    try {
+      const response = await fetch(previewUrl, {
+        method: 'GET',
+        redirect: 'follow',
+        signal,
+        headers: { ...rawHtmlHeaders, 'User-Agent': userAgent },
+      });
+      const html = await response.text();
+      if (
+        response.status >= 200
+        && response.status < 400
+        && !looksLikeAntiBotChallenge(html)
+        && hasAuthoritativeLoftyListingPayload(html)
+      ) {
+        return {
+          html,
+          contentType: response.headers.get('content-type'),
+          finalUrl: response.url || previewUrl,
+          status: response.status,
+          method: 'raw',
+          attempts: [],
+        };
+      }
+    } catch {
+      // Try the next public link-preview representation within the same bound.
+    }
+  }
+  return null;
+}
+
+function hasAuthoritativeLoftyListingPayload(html: string): boolean {
+  if (/window\.sitePageJSON\s*=/.test(html) && /"pictureList"\s*:\s*\[/.test(html)) return true;
+  if (!/"@type"\s*:\s*"RealEstateListing"/i.test(html)) return false;
+  return (html.match(/\/mls-listing\//gi)?.length ?? 0) >= 2;
+}
+
+function isLoftyListingUrl(value: string): boolean {
+  try {
+    return /^\/listing-detail\/\d{6,}\/[A-Za-z0-9][A-Za-z0-9-]{5,}\/?$/i.test(new URL(value).pathname);
+  } catch {
+    return false;
+  }
+}
+
 function canonicalLoftyListingUrl(value: string): string {
   try {
     const url = new URL(value);
-    if (!/^\/listing-detail\/\d{6,}\/[A-Za-z0-9][A-Za-z0-9-]{5,}\/?$/i.test(url.pathname)) {
+    if (!isLoftyListingUrl(value)) {
       return value;
     }
     url.search = '';
