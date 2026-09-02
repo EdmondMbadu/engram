@@ -8884,21 +8884,19 @@
   }
 
   @if (boardSettingsBoard(); as settingsBoard) {
-    <div class="boards-modal-backdrop board-settings-backdrop" style="background: rgba(7, 25, 18, .48); backdrop-filter: blur(4px);" appBackdropDismiss (backdropDismiss)="closeBoardSettings()">
+    <div class="boards-modal-backdrop board-settings-backdrop" appBackdropDismiss (backdropDismiss)="closeBoardSettings()">
       <section
         class="boards-modal boards-modal--wide board-settings-modal"
-        style="width: min(100%, 45rem); border-width: 1px; border-radius: 1.35rem; box-shadow: 0 28px 80px rgba(4, 31, 21, .34);"
         role="dialog"
         aria-modal="true"
         aria-labelledby="board-settings-modal-title"
         aria-describedby="board-settings-modal-description"
         (click)="$event.stopPropagation()"
       >
-        <header class="boards-modal__head board-settings-modal__head" style="display: grid; grid-template-columns: auto minmax(0, 1fr) auto;">
-          <span class="material-symbols-outlined" style="display: grid; width: 2.6rem; height: 2.6rem; place-items: center; border-radius: .8rem; background: color-mix(in srgb, var(--accent) 10%, var(--surface)); color: var(--accent); font-variation-settings: 'FILL' 1;" aria-hidden="true">settings</span>
-          <span class="board-settings-modal__head-copy" style="display: grid; gap: .2rem;">
-            <strong id="board-settings-modal-title" style="font-family: Georgia, 'Times New Roman', serif; font-size: 1.4rem;">Board settings</strong>
-            <small id="board-settings-modal-description" style="color: var(--muted); font-weight: 700;">Manage the details, presentation, and visibility of this board.</small>
+        <header class="boards-modal__head board-settings-modal__head">
+          <span class="board-settings-modal__head-copy">
+            <strong id="board-settings-modal-title">Board settings</strong>
+            <small id="board-settings-modal-description">Manage the details, presentation, and visibility of this board.</small>
           </span>
           <button
             type="button"
@@ -8912,17 +8910,17 @@
         </header>
 
         <form class="boards-form board-settings-form" (submit)="saveBoardSettings($event)">
-          <div class="board-settings-summary" style="display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: .75rem; border-bottom: 1px solid var(--line); padding-bottom: 1rem;">
+          <div class="board-settings-summary">
             @if (stackCoverImage(settingsBoard); as settingsCover) {
-              <img style="width: 4rem; height: 3.25rem; border-radius: .75rem; object-fit: cover;" [src]="settingsCover" [alt]="settingsBoard.title + ' cover image'" />
+              <img class="board-settings-summary__image" [src]="settingsCover" [alt]="settingsBoard.title + ' cover image'" />
             } @else {
-              <span class="board-settings-summary__fallback material-symbols-outlined" style="display: grid; width: 4rem; height: 3.25rem; place-items: center; border-radius: .75rem; background: color-mix(in srgb, var(--accent) 10%, var(--surface)); color: var(--accent);" aria-hidden="true">{{ boardDisplayIcon(settingsBoard) }}</span>
+              <span class="board-settings-summary__fallback material-symbols-outlined" aria-hidden="true">{{ boardDisplayIcon(settingsBoard) }}</span>
             }
-            <span class="board-settings-summary__copy" style="display: grid; min-width: 0; gap: .2rem;">
-              <strong style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ settingsBoard.title }}</strong>
-              <small style="color: var(--muted);">{{ ownerName(settingsBoard) }}</small>
+            <span class="board-settings-summary__copy">
+              <strong>{{ settingsBoard.title }}</strong>
+              <small>{{ ownerName(settingsBoard) }}</small>
             </span>
-            <span class="board-settings-summary__count" style="border-radius: 999px; background: color-mix(in srgb, var(--text) 7%, transparent); font-size: .72rem; font-weight: 850; padding: .42rem .62rem; white-space: nowrap;">
+            <span class="board-settings-summary__count">
               {{ boardDisplayCardCount(settingsBoard) }}
               {{ boardDisplayCardCount(settingsBoard) === 1 ? 'card' : 'cards' }}
             </span>
@@ -8969,7 +8967,7 @@
             </button>
           </section>
 
-          <section class="board-inside-display board-settings-choice" style="margin: 0;" aria-labelledby="board-settings-card-numbers-title">
+          <section class="board-inside-display board-settings-choice" aria-labelledby="board-settings-card-numbers-title">
             <div class="board-inside-display__copy board-settings-choice__copy">
               <span class="material-symbols-outlined" aria-hidden="true">format_list_numbered</span>
               <span>
@@ -9002,7 +9000,7 @@
           </section>
 
           @if (isTourBoard(settingsBoard)) {
-            <section class="board-inside-display board-settings-choice" style="margin: 0;" aria-labelledby="board-settings-tour-view-title">
+            <section class="board-inside-display board-settings-choice" aria-labelledby="board-settings-tour-view-title">
               <div class="board-inside-display__copy board-settings-choice__copy">
                 <span class="material-symbols-outlined" aria-hidden="true">route</span>
                 <span>
@@ -9036,7 +9034,7 @@
           }
 
           @if (boardHasCardsInside(settingsBoard)) {
-            <section class="board-inside-display board-settings-choice" style="margin: 0;" aria-labelledby="board-settings-inside-title">
+            <section class="board-inside-display board-settings-choice" aria-labelledby="board-settings-inside-title">
               <div class="board-inside-display__copy board-settings-choice__copy">
                 <span class="material-symbols-outlined" aria-hidden="true">account_tree</span>
                 <span>
@@ -9069,9 +9067,9 @@
             </section>
           }
 
-          <section class="board-inside-display board-settings-privacy" style="margin: 0;" aria-labelledby="board-settings-privacy-title">
-            <span class="material-symbols-outlined" style="display: grid; width: 2.35rem; height: 2.35rem; flex: none; place-items: center; border-radius: .72rem; background: color-mix(in srgb, var(--accent) 12%, var(--surface)); color: var(--accent); font-variation-settings: 'FILL' 1;" aria-hidden="true">{{ boardSettingsDraft().visibility === 'private' ? 'lock' : 'public' }}</span>
-            <span class="board-settings-privacy__copy" style="display: grid; min-width: 0; flex: 1; gap: .18rem;">
+          <section class="board-inside-display board-settings-privacy" aria-labelledby="board-settings-privacy-title">
+            <span class="board-settings-privacy__icon material-symbols-outlined" aria-hidden="true">{{ boardSettingsDraft().visibility === 'private' ? 'lock' : 'public' }}</span>
+            <span class="board-settings-privacy__copy">
               <strong id="board-settings-privacy-title">{{ boardSettingsDraft().visibility === 'private' ? 'Private board' : 'Public board' }}</strong>
               <small>
                 @if (settingsBoard.parentCardId) {
@@ -9086,10 +9084,6 @@
             <button
               type="button"
               class="board-settings-toggle"
-              style="display: inline-flex; align-items: center; gap: .3rem; min-width: 4.2rem; border: 1px solid var(--line); border-radius: 999px; cursor: pointer; padding: .22rem .38rem .22rem .22rem;"
-              [style.background]="boardSettingsDraft().visibility === 'private' ? 'var(--accent)' : 'color-mix(in srgb, var(--text) 7%, var(--surface))'"
-              [style.color]="boardSettingsDraft().visibility === 'private' ? '#fff' : 'var(--muted)'"
-              [style.border-color]="boardSettingsDraft().visibility === 'private' ? 'var(--accent)' : 'var(--line)'"
               role="switch"
               [class.board-settings-toggle--active]="boardSettingsDraft().visibility === 'private'"
               [attr.aria-checked]="boardSettingsDraft().visibility === 'private'"
@@ -9097,17 +9091,17 @@
               [disabled]="boardSettingsSaving() || !!settingsBoard.parentCardId"
               (click)="setBoardSettingsVisibility(boardSettingsDraft().visibility === 'private' ? 'public' : 'private')"
             >
-              <span style="width: 1.45rem; height: 1.45rem; border-radius: 999px; background: var(--surface-strong); box-shadow: 0 2px 6px rgba(5,30,21,.2);" aria-hidden="true"></span>
-              <small style="font-size: .62rem; font-weight: 900;">{{ boardSettingsDraft().visibility === 'private' ? 'ON' : 'OFF' }}</small>
+              <span class="board-settings-toggle__thumb" aria-hidden="true"></span>
+              <small>{{ boardSettingsDraft().visibility === 'private' ? 'ON' : 'OFF' }}</small>
             </button>
           </section>
 
           @if (boardCustomUrl(settingsBoard); as settingsUrl) {
-            <section class="board-inside-display board-settings-link" style="margin: 0;" aria-label="Board link">
+            <section class="board-inside-display board-settings-link" aria-label="Board link">
               <span class="material-symbols-outlined" aria-hidden="true">link</span>
-              <span class="board-settings-link__copy" style="display: grid; min-width: 0; flex: 1; gap: .08rem;">
+              <span class="board-settings-link__copy">
                 <small>Board link</small>
-                <a style="overflow: hidden; color: var(--text); font-size: .74rem; font-weight: 700; text-decoration: none; text-overflow: ellipsis; white-space: nowrap;" [href]="settingsUrl" [title]="settingsUrl">{{ boardCustomUrlDisplay(settingsBoard) }}</a>
+                <a [href]="settingsUrl" [title]="settingsUrl">{{ boardCustomUrlDisplay(settingsBoard) }}</a>
               </span>
               <button
                 type="button"
@@ -9123,7 +9117,7 @@
           }
 
           @if (boardSettingsError()) {
-            <p class="board-settings-error" style="margin: 0; border-radius: .75rem; background: #fff0ee; color: #9b2a20; font-size: .75rem; font-weight: 750; padding: .65rem;" role="alert">{{ boardSettingsError() }}</p>
+            <p class="board-settings-error" role="alert">{{ boardSettingsError() }}</p>
           }
 
           <footer class="boards-form__actions board-settings-actions">

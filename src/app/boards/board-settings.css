@@ -1,0 +1,456 @@
+.board-settings-backdrop {
+  background: rgba(7, 25, 18, 0.46);
+  backdrop-filter: blur(4px);
+}
+
+.board-settings-modal {
+  width: min(100%, 45rem);
+  border: 1px solid color-mix(in srgb, var(--text) 18%, var(--line));
+  border-radius: 1.25rem;
+  background: var(--surface-strong);
+  background-image: none;
+  box-shadow: 0 24px 70px rgba(4, 31, 21, 0.28);
+  padding: 1rem;
+}
+
+.board-settings-modal__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  padding-block: 1.05rem 0.95rem;
+}
+
+.board-settings-modal__head-copy {
+  display: grid;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.board-settings-modal__head-copy strong {
+  color: var(--text);
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+}
+
+.board-settings-modal__head-copy small {
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 650;
+  line-height: 1.4;
+}
+
+.board-settings-modal__close {
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: none;
+  color: var(--muted);
+}
+
+.board-settings-modal__close:hover,
+.board-settings-modal__close:focus-visible {
+  background: var(--soft-fill);
+  color: var(--text);
+  outline: none;
+  transform: none;
+}
+
+.board-settings-form {
+  gap: 0;
+  margin-top: 0.85rem;
+}
+
+.board-settings-summary {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.7rem;
+  border-radius: 0.8rem;
+  background: color-mix(in srgb, var(--text) 3.5%, var(--surface));
+  padding: 0.65rem;
+}
+
+.board-settings-summary__image,
+.board-settings-summary__fallback {
+  width: 3.25rem;
+  height: 2.6rem;
+  border-radius: 0.55rem;
+}
+
+.board-settings-summary__image {
+  object-fit: cover;
+}
+
+.board-settings-summary__fallback {
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+  color: var(--accent);
+  font-size: 1.2rem;
+}
+
+.board-settings-summary__copy {
+  display: grid;
+  min-width: 0;
+  gap: 0.15rem;
+}
+
+.board-settings-summary__copy strong,
+.board-settings-summary__copy small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.board-settings-summary__copy strong {
+  color: var(--text);
+  font-size: 0.82rem;
+  font-weight: 850;
+}
+
+.board-settings-summary__copy small {
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.board-settings-summary__count {
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.board-settings-field {
+  margin-top: 0.9rem;
+}
+
+.board-settings-form .board-settings-field > span {
+  font-size: 0.64rem;
+  letter-spacing: 0.13em;
+}
+
+.board-settings-form .board-settings-field input,
+.board-settings-form .board-settings-field textarea {
+  border-width: 1px;
+  border-radius: 0.72rem;
+  background: var(--surface);
+  box-shadow: none;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.72rem 0.8rem;
+}
+
+.board-settings-form .board-settings-field input {
+  min-height: 2.75rem;
+}
+
+.board-settings-form .board-settings-field textarea {
+  min-height: 5.35rem;
+  line-height: 1.5;
+}
+
+.board-settings-form .board-settings-field input:focus,
+.board-settings-form .board-settings-field textarea:focus {
+  border-color: color-mix(in srgb, var(--accent) 62%, var(--line));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+.board-settings-modal .board-settings-talking-card,
+.board-settings-modal .board-settings-choice,
+.board-settings-modal .board-settings-privacy,
+.board-settings-modal .board-settings-link {
+  min-width: 0;
+  margin: 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 0.82rem 0.15rem;
+}
+
+.board-settings-modal .board-settings-talking-card {
+  margin-top: 1rem;
+}
+
+.board-settings-modal .board-settings-talking-card__icon,
+.board-settings-modal .board-settings-choice__copy > .material-symbols-outlined,
+.board-settings-modal .board-settings-privacy__icon,
+.board-settings-modal .board-settings-link > .material-symbols-outlined {
+  display: grid;
+  width: 1.75rem;
+  height: 1.75rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--accent);
+  font-size: 1.05rem;
+  font-variation-settings: 'FILL' 0;
+}
+
+.board-settings-modal .board-settings-talking-card__copy,
+.board-settings-modal .board-settings-choice__copy > span,
+.board-settings-privacy__copy,
+.board-settings-link__copy {
+  display: grid;
+  min-width: 0;
+  gap: 0.12rem;
+}
+
+.board-settings-modal .board-settings-talking-card__copy strong,
+.board-settings-modal .board-settings-choice__copy strong,
+.board-settings-privacy__copy strong {
+  color: var(--text);
+  font-size: 0.8rem;
+  font-weight: 850;
+}
+
+.board-settings-modal .board-settings-talking-card__copy small,
+.board-settings-modal .board-settings-choice__copy small,
+.board-settings-privacy__copy small,
+.board-settings-link__copy small {
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.board-settings-modal .boards-talking-action {
+  min-height: 2.25rem;
+  border: 0;
+  border-radius: 0.55rem;
+  background: transparent;
+  color: var(--accent);
+  font-size: 0.72rem;
+  padding: 0.5rem 0.65rem;
+}
+
+.board-settings-modal .boards-talking-action:hover,
+.board-settings-modal .boards-talking-action:focus-visible {
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  outline: none;
+  transform: none;
+}
+
+.board-settings-modal .board-settings-choice {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.board-settings-modal .board-settings-choice__copy {
+  min-width: 0;
+  gap: 0.55rem;
+}
+
+.board-settings-modal .board-settings-segmented {
+  width: 9.5rem;
+  flex: 0 0 auto;
+  gap: 0;
+  border: 1px solid var(--line);
+  border-radius: 0.65rem;
+  background: transparent;
+  padding: 0;
+}
+
+.board-settings-modal .board-settings-segmented button {
+  justify-content: center;
+  min-height: 2.2rem;
+  border: 0;
+  border-radius: 0;
+  padding: 0.45rem 0.6rem;
+  text-align: center;
+}
+
+.board-settings-modal .board-settings-segmented button:first-child {
+  border-radius: 0.58rem 0 0 0.58rem;
+}
+
+.board-settings-modal .board-settings-segmented button:last-child {
+  border-radius: 0 0.58rem 0.58rem 0;
+}
+
+.board-settings-modal .board-settings-segmented button + button {
+  border-left: 1px solid var(--line);
+}
+
+.board-settings-modal .board-settings-segmented button > .material-symbols-outlined,
+.board-settings-modal .board-settings-segmented small {
+  display: none;
+}
+
+.board-settings-modal .board-settings-segmented strong {
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.board-settings-modal .board-settings-segmented .board-inside-display__option--active {
+  border: 0;
+  background: color-mix(in srgb, var(--accent) 9%, var(--surface));
+  box-shadow: none;
+  color: var(--accent);
+}
+
+.board-settings-privacy,
+.board-settings-link {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.board-settings-toggle {
+  display: inline-flex;
+  min-width: 3.7rem;
+  align-items: center;
+  gap: 0.28rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--text) 6%, var(--surface));
+  color: var(--muted);
+  cursor: pointer;
+  padding: 0.18rem 0.34rem 0.18rem 0.18rem;
+}
+
+.board-settings-toggle__thumb {
+  width: 1.3rem;
+  height: 1.3rem;
+  border-radius: 50%;
+  background: var(--surface-strong);
+  box-shadow: 0 1px 4px rgba(5, 30, 21, 0.2);
+}
+
+.board-settings-toggle small {
+  font-size: 0.58rem;
+  font-weight: 850;
+}
+
+.board-settings-toggle--active {
+  flex-direction: row-reverse;
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+  padding-inline: 0.18rem 0.34rem;
+}
+
+.board-settings-toggle:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.board-settings-link__copy {
+  flex: 1;
+}
+
+.board-settings-link__copy a {
+  overflow: hidden;
+  color: var(--text);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.board-settings-modal .board-settings-link .boards-ghost-action {
+  min-height: 2.2rem;
+  border-radius: 0.55rem;
+  font-size: 0.7rem;
+  padding: 0.45rem 0.65rem;
+}
+
+.board-settings-error {
+  margin: 0.75rem 0 0;
+  border-radius: 0.65rem;
+  background: #fff0ee;
+  color: #9b2a20;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.65rem 0.75rem;
+}
+
+.board-settings-actions {
+  position: sticky;
+  bottom: -1rem;
+  z-index: 2;
+  margin: 0 -1rem -1rem;
+  border-top: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface-strong) 96%, transparent);
+  padding: 0.85rem 1rem;
+  backdrop-filter: blur(14px);
+}
+
+.board-settings-actions__cancel {
+  min-height: 2.4rem;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.76rem;
+  padding-inline: 0.7rem;
+}
+
+.board-settings-actions__cancel:hover,
+.board-settings-actions__cancel:focus-visible {
+  background: var(--soft-fill);
+  color: var(--text);
+  box-shadow: none;
+  outline: none;
+  transform: none;
+}
+
+.board-settings-actions__save {
+  min-height: 2.5rem;
+  border: 0;
+  border-radius: 0.65rem;
+  box-shadow: none;
+  font-size: 0.78rem;
+  padding-inline: 1rem;
+}
+
+.board-settings-actions__save:hover,
+.board-settings-actions__save:focus-visible {
+  box-shadow: 0 7px 18px color-mix(in srgb, var(--accent) 22%, transparent);
+  outline: none;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 640px) {
+  .board-settings-modal {
+    border-radius: 1rem;
+  }
+
+  .board-settings-summary {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .board-settings-summary__count {
+    grid-column: 2;
+  }
+
+  .board-settings-modal .board-settings-talking-card {
+    grid-template-columns: 1.75rem minmax(0, 1fr);
+  }
+
+  .board-settings-modal .board-settings-talking-card .boards-talking-action {
+    grid-column: 2;
+    width: fit-content;
+    padding-left: 0;
+  }
+
+  .board-settings-modal .board-settings-choice {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .board-settings-modal .board-settings-segmented {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+}
