@@ -90,6 +90,7 @@ import {
   wrapBoardWizardDoorwayIndex,
   type BoardWizardDoorwayId,
 } from './board-wizard-doorway';
+import { duplicateCardRecord } from './card-duplicate';
 import {
   boardWizardImageProgressLabel,
   boardWizardStepAfterGenerationFailure,
@@ -8552,6 +8553,91 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       card,
       parentCardId: this.exploredRelatedCardParentId(),
     });
+  }
+
+  async duplicateCard(
+    card: BoardCard,
+    event?: Event,
+    boardOverride?: Board,
+    parentCardId?: string,
+  ): Promise<void> {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const requestedBoard = boardOverride ?? this.selectedBoard();
+    const board = requestedBoard
+      ? this.boards().find((candidate) => candidate.id === requestedBoard.id) ?? requestedBoard
+      : null;
+    if (!board || !this.canEditBoard(board)) {
+      this.boardsSyncError.set('Only the board owner can duplicate cards.');
+      return;
+    }
+
+    const now = new Date().toISOString();
+    const duplicate = this.duplicateCardWithBoardInside(card, now);
+
+    if (parentCardId) {
+      const parent = board.cards.find((candidate) => candidate.id === parentCardId);
+      const relatedCards = this.explicitRelatedCards(parent);
+      const sourceIndex = relatedCards.findIndex((candidate) => candidate.id === card.id);
+      if (!parent || sourceIndex < 0) {
+        this.boardsSyncError.set('The card to duplicate could not be found.');
+        return;
+      }
+      const nextRelatedCards = [...relatedCards];
+      nextRelatedCards.splice(sourceIndex + 1, 0, duplicate);
+      const rankedRelatedCards = nextRelatedCards.map((relatedCard, index) => ({
+        ...relatedCard,
+        rank: index + 1,
+      }));
+      const nextBoard: Board = {
+        ...board,
+        cards: board.cards.map((candidate) => candidate.id === parent.id
+          ? { ...candidate, relatedCards: rankedRelatedCards, updatedAt: now }
+          : candidate),
+        updatedAt: now,
+      };
+      this.boards.update((boards) => boards.map((candidate) => candidate.id === board.id ? nextBoard : candidate));
+      await this.persistAndReplaceBoard(nextBoard);
+      return;
+    }
+
+    const sourceIndex = board.cards.findIndex((candidate) => candidate.id === card.id);
+    if (sourceIndex < 0) {
+      this.boardsSyncError.set('The card to duplicate could not be found.');
+      return;
+    }
+
+    if (this.isTourBoard(board) && duplicate.tour) {
+      const nextCards = insertTourCardAfter(board.cards, duplicate, card.id);
+      const addedCard = nextCards.find((candidate) => candidate.id === duplicate.id) ?? duplicate;
+      await this.saveTourCardMutation(board, nextCards, { addedCard });
+      return;
+    }
+
+    const nextCards = [...board.cards];
+    nextCards.splice(sourceIndex + 1, 0, duplicate);
+    const nextBoard: Board = { ...board, cards: nextCards, updatedAt: now };
+    this.boards.update((boards) => boards.map((candidate) => candidate.id === board.id ? nextBoard : candidate));
+    await this.persistAndReplaceBoard(nextBoard);
+  }
+
+  private duplicateCardWithBoardInside(card: BoardCard, now: string): BoardCard {
+    const duplicate = duplicateCardRecord(card, () => this.createId(), now);
+    const childBoardId = card.childBoardId?.trim();
+    const childBoard = childBoardId
+      ? this.boards().find((candidate) => candidate.id === childBoardId) ?? null
+      : null;
+    if (!childBoard) {
+      return duplicate;
+    }
+    return {
+      ...duplicate,
+      childBoardId: '',
+      relatedCards: childBoard.cards.map((childCard, index) => ({
+        ...duplicateCardRecord(childCard, () => this.createId(), now, false),
+        rank: index + 1,
+      })),
+    };
   }
 
   closeCardDeleteDialog(event?: Event): void {

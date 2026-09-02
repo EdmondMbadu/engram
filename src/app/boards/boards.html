@@ -363,16 +363,6 @@
           }
           @if (selectedBoard(); as topBoard) {
             @if (canEditBoard(topBoard)) {
-              <button
-                type="button"
-                class="boards-ghost-action"
-                [id]="'board-settings-trigger-' + topBoard.id"
-                aria-label="Board settings"
-                (click)="openBoardSettings(topBoard, $event)"
-              >
-                <span class="material-symbols-outlined" aria-hidden="true">settings</span>
-                <span class="hidden sm:inline">Board settings</span>
-              </button>
               <button type="button" class="boards-primary-action" (click)="openCreateCard(topBoard.id)">
                 <span class="material-symbols-outlined">add</span>
                 <span class="hidden sm:inline" i18n>New Card</span>
@@ -1279,6 +1269,10 @@
                           @if (hasBoardInside(item.card) || relatedCardCount(item.card) > 0) {
                             <small>{{ boardInsideCardCount(item.card) }}</small>
                           }
+                        </button>
+                        <button type="button" role="menuitem" (click)="closeCardActionMenu(); duplicateCard(item.card, $event, item.board)">
+                          <span class="material-symbols-outlined">content_copy</span>
+                          <span>Duplicate this card</span>
                         </button>
                         <button type="button" role="menuitem" class="card-action-menu__danger" (click)="closeCardActionMenu(); deleteGalleryCard(item.board.id, item.card, $event)" i18n>
                           <span class="material-symbols-outlined">delete</span>
@@ -2357,6 +2351,10 @@
                                       <span class="material-symbols-outlined">account_tree</span>
                                       <span>Board inside</span>
                                     </button>
+                                    <button type="button" role="menuitem" (click)="closeCardActionMenu(); duplicateCard(card, $event)">
+                                      <span class="material-symbols-outlined">content_copy</span>
+                                      <span>Duplicate this card</span>
+                                    </button>
                                     <button type="button" role="menuitem" class="card-action-menu__danger" (click)="closeCardActionMenu(); deleteCard(card, $event)">
                                       <span class="material-symbols-outlined">delete</span>
                                       <span>Delete stop</span>
@@ -3248,6 +3246,10 @@
                                 <span class="material-symbols-outlined">arrow_downward</span>
                                 <span>Move later</span>
                               </button>
+                              <button type="button" role="menuitem" (click)="closeCardActionMenu(); duplicateCard(card, $event, cardHostBoard(board, card), relatedParent.id)">
+                                <span class="material-symbols-outlined">content_copy</span>
+                                <span>Duplicate this card</span>
+                              </button>
                               <button type="button" role="menuitem" class="card-action-menu__danger" (click)="closeCardActionMenu(); deleteCard(card, $event)">
                                 <span class="material-symbols-outlined">delete</span>
                                 <span i18n>Delete card</span>
@@ -3274,6 +3276,10 @@
                               @if (hasBoardInside(card) || relatedCardCount(card) > 0) {
                                 <small>{{ boardInsideCardCount(card) }}</small>
                               }
+                            </button>
+                            <button type="button" role="menuitem" (click)="closeCardActionMenu(); duplicateCard(card, $event, cardHostBoard(board, card))">
+                              <span class="material-symbols-outlined">content_copy</span>
+                              <span>Duplicate this card</span>
                             </button>
                             <button type="button" role="menuitem" class="card-action-menu__danger" (click)="closeCardActionMenu(); deleteCard(card, $event, cardHostBoard(board, card))">
                               <span class="material-symbols-outlined">delete</span>
