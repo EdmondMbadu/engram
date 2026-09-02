@@ -390,8 +390,8 @@
               </button>
             }
           } @else if (!boardRouteLoading() && canCreateBoard() && !friendsPage()) {
-            <button type="button" class="boards-primary-action" (click)="openCreateBoard()">
-              <span class="material-symbols-outlined">add</span>
+            <button type="button" class="boards-primary-action boards-new-board-action" aria-label="New Board" title="New Board" (click)="openCreateBoard()">
+              <span class="material-symbols-outlined" aria-hidden="true">add</span>
               <span class="hidden sm:inline" i18n>New Board</span>
             </button>
           }

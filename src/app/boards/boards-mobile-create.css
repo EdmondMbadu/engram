@@ -1,0 +1,31 @@
+/* Keep board creation reachable when the gallery header switches to phone layout. */
+@media (max-width: 640px) {
+  .boards-topbar--gallery .boards-new-board-action {
+    display: inline-flex;
+    width: 2.65rem;
+    min-width: 2.65rem;
+    min-height: 2.65rem;
+    border-radius: 0.72rem;
+    padding: 0;
+  }
+
+  .boards-topbar--gallery .boards-new-board-action .material-symbols-outlined {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 460px) {
+  .boards-topbar--gallery {
+    gap: 0.45rem;
+    padding-inline: 0.65rem;
+  }
+
+  .boards-topbar--gallery .boards-topbar__brand,
+  .boards-topbar--gallery .boards-topbar__actions {
+    gap: 0.35rem;
+  }
+
+  .boards-topbar--gallery .boards-logo {
+    width: 6.6rem;
+  }
+}
