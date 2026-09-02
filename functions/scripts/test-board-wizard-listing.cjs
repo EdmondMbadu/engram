@@ -70,6 +70,58 @@ assert.equal(loftyListing.realEstate.listingStatus, 'Under Contract');
 assert.equal(loftyListing.realEstate.propertyType, 'Single Family Home');
 assert.equal(loftyListing.realEstate.yearBuilt, '2004');
 assert.equal(loftyListing.realEstate.taxes, '$8,673');
+
+const loftyLegacyInfo = {
+  id: 1188241439,
+  address: '8 Galloping Way, Cape May Court House, NJ 08210',
+  detailsDescribe: 'Exact public Lofty listing description.',
+  price: 799900,
+  bedrooms: 4,
+  bathrooms: 2.1,
+  fullBaths: 2,
+  sqft: 2780,
+  builtYear: 2004,
+  listingStatus: 'Under Contract',
+  propertyType: 'Single Family Home',
+  mlsListingId: '262374',
+  pictureList: loftyPhotos,
+  taxAmount: 8673,
+  hoaFee: -1,
+  latitude: '39.081292',
+  longitude: '-74.843555',
+  agentOrganizationName: 'eXp REALTY',
+  heating: 'Gas Natural, Forced Air',
+  cooling: 'Attic Fan, Multi Zoned',
+  link: 'https://vimeo.com/1221031356',
+};
+const loftyLegacyHtml = `<!doctype html><html><head>
+  <title>Homes for sale - 8 Galloping Way, Cape May Court House, NJ 08210</title>
+  <meta name="description" content="Homes for sale: 8 Galloping Way with 4 beds and 2.1 baths, listed for $799900.">
+  <meta property="og:image" content="${loftyPhotos[0]}">
+</head><body>
+  <script>window.sitePageJSON=${JSON.stringify({
+    modules: [
+      { name: 'md-detail-info', data: { listingDetail: { info: loftyLegacyInfo } } },
+      { name: 'md-house-listing', data: { listingDetail: { info: { ...loftyLegacyInfo, id: 999999999, address: 'A related home', price: 287000 } } } },
+    ],
+  })}</script>
+</body></html>`;
+const loftyLegacyListing = extractBoardWizardListing(loftyListingUrl, loftyListingUrl, loftyLegacyHtml);
+assert.ok(loftyLegacyListing, 'Lofty link-preview state should extract as the exact requested property');
+assert.equal(loftyLegacyListing.listingName, '8 Galloping Way, Cape May Court House, NJ 08210');
+assert.equal(loftyLegacyListing.price, 'USD 799900', 'price per square foot and related-home prices must not replace the listing price');
+assert.equal(loftyLegacyListing.realEstate.bedrooms, '4');
+assert.equal(loftyLegacyListing.realEstate.bathrooms, '2.1');
+assert.equal(loftyLegacyListing.realEstate.mlsId, '262374');
+assert.equal(loftyLegacyListing.realEstate.listingStatus, 'Under Contract');
+assert.equal(loftyLegacyListing.realEstate.propertyType, 'Single Family Home');
+assert.equal(loftyLegacyListing.realEstate.yearBuilt, '2004');
+assert.equal(loftyLegacyListing.realEstate.taxes, '$8673');
+assert.equal(loftyLegacyListing.realEstate.hoaFee, '', 'negative provider sentinels must not become listing facts');
+assert.deepEqual(loftyLegacyListing.realEstate.virtualTours, ['https://vimeo.com/1221031356']);
+assert.equal(loftyLegacyListing.images.length, 50);
+assert.ok(loftyLegacyListing.images.every((image) => image.url.includes('/mls-listing/276/262374/')));
+assert.equal(loftyLegacyListing.description, 'Exact public Lofty listing description.');
 assert.deepEqual(normalizeBoardWizardListingMarketingOptions({ style: 'luxury', direction: '  Lead with the deck.  ' }), {
   enabled: true,
   style: 'luxury',

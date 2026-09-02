@@ -113,7 +113,11 @@ export function extractBoardWizardListing(
     return null;
   }
   const document = dom.window.document;
-  const jsonNodes = extractJsonLdNodes(document);
+  const loftyEmbeddedNode = extractLoftyEmbeddedListingNode(document, inputUrl || baseUrl);
+  const jsonNodes = [
+    ...extractJsonLdNodes(document),
+    ...(loftyEmbeddedNode ? [loftyEmbeddedNode] : []),
+  ];
   const candidates = jsonNodes
     .map((node) => ({ node, ...classifyListingNode(node) }))
     .filter((candidate): candidate is { node: JsonRecord; kind: BoardWizardListingKind; score: number } => !!candidate.kind)
@@ -711,6 +715,113 @@ function extractJsonLdNodes(document: Document): JsonRecord[] {
     }
   }
   return nodes;
+}
+
+/**
+ * Lofty/Chime's public link-preview HTML stores the authoritative property in
+ * window.sitePageJSON rather than JSON-LD. Select only the record whose id is
+ * present in the requested URL, then normalize it into the same schema-backed
+ * path used by every other listing provider. Related/hot listings are ignored.
+ */
+function extractLoftyEmbeddedListingNode(document: Document, sourceUrl: string): JsonRecord | null {
+  const listingId = safePathname(sourceUrl).match(/^\/listing-detail\/(\d{6,})\//i)?.[1] || '';
+  if (!listingId) return null;
+
+  for (const script of Array.from(document.scripts)) {
+    const text = script.textContent?.trim() || '';
+    const assignment = text.match(/^window\.sitePageJSON\s*=\s*/)?.[0] || '';
+    if (!assignment || text.length > 5_000_000) continue;
+    try {
+      const root = JSON.parse(text.slice(assignment.length).replace(/;\s*$/, ''));
+      const info = findLoftyListingInfo(root, listingId);
+      if (!info) continue;
+      const images = arrayValue(info.pictureList)
+        .map((value) => firstText(value))
+        .filter((value) => /^https?:\/\//i.test(value))
+        .slice(0, BOARD_WIZARD_SOURCE_GALLERY_LIMIT);
+      if (!images.length) continue;
+      const address = firstText(
+        info.address,
+        [info.streetAddress, info.city, info.state, info.zipCode].map((value) => firstText(value)).filter(Boolean).join(', '),
+      );
+      const additionalProperty = [
+        loftyPropertyValue('Property Type', info.propertyType),
+        loftyPropertyValue('Listing Status', info.listingStatus),
+        loftyPropertyValue('HOA Fee', positiveListingValue(info.hoaFee)),
+        loftyPropertyValue('Taxes', positiveListingValue(info.taxAmount)),
+        loftyPropertyValue('Heating', info.heating),
+        loftyPropertyValue('Cooling', info.cooling),
+        loftyPropertyValue('Parking', info.garageDescription),
+        loftyPropertyValue('Other Rooms', info.otherRooms),
+        loftyPropertyValue('Hot Water', info.hotWater),
+        loftyPropertyValue('Features', info.interiorFeatures),
+      ].filter((value): value is JsonRecord => !!value);
+      return {
+        '@context': 'https://schema.org',
+        '@type': 'RealEstateListing',
+        name: address || metaContent(document, 'property', 'og:title') || document.title,
+        description: firstText(info.detailsDescribe, metaContent(document, 'name', 'description')),
+        address,
+        image: images,
+        offers: {
+          '@type': 'Offer',
+          price: positiveListingValue(info.price),
+          priceCurrency: 'USD',
+        },
+        identifier: firstText(info.mlsListingId),
+        numberOfBedrooms: positiveListingValue(info.bedrooms),
+        numberOfBathrooms: positiveListingValue(info.fullBaths),
+        numberOfBathroomsTotal: positiveListingValue(info.bathrooms),
+        yearBuilt: positiveListingValue(info.builtYear),
+        provider: { name: firstText(info.agentOrganizationName) },
+        geo: {
+          '@type': 'GeoCoordinates',
+          latitude: info.latitude,
+          longitude: info.longitude,
+        },
+        additionalProperty,
+        virtualTour: firstText(info.link),
+      };
+    } catch {
+      // A malformed legacy state block must not affect JSON-LD/DOM extraction.
+    }
+  }
+  return null;
+}
+
+function findLoftyListingInfo(root: unknown, listingId: string): JsonRecord | null {
+  const pending: unknown[] = [root];
+  let inspected = 0;
+  while (pending.length && inspected < 200_000) {
+    const value = pending.pop();
+    inspected += 1;
+    if (!value || typeof value !== 'object') continue;
+    if (Array.isArray(value)) {
+      pending.push(...value);
+      continue;
+    }
+    const record = value as JsonRecord;
+    if (
+      firstText(record.id) === listingId
+      && arrayValue(record.pictureList).length > 0
+      && firstText(record.address)
+    ) {
+      return record;
+    }
+    pending.push(...Object.values(record));
+  }
+  return null;
+}
+
+function loftyPropertyValue(name: string, value: unknown): JsonRecord | null {
+  const text = firstText(value);
+  return text ? { '@type': 'PropertyValue', name, value: text } : null;
+}
+
+function positiveListingValue(value: unknown): string {
+  const text = firstText(value);
+  const numeric = Number(text);
+  return text && (!Number.isFinite(numeric) || numeric >= 0) ? text : '';
 }
 
 function collectJsonRecords(value: unknown, target: JsonRecord[]): void {
@@ -1350,7 +1461,11 @@ function extractRealEstateDetails(
     'Appliances Included', 'Hot Water', 'Total Rooms', 'Unit Features',
   ];
   const features = featureLabels.flatMap((label) =>
-    labeledValues(pairs, label).map((value) => `${friendlyFeatureLabel(label)}: ${value}`),
+    mergeTextValues(
+      labeledValues(pairs, label),
+      [structuredPropertyValue(primary, label), structuredPropertyValue(about, label)],
+      4,
+    ).map((value) => `${friendlyFeatureLabel(label)}: ${value}`),
   );
   const virtualTours = mergeTextValues(
     labeledValues(pairs, 'Virtual Tour').flatMap(extractHttpUrls),
@@ -1361,7 +1476,12 @@ function extractRealEstateDetails(
   );
   return {
     mlsId: firstText(labeledValue(pairs, 'MLS#', 'MLS ID', 'MLS Listing ID'), primary.identifier),
-    listingStatus: firstText(labeledValue(pairs, 'Listing Status', 'Status'), statusFromText(pageText)),
+    listingStatus: firstText(
+      labeledValue(pairs, 'Listing Status', 'Status'),
+      structuredPropertyValue(primary, 'Listing Status'),
+      structuredPropertyValue(about, 'Listing Status'),
+      statusFromText(pageText),
+    ),
     propertyType: firstText(
       labeledValue(pairs, 'Property Type', 'Sub Type', 'Property Sub-Type', 'Style', 'Type', 'Class'),
       structuredPropertyValue(primary, 'Property Type'),
@@ -1373,15 +1493,27 @@ function extractRealEstateDetails(
     fullBathrooms,
     halfBathrooms,
     yearBuilt: firstText(labeledValue(pairs, 'Year Built'), primary.yearBuilt, about.yearBuilt),
-    hoaFee: normalizeCurrency(labeledValue(pairs, 'HOA Fee'), true),
-    taxes: normalizeCurrency(labeledValue(pairs, 'Taxes', 'Annual Tax Amount'), true),
+    hoaFee: normalizeCurrency(firstText(
+      labeledValue(pairs, 'HOA Fee'),
+      structuredPropertyValue(primary, 'HOA Fee'),
+      structuredPropertyValue(about, 'HOA Fee'),
+    ), true),
+    taxes: normalizeCurrency(firstText(
+      labeledValue(pairs, 'Taxes', 'Annual Tax Amount'),
+      structuredPropertyValue(primary, 'Taxes'),
+      structuredPropertyValue(about, 'Taxes'),
+    ), true),
     agentName: contact.name,
     agentRole: contact.name ? 'Site contact' : '',
     agentProfileUrl: contact.profileUrl,
     agentImageUrl: contact.imageUrl,
     brokerage: extractBrokerage(document),
     dataSource: extractDataSource(document),
-    virtualTours,
+    virtualTours: mergeTextValues(
+      [firstText(primary.virtualTour), firstText(about.virtualTour)],
+      virtualTours,
+      8,
+    ),
     features: mergeTextValues(features, [], 24),
   };
 }

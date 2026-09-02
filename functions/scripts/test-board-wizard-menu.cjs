@@ -10,6 +10,7 @@ const {
   isBoardWizardMenuActionCard,
 } = require('../lib/board-wizard-menu.js');
 const {
+  buildLoftyProofOfWorkCookie,
   looksLikeAntiBotChallenge,
 } = require('../lib/html-fetch.js');
 
@@ -148,6 +149,18 @@ assert.equal(
   true,
   'Lofty proof-of-work responses must trigger the browser fallback instead of generation',
 );
+const loftyProofFixture = `<script>
+  var nonce = '0123456789abcdef0123456789abcdef';
+  var difficulty = 2;
+  var _a = '1788311965.998', _b = 'ab621a4f50b31b', _c = '11b46ff069d8011';
+  var key = 'cf_retry'; document.cookie = 'cf_pow'; document.cookie = 'cf_pass';
+</script>`;
+const loftyProofCookie = buildLoftyProofOfWorkCookie(loftyProofFixture, 37);
+assert.match(loftyProofCookie, /^cf_pow=\d+; cf_time=37; cf_pass=1788311965\.998ab621a4f50b31b11b46ff069d8011$/);
+const loftyProofAnswer = loftyProofCookie.match(/^cf_pow=(\d+)/)?.[1] || '';
+assert.ok(loftyProofAnswer, 'the bounded Lofty challenge solver should find a proof');
+const { createHash } = require('node:crypto');
+assert.match(createHash('sha1').update(`0123456789abcdef0123456789abcdef${loftyProofAnswer}`).digest('hex'), /^77/);
 assert.equal(
   isBoardWizardMenuActionCard({
     title: 'Open Menu',
