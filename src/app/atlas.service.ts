@@ -1347,6 +1347,16 @@ export class AtlasService {
     return data.config;
   }
 
+  async selectAtlasPersonalVoice(atlasId: string, personalVoiceId: string): Promise<AtlasSpeechVoiceConfig> {
+    if (!this.functions) throw new Error('Functions unavailable.');
+    const callable = httpsCallable<
+      { atlasId: string; personalVoiceId: string },
+      AtlasSpeechVoiceConfigResponse
+    >(this.functions, 'selectAtlasPersonalVoice');
+    const { data } = await callable({ atlasId, personalVoiceId });
+    return data.config;
+  }
+
   async resetAtlasSpeechVoice(atlasId: string): Promise<AtlasSpeechVoiceConfig> {
     if (!this.functions) throw new Error('Functions unavailable.');
     const callable = httpsCallable<{ atlasId: string }, AtlasSpeechVoiceConfigResponse>(

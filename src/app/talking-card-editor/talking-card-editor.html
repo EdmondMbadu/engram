@@ -158,6 +158,88 @@
               </div>
             }
 
+            <section class="talking-editor__personal-library" aria-labelledby="talking-editor-personal-voices-title">
+              <header>
+                <span>
+                  <strong id="talking-editor-personal-voices-title">My voices</strong>
+                  <small>Your private, reusable voice library · {{ personalVoiceUsageLabel() }}</small>
+                </span>
+                @if (personalVoiceLoading()) {
+                  <span class="material-symbols-outlined talking-editor__spin" aria-label="Loading your voices">progress_activity</span>
+                } @else {
+                  <button type="button" class="talking-editor__personal-add" (click)="openPersonalVoiceSetup()">
+                    <span class="material-symbols-outlined">{{ personalVoiceCanAdd() ? 'add' : 'lock' }}</span>
+                    {{ personalVoices().length === 0 ? 'Create my voice' : personalVoiceCanAdd() ? 'Add voice' : 'Upgrade' }}
+                  </button>
+                }
+              </header>
+
+              @if (!personalVoiceLoading() && personalVoices().length) {
+                <div class="talking-editor__personal-list" role="radiogroup" aria-label="Your personal conversation voices">
+                  @for (voice of personalVoices(); track voice.id) {
+                    <article class="talking-editor__personal-voice" [class.is-selected]="voiceChoice() === 'personal' && personalVoiceId() === voice.id">
+                      <button type="button" class="talking-editor__personal-select" role="radio" [attr.aria-checked]="voiceChoice() === 'personal' && personalVoiceId() === voice.id" (click)="selectPersonalVoice(voice)">
+                        <span class="talking-editor__voice-icon material-symbols-outlined">spatial_audio_off</span>
+                        <span><strong>{{ voice.name }}</strong><small>Private · available to your agents and boards</small></span>
+                        <span class="material-symbols-outlined">{{ voiceChoice() === 'personal' && personalVoiceId() === voice.id ? 'check_circle' : 'radio_button_unchecked' }}</span>
+                      </button>
+                      <div class="talking-editor__personal-actions">
+                        <button type="button" [disabled]="!!voicePreviewLoadingKey() && voicePreviewLoadingKey() !== 'personal:' + voice.id + ':' + voice.voiceRevision" (click)="toggleVoicePreview('personal:' + voice.id + ':' + voice.voiceRevision, undefined, voice.narratorVoiceId)">
+                          <span class="material-symbols-outlined" [class.talking-editor__spin]="voicePreviewLoadingKey() === 'personal:' + voice.id + ':' + voice.voiceRevision">{{ voicePreviewLoadingKey() === 'personal:' + voice.id + ':' + voice.voiceRevision ? 'progress_activity' : voicePreviewPlayingKey() === 'personal:' + voice.id + ':' + voice.voiceRevision ? 'stop' : 'play_arrow' }}</span>
+                          {{ voicePreviewPlayingKey() === 'personal:' + voice.id + ':' + voice.voiceRevision ? 'Stop' : 'Preview' }}
+                        </button>
+                        <button type="button" (click)="renamePersonalVoice(voice)">Rename</button>
+                        <button type="button" (click)="openPersonalVoiceSetup(voice)">Replace</button>
+                        <button type="button" class="is-danger" [disabled]="!!personalVoiceDeletingId()" (click)="deletePersonalVoice(voice)">{{ personalVoiceDeletingId() === voice.id ? 'Deleting…' : 'Delete' }}</button>
+                      </div>
+                    </article>
+                  }
+                </div>
+              } @else if (!personalVoiceLoading()) {
+                <p class="talking-editor__personal-empty">Record or upload your own voice, then use it for this agent.</p>
+              }
+
+              @if (!personalVoiceCanAdd() && personalVoices().length) {
+                <small class="talking-editor__personal-limit">Your existing voice remains available. Replace it here, or upgrade to add more voices.</small>
+              }
+              @if (publicBoard()) {
+                <small class="talking-editor__personal-disclosure"><span class="material-symbols-outlined">public</span>Your library stays private, but visitors will hear the selected voice when this agent speaks.</small>
+              }
+            </section>
+
+            @if (personalVoiceSetupOpen()) {
+              <section class="talking-editor__voice-setup" aria-label="Create your personal conversation voice">
+                <header>
+                  <span><strong>{{ personalVoiceSetupVoiceId() ? 'Replace this voice' : 'Create a voice' }}</strong><small>One speaker, a quiet room, and a natural delivery work best.</small></span>
+                  <button type="button" aria-label="Close personal voice setup" [disabled]="personalVoiceCreating()" (click)="closePersonalVoiceSetup()"><span class="material-symbols-outlined">close</span></button>
+                </header>
+                <div class="talking-editor__voice-script">
+                  <span class="material-symbols-outlined">article</span>
+                  <p>Hello, and welcome to my LivingWiki. I enjoy sharing the people, places, and ideas that make every story memorable. As we explore these cards together, I will point out the details, connections, and moments that matter most.</p>
+                </div>
+                <label><span>Voice name</span><input type="text" maxlength="48" [ngModel]="personalVoiceName()" (ngModelChange)="personalVoiceName.set($event)" /></label>
+                <div class="talking-editor__voice-capture">
+                  <button type="button" [class.is-recording]="personalVoiceRecording()" [disabled]="personalVoiceCreating()" (click)="personalVoiceRecording() ? stopPersonalVoiceRecording() : startPersonalVoiceRecording()">
+                    <span class="material-symbols-outlined">{{ personalVoiceRecording() ? 'stop_circle' : 'mic' }}</span>
+                    {{ personalVoiceRecording() ? 'Stop recording' : 'Record my voice' }}
+                    @if (personalVoiceRecording()) { <small>{{ personalVoiceRecordingSeconds() }}s / 120s</small> }
+                  </button>
+                  <span>or</span>
+                  <label class="talking-editor__voice-upload"><span class="material-symbols-outlined">upload_file</span>Upload audio<input type="file" accept="audio/*,.mp3,.wav,.m4a,.ogg,.webm" [disabled]="personalVoiceCreating()" (change)="choosePersonalVoiceFile($event)" /></label>
+                </div>
+                <div class="talking-editor__voice-file" [class.is-ready]="!!personalVoiceFile()">
+                  <span class="material-symbols-outlined">{{ personalVoiceFile() ? 'check_circle' : 'audio_file' }}</span>
+                  <span><strong>{{ personalVoiceFileLabel() }}</strong><small>Audio only · 20–180 seconds · up to 15 MB</small></span>
+                </div>
+                <label class="talking-editor__voice-consent"><input type="checkbox" [ngModel]="personalVoiceOwnVoiceConfirmed()" (ngModelChange)="personalVoiceOwnVoiceConfirmed.set($event)" /><span>I confirm this recording contains only my own voice.</span></label>
+                <label class="talking-editor__voice-consent"><input type="checkbox" [ngModel]="personalVoiceConsentConfirmed()" (ngModelChange)="personalVoiceConsentConfirmed.set($event)" /><span>I consent to LivingWiki and ElevenLabs processing it to create my reusable voice.</span></label>
+                <button type="button" class="talking-editor__voice-create" [disabled]="personalVoiceCreating() || !personalVoiceFile() || !personalVoiceOwnVoiceConfirmed() || !personalVoiceConsentConfirmed()" (click)="createPersonalVoice()">
+                  <span class="material-symbols-outlined" [class.talking-editor__spin]="personalVoiceCreating()">{{ personalVoiceCreating() ? 'progress_activity' : 'auto_awesome' }}</span>
+                  {{ personalVoiceCreating() ? 'Creating your voice…' : personalVoiceSetupVoiceId() ? 'Replace this voice' : 'Create this voice' }}
+                </button>
+              </section>
+            }
+
             @if (selectedCatalogVoice(); as selectedVoice) {
               <div class="talking-editor__selected-voice">
                 <span class="material-symbols-outlined">check_circle</span>

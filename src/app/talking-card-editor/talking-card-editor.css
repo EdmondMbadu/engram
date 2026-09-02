@@ -74,6 +74,62 @@
 .talking-editor__selected-voice em { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .talking-editor__selected-voice strong { font-size: .78rem; }
 .talking-editor__selected-voice em { color: var(--muted); font-size: .64rem; font-style: normal; }
+.talking-editor__personal-library { display: grid; gap: 9px; border: 1px solid color-mix(in srgb, var(--accent) 26%, var(--line)); border-radius: 16px; padding: 12px; background: color-mix(in srgb, var(--accent) 4%, var(--surface)); }
+.talking-editor__personal-library > header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.talking-editor__personal-library > header > span:first-child { display: grid; gap: 2px; }
+.talking-editor__personal-library > header strong { font-size: .82rem; }
+.talking-editor__personal-library > header small { color: var(--muted); font-size: .64rem; }
+.talking-editor__personal-add { display: inline-flex; min-height: 34px; align-items: center; gap: 5px; border: 1px solid color-mix(in srgb, var(--accent) 42%, var(--line)); border-radius: 999px; padding: 0 11px; color: var(--accent); background: var(--surface); font-size: .67rem; font-weight: 900; cursor: pointer; }
+.talking-editor__personal-add .material-symbols-outlined { font-size: 1rem; }
+.talking-editor__personal-list { display: grid; gap: 7px; }
+.talking-editor__personal-voice { overflow: hidden; border: 1px solid var(--line); border-radius: 13px; background: var(--surface); }
+.talking-editor__personal-voice.is-selected { border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); box-shadow: inset 3px 0 0 var(--accent); }
+.talking-editor__personal-select { display: grid; width: 100%; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 9px; border: 0; padding: 10px; color: var(--text); background: transparent; text-align: left; cursor: pointer; }
+.talking-editor__personal-select > span:nth-child(2) { display: grid; min-width: 0; gap: 2px; }
+.talking-editor__personal-select strong { overflow: hidden; font-size: .76rem; text-overflow: ellipsis; white-space: nowrap; }
+.talking-editor__personal-select small { overflow: hidden; color: var(--muted); font-size: .61rem; text-overflow: ellipsis; white-space: nowrap; }
+.talking-editor__personal-select > .material-symbols-outlined:last-child { color: var(--accent); font-size: 1.1rem; }
+.talking-editor__personal-actions { display: flex; flex-wrap: wrap; gap: 5px; padding: 0 10px 9px 48px; }
+.talking-editor__personal-actions button { display: inline-flex; min-height: 29px; align-items: center; gap: 3px; border: 0; border-radius: 8px; padding: 0 7px; color: var(--muted); background: var(--soft-fill); font-size: .59rem; font-weight: 850; cursor: pointer; }
+.talking-editor__personal-actions button:hover:not(:disabled) { color: var(--accent); }
+.talking-editor__personal-actions button.is-danger:hover:not(:disabled) { color: var(--danger-text, #b42318); }
+.talking-editor__personal-actions button:disabled { cursor: wait; opacity: .5; }
+.talking-editor__personal-actions .material-symbols-outlined { font-size: .9rem; }
+.talking-editor__personal-empty { margin: 0; padding: 7px 2px 1px; color: var(--muted); font-size: .7rem; line-height: 1.45; }
+.talking-editor__personal-limit { color: var(--muted); font-size: .62rem; line-height: 1.45; }
+.talking-editor__personal-disclosure { display: flex; align-items: flex-start; gap: 5px; color: var(--muted); font-size: .62rem; line-height: 1.45; }
+.talking-editor__personal-disclosure .material-symbols-outlined { color: var(--accent); font-size: .92rem; }
+.talking-editor__voice-setup { display: grid; gap: 10px; border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--line)); border-radius: 16px; padding: 14px; background: var(--surface); box-shadow: 0 12px 28px rgba(0, 0, 0, .07); }
+.talking-editor__voice-setup > header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.talking-editor__voice-setup > header > span { display: grid; gap: 2px; }
+.talking-editor__voice-setup > header strong { font-size: .84rem; }
+.talking-editor__voice-setup > header small { color: var(--muted); font-size: .65rem; }
+.talking-editor__voice-setup > header button { display: grid; width: 30px; height: 30px; place-items: center; border: 0; border-radius: 50%; color: var(--muted); background: var(--soft-fill); cursor: pointer; }
+.talking-editor__voice-setup > header .material-symbols-outlined { font-size: 1rem; }
+.talking-editor__voice-script { display: grid; grid-template-columns: auto 1fr; gap: 8px; border-radius: 11px; padding: 10px; color: var(--muted); background: var(--soft-fill); }
+.talking-editor__voice-script .material-symbols-outlined { color: var(--accent); font-size: 1rem; }
+.talking-editor__voice-script p { margin: 0; font-size: .67rem; line-height: 1.5; }
+.talking-editor__voice-capture { display: flex; align-items: center; gap: 9px; }
+.talking-editor__voice-capture > button,
+.talking-editor__voice-upload { display: inline-flex; min-height: 38px; align-items: center; justify-content: center; gap: 6px; border: 1px solid var(--line); border-radius: 11px; padding: 0 11px; color: var(--text); background: var(--soft-fill); font-size: .68rem; font-weight: 850; cursor: pointer; }
+.talking-editor__voice-capture > button.is-recording { border-color: var(--danger-text, #b42318); color: var(--danger-text, #b42318); }
+.talking-editor__voice-capture > span { color: var(--muted); font-size: .65rem; }
+.talking-editor__voice-capture .material-symbols-outlined { font-size: 1rem; }
+.talking-editor__voice-capture small { font-size: .58rem; }
+.talking-editor__voice-upload { position: relative; overflow: hidden; }
+.talking-editor__voice-upload input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.talking-editor__voice-file { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 8px; border: 1px dashed var(--line); border-radius: 11px; padding: 9px; color: var(--muted); }
+.talking-editor__voice-file.is-ready { border-style: solid; border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); color: var(--accent); }
+.talking-editor__voice-file > span:last-child { display: grid; min-width: 0; gap: 1px; }
+.talking-editor__voice-file strong { overflow: hidden; color: var(--text); font-size: .68rem; text-overflow: ellipsis; white-space: nowrap; }
+.talking-editor__voice-file small { font-size: .59rem; }
+.talking-editor__voice-file .material-symbols-outlined { font-size: 1rem; }
+.talking-editor__voice-consent { display: grid !important; grid-template-columns: auto 1fr !important; align-items: start; gap: 8px !important; color: var(--muted); font-size: .65rem; line-height: 1.4; }
+.talking-editor__voice-consent input { margin-top: 2px; }
+.talking-editor__voice-consent span { font-size: inherit !important; letter-spacing: 0 !important; text-transform: none !important; }
+.talking-editor__voice-create { display: inline-flex; min-height: 40px; align-items: center; justify-content: center; gap: 6px; border: 0; border-radius: 11px; color: var(--accent-contrast); background: var(--accent); font-size: .72rem; font-weight: 900; cursor: pointer; }
+.talking-editor__voice-create:disabled { cursor: not-allowed; opacity: .45; }
+.talking-editor__voice-create .material-symbols-outlined { font-size: 1rem; }
 .talking-editor__voice-library { display: grid; gap: 7px; margin-top: 3px; padding-top: 12px; border-top: 1px solid var(--line); }
 .talking-editor__voice-search { position: relative; display: flex; align-items: center; }
 .talking-editor__voice-search > .material-symbols-outlined { position: absolute; left: 12px; color: var(--muted); font-size: 1.1rem; pointer-events: none; }
@@ -106,4 +162,4 @@
 .talking-editor__primary:disabled { opacity: .5; cursor: not-allowed; }
 .talking-editor__spin { animation: talking-spin 1s linear infinite; }
 @keyframes talking-spin { to { transform: rotate(360deg); } }
-@media (max-width: 650px) { .talking-editor-backdrop { padding: 0; place-items: end stretch; } .talking-editor { max-height: 94vh; border-radius: 24px 24px 0 0; } .talking-editor__header, .talking-editor__body, .talking-editor__footer { padding-left: 18px; padding-right: 18px; } .talking-editor__tabs { margin-inline: 18px; } .talking-editor__grid { grid-template-columns: 1fr; } .talking-editor__voice-picker > header { align-items: flex-start; flex-direction: column; } .talking-editor__voice-option { grid-template-columns: minmax(0, 1fr); } .talking-editor__voice-preview { min-height: 38px; } .talking-editor__selected-voice { grid-template-columns: auto minmax(0, 1fr); } .talking-editor__selected-voice button { grid-column: 1 / -1; min-height: 38px; } .talking-editor__footer { flex-wrap: wrap; } .talking-editor__draft-state { flex: 1 0 100%; } }
+@media (max-width: 650px) { .talking-editor-backdrop { padding: 0; place-items: end stretch; } .talking-editor { max-height: 94vh; border-radius: 24px 24px 0 0; } .talking-editor__header, .talking-editor__body, .talking-editor__footer { padding-left: 18px; padding-right: 18px; } .talking-editor__tabs { margin-inline: 18px; } .talking-editor__grid { grid-template-columns: 1fr; } .talking-editor__voice-picker > header { align-items: flex-start; flex-direction: column; } .talking-editor__voice-option { grid-template-columns: minmax(0, 1fr); } .talking-editor__voice-preview { min-height: 38px; } .talking-editor__selected-voice { grid-template-columns: auto minmax(0, 1fr); } .talking-editor__selected-voice button { grid-column: 1 / -1; min-height: 38px; } .talking-editor__personal-library > header { align-items: flex-start; } .talking-editor__personal-actions { padding-left: 10px; } .talking-editor__voice-capture { align-items: stretch; flex-direction: column; } .talking-editor__voice-capture > span { text-align: center; } .talking-editor__footer { flex-wrap: wrap; } .talking-editor__draft-state { flex: 1 0 100%; } }

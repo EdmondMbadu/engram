@@ -16,7 +16,7 @@ const PREVIEW_NAMES = ['The Statesman', 'Mount Vernon', 'The General'];
 const PREVIEW_DESCRIPTORS = ['Low · measured · dignified', 'Warm · reflective · steady', 'Firm · resonant · commanding'];
 
 type IdentityStudioStep = 'personality' | 'spoken';
-type SpokenVoiceMode = 'default' | 'catalog' | 'design';
+type SpokenVoiceMode = 'default' | 'catalog' | 'design' | 'saved';
 type IdentityMenu = 'wiki_type' | 'perspective';
 
 @Component({
@@ -106,6 +106,7 @@ export class AtlasPersonaComponent {
     if (this.voiceSaving() || this.voiceConfigLoading()) return false;
     if (this.voiceMode() === 'default') return this.speechVoiceConfig()?.source !== 'default';
     if (this.voiceMode() === 'catalog') return !!this.selectedCatalogVoiceId();
+    if (this.voiceMode() === 'saved') return false;
     return !!this.designSessionId() && !!this.selectedDesignPreviewId();
   });
 
@@ -331,8 +332,10 @@ export class AtlasPersonaComponent {
         saved = await this.atlasService.resetAtlasSpeechVoice(atlasId);
       } else if (this.voiceMode() === 'catalog') {
         saved = await this.atlasService.selectAtlasCatalogVoice(atlasId, this.selectedCatalogVoiceId()!);
-      } else {
+      } else if (this.voiceMode() === 'design') {
         saved = await this.atlasService.saveAtlasDesignedVoice(atlasId, this.designSessionId()!, this.selectedDesignPreviewId()!);
+      } else {
+        return;
       }
       this.speechVoiceConfig.set(saved);
       this.applyConfigToDraft(saved);
@@ -434,7 +437,13 @@ export class AtlasPersonaComponent {
   }
 
   private applyConfigToDraft(config: AtlasSpeechVoiceConfig): void {
-    this.voiceMode.set(config.source === 'catalog' ? 'catalog' : config.source === 'designed' ? 'design' : 'default');
+    this.voiceMode.set(config.source === 'catalog'
+      ? 'catalog'
+      : config.source === 'designed'
+        ? 'design'
+        : config.source === 'personal'
+          ? 'saved'
+          : 'default');
     this.selectedCatalogVoiceId.set(config.catalogVoiceId);
     if (config.source === 'designed' && config.description) this.voiceDescription.set(config.description);
     this.clearGeneratedPreviews();

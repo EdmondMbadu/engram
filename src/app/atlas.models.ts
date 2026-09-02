@@ -244,12 +244,13 @@ export interface AtlasVoiceAgentConfig {
   updated_at?: { toDate(): Date } | Date | string | null;
 }
 
-export type AtlasSpeechVoiceSource = 'default' | 'catalog' | 'designed';
+export type AtlasSpeechVoiceSource = 'default' | 'catalog' | 'designed' | 'personal';
 
 export interface AtlasSpeechVoiceConfig {
   source: AtlasSpeechVoiceSource;
   provider: 'elevenlabs';
   catalogVoiceId: string | null;
+  personalVoiceId: string | null;
   name: string;
   description: string | null;
   previewUrl: string | null;

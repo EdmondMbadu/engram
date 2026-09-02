@@ -1402,13 +1402,15 @@ type ElevenLabsVerifiedLanguage = {
   locale?: unknown;
 };
 
-type AtlasSpeechVoiceSource = 'default' | 'catalog' | 'designed';
+type AtlasSpeechVoiceSource = 'default' | 'catalog' | 'designed' | 'personal';
 
 type AtlasSpeechVoiceConfig = {
   source: AtlasSpeechVoiceSource;
   provider: 'elevenlabs';
   provider_voice_id: string | null;
   catalog_voice_id: string | null;
+  personal_voice_id: string | null;
+  personal_voice_owner_id: string | null;
   name: string | null;
   description: string | null;
   preview_url: string | null;
@@ -15908,9 +15910,11 @@ function atlasSpeechVoiceFromStored(value: unknown): AtlasSpeechVoiceConfig {
   const data = value && typeof value === 'object' ? value as Record<string, unknown> : {};
   const source: AtlasSpeechVoiceSource = data['source'] === 'designed'
     ? 'designed'
-    : data['source'] === 'catalog'
-      ? 'catalog'
-      : 'default';
+    : data['source'] === 'personal'
+      ? 'personal'
+      : data['source'] === 'catalog'
+        ? 'catalog'
+        : 'default';
   const providerVoiceId = textValue(data['provider_voice_id'], 160);
   const catalogVoiceId = textValue(data['catalog_voice_id'], 120);
   if (source !== 'default' && !providerVoiceId) {
@@ -15919,6 +15923,8 @@ function atlasSpeechVoiceFromStored(value: unknown): AtlasSpeechVoiceConfig {
       provider: 'elevenlabs',
       provider_voice_id: null,
       catalog_voice_id: null,
+      personal_voice_id: null,
+      personal_voice_owner_id: null,
       name: null,
       description: null,
       preview_url: null,
@@ -15931,6 +15937,8 @@ function atlasSpeechVoiceFromStored(value: unknown): AtlasSpeechVoiceConfig {
     provider: 'elevenlabs',
     provider_voice_id: source === 'default' ? null : providerVoiceId,
     catalog_voice_id: source === 'catalog' ? catalogVoiceId : null,
+    personal_voice_id: source === 'personal' ? textValue(data['personal_voice_id'], 120) : null,
+    personal_voice_owner_id: source === 'personal' ? textValue(data['personal_voice_owner_id'], 128) : null,
     name: textValue(data['name'], 120),
     description: textValue(data['description'], atlasSpeechVoiceDescriptionMaxLength),
     preview_url: textValue(data['preview_url'], 2000),
@@ -15946,6 +15954,7 @@ function serializeAtlasSpeechVoiceConfig(config: AtlasSpeechVoiceConfig): Record
     source: config.source,
     provider: config.provider,
     catalogVoiceId: config.catalog_voice_id,
+    personalVoiceId: config.personal_voice_id,
     name: config.name ?? (config.source === 'default' ? 'Default voice' : 'ElevenLabs voice'),
     description: config.description,
     previewUrl: config.preview_url,
@@ -16259,6 +16268,8 @@ export const saveAtlasDesignedVoice = onCall(
         provider: 'elevenlabs',
         provider_voice_id: providerVoiceId,
         catalog_voice_id: null,
+        personal_voice_id: null,
+        personal_voice_owner_id: null,
         name: atlasName,
         description,
         preview_url: textValue(data['preview_url'], 2000),
@@ -16313,11 +16324,51 @@ export const selectAtlasCatalogVoice = onCall(
       provider: 'elevenlabs',
       provider_voice_id: catalogVoice.providerVoiceId,
       catalog_voice_id: catalogVoice.id,
+      personal_voice_id: null,
+      personal_voice_owner_id: null,
       name: catalogVoice.name,
       description: catalogVoice.description,
       preview_url: null,
       design_model: null,
       created_by: request.auth.uid,
+    });
+    return { config: serializeAtlasSpeechVoiceConfig(saved) };
+  },
+);
+
+export const selectAtlasPersonalVoice = onCall(
+  { region: callableRegion, timeoutSeconds: 30, memory: '256MiB', cors: true, secrets: [elevenLabsApiKey] },
+  async (request) => {
+    const userId = request.auth?.uid;
+    if (!userId) {
+      throw new HttpsError('unauthenticated', 'Authentication is required.');
+    }
+    const atlasId = normalizeAtlasId(request.data?.atlasId);
+    const personalVoiceId = textValue(request.data?.personalVoiceId, 120);
+    if (!atlasId || !personalVoiceId || !/^[A-Za-z0-9_-]{1,64}$/.test(personalVoiceId)) {
+      throw new HttpsError('invalid-argument', 'Atlas and personal voice are required.');
+    }
+    await loadAtlasForAdminAccess(atlasId, userId);
+    const voiceSnapshot = await personalNarratorVoicesRef(userId).doc(personalVoiceId).get();
+    const voice = voiceSnapshot.data() as PersonalNarratorVoiceRecord | undefined;
+    const providerVoiceId = typeof voice?.provider_voice_id === 'string'
+      ? voice.provider_voice_id.trim()
+      : '';
+    if (!voiceSnapshot.exists || voice?.owner_user_id !== userId || voice.status !== 'ready' || !providerVoiceId) {
+      throw new HttpsError('not-found', 'That personal voice is no longer available.');
+    }
+    const saved = await replaceAtlasSpeechVoiceConfig(atlasId, userId, {
+      source: 'personal',
+      provider: 'elevenlabs',
+      provider_voice_id: providerVoiceId,
+      catalog_voice_id: null,
+      personal_voice_id: personalVoiceId,
+      personal_voice_owner_id: userId,
+      name: typeof voice.name === 'string' ? voice.name.slice(0, 48) : 'My voice',
+      description: 'Personal LivingWiki voice',
+      preview_url: null,
+      design_model: null,
+      created_by: userId,
     });
     return { config: serializeAtlasSpeechVoiceConfig(saved) };
   },
@@ -16339,6 +16390,8 @@ export const resetAtlasSpeechVoice = onCall(
       provider: 'elevenlabs',
       provider_voice_id: null,
       catalog_voice_id: null,
+      personal_voice_id: null,
+      personal_voice_owner_id: null,
       name: null,
       description: null,
       preview_url: null,
@@ -20618,6 +20671,56 @@ function personalNarratorVoicesRef(userId: string) {
   return personalNarratorParentRef(userId).collection(personalNarratorVoiceSubcollection);
 }
 
+async function updateAtlasPersonalVoiceReferences(
+  providerVoiceId: string,
+  update: { providerVoiceId?: string; name?: string; reset?: boolean },
+): Promise<number> {
+  if (!providerVoiceId) return 0;
+  const snapshot = await db.collection('atlas_integrations')
+    .where('speech_voice.provider_voice_id', '==', providerVoiceId)
+    .get();
+  const references = snapshot.docs.filter((document) =>
+    document.data()?.['speech_voice']?.['source'] === 'personal',
+  );
+  for (let offset = 0; offset < references.length; offset += 450) {
+    const batch = db.batch();
+    references.slice(offset, offset + 450).forEach((document) => {
+      if (update.reset) {
+        batch.update(document.ref, {
+          speech_voice: {
+            source: 'default',
+            provider: 'elevenlabs',
+            provider_voice_id: null,
+            catalog_voice_id: null,
+            personal_voice_id: null,
+            personal_voice_owner_id: null,
+            name: null,
+            description: null,
+            preview_url: null,
+            design_model: null,
+            created_by: null,
+            created_at: FieldValue.serverTimestamp(),
+            updated_at: FieldValue.serverTimestamp(),
+          },
+          updated_at: FieldValue.serverTimestamp(),
+        });
+        return;
+      }
+      const fields: Record<string, unknown> = {
+        'speech_voice.updated_at': FieldValue.serverTimestamp(),
+        updated_at: FieldValue.serverTimestamp(),
+      };
+      if (update.providerVoiceId) {
+        fields['speech_voice.provider_voice_id'] = update.providerVoiceId;
+      }
+      if (update.name) fields['speech_voice.name'] = update.name;
+      batch.update(document.ref, fields);
+    });
+    await batch.commit();
+  }
+  return references.length;
+}
+
 function personalNarratorVoiceIdFromSelection(value: unknown): string | null {
   const normalized = String(value ?? '').trim();
   if (normalized === personalStackNarratorVoiceId) return null;
@@ -21111,7 +21214,25 @@ export const createPersonalNarratorVoice = onCall(
       ? previous.sample_storage_path
       : '';
     if (previousProviderVoiceId && previousProviderVoiceId !== providerVoiceId) {
-      await deleteElevenLabsPersonalVoice(apiKey, previousProviderVoiceId, false);
+      let referencesUpdated = false;
+      try {
+        await updateAtlasPersonalVoiceReferences(previousProviderVoiceId, {
+          providerVoiceId,
+          name,
+        });
+        referencesUpdated = true;
+      } catch (error) {
+        logger.error('Personal voice replacement could not update linked Atlas agents', {
+          userId,
+          voiceId: voiceRef.id,
+          errorMessage: error instanceof Error ? error.message : String(error),
+        });
+      }
+      // Keep the previous provider voice alive if linked agents could not be migrated.
+      // The newly created library voice still works and a later replacement can reconcile it.
+      if (referencesUpdated) {
+        await deleteElevenLabsPersonalVoice(apiKey, previousProviderVoiceId, false);
+      }
     }
     if (previousSamplePath && previousSamplePath !== sampleStoragePath) {
       await storage.bucket().file(previousSamplePath).delete({ ignoreNotFound: true }).catch((error) => {
@@ -21179,6 +21300,10 @@ export const deletePersonalNarratorVoice = onCall(
     const sampleStoragePath = typeof voice.sample_storage_path === 'string'
       ? voice.sample_storage_path
       : '';
+
+    // Reset every Atlas that uses this reusable voice before removing the
+    // provider resource. If this fails, deletion stops and all agents remain usable.
+    await updateAtlasPersonalVoiceReferences(providerVoiceId, { reset: true });
 
     const boardSnapshot = await db.collection('boards').where('owner_user_id', '==', userId).get();
     const narratorVoiceId = `${personalStackNarratorVoiceId}:${voiceId}`;
@@ -21286,6 +21411,16 @@ export const renamePersonalNarratorVoice = onCall(
       throw new HttpsError('not-found', 'The personal narrator could not be found.');
     }
     await voiceRef.update({ name, updated_at: FieldValue.serverTimestamp() });
+    const providerVoiceId = String(snapshot.data()?.['provider_voice_id'] ?? '').trim();
+    if (providerVoiceId) {
+      await updateAtlasPersonalVoiceReferences(providerVoiceId, { name }).catch((error) => {
+        logger.warn('Personal voice rename could not update linked Atlas labels', {
+          userId,
+          voiceId,
+          errorMessage: error instanceof Error ? error.message : String(error),
+        });
+      });
+    }
     const [entitlement, library] = await Promise.all([
       personalNarratorEligibility(userId),
       ensurePersonalNarratorVoiceLibrary(userId),

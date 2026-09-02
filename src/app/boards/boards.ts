@@ -5,7 +5,7 @@ import { DomSanitizer, type SafeResourceUrl } from '@angular/platform-browser';
 import { FirebaseError } from 'firebase/app';
 import { collection, deleteDoc, doc, getDoc, getDocs, limit, onSnapshot, orderBy, query, serverTimestamp, setDoc, startAfter, updateDoc, where, writeBatch, type DocumentData, type Firestore, type QueryConstraint, type QueryDocumentSnapshot, type QuerySnapshot, type Unsubscribe } from 'firebase/firestore';
 import { httpsCallable, type Functions } from 'firebase/functions';
-import { deleteObject, getDownloadURL, ref as storageRef, uploadBytes, type FirebaseStorage } from 'firebase/storage';
+import { getDownloadURL, ref as storageRef, uploadBytes, type FirebaseStorage } from 'firebase/storage';
 import { AccountMenuComponent } from '../account-menu/account-menu';
 import { AtlasService } from '../atlas.service';
 import { AuthService } from '../auth.service';
@@ -35,6 +35,11 @@ import {
 import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 import type { AtlasItem } from '../atlas.models';
 import { PlaceReviewsService, type CityPlaceCandidate } from '../place-reviews.service';
+import {
+  PersonalVoiceService,
+  type PersonalVoice as PersonalNarratorVoice,
+  type PersonalVoiceLibrary as PersonalNarratorVoiceResponse,
+} from '../personal-voice.service';
 import { profileIconByCode, profileIconForSeed } from '../profile/profile-icons';
 import { generateQrSvgDataUrl } from '../qr-code';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
@@ -995,30 +1000,6 @@ type BoardTrailerPreparationResponse = {
   cardIds: string[];
 };
 
-type PersonalNarratorVoice = {
-  id: string;
-  narratorVoiceId: string;
-  name: string;
-  status: 'ready';
-  createdAt: string;
-  updatedAt: string;
-  sampleDurationSeconds: number;
-  voiceRevision: number;
-};
-
-type PersonalNarratorVoiceResponse = {
-  libraryVersion?: number;
-  voice: PersonalNarratorVoice | null;
-  voices?: PersonalNarratorVoice[];
-  eligible: boolean;
-  paid?: boolean;
-  admin?: boolean;
-  voiceLimit?: number | null;
-  voiceCount?: number;
-  canAddVoice?: boolean;
-  defaultVoiceId?: string | null;
-};
-
 type SpotifyResolvedCard = {
   audioPreviewUrl: string;
   spotifyTrackId: string;
@@ -1639,6 +1620,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   private readonly googleMapsService = inject(GoogleMapsService);
   private readonly docxExportService = inject(DocxExportService);
   private readonly placeReviewsService = inject(PlaceReviewsService);
+  private readonly personalVoiceService = inject(PersonalVoiceService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly sanitizer = inject(DomSanitizer);
@@ -15149,15 +15131,10 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   }
 
   private async loadPersonalNarratorVoice(): Promise<void> {
-    if (!this.functions || !this.authService.uid() || this.personalVoiceLoading()) return;
+    if (!this.authService.uid() || this.personalVoiceLoading()) return;
     this.personalVoiceLoading.set(true);
     try {
-      const callable = httpsCallable<Record<string, never>, PersonalNarratorVoiceResponse>(
-        this.functions,
-        'getPersonalNarratorVoice',
-      );
-      const response = await callable({});
-      this.applyPersonalNarratorVoiceResponse(response.data);
+      this.applyPersonalNarratorVoiceResponse(await this.personalVoiceService.loadLibrary());
     } catch (error) {
       this.personalVoiceError.set(this.cardImageActionErrorMessage(error, 'Your personal voice could not be loaded.'));
     } finally {
@@ -15251,7 +15228,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   }
 
   async createPersonalNarratorVoice(board: Board): Promise<void> {
-    if (!this.functions || !this.storage || !this.authService.uid() || this.personalVoiceCreating()) return;
+    if (!this.authService.uid() || this.personalVoiceCreating()) return;
     const replacingVoiceId = this.personalVoiceSetupVoiceId();
     if (!replacingVoiceId && !this.personalVoiceCanAdd()) {
       this.requestPersonalVoiceUpgrade();
@@ -15271,46 +15248,25 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
 
     this.personalVoiceCreating.set(true);
     this.personalVoiceError.set(null);
-    const uid = this.authService.uid();
-    const safeName = file.name.toLowerCase().replace(/[^a-z0-9._-]+/g, '-').slice(-90) || 'voice.webm';
-    const path = `users/${uid}/voice-samples/${replacingVoiceId || 'new'}/${Date.now()}-${safeName}`;
-    const sampleRef = storageRef(this.storage, path);
     try {
-      await uploadBytes(sampleRef, file, {
-        contentType: file.type || 'audio/webm',
-        customMetadata: { durationSeconds: String(Math.round(duration)) },
-      });
-      const callable = httpsCallable<{
-        name: string;
-        sampleStoragePath: string;
-        sampleDurationSeconds: number;
-        ownVoiceConfirmed: boolean;
-        consentConfirmed: boolean;
-        operation: 'create' | 'replace';
-        voiceId?: string;
-      }, PersonalNarratorVoiceResponse>(this.functions, 'createPersonalNarratorVoice', { timeout: 120_000 });
-      const response = await callable({
+      const response = await this.personalVoiceService.createVoice({
+        file,
         name,
-        sampleStoragePath: path,
-        sampleDurationSeconds: duration,
-        ownVoiceConfirmed: true,
-        consentConfirmed: true,
-        operation: replacingVoiceId ? 'replace' : 'create',
-        ...(replacingVoiceId ? { voiceId: replacingVoiceId } : {}),
+        durationSeconds: duration,
+        replacingVoiceId,
       });
-      if (!response.data.voice) {
+      if (!response.voice) {
         throw new Error('The personal voice was not returned after processing.');
       }
-      this.applyPersonalNarratorVoiceResponse(response.data);
+      this.applyPersonalNarratorVoiceResponse(response);
       this.personalVoiceFile.set(null);
       this.personalVoiceDurationSeconds.set(0);
       this.personalVoiceSetupOpen.set(false);
       this.personalVoiceSetupVoiceId.set(null);
-      const savedVoice = this.personalNarratorVoices().find((voice) => voice.id === response.data.voice?.id)
+      const savedVoice = this.personalNarratorVoices().find((voice) => voice.id === response.voice?.id)
         ?? this.personalNarratorVoices().at(-1);
       if (savedVoice) this.selectStackNarratorVoice(board, this.personalNarratorId(savedVoice));
     } catch (error) {
-      await deleteObject(sampleRef).catch(() => undefined);
       this.personalVoiceError.set(this.cardImageActionErrorMessage(error, 'Your voice could not be created. Check the recording and try again.'));
     } finally {
       this.personalVoiceCreating.set(false);
@@ -15318,7 +15274,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   }
 
   async deletePersonalNarratorVoice(board: Board, voice: PersonalNarratorVoice): Promise<void> {
-    if (!this.functions || this.personalVoiceDeleting() || !this.isBrowser) return;
+    if (this.personalVoiceDeleting() || !this.isBrowser) return;
     const confirmed = window.confirm(`Permanently delete “${voice.name}” and its source recording? Boards using this voice will return to Warm Storyteller.`);
     if (!confirmed) return;
     this.personalVoiceDeleting.set(true);
@@ -15326,12 +15282,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.personalVoiceError.set(null);
     this.stopStackVoicePreview();
     try {
-      const callable = httpsCallable<{ voiceId: string }, PersonalNarratorVoiceResponse & { deleted: boolean }>(
-        this.functions,
-        'deletePersonalNarratorVoice',
-      );
-      const response = await callable({ voiceId: voice.id });
-      this.applyPersonalNarratorVoiceResponse(response.data);
+      this.applyPersonalNarratorVoiceResponse(await this.personalVoiceService.deleteVoice(voice.id));
       this.personalVoiceSetupOpen.set(false);
       if (this.personalVoiceSelected(voice)) {
         this.selectStackNarratorVoice(board, DEFAULT_STACK_NARRATOR_VOICE_ID);
@@ -15345,17 +15296,14 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   }
 
   async renamePersonalNarratorVoice(voice: PersonalNarratorVoice): Promise<void> {
-    if (!this.functions || !this.isBrowser) return;
+    if (!this.isBrowser) return;
     const requestedName = window.prompt('Voice name', voice.name)?.replace(/\s+/g, ' ').trim().slice(0, 48);
     if (!requestedName || requestedName === voice.name) return;
     this.personalVoiceError.set(null);
     try {
-      const callable = httpsCallable<{ voiceId: string; name: string }, PersonalNarratorVoiceResponse>(
-        this.functions,
-        'renamePersonalNarratorVoice',
+      this.applyPersonalNarratorVoiceResponse(
+        await this.personalVoiceService.renameVoice(voice.id, requestedName),
       );
-      const response = await callable({ voiceId: voice.id, name: requestedName });
-      this.applyPersonalNarratorVoiceResponse(response.data);
     } catch (error) {
       this.personalVoiceError.set(this.cardImageActionErrorMessage(error, 'The voice name could not be updated.'));
     }

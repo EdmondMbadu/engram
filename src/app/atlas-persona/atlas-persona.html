@@ -251,6 +251,9 @@
                   <button type="button" role="tab" [attr.aria-selected]="voiceMode() === 'default'" (click)="setVoiceMode('default')" class="rounded-xl px-4 py-3 text-sm font-bold transition" [class.bg-[var(--surface)]]="voiceMode() === 'default'" [class.shadow-sm]="voiceMode() === 'default'" [class.text-[var(--muted)]]="voiceMode() !== 'default'" i18n>Default</button>
                   <button type="button" role="tab" [attr.aria-selected]="voiceMode() === 'catalog'" (click)="setVoiceMode('catalog')" class="rounded-xl px-4 py-3 text-sm font-bold transition" [class.bg-[var(--surface)]]="voiceMode() === 'catalog'" [class.shadow-sm]="voiceMode() === 'catalog'" [class.text-[var(--muted)]]="voiceMode() !== 'catalog'" i18n>Voice library</button>
                   <button type="button" role="tab" [attr.aria-selected]="voiceMode() === 'design'" (click)="setVoiceMode('design')" class="rounded-xl px-4 py-3 text-sm font-bold transition" [class.bg-[var(--surface)]]="voiceMode() === 'design'" [class.shadow-sm]="voiceMode() === 'design'" [class.text-[var(--muted)]]="voiceMode() !== 'design'" i18n>Design new</button>
+                  @if (speechVoiceConfig()?.source === 'personal') {
+                    <button type="button" role="tab" [attr.aria-selected]="voiceMode() === 'saved'" (click)="setVoiceMode('saved')" class="rounded-xl px-4 py-3 text-sm font-bold transition" [class.bg-[var(--surface)]]="voiceMode() === 'saved'" [class.shadow-sm]="voiceMode() === 'saved'" [class.text-[var(--muted)]]="voiceMode() !== 'saved'">Current</button>
+                  }
                 </div>
 
                 @if (voiceConfigLoading()) {
@@ -286,6 +289,16 @@
                         <p class="rounded-2xl border border-[var(--line)] p-6 text-center text-sm text-[var(--muted)]" i18n>No voices match that search.</p>
                       }
                     </div>
+                  </div>
+                } @else if (voiceMode() === 'saved') {
+                  <div class="mt-5 rounded-2xl border border-[var(--accent)] bg-[var(--soft-fill)] p-5 sm:flex sm:items-center sm:justify-between">
+                    <div class="flex items-center gap-4">
+                      <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[var(--surface)] text-[var(--accent)]"><span class="material-symbols-outlined">spatial_audio_off</span></span>
+                      <div><p class="font-black">{{ speechVoiceConfig()?.name || 'My voice' }}</p><p class="mt-1 text-xs text-[var(--muted)]">Personal voice selected in the Talking Card or Stack Studio.</p></div>
+                    </div>
+                    <button type="button" (click)="previewSavedVoice()" [disabled]="!!voicePreviewLoadingKey()" class="mt-4 inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-4 py-2 text-sm font-bold disabled:opacity-40 sm:mt-0">
+                      <span class="material-symbols-outlined text-[1.1rem]">{{ voicePlayingKey() === 'saved' ? 'stop_circle' : voicePreviewLoadingKey() === 'saved' ? 'progress_activity' : 'play_circle' }}</span>Preview
+                    </button>
                   </div>
                 } @else {
                   <div class="mt-5 rounded-2xl border border-[var(--line)] p-5 sm:p-6">

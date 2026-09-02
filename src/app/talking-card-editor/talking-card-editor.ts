@@ -1,19 +1,26 @@
 import { Component, computed, effect, HostListener, inject, input, OnDestroy, OnInit, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { BackdropDismissDirective } from '../backdrop-dismiss.directive';
 import type { AtlasItem, AtlasSpeechVoiceConfig } from '../atlas.models';
 import { AtlasService, type AtlasSpeechAudioResponse } from '../atlas.service';
 import { DocumentsService } from '../documents.service';
 import {
   STACK_NARRATOR_VOICES,
+  personalStackNarratorVoiceId,
   stackNarratorVoiceById,
   type StackNarratorVoice,
 } from '../boards/stack-voice';
 import type { TalkingCardEditorResult } from '../boards/talking-card';
+import {
+  PersonalVoiceService,
+  type PersonalVoice,
+  type PersonalVoiceLibrary,
+} from '../personal-voice.service';
 import { TalkingCardDraftStore, type TalkingCardDraftRecord } from './talking-card-draft.store';
 
 type EditorMode = 'existing' | 'new';
-type VoiceChoice = 'default' | 'catalog' | 'saved';
+type VoiceChoice = 'default' | 'catalog' | 'personal' | 'saved';
 
 @Component({
   selector: 'app-talking-card-editor',
@@ -25,6 +32,8 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
   private readonly atlasService = inject(AtlasService);
   private readonly documentsService = inject(DocumentsService);
   private readonly draftStore = inject(TalkingCardDraftStore);
+  private readonly personalVoiceService = inject(PersonalVoiceService);
+  private readonly router = inject(Router);
   private readonly createdAtlasId = signal('');
   private previewAudio: HTMLAudioElement | null = null;
   private previewRun = 0;
@@ -32,6 +41,12 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
   private readonly previewUrlCache = new Map<string, string>();
   private draftSaveChain = Promise.resolve();
   private publicAvatarLoadPromise: Promise<void> | null = null;
+  private personalVoiceRecorder: MediaRecorder | null = null;
+  private personalVoiceRecordingStream: MediaStream | null = null;
+  private personalVoiceRecordingChunks: Blob[] = [];
+  private personalVoiceRecordingStartedAt = 0;
+  private personalVoiceRecordingTimer: ReturnType<typeof setInterval> | null = null;
+  private discardPersonalVoiceRecording = false;
 
   readonly boardId = input('');
   readonly boardTitle = input('Board');
@@ -49,6 +64,7 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
   readonly ctaLabel = signal('Talk to me');
   readonly placement = signal<'start' | 'end'>('end');
   readonly catalogVoiceId = signal('');
+  readonly personalVoiceId = signal('');
   readonly voiceChoice = signal<VoiceChoice>('default');
   readonly voiceSearch = signal('');
   readonly voiceConfigLoading = signal(false);
@@ -56,6 +72,24 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
   readonly voicePreviewPlayingKey = signal<string | null>(null);
   readonly voiceErrorMessage = signal<string | null>(null);
   readonly initialVoiceConfig = signal<AtlasSpeechVoiceConfig | null>(null);
+  readonly personalVoices = signal<PersonalVoice[]>([]);
+  readonly personalVoiceDefaultId = signal<string | null>(null);
+  readonly personalVoiceLimit = signal<number | null>(1);
+  readonly personalVoiceCanAdd = signal(true);
+  readonly personalVoicePaid = signal(false);
+  readonly personalVoiceAdmin = signal(false);
+  readonly personalVoiceLoading = signal(false);
+  readonly personalVoiceSetupOpen = signal(false);
+  readonly personalVoiceSetupVoiceId = signal<string | null>(null);
+  readonly personalVoiceName = signal('My voice');
+  readonly personalVoiceFile = signal<File | null>(null);
+  readonly personalVoiceDurationSeconds = signal(0);
+  readonly personalVoiceRecording = signal(false);
+  readonly personalVoiceRecordingSeconds = signal(0);
+  readonly personalVoiceOwnVoiceConfirmed = signal(false);
+  readonly personalVoiceConsentConfirmed = signal(false);
+  readonly personalVoiceCreating = signal(false);
+  readonly personalVoiceDeletingId = signal<string | null>(null);
   readonly publishAvatar = signal(false);
   readonly imageFile = signal<File | null>(null);
   readonly imagePreviewUrl = signal('');
@@ -83,6 +117,9 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
   );
   readonly catalogVoiceCount = STACK_NARRATOR_VOICES.length;
   readonly selectedCatalogVoice = computed(() => stackNarratorVoiceById(this.catalogVoiceId()));
+  readonly selectedPersonalVoice = computed(() =>
+    this.personalVoices().find((voice) => voice.id === this.personalVoiceId()) ?? null,
+  );
   readonly displayedVoices = computed(() => {
     const query = this.voiceSearch().trim().toLocaleLowerCase();
     if (!query) return STACK_NARRATOR_VOICES;
@@ -121,7 +158,7 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
     return !!atlas && this.atlasService.canAdminAtlas(atlas);
   });
   readonly canSave = computed(() => {
-    if (this.saving() || this.imageProcessing() || this.voiceConfigLoading()) return false;
+    if (this.saving() || this.imageProcessing() || this.voiceConfigLoading() || this.personalVoiceCreating()) return false;
     if (!this.openingMessage().trim()) return false;
     if (this.mode() === 'existing') {
       return !!this.selectedAtlas() && (!this.needsPublication() || this.publishAvatar());
@@ -142,7 +179,7 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    await this.restoreDraft();
+    await Promise.all([this.restoreDraft(), this.loadPersonalVoices()]);
   }
 
   setMode(mode: EditorMode): void {
@@ -156,6 +193,7 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
       this.initialVoiceConfig.set(null);
       this.voiceChoice.set('default');
       this.catalogVoiceId.set('');
+      this.personalVoiceId.set('');
     } else if (this.selectedAtlasId() && this.selectedAtlasEditable()) {
       void this.loadExistingVoiceConfig(this.selectedAtlasId());
     }
@@ -224,6 +262,7 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
       this.initialVoiceConfig.set(null);
       this.voiceChoice.set('default');
       this.catalogVoiceId.set('');
+      this.personalVoiceId.set('');
       this.voiceConfigLoading.set(false);
     }
   }
@@ -232,6 +271,7 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
     this.stopVoicePreview();
     this.voiceChoice.set('default');
     this.catalogVoiceId.set('');
+    this.personalVoiceId.set('');
     this.voiceErrorMessage.set(null);
   }
 
@@ -239,6 +279,15 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
     this.stopVoicePreview();
     this.voiceChoice.set('catalog');
     this.catalogVoiceId.set(voice.id);
+    this.personalVoiceId.set('');
+    this.voiceErrorMessage.set(null);
+  }
+
+  selectPersonalVoice(voice: PersonalVoice): void {
+    this.stopVoicePreview();
+    this.voiceChoice.set('personal');
+    this.personalVoiceId.set(voice.id);
+    this.catalogVoiceId.set('');
     this.voiceErrorMessage.set(null);
   }
 
@@ -247,10 +296,15 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
     this.stopVoicePreview();
     this.voiceChoice.set('saved');
     this.catalogVoiceId.set('');
+    this.personalVoiceId.set('');
     this.voiceErrorMessage.set(null);
   }
 
-  async toggleVoicePreview(key: string, voice?: StackNarratorVoice): Promise<void> {
+  async toggleVoicePreview(
+    key: string,
+    voice?: StackNarratorVoice,
+    narratorVoiceId?: string,
+  ): Promise<void> {
     if (typeof Audio === 'undefined') return;
     if (this.voicePreviewPlayingKey() === key || this.voicePreviewLoadingKey() === key) {
       this.stopVoicePreview();
@@ -269,7 +323,7 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
         const result = await this.atlasService.previewAtlasSpeechVoice(
           atlasId,
           voice?.sampleText || this.voicePreviewScript(),
-          voice?.id ?? null,
+          narratorVoiceId ?? voice?.id ?? null,
         );
         if (run !== this.previewRun) return;
         url = this.voiceAudioUrl(result) ?? '';
@@ -304,8 +358,193 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
     }
   }
 
+  personalVoiceUsageLabel(): string {
+    const count = this.personalVoices().length;
+    const limit = this.personalVoiceLimit();
+    return limit === null ? `${count} saved` : `${count} of ${limit}`;
+  }
+
+  personalVoiceFileLabel(): string {
+    const file = this.personalVoiceFile();
+    if (!file) return 'No recording selected';
+    const duration = Math.round(this.personalVoiceDurationSeconds());
+    return `${file.name} · ${duration}s`;
+  }
+
+  openPersonalVoiceSetup(voice: PersonalVoice | null = null): void {
+    if (!voice && !this.personalVoiceCanAdd()) {
+      void this.router.navigate(['/pricing'], { queryParams: { feature: 'personal-voice' } });
+      return;
+    }
+    this.stopPersonalVoiceRecording(true);
+    this.personalVoiceFile.set(null);
+    this.personalVoiceDurationSeconds.set(0);
+    this.personalVoiceSetupVoiceId.set(voice?.id ?? null);
+    this.personalVoiceName.set(voice?.name
+      || `My voice${this.personalVoices().length ? ` ${this.personalVoices().length + 1}` : ''}`);
+    this.personalVoiceOwnVoiceConfirmed.set(false);
+    this.personalVoiceConsentConfirmed.set(false);
+    this.personalVoiceSetupOpen.set(true);
+    this.voiceErrorMessage.set(null);
+  }
+
+  closePersonalVoiceSetup(): void {
+    if (this.personalVoiceCreating()) return;
+    this.stopPersonalVoiceRecording(true);
+    this.personalVoiceSetupOpen.set(false);
+    this.personalVoiceSetupVoiceId.set(null);
+    this.personalVoiceFile.set(null);
+    this.personalVoiceDurationSeconds.set(0);
+  }
+
+  async choosePersonalVoiceFile(event: Event): Promise<void> {
+    const input = event.target instanceof HTMLInputElement ? event.target : null;
+    const file = input?.files?.[0] ?? null;
+    if (input) input.value = '';
+    if (!file) return;
+    this.stopPersonalVoiceRecording(true);
+    await this.setPersonalVoiceFile(file);
+  }
+
+  async startPersonalVoiceRecording(): Promise<void> {
+    if (this.personalVoiceRecording() || this.personalVoiceCreating()) return;
+    if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === 'undefined') {
+      this.voiceErrorMessage.set('Voice recording is not supported in this browser. Upload an audio file instead.');
+      return;
+    }
+    this.voiceErrorMessage.set(null);
+    this.personalVoiceFile.set(null);
+    this.personalVoiceDurationSeconds.set(0);
+    this.discardPersonalVoiceRecording = false;
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true },
+      });
+      const mimeType = [
+        'audio/webm;codecs=opus',
+        'audio/mp4',
+        'audio/webm',
+        'audio/ogg;codecs=opus',
+      ].find((candidate) => MediaRecorder.isTypeSupported(candidate)) ?? '';
+      const recorder = new MediaRecorder(stream, mimeType ? { mimeType } : undefined);
+      this.personalVoiceRecordingStream = stream;
+      this.personalVoiceRecorder = recorder;
+      this.personalVoiceRecordingChunks = [];
+      this.personalVoiceRecordingStartedAt = Date.now();
+      recorder.ondataavailable = (chunk) => {
+        if (chunk.data.size) this.personalVoiceRecordingChunks.push(chunk.data);
+      };
+      recorder.onerror = () => {
+        this.voiceErrorMessage.set('The recording stopped unexpectedly. Please try again.');
+        this.stopPersonalVoiceRecording(true);
+      };
+      recorder.onstop = () => {
+        const duration = Math.max(1, Math.round((Date.now() - this.personalVoiceRecordingStartedAt) / 1000));
+        const chunks = this.personalVoiceRecordingChunks;
+        const discard = this.discardPersonalVoiceRecording;
+        this.cleanupPersonalVoiceRecorder();
+        if (discard || !chunks.length) return;
+        const type = recorder.mimeType || chunks[0]?.type || 'audio/webm';
+        const extension = type.includes('mp4') ? 'm4a' : type.includes('ogg') ? 'ogg' : 'webm';
+        const file = new File([new Blob(chunks, { type })], `my-voice-${Date.now()}.${extension}`, { type });
+        void this.setPersonalVoiceFile(file, duration);
+      };
+      recorder.start(500);
+      this.personalVoiceRecording.set(true);
+      this.personalVoiceRecordingSeconds.set(0);
+      this.personalVoiceRecordingTimer = setInterval(() => {
+        const seconds = Math.floor((Date.now() - this.personalVoiceRecordingStartedAt) / 1000);
+        this.personalVoiceRecordingSeconds.set(seconds);
+        if (seconds >= 120) this.stopPersonalVoiceRecording();
+      }, 500);
+    } catch {
+      this.cleanupPersonalVoiceRecorder();
+      this.voiceErrorMessage.set('Microphone access was not available. Allow access or upload an audio file.');
+    }
+  }
+
+  stopPersonalVoiceRecording(discard = false): void {
+    this.discardPersonalVoiceRecording = discard;
+    const recorder = this.personalVoiceRecorder;
+    if (recorder && recorder.state !== 'inactive') {
+      recorder.stop();
+      return;
+    }
+    this.cleanupPersonalVoiceRecorder();
+  }
+
+  async createPersonalVoice(): Promise<void> {
+    if (this.personalVoiceCreating()) return;
+    const replacingVoiceId = this.personalVoiceSetupVoiceId();
+    if (!replacingVoiceId && !this.personalVoiceCanAdd()) {
+      void this.router.navigate(['/pricing'], { queryParams: { feature: 'personal-voice' } });
+      return;
+    }
+    const file = this.personalVoiceFile();
+    const durationSeconds = this.personalVoiceDurationSeconds();
+    if (!file || durationSeconds < 20 || durationSeconds > 180) {
+      this.voiceErrorMessage.set('Choose a clear recording between 20 seconds and 3 minutes.');
+      return;
+    }
+    if (!this.personalVoiceOwnVoiceConfirmed() || !this.personalVoiceConsentConfirmed()) {
+      this.voiceErrorMessage.set('Confirm this is your voice and consent to creating the reusable voice.');
+      return;
+    }
+    this.personalVoiceCreating.set(true);
+    this.voiceErrorMessage.set(null);
+    try {
+      const library = await this.personalVoiceService.createVoice({
+        file,
+        durationSeconds,
+        name: this.personalVoiceName(),
+        replacingVoiceId,
+      });
+      this.applyPersonalVoiceLibrary(library);
+      const savedVoice = library.voices.find((voice) => voice.id === (library.voice?.id ?? replacingVoiceId))
+        ?? library.voices.at(-1);
+      if (savedVoice) this.selectPersonalVoice(savedVoice);
+      this.personalVoiceSetupOpen.set(false);
+      this.personalVoiceSetupVoiceId.set(null);
+      this.personalVoiceFile.set(null);
+      this.personalVoiceDurationSeconds.set(0);
+    } catch (error) {
+      this.voiceErrorMessage.set(this.personalVoiceErrorMessage(error, 'Your voice could not be created.'));
+    } finally {
+      this.personalVoiceCreating.set(false);
+    }
+  }
+
+  async renamePersonalVoice(voice: PersonalVoice): Promise<void> {
+    if (typeof window === 'undefined') return;
+    const name = window.prompt('Voice name', voice.name)?.replace(/\s+/g, ' ').trim().slice(0, 48);
+    if (!name || name === voice.name) return;
+    this.voiceErrorMessage.set(null);
+    try {
+      this.applyPersonalVoiceLibrary(await this.personalVoiceService.renameVoice(voice.id, name));
+    } catch (error) {
+      this.voiceErrorMessage.set(this.personalVoiceErrorMessage(error, 'The voice name could not be updated.'));
+    }
+  }
+
+  async deletePersonalVoice(voice: PersonalVoice): Promise<void> {
+    if (typeof window === 'undefined' || this.personalVoiceDeletingId()) return;
+    if (!window.confirm(`Permanently delete “${voice.name}” and its source recording? Agents using it will return to the default voice.`)) return;
+    this.stopVoicePreview();
+    this.personalVoiceDeletingId.set(voice.id);
+    this.voiceErrorMessage.set(null);
+    try {
+      this.applyPersonalVoiceLibrary(await this.personalVoiceService.deleteVoice(voice.id));
+      if (this.personalVoiceId() === voice.id) this.selectDefaultVoice();
+      if (this.personalVoiceSetupVoiceId() === voice.id) this.closePersonalVoiceSetup();
+    } catch (error) {
+      this.voiceErrorMessage.set(this.personalVoiceErrorMessage(error, 'Your voice could not be deleted.'));
+    } finally {
+      this.personalVoiceDeletingId.set(null);
+    }
+  }
+
   async close(): Promise<void> {
-    if (!this.saving()) {
+    if (!this.saving() && !this.personalVoiceCreating()) {
       this.stopVoicePreview();
       await this.persistDraftNow();
       this.closed.emit();
@@ -320,6 +559,7 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
   ngOnDestroy(): void {
     this.imageProcessingRun += 1;
     this.stopVoicePreview();
+    this.stopPersonalVoiceRecording(true);
     const preview = this.imagePreviewUrl();
     if (preview.startsWith('blob:')) URL.revokeObjectURL(preview);
   }
@@ -380,6 +620,9 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
         if (this.voiceChoice() === 'catalog' && this.catalogVoiceId()) {
           this.saveStage.set('Saving conversation voice…');
           await this.atlasService.selectAtlasCatalogVoice(atlasId, this.catalogVoiceId());
+        } else if (this.voiceChoice() === 'personal' && this.personalVoiceId()) {
+          this.saveStage.set('Saving your conversation voice…');
+          await this.atlasService.selectAtlasPersonalVoice(atlasId, this.personalVoiceId());
         }
         if (this.documentFiles().length) {
           this.saveStage.set('Uploading knowledge documents…');
@@ -457,6 +700,7 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
       this.ctaLabel.set(record.ctaLabel);
       this.placement.set(record.placement);
       this.catalogVoiceId.set(record.catalogVoiceId);
+      this.personalVoiceId.set(record.personalVoiceId ?? '');
       this.voiceChoice.set(record.voiceChoice);
       this.publishAvatar.set(record.publishAvatar);
       this.imageFile.set(record.imageFile);
@@ -472,6 +716,7 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
         await this.loadExistingVoiceConfig(selected.id);
         this.voiceChoice.set(record.voiceChoice);
         this.catalogVoiceId.set(record.catalogVoiceId);
+        this.personalVoiceId.set(record.personalVoiceId ?? '');
       }
       this.draftStatus.set('restored');
     }
@@ -495,6 +740,7 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
       ctaLabel: this.ctaLabel(),
       placement: this.placement(),
       catalogVoiceId: this.catalogVoiceId(),
+      personalVoiceId: this.personalVoiceId(),
       voiceChoice: this.voiceChoice(),
       publishAvatar: this.publishAvatar(),
       imageFile: this.imageFile(),
@@ -626,6 +872,107 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
     return null;
   }
 
+  private async loadPersonalVoices(): Promise<void> {
+    if (this.personalVoiceLoading()) return;
+    this.personalVoiceLoading.set(true);
+    try {
+      this.applyPersonalVoiceLibrary(await this.personalVoiceService.loadLibrary());
+    } catch (error) {
+      this.voiceErrorMessage.set(this.personalVoiceErrorMessage(error, 'Your voice library could not be loaded.'));
+    } finally {
+      this.personalVoiceLoading.set(false);
+    }
+  }
+
+  private applyPersonalVoiceLibrary(library: PersonalVoiceLibrary): void {
+    this.personalVoices.set(library.voices);
+    this.personalVoiceDefaultId.set(library.defaultVoiceId);
+    this.personalVoiceLimit.set(library.voiceLimit);
+    this.personalVoiceCanAdd.set(library.canAddVoice);
+    this.personalVoicePaid.set(library.paid);
+    this.personalVoiceAdmin.set(library.admin);
+  }
+
+  private async setPersonalVoiceFile(file: File, knownDuration?: number): Promise<void> {
+    this.voiceErrorMessage.set(null);
+    if (!file.type.startsWith('audio/')) {
+      this.voiceErrorMessage.set('Choose an audio recording such as MP3, WAV, M4A, OGG, or WebM.');
+      return;
+    }
+    if (file.size <= 0 || file.size > 15 * 1024 * 1024) {
+      this.voiceErrorMessage.set('The voice recording must be smaller than 15 MB.');
+      return;
+    }
+    try {
+      const duration = knownDuration ?? await this.audioFileDuration(file);
+      if (!Number.isFinite(duration) || duration < 20 || duration > 180) {
+        this.voiceErrorMessage.set('Use 20 seconds to 3 minutes of clear speech. Around 60–90 seconds works best.');
+        return;
+      }
+      this.personalVoiceFile.set(file);
+      this.personalVoiceDurationSeconds.set(duration);
+    } catch {
+      this.voiceErrorMessage.set('The recording duration could not be read. Try an MP3, WAV, M4A, OGG, or WebM file.');
+    }
+  }
+
+  private audioFileDuration(file: File): Promise<number> {
+    return new Promise((resolve, reject) => {
+      const url = URL.createObjectURL(file);
+      const audio = new Audio();
+      const cleanup = () => {
+        audio.onloadedmetadata = null;
+        audio.onerror = null;
+        URL.revokeObjectURL(url);
+      };
+      const timeout = window.setTimeout(() => {
+        cleanup();
+        reject(new Error('Audio metadata timed out.'));
+      }, 10_000);
+      audio.onloadedmetadata = () => {
+        window.clearTimeout(timeout);
+        const duration = audio.duration;
+        cleanup();
+        Number.isFinite(duration) && duration > 0
+          ? resolve(duration)
+          : reject(new Error('Invalid audio duration.'));
+      };
+      audio.onerror = () => {
+        window.clearTimeout(timeout);
+        cleanup();
+        reject(new Error('Audio metadata failed.'));
+      };
+      audio.preload = 'metadata';
+      audio.src = url;
+    });
+  }
+
+  private cleanupPersonalVoiceRecorder(): void {
+    if (this.personalVoiceRecordingTimer) {
+      clearInterval(this.personalVoiceRecordingTimer);
+      this.personalVoiceRecordingTimer = null;
+    }
+    this.personalVoiceRecordingStream?.getTracks().forEach((track) => track.stop());
+    this.personalVoiceRecordingStream = null;
+    if (this.personalVoiceRecorder) {
+      this.personalVoiceRecorder.ondataavailable = null;
+      this.personalVoiceRecorder.onerror = null;
+      this.personalVoiceRecorder.onstop = null;
+    }
+    this.personalVoiceRecorder = null;
+    this.personalVoiceRecordingChunks = [];
+    this.personalVoiceRecording.set(false);
+    this.personalVoiceRecordingSeconds.set(0);
+  }
+
+  private personalVoiceErrorMessage(error: unknown, fallback: string): string {
+    if (error instanceof Error && error.message.trim()) return error.message;
+    if (error && typeof error === 'object' && 'message' in error && typeof error.message === 'string') {
+      return error.message || fallback;
+    }
+    return fallback;
+  }
+
   private async loadExistingVoiceConfig(atlasId: string): Promise<void> {
     this.voiceConfigLoading.set(true);
     this.voiceErrorMessage.set(null);
@@ -636,18 +983,26 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
       if (config.source === 'catalog' && config.catalogVoiceId && stackNarratorVoiceById(config.catalogVoiceId)) {
         this.voiceChoice.set('catalog');
         this.catalogVoiceId.set(config.catalogVoiceId);
+        this.personalVoiceId.set('');
+      } else if (config.source === 'personal' && config.personalVoiceId) {
+        this.voiceChoice.set('personal');
+        this.personalVoiceId.set(config.personalVoiceId);
+        this.catalogVoiceId.set('');
       } else if (config.source === 'designed') {
         this.voiceChoice.set('saved');
         this.catalogVoiceId.set('');
+        this.personalVoiceId.set('');
       } else {
         this.voiceChoice.set('default');
         this.catalogVoiceId.set('');
+        this.personalVoiceId.set('');
       }
     } catch (error) {
       if (this.selectedAtlasId() !== atlasId || this.mode() !== 'existing') return;
       this.initialVoiceConfig.set(null);
       this.voiceChoice.set('default');
       this.catalogVoiceId.set('');
+      this.personalVoiceId.set('');
       this.voiceErrorMessage.set(error instanceof Error && error.message.trim()
         ? error.message
         : 'The saved conversation voice could not be loaded.');
@@ -662,6 +1017,13 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
     if (this.voiceChoice() === 'default') {
       if (initial?.source && initial.source !== 'default') {
         await this.atlasService.resetAtlasSpeechVoice(atlasId);
+      }
+      return;
+    }
+    if (this.voiceChoice() === 'personal') {
+      const voiceId = this.personalVoiceId();
+      if (voiceId && (initial?.source !== 'personal' || initial.personalVoiceId !== voiceId)) {
+        await this.atlasService.selectAtlasPersonalVoice(atlasId, voiceId);
       }
       return;
     }

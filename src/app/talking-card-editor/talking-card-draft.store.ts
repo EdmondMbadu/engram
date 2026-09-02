@@ -2,7 +2,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { inject, Injectable, PLATFORM_ID } from '@angular/core';
 
 export type TalkingCardDraftMode = 'existing' | 'new';
-export type TalkingCardDraftVoiceChoice = 'default' | 'catalog' | 'saved';
+export type TalkingCardDraftVoiceChoice = 'default' | 'catalog' | 'personal' | 'saved';
 
 export interface TalkingCardDraftRecord {
   key: string;
@@ -18,6 +18,7 @@ export interface TalkingCardDraftRecord {
   ctaLabel: string;
   placement: 'start' | 'end';
   catalogVoiceId: string;
+  personalVoiceId?: string;
   voiceChoice: TalkingCardDraftVoiceChoice;
   publishAvatar: boolean;
   imageFile: File | null;
@@ -160,7 +161,9 @@ export class TalkingCardDraftStore {
     if (record.version !== 1 || record.key !== key || typeof record.boardId !== 'string') return null;
     const mode: TalkingCardDraftMode = record.mode === 'new' ? 'new' : 'existing';
     const placement = record.placement === 'start' ? 'start' : 'end';
-    const voiceChoice: TalkingCardDraftVoiceChoice = record.voiceChoice === 'catalog' || record.voiceChoice === 'saved'
+    const voiceChoice: TalkingCardDraftVoiceChoice = record.voiceChoice === 'catalog'
+      || record.voiceChoice === 'personal'
+      || record.voiceChoice === 'saved'
       ? record.voiceChoice
       : 'default';
     const imageFile = typeof File !== 'undefined' && record.imageFile instanceof File ? record.imageFile : null;
@@ -181,6 +184,7 @@ export class TalkingCardDraftStore {
       ctaLabel: this.stringValue(record.ctaLabel).slice(0, 48),
       placement,
       catalogVoiceId: this.stringValue(record.catalogVoiceId),
+      personalVoiceId: this.stringValue(record.personalVoiceId),
       voiceChoice,
       publishAvatar: record.publishAvatar === true,
       imageFile,

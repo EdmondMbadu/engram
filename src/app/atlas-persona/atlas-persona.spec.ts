@@ -12,6 +12,7 @@ describe('AtlasPersonaComponent', () => {
     source: 'default',
     provider: 'elevenlabs',
     catalogVoiceId: null,
+    personalVoiceId: null,
     name: 'Default voice',
     description: null,
     previewUrl: null,

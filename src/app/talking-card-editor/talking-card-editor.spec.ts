@@ -1,11 +1,13 @@
 import { provideZonelessChangeDetection, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import type { AtlasItem } from '../atlas.models';
 import { AtlasService } from '../atlas.service';
 import { DocumentsService } from '../documents.service';
 import { STACK_NARRATOR_VOICES } from '../boards/stack-voice';
 import { TalkingCardDraftStore, type TalkingCardDraftRecord } from './talking-card-draft.store';
 import { TalkingCardEditorComponent } from './talking-card-editor';
+import { PersonalVoiceService, type PersonalVoiceLibrary } from '../personal-voice.service';
 
 describe('TalkingCardEditorComponent', () => {
   const makeAtlas = (id: string, name: string, isPublic: boolean): AtlasItem => ({
@@ -35,17 +37,38 @@ describe('TalkingCardEditorComponent', () => {
     user_id: 'public-avatar-owner',
     description: 'Marblehead commander and maritime guide',
   };
+  const personalLibrary: PersonalVoiceLibrary = {
+    libraryVersion: 2,
+    eligible: true,
+    paid: false,
+    admin: false,
+    voiceLimit: 1,
+    voiceCount: 1,
+    canAddVoice: false,
+    defaultVoiceId: 'voice-1',
+    voice: {
+      id: 'voice-1', narratorVoiceId: 'personal-voice:voice-1', name: 'Edmond', status: 'ready',
+      createdAt: '2026-09-01T00:00:00.000Z', updatedAt: '2026-09-01T00:00:00.000Z',
+      sampleDurationSeconds: 72, voiceRevision: 1,
+    },
+    voices: [],
+  };
+  personalLibrary.voices = [personalLibrary.voice!];
   const atlasService = {
     atlases,
     canAdminAtlas: jasmine.createSpy('canAdminAtlas').and.callFake((atlas: AtlasItem) => atlas.user_id === 'owner-1'),
     listPublicAtlases: jasmine.createSpy('listPublicAtlases').and.resolveTo([publicGlover]),
     getAtlasSpeechVoiceConfig: jasmine.createSpy('getAtlasSpeechVoiceConfig').and.resolveTo({
-      source: 'default', provider: 'elevenlabs', catalogVoiceId: null, name: 'Default voice',
+      source: 'default', provider: 'elevenlabs', catalogVoiceId: null, personalVoiceId: null, name: 'Default voice',
       description: null, previewUrl: null, designModel: null, createdAt: null, updatedAt: null,
     }),
     previewAtlasSpeechVoice: jasmine.createSpy('previewAtlasSpeechVoice').and.resolveTo({ audioUrl: 'data:audio/mpeg;base64,SUQz' }),
     selectAtlasCatalogVoice: jasmine.createSpy('selectAtlasCatalogVoice').and.resolveTo({
-      source: 'catalog', provider: 'elevenlabs', catalogVoiceId: 'warm-storyteller', name: 'Warm Storyteller',
+      source: 'catalog', provider: 'elevenlabs', catalogVoiceId: 'warm-storyteller', personalVoiceId: null, name: 'Warm Storyteller',
+      description: null, previewUrl: null, designModel: null, createdAt: null, updatedAt: null,
+    }),
+    selectAtlasPersonalVoice: jasmine.createSpy('selectAtlasPersonalVoice').and.resolveTo({
+      source: 'personal', provider: 'elevenlabs', catalogVoiceId: null, personalVoiceId: 'voice-1', name: 'Edmond',
       description: null, previewUrl: null, designModel: null, createdAt: null, updatedAt: null,
     }),
     resetAtlasSpeechVoice: jasmine.createSpy('resetAtlasSpeechVoice'),
@@ -60,6 +83,13 @@ describe('TalkingCardEditorComponent', () => {
     save: jasmine.createSpy('save').and.resolveTo(),
     delete: jasmine.createSpy('delete').and.resolveTo(),
   };
+  const personalVoiceService = {
+    loadLibrary: jasmine.createSpy('loadLibrary').and.resolveTo(personalLibrary),
+    createVoice: jasmine.createSpy('createVoice').and.resolveTo(personalLibrary),
+    deleteVoice: jasmine.createSpy('deleteVoice').and.resolveTo({ ...personalLibrary, voices: [], voice: null }),
+    renameVoice: jasmine.createSpy('renameVoice').and.resolveTo(personalLibrary),
+  };
+  const router = { navigate: jasmine.createSpy('navigate').and.resolveTo(true) };
 
   beforeEach(async () => {
     Object.values(atlasService).forEach((value) => {
@@ -68,6 +98,10 @@ describe('TalkingCardEditorComponent', () => {
     Object.values(draftStore).forEach((value) => {
       if (jasmine.isSpy(value)) value.calls.reset();
     });
+    Object.values(personalVoiceService).forEach((value) => {
+      if (jasmine.isSpy(value)) value.calls.reset();
+    });
+    router.navigate.calls.reset();
     atlasService.listPublicAtlases.and.resolveTo([publicGlover]);
     draftStore.load.and.resolveTo(null);
     await TestBed.configureTestingModule({
@@ -77,6 +111,8 @@ describe('TalkingCardEditorComponent', () => {
         { provide: AtlasService, useValue: atlasService },
         { provide: DocumentsService, useValue: {} },
         { provide: TalkingCardDraftStore, useValue: draftStore },
+        { provide: PersonalVoiceService, useValue: personalVoiceService },
+        { provide: Router, useValue: router },
       ],
     }).compileComponents();
   });
@@ -204,6 +240,105 @@ describe('TalkingCardEditorComponent', () => {
     expect(atlasService.selectAtlasCatalogVoice).toHaveBeenCalledWith('new-avatar', voice.id);
   });
 
+  it('loads My voices and shows the server-authoritative free account limit', async () => {
+    const fixture = TestBed.createComponent(TalkingCardEditorComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.componentInstance.setMode('new');
+    fixture.detectChanges();
+
+    expect(personalVoiceService.loadLibrary).toHaveBeenCalled();
+    expect(fixture.componentInstance.personalVoices()).toEqual(personalLibrary.voices);
+    expect(fixture.nativeElement.querySelector('.talking-editor__personal-library').textContent).toContain('1 of 1');
+    expect(fixture.nativeElement.querySelector('.talking-editor__personal-add').textContent).toContain('Upgrade');
+  });
+
+  it('previews a personal voice through its authenticated narrator id', async () => {
+    spyOn(HTMLMediaElement.prototype, 'play').and.resolveTo();
+    spyOn(HTMLMediaElement.prototype, 'pause');
+    const fixture = TestBed.createComponent(TalkingCardEditorComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const voice = personalLibrary.voices[0];
+
+    await fixture.componentInstance.toggleVoicePreview(
+      `personal:${voice.id}:${voice.voiceRevision}`,
+      undefined,
+      voice.narratorVoiceId,
+    );
+
+    expect(atlasService.previewAtlasSpeechVoice).toHaveBeenCalledWith(
+      '',
+      jasmine.stringContaining('LivingWiki guide'),
+      'personal-voice:voice-1',
+    );
+  });
+
+  it('saves a personal voice to an existing editable avatar', async () => {
+    const fixture = TestBed.createComponent(TalkingCardEditorComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.componentInstance.selectExistingAtlas('george');
+    await fixture.whenStable();
+    fixture.componentInstance.selectPersonalVoice(personalLibrary.voices[0]);
+
+    await fixture.componentInstance.save();
+
+    expect(atlasService.selectAtlasPersonalVoice).toHaveBeenCalledWith('george', 'voice-1');
+  });
+
+  it('saves a personal voice after creating a new avatar', async () => {
+    const fixture = TestBed.createComponent(TalkingCardEditorComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.componentInstance.setMode('new');
+    fixture.componentInstance.name.set('Maya Chen');
+    fixture.componentInstance.personaPrompt.set('You are Maya.');
+    fixture.componentInstance.selectPersonalVoice(personalLibrary.voices[0]);
+
+    await fixture.componentInstance.save();
+
+    expect(atlasService.createTalkingCardAtlas).toHaveBeenCalled();
+    expect(atlasService.selectAtlasPersonalVoice).toHaveBeenCalledWith('new-avatar', 'voice-1');
+  });
+
+  it('routes a full free voice library to upgrade while replacement remains available', async () => {
+    const fixture = TestBed.createComponent(TalkingCardEditorComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    fixture.componentInstance.openPersonalVoiceSetup();
+    expect(router.navigate).toHaveBeenCalledWith(['/pricing'], { queryParams: { feature: 'personal-voice' } });
+
+    fixture.componentInstance.openPersonalVoiceSetup(personalLibrary.voices[0]);
+    expect(fixture.componentInstance.personalVoiceSetupOpen()).toBeTrue();
+    expect(fixture.componentInstance.personalVoiceSetupVoiceId()).toBe('voice-1');
+  });
+
+  it('replaces a personal voice through the shared Stack Studio voice service', async () => {
+    const fixture = TestBed.createComponent(TalkingCardEditorComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const voice = personalLibrary.voices[0];
+    const recording = new File(['recording'], 'voice.webm', { type: 'audio/webm' });
+    fixture.componentInstance.openPersonalVoiceSetup(voice);
+    fixture.componentInstance.personalVoiceFile.set(recording);
+    fixture.componentInstance.personalVoiceDurationSeconds.set(72);
+    fixture.componentInstance.personalVoiceOwnVoiceConfirmed.set(true);
+    fixture.componentInstance.personalVoiceConsentConfirmed.set(true);
+
+    await fixture.componentInstance.createPersonalVoice();
+
+    expect(personalVoiceService.createVoice).toHaveBeenCalledWith({
+      file: recording,
+      durationSeconds: 72,
+      name: 'Edmond',
+      replacingVoiceId: 'voice-1',
+    });
+    expect(fixture.componentInstance.voiceChoice()).toBe('personal');
+    expect(fixture.componentInstance.personalVoiceId()).toBe('voice-1');
+  });
+
   it('uploads a new avatar image through the user-owned avatar path', async () => {
     const fixture = TestBed.createComponent(TalkingCardEditorComponent);
     fixture.componentRef.setInput('boardId', 'board-image-upload');
@@ -270,7 +405,8 @@ describe('TalkingCardEditorComponent', () => {
       ctaLabel: 'Talk to Glover',
       placement: 'end',
       catalogVoiceId: '',
-      voiceChoice: 'default',
+      personalVoiceId: 'voice-1',
+      voiceChoice: 'personal',
       publishAvatar: false,
       imageFile: image,
       uploadedImageUrl: '',
@@ -286,12 +422,16 @@ describe('TalkingCardEditorComponent', () => {
     expect(fixture.componentInstance.name()).toBe('Colonel John Glover');
     expect(fixture.componentInstance.imageFile()?.name).toBe('glover.png');
     expect(fixture.componentInstance.documentFiles()[0]?.name).toBe('glover-facts.txt');
+    expect(fixture.componentInstance.voiceChoice()).toBe('personal');
+    expect(fixture.componentInstance.personalVoiceId()).toBe('voice-1');
     await fixture.componentInstance.close();
 
     expect(draftStore.save).toHaveBeenCalledWith(jasmine.objectContaining({
       key: 'board:board-draft',
       createdAtlasId: 'partially-created-atlas',
       name: 'Colonel John Glover',
+      personalVoiceId: 'voice-1',
+      voiceChoice: 'personal',
     }));
   });
 });
