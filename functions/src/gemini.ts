@@ -34,6 +34,11 @@ import {
   boardTrailerFallbackScript,
   normalizeBoardTrailerScript,
 } from './stack-video-narration';
+import {
+  normalizeStackScriptShortening,
+  type StackScriptShorteningCard,
+  type StackScriptShorteningResult,
+} from './stack-script-shortening';
 
 export const geminiApiKey = defineSecret('GEMINI_API_KEY');
 
@@ -49,6 +54,18 @@ const boardTrailerScriptSchema = {
     script: { type: 'string' },
   },
   required: ['script'],
+} as const;
+
+const stackScriptShorteningSchema = {
+  type: 'array',
+  items: {
+    type: 'object',
+    properties: {
+      cardId: { type: 'string' },
+      narration: { type: 'string' },
+    },
+    required: ['cardId', 'narration'],
+  },
 } as const;
 
 const boardWizardCompleteSetManifestSchema = {
@@ -1070,6 +1087,68 @@ export async function generateBoardTrailerScript(params: {
       errorMessage: error instanceof Error ? error.message : String(error),
     });
     return fallback;
+  }
+}
+
+export async function shortenStackScriptNarrations(params: {
+  cards: readonly StackScriptShorteningCard[];
+  targetSentences: number;
+}): Promise<StackScriptShorteningResult[]> {
+  const targetSentences = Math.max(1, Math.min(3, Math.trunc(params.targetSentences) || 2));
+  const cards = params.cards.slice(0, 50).map((card) => ({
+    cardId: card.cardId.slice(0, 160),
+    title: card.title.replace(/\s+/g, ' ').trim().slice(0, 160),
+    narration: card.narration.replace(/\s+/g, ' ').trim().slice(0, 3000),
+    sourceNarration: (card.sourceNarration || card.narration).replace(/\s+/g, ' ').trim().slice(0, 3000),
+  })).filter((card) => card.cardId && card.narration);
+  if (!cards.length) return [];
+
+  const prompt = [
+    `Rewrite each LivingWiki card narration toward ${targetSentences} complete ${targetSentences === 1 ? 'sentence' : 'sentences'}.`,
+    'This is a semantic editorial rewrite, not sentence slicing. Do not simply keep the first sentences.',
+    'Rewrite each card independently. Do not combine information between cards.',
+    'The sourceNarration is the richest approved source material. The narration is the current version shown to the user.',
+    targetSentences === 1
+      ? 'For one sentence, synthesize the central idea and strongest useful detail into one natural spoken sentence.'
+      : `For ${targetSentences} sentences, use a clear progression: establish the scene or idea, add the strongest concrete detail, and ${targetSentences === 2 ? 'finish naturally' : 'close with a useful transition or implication already supported by the source'}.`,
+    `Aim for exactly ${targetSentences} sentences when sourceNarration contains enough distinct information; never pad thin material just to reach the count.`,
+    'Preserve the meaning, tone, and most decision-useful, visible, and verified facts from sourceNarration.',
+    'Keep names, prices, addresses, measurements, dates, contact details, and calls to action exact when they are retained.',
+    'Do not invent, infer, or strengthen claims. Do not add any number, feature, adjective, or fact absent from sourceNarration.',
+    'Use polished natural spoken language. Remove repetition, filler, and hype; improve transitions and sentence rhythm.',
+    'Return exactly one object for every input card, using each cardId unchanged. Return JSON only.',
+    '',
+    JSON.stringify(cards),
+  ].join('\n');
+
+  try {
+    const response = await generateContentWithRetry({
+      model: boardTrailerModel,
+      contents: prompt,
+      config: {
+        responseMimeType: 'application/json',
+        responseJsonSchema: stackScriptShorteningSchema,
+        temperature: 0.25,
+        maxOutputTokens: 8192,
+        thinkingConfig: { thinkingBudget: 0 },
+      },
+    });
+    const parsed = parseJsonResponse<unknown>(response.text ?? '[]');
+    const candidates = Array.isArray(parsed)
+      ? parsed.flatMap((value): StackScriptShorteningResult[] => {
+          if (!value || typeof value !== 'object') return [];
+          const record = value as Record<string, unknown>;
+          return typeof record['cardId'] === 'string' && typeof record['narration'] === 'string'
+            ? [{ cardId: record['cardId'], narration: record['narration'] }]
+            : [];
+        })
+      : [];
+    return normalizeStackScriptShortening(cards, candidates, targetSentences);
+  } catch (error) {
+    logger.warn('Stack script length adjustment fell back to approved source text.', {
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+    return normalizeStackScriptShortening(cards, [], targetSentences);
   }
 }
 

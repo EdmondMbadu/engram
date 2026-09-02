@@ -6902,30 +6902,40 @@
     @if (stackBoard(); as board) {
       <div class="boards-modal-backdrop boards-modal-backdrop--stack-studio" appBackdropDismiss (backdropDismiss)="closeStackStudio()">
         <section class="boards-modal boards-modal--stack-studio" aria-label="Stack Studio" (click)="$event.stopPropagation()" i18n-aria-label>
-          <div class="boards-modal__head">
-            <div>
+          <div class="boards-modal__head stack-studio-head">
+            <div class="stack-studio-head__identity">
               <p i18n>Stack Studio</p>
               <h3>{{ board.title }}</h3>
+              <span class="stack-studio-head__status">{{ isPhotoStudioDraft(board) ? 'Private draft' : stackScriptDirty() || stackCoverDirty() ? 'Unsaved changes' : 'Draft' }}</span>
             </div>
-            <button type="button" class="boards-icon-button" aria-label="Close" (click)="closeStackStudio()" i18n-aria-label>
-              <span class="material-symbols-outlined">close</span>
-            </button>
+            <div class="stack-studio-head__actions">
+              <button type="button" class="boards-icon-button" aria-label="Close" (click)="closeStackStudio()" i18n-aria-label>
+                <span class="material-symbols-outlined">close</span>
+              </button>
+            </div>
           </div>
 
           <div class="stack-studio">
-            <header class="stack-studio__context">
-              <div class="stack-studio__thumb">
-                @if (stackCoverImage(board)) {
-                  <img [src]="stackCoverImage(board)" [alt]="board.title" />
-                } @else {
-                  <span class="material-symbols-outlined">{{ boardDisplayIcon(board) }}</span>
-                }
-              </div>
-              <div>
-                <strong i18n>{{ stackSelectedCount() }} of {{ board.cards.length }} selected</strong>
-                <span i18n>{{ stackFormatLabel() }} Stack</span>
-              </div>
-              <div class="stack-studio__context-actions">
+            <details class="stack-card-manager">
+              <summary>
+                <span class="stack-studio__thumb">
+                  @if (stackCoverImage(board)) {
+                    <img [src]="stackCoverImage(board)" [alt]="board.title" />
+                  } @else {
+                    <span class="material-symbols-outlined">{{ boardDisplayIcon(board) }}</span>
+                  }
+                </span>
+                <span class="stack-card-manager__summary-copy">
+                  <strong>{{ stackSelectedCount() }} of {{ board.cards.length }} selected</strong>
+                  <small>{{ stackFormatLabel() }} Stack · {{ stackScriptDurationLabel() }} estimated voice</small>
+                </span>
+                <span class="stack-card-manager__manage">
+                  <span class="material-symbols-outlined">grid_view</span>
+                  Manage cards
+                  <span class="material-symbols-outlined">expand_more</span>
+                </span>
+              </summary>
+              <div class="stack-card-manager__quick-actions" role="group" aria-label="Stack actions">
                 <button
                   type="button"
                   [disabled]="isPhotoStudioDraft(board)"
@@ -6933,24 +6943,57 @@
                   (click)="copyStackUrl(board)"
                 >
                   <span class="material-symbols-outlined">content_copy</span>
-                  <span class="stack-action-label" i18n>Copy</span>
+                  <span>Copy</span>
                 </button>
                 <button
                   type="button"
-                  class="stack-doc-export-trigger"
-                  aria-label="Download as a DOCX document"
                   [disabled]="stackSelectedCount() === 0"
                   (click)="openStackDocsExportDialog(board, $event)"
                 >
                   <span class="material-symbols-outlined">description</span>
-                  <span class="stack-action-label stack-action-label--docs">Download DOCX</span>
+                  <span>Download DOCX</span>
                 </button>
-                <button type="button" (click)="openStackView(board, $event)">
-                  <span class="material-symbols-outlined">smart_display</span>
-                  <span class="stack-action-label" i18n>Live</span>
+                <button type="button" [disabled]="isPhotoStudioDraft(board)" (click)="openStackView(board, $event)">
+                  <span class="material-symbols-outlined">play_circle</span>
+                  <span>Live</span>
                 </button>
               </div>
-            </header>
+              <div class="stack-card-manager__body">
+                <div class="stack-card-manager__actions">
+                  <span>Choose which cards appear in this Stack.</span>
+                  <button type="button" (click)="selectAllStackCards(board)">Select all</button>
+                  <button type="button" (click)="clearStackCards()">Clear</button>
+                </div>
+                <div class="stack-card-strip">
+                  @for (card of board.cards; track card.id) {
+                    <button
+                      type="button"
+                      class="stack-card-chip"
+                      [class.stack-card-chip--off]="!isStackCardSelected(card.id)"
+                      [attr.aria-pressed]="isStackCardSelected(card.id)"
+                      (click)="toggleStackCard(card.id)"
+                    >
+                      @if (card.imageUrl) {
+                        <img [src]="card.imageUrl" [alt]="card.title" />
+                      } @else {
+                        <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
+                      }
+                      @if (boardShowsCardNumbers(board)) {
+                        <span class="stack-card-chip__count">{{ $index + 1 }}</span>
+                      }
+                      @if (!isPhotoOnlyCard(card)) {
+                        <strong>{{ card.title }}</strong>
+                      }
+                    </button>
+                  } @empty {
+                    <div class="stack-empty-note">
+                      <span class="material-symbols-outlined">add_card</span>
+                      <strong i18n>No cards yet</strong>
+                    </div>
+                  }
+                </div>
+              </div>
+            </details>
             @if (isPhotoStudioDraft(board)) {
               <section class="stack-panel" role="status">
                 <div class="stack-panel__head">
@@ -6987,60 +7030,12 @@
 
             <div class="stack-studio__grid">
               <div class="stack-editor">
-                <section class="stack-panel">
-                  <div class="stack-panel__head">
-                    <div>
-                      <p i18n>Cards</p>
-                      <h4 i18n>{{ stackSelectedCount() }} selected</h4>
-                    </div>
-                    <div class="stack-panel__actions">
-                      <button type="button" class="boards-ghost-action" (click)="selectAllStackCards(board)" i18n>Select all</button>
-                      <button type="button" class="boards-ghost-action" (click)="clearStackCards()" i18n>Clear</button>
-                    </div>
-                  </div>
-                  <div class="stack-card-strip">
-                    @for (card of board.cards; track card.id) {
-                      <button
-                        type="button"
-                        class="stack-card-chip"
-                        [class.stack-card-chip--off]="!isStackCardSelected(card.id)"
-                        [attr.aria-pressed]="isStackCardSelected(card.id)"
-                        (click)="toggleStackCard(card.id)"
-                      >
-                        @if (card.imageUrl) {
-                          <img [src]="card.imageUrl" [alt]="card.title" />
-                        } @else {
-                          <span class="material-symbols-outlined">{{ cardTypeIcon(card.type) }}</span>
-                        }
-                        @if (boardShowsCardNumbers(board)) {
-                          <span class="stack-card-chip__count">{{ $index + 1 }}</span>
-                        }
-                        @if (!isPhotoOnlyCard(card)) {
-                          <strong>{{ card.title }}</strong>
-                        }
-                      </button>
-                    } @empty {
-                      <div class="stack-empty-note">
-                        <span class="material-symbols-outlined">add_card</span>
-                        <strong i18n>No cards yet</strong>
-                      </div>
-                    }
-                  </div>
-                </section>
-
                 <section class="stack-panel stack-sound-panel stack-workflow-panel">
-                  <div class="stack-panel__head">
-                    <div class="stack-workflow-heading">
-                      <p>{{ isPhotoStoryBoard(board) ? 'Photo Story Studio' : 'Video Studio' }}</p>
-                      <h4>{{ isPhotoStoryBoard(board) ? 'Edit every photo in one place' : 'Shape your board into a story' }}</h4>
-                      <small>
-                        {{ isPhotoStoryBoard(board)
-                          ? 'Edit titles, captions, and the story each photo will show and speak.'
-                          : 'Write the words, choose the voice, then set the mood.' }}
-                      </small>
-                    </div>
-                  </div>
-
+                  <header class="stack-workflow-heading">
+                    <p>Video Studio</p>
+                    <h4>Shape your board into a story</h4>
+                    <small>Write the words, choose the voice, then set the mood.</small>
+                  </header>
                   <div class="stack-sound-tabs stack-workflow-tabs" role="tablist" aria-label="Studio steps">
                     <button
                       type="button"
@@ -7052,7 +7047,7 @@
                       <span class="stack-workflow-tabs__step">1</span>
                       <span class="stack-workflow-tabs__copy">
                         <strong>{{ isPhotoStoryBoard(board) ? 'Stories' : 'Script' }}</strong>
-                        <small>{{ isPhotoStoryBoard(board) ? 'Edit every photo' : 'Write the story' }}</small>
+                        <small>{{ isPhotoStoryBoard(board) ? 'Shape every photo' : 'Write the story' }}</small>
                       </span>
                       @if (!stackScriptDirty() && !stackCoverDirty() && stackScriptMissingCount() === 0) {
                         <span class="stack-workflow-tabs__status" aria-label="Script ready">✓</span>
@@ -7082,12 +7077,69 @@
 
                   @if (stackSoundTab() === 'script') {
                     <div class="stack-script-editor">
-                      <section class="stack-script-intro">
-                        <header>
-                          <span class="stack-script-intro__eyebrow">Board opening</span>
-                          <strong>Title and introduction</strong>
-                          <small>These words open the video and update the board when you save.</small>
-                        </header>
+                      <header class="stack-script-toolbar">
+                        <div>
+                          <h4>Narration</h4>
+                          <p>
+                            {{ stackScriptDurationLabel() }} estimated voice
+                            @if (stackScriptMissingCount()) { · {{ stackScriptMissingCount() }} missing }
+                          </p>
+                        </div>
+                        <div class="stack-script-toolbar__actions">
+                          <div class="stack-script-shortener">
+                            <button
+                              type="button"
+                              class="stack-script-shortener__trigger"
+                              [attr.aria-expanded]="stackScriptShortenMenuOpen()"
+                              [disabled]="stackScriptShortening() || stackSelectedCount() === 0"
+                              (click)="toggleStackScriptShortenMenu($event)"
+                            >
+                              <span class="material-symbols-outlined">{{ stackScriptShortening() ? 'progress_activity' : 'auto_fix_high' }}</span>
+                              {{ stackScriptShortening() ? 'Refining…' : 'Shorten / expand' }}
+                              <span class="material-symbols-outlined">expand_more</span>
+                            </button>
+                            @if (stackScriptShortenMenuOpen()) {
+                              <div class="stack-script-shortener__menu" role="menu" aria-label="Adjust each card's narration length">
+                                <header>
+                                  <strong>Refine each card to</strong>
+                                  <small>Rewrites the story using approved source details. Time is estimated for this board.</small>
+                                </header>
+                                @for (sentenceCount of [1, 2, 3]; track sentenceCount) {
+                                  <button type="button" role="menuitem" (click)="shortenEntireStackScript(sentenceCount, $event)">
+                                    <span>
+                                      <strong>{{ sentenceCount }} {{ sentenceCount === 1 ? 'sentence' : 'sentences' }} per card</strong>
+                                      <small>{{ sentenceCount === 1 ? 'Focused synthesis' : sentenceCount === 2 ? 'Balanced narration · Recommended' : 'Fuller story and flow' }}</small>
+                                    </span>
+                                    <em>{{ stackScriptShortenEstimateLabel(sentenceCount) }}</em>
+                                  </button>
+                                }
+                              </div>
+                            }
+                          </div>
+                          <button type="button" (click)="setAllStackScriptCardsExpanded(true)">Expand all</button>
+                          <button type="button" (click)="setAllStackScriptCardsExpanded(false)">Collapse all</button>
+                        </div>
+                      </header>
+
+                      @if (stackScriptShortenNotice()) {
+                        <div class="stack-script-shorten-notice" role="status">
+                          <span class="material-symbols-outlined">check_circle</span>
+                          <span>{{ stackScriptShortenNotice() }}</span>
+                          @if (stackScriptShortenUndoNarrations()) {
+                            <button type="button" (click)="undoStackScriptShortening($event)">Undo</button>
+                          }
+                        </div>
+                      }
+
+                      <details class="stack-script-intro">
+                        <summary>
+                          <span class="material-symbols-outlined">movie_edit</span>
+                          <span>
+                            <strong>Board opening</strong>
+                            <small>Title and introduction</small>
+                          </span>
+                          <span class="material-symbols-outlined">expand_more</span>
+                        </summary>
                         <div class="stack-script-intro__fields">
                           <label>
                             <span>Board title</span>
@@ -7108,20 +7160,7 @@
                             ></textarea>
                           </label>
                         </div>
-                      </section>
-
-                      <div class="stack-script-summary">
-                        <span><strong>{{ stackSelectedCount() }}</strong><small>Cards selected</small></span>
-                        <span><strong>{{ stackScriptDurationLabel() }}</strong><small>Estimated voice</small></span>
-                        <span [class.stack-script-summary__warning]="stackScriptMissingCount() > 0">
-                          <strong>{{ stackScriptMissingCount() }}</strong>
-                          <small>
-                            {{ isPhotoStoryBoard(board)
-                              ? stackScriptMissingCount() === 1 ? 'Story needed' : 'Stories needed'
-                              : stackScriptMissingCount() === 1 ? 'Script needed' : 'Scripts needed' }}
-                          </small>
-                        </span>
-                      </div>
+                      </details>
 
                       <div class="stack-script-sequence-head">
                         <div>
@@ -7131,10 +7170,6 @@
                               ? 'Titles, captions, and spoken narration'
                               : 'Exactly what the voice will read' }}
                           </strong>
-                        </div>
-                        <div>
-                          <button type="button" (click)="setAllStackScriptCardsExpanded(true)">Expand all</button>
-                          <button type="button" (click)="setAllStackScriptCardsExpanded(false)">Collapse all</button>
                         </div>
                       </div>
 
@@ -7157,7 +7192,10 @@
                                   </small>
                                 }
                               </span>
-                              <span class="stack-script-card__duration">~{{ stackScriptCardEstimatedSeconds(card) }}s</span>
+                              <span class="stack-script-card__meta">
+                                <strong>{{ stackScriptCardSentenceCount(card) }} {{ stackScriptCardSentenceCount(card) === 1 ? 'sentence' : 'sentences' }}</strong>
+                                <small>~{{ stackScriptCardEstimatedSeconds(card) }}s</small>
+                              </span>
                               <span class="material-symbols-outlined">{{ stackScriptCardIsExpanded(card.id) ? 'expand_less' : 'expand_more' }}</span>
                             </button>
                             @if (stackScriptCardIsExpanded(card.id)) {
@@ -7764,7 +7802,7 @@
               </div>
 
               <aside class="stack-preview-panel">
-                <div class="stack-preview-shortcuts" role="group" aria-label="Edit opening or final card">
+                <div class="stack-preview-shortcuts" role="group" aria-label="Choose a preview frame">
                   <button
                     type="button"
                     [class.stack-preview-shortcuts__active]="stackCurrentFrame().kind === 'cover'"
@@ -7776,12 +7814,21 @@
                   </button>
                   <button
                     type="button"
+                    [class.stack-preview-shortcuts__active]="stackCurrentFrame().kind === 'card' || stackCurrentFrame().kind === 'handoff'"
+                    [attr.aria-pressed]="stackCurrentFrame().kind === 'card' || stackCurrentFrame().kind === 'handoff'"
+                    (click)="showStackStudioScene()"
+                  >
+                    <span class="material-symbols-outlined">photo_library</span>
+                    <span><strong>Scene</strong><small>Card preview</small></span>
+                  </button>
+                  <button
+                    type="button"
                     [class.stack-preview-shortcuts__active]="stackCurrentFrame().kind === 'closing'"
                     [attr.aria-pressed]="stackCurrentFrame().kind === 'closing'"
                     (click)="showStackStudioFrame('closing')"
                   >
                     <span class="material-symbols-outlined">featured_video</span>
-                    <span><strong>Final Card</strong><small>Closing frame</small></span>
+                    <span><strong>Final</strong><small>Closing frame</small></span>
                   </button>
                 </div>
 
@@ -7889,6 +7936,10 @@
                     <span class="material-symbols-outlined">chevron_right</span>
                   </button>
                 </div>
+                <button type="button" class="stack-preview-live-action" (click)="openStackView(board, $event)">
+                  <span class="material-symbols-outlined">play_circle</span>
+                  Live preview
+                </button>
 
                 @if (canEditBoard(board) && stackCurrentFrame(); as editorFrame) {
                   @if (editorFrame.kind === 'cover') {

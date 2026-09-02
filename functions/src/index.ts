@@ -125,6 +125,7 @@ import {
   generateAnswerQuiz,
   generateBoardCardImageAsset,
   generateBoardTrailerScript,
+  shortenStackScriptNarrations,
   generateBoardWizardBatch as generateBoardWizardBatchWithGemini,
   resolveBoardWizardCompleteSetManifest,
   resolveBoardWizardPlannedSetManifest,
@@ -7478,6 +7479,71 @@ function boardTranslationCallableResponse(
     : [];
   return { boardId, targetLanguage, sourceLanguage, fingerprint, segments, cached, changed };
 }
+
+export const shortenStackScript = onCall(
+  {
+    region: callableRegion,
+    cors: true,
+    timeoutSeconds: 90,
+    memory: '512MiB',
+    concurrency: 8,
+    maxInstances: 20,
+    secrets: [geminiApiKey],
+  },
+  async (request) => {
+    const userId = request.auth?.uid;
+    if (!userId) {
+      throw new HttpsError('unauthenticated', 'Sign in to adjust a Stack script.');
+    }
+    const boardId = stringOrEmpty(request.data?.boardId).trim();
+    const targetSentences = Number(request.data?.targetSentences);
+    if (!/^[A-Za-z0-9_-]{8,160}$/.test(boardId) || ![1, 2, 3].includes(targetSentences)) {
+      throw new HttpsError('invalid-argument', 'Choose a valid board and sentence length.');
+    }
+
+    const boardSnapshot = await db.collection('boards').doc(boardId).get();
+    if (!boardSnapshot.exists) {
+      throw new HttpsError('not-found', 'This board could not be found.');
+    }
+    const board = boardSnapshot.data() as Record<string, unknown>;
+    const isOwner = stringOrEmpty(board['owner_user_id']) === userId;
+    const isAdmin = request.auth?.token?.['admin'] === true;
+    if (!isOwner && !isAdmin) {
+      throw new HttpsError('permission-denied', 'Only the board owner can adjust this script.');
+    }
+
+    const boardCardIds = new Set(
+      (Array.isArray(board['cards']) ? board['cards'] : []).flatMap((value) => {
+        if (!value || typeof value !== 'object') return [];
+        const id = stringOrEmpty((value as Record<string, unknown>)['id']).trim();
+        return id ? [id] : [];
+      }),
+    );
+    const seen = new Set<string>();
+    let totalCharacters = 0;
+    const cards = (Array.isArray(request.data?.cards) ? request.data.cards : []).flatMap((value: unknown) => {
+      if (!value || typeof value !== 'object') return [];
+      const record = value as Record<string, unknown>;
+      const cardId = stringOrEmpty(record['cardId']).trim().slice(0, 160);
+      const title = stringOrEmpty(record['title']).replace(/\s+/g, ' ').trim().slice(0, 160);
+      const narration = stringOrEmpty(record['narration']).replace(/\s+/g, ' ').trim().slice(0, 3000);
+      const sourceNarration = stringOrEmpty(record['sourceNarration'] || narration).replace(/\s+/g, ' ').trim().slice(0, 3000);
+      if (!cardId || !narration || seen.has(cardId) || !boardCardIds.has(cardId)) return [];
+      if (totalCharacters + narration.length + sourceNarration.length > 90_000) return [];
+      seen.add(cardId);
+      totalCharacters += narration.length + sourceNarration.length;
+      return [{ cardId, title, narration, sourceNarration }];
+    }).slice(0, 50);
+    if (!cards.length) {
+      throw new HttpsError('invalid-argument', 'Select at least one narrated card.');
+    }
+
+    return {
+      targetSentences,
+      cards: await shortenStackScriptNarrations({ cards, targetSentences }),
+    };
+  },
+);
 
 export const previewBoardWizardSource = onCall(
   {

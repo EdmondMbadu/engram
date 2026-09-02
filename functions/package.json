@@ -30,6 +30,7 @@
     "test:city-board-listing": "npm run build && node scripts/test-city-board-listing.cjs",
     "test:public-board-summary": "npm run build && node scripts/test-public-board-summary.cjs",
     "test:stack-video-narration": "npm run build && node scripts/test-stack-video-narration.cjs",
+    "test:stack-script-shortening": "npm run build && node scripts/test-stack-script-shortening.cjs",
     "test:tour-handoff": "npm run build && node scripts/test-tour-handoff.cjs",
     "test:atlas-realtime-voice": "npm run build && node scripts/test-atlas-realtime-voice.cjs",
     "test:atlas-identity": "npm run build && node scripts/test-atlas-identity.cjs",

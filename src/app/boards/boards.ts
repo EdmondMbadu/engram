@@ -190,6 +190,13 @@ import {
   type StackStoryFrame,
 } from './stack-story-frames';
 import {
+  adjustStackScriptNarration,
+  normalizeStackScriptShortenResults,
+  stackScriptSentenceCount,
+  stackScriptShortenEstimateSeconds,
+  type StackScriptShortenResult,
+} from './stack-script-shortening';
+import {
   buildStackDocsExportSnapshot,
   stackDocsExportImageCount,
   stackDocsExportMissingNarrationCount,
@@ -465,6 +472,7 @@ type BoardCard = {
   rank?: number;
   nearby?: NearbyGemCardMetrics;
   videoNarrationRevision?: number;
+  stackNarrationSource?: string;
   videoIntent?: boolean;
   videoSearchQuery?: string;
   youtubeVideoId?: string;
@@ -1619,7 +1627,7 @@ type BoardLoadContext = {
   imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink, BoardCollectionCreateComponent, BoardCollectionListComponent, CustomPublicUrlDialogComponent, BoardPromoImageDialogComponent, NearbyGemsBoardComponent, TalkingCardEditorComponent, TalkingCardConversationComponent, BackdropDismissDirective],
   providers: [DocxExportService],
   templateUrl: './boards.html',
-  styleUrls: ['./boards.css', './tour-experience.css', './board-wizard-drafts.css', './board-wizard-media-mode.css', './board-narration-style.css', './board-wizard-redesign.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css', './stack-script.css', './stack-listing-groups.css', './stack-cover-final.css', './stack-doc-export.css', './board-city-tag.css', './board-custom-link.css', './nearby-gems-gallery.css', './talking-card.css'],
+  styleUrls: ['./boards.css', './tour-experience.css', './board-wizard-drafts.css', './board-wizard-media-mode.css', './board-narration-style.css', './board-wizard-redesign.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css', './stack-script.css', './stack-listing-groups.css', './stack-cover-final.css', './stack-doc-export.css', './stack-studio-redesign.css', './board-city-tag.css', './board-custom-link.css', './nearby-gems-gallery.css', './talking-card.css'],
 })
 export class BoardsComponent implements AfterViewInit, OnDestroy {
   private readonly localeId = inject(LOCALE_ID);
@@ -2162,6 +2170,11 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly stackScriptError = signal<string | null>(null);
   readonly stackScriptPreviewLoadingCardId = signal<string | null>(null);
   readonly stackScriptRegeneratingCardId = signal<string | null>(null);
+  readonly stackScriptShortenMenuOpen = signal(false);
+  readonly stackScriptShortening = signal(false);
+  readonly stackScriptShortenUndoNarrations = signal<Record<string, string> | null>(null);
+  readonly stackScriptLengthSourceNarrations = signal<Record<string, string>>({});
+  readonly stackScriptShortenNotice = signal<string | null>(null);
   readonly stackScriptDiscardConfirmOpen = signal(false);
   readonly stackDocsExportDialogOpen = signal(false);
   readonly stackDocsExportDocumentTitle = signal('');
@@ -14060,6 +14073,10 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.stopPersonalVoiceRecording(true);
     this.stopStackPlayback();
     this.stackVoiceLibraryOpen.set(false);
+    this.stackScriptShortenMenuOpen.set(false);
+    this.stackScriptShortening.set(false);
+    this.clearStackScriptShortenUndo();
+    this.stackScriptLengthSourceNarrations.set({});
     this.stackStudioOpen.set(false);
     this.stackDocsExportDialogOpen.set(false);
     this.docxExportService.release(this.stackDocsExportResult());
@@ -14106,6 +14123,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
 
   toggleStackCard(cardId: string): void {
     this.stopStackPlayback();
+    this.clearStackScriptShortenUndo();
     this.stackSelectedCardIds.update((selected) => {
       const next = new Set(selected);
       if (next.has(cardId)) {
@@ -14119,12 +14137,14 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   }
 
   selectAllStackCards(board: Board): void {
+    this.clearStackScriptShortenUndo();
     this.stackSelectedCardIds.set(new Set(board.cards.map((card) => card.id)));
     this.clampStackFrameIndex();
   }
 
   clearStackCards(): void {
     this.stopStackPlayback();
+    this.clearStackScriptShortenUndo();
     this.stackSelectedCardIds.set(new Set());
     this.clampStackFrameIndex();
   }
@@ -14142,9 +14162,16 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.stackFrameIndex.set(kind === 'cover' ? 0 : Math.max(0, this.stackFrameCount() - 1));
   }
 
+  showStackStudioScene(): void {
+    this.stopStackPlayback();
+    const sceneIndex = this.stackFrames().findIndex((frame) => frame.kind === 'card');
+    this.stackFrameIndex.set(sceneIndex >= 0 ? sceneIndex : 0);
+  }
+
   setStackSoundTab(tab: StackSoundTab): void {
     this.stopStackAudioPreview();
     this.stopStackVoicePreview();
+    this.stackScriptShortenMenuOpen.set(false);
     this.stackSoundTab.set(tab);
   }
 
@@ -14163,6 +14190,10 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   }
 
   updateStackScriptCard(cardId: string, field: keyof StackScriptCardDraft, value: string): void {
+    if (field === 'narration') {
+      this.clearStackScriptShortenUndo();
+      this.stackScriptLengthSourceNarrations.update((sources) => ({ ...sources, [cardId]: value }));
+    }
     this.stackScriptCardDrafts.update((drafts) => ({
       ...drafts,
       [cardId]: {
@@ -14219,6 +14250,10 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     return this.stackScriptNarration(card).trim().split(/\s+/).filter(Boolean).length;
   }
 
+  stackScriptCardSentenceCount(card: BoardCard): number {
+    return stackScriptSentenceCount(this.stackScriptNarration(card));
+  }
+
   stackScriptIndexLabel(index: number): string {
     return String(index + 1).padStart(2, '0');
   }
@@ -14227,6 +14262,155 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     const seconds = this.stackScriptEstimatedSeconds();
     const minutes = Math.floor(seconds / 60);
     const remainder = seconds % 60;
+    return minutes ? `~${minutes}:${String(remainder).padStart(2, '0')}` : `~${remainder}s`;
+  }
+
+  stackScriptShortenEstimateLabel(targetSentences: number): string {
+    const seconds = stackScriptShortenEstimateSeconds(
+      this.stackSelectedCards().map((card) => ({
+        cardId: card.id,
+        narration: this.stackScriptNarration(card),
+        sourceNarration: this.stackScriptLengthSourceNarrations()[card.id],
+      })),
+      targetSentences,
+    );
+    return this.stackDurationLabel(seconds);
+  }
+
+  toggleStackScriptShortenMenu(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (this.stackScriptShortening()) return;
+    this.stackScriptShortenMenuOpen.update((open) => !open);
+  }
+
+  async shortenEntireStackScript(targetSentences: number, event?: Event): Promise<void> {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const board = this.stackBoard();
+    const sentenceLimit = Math.max(1, Math.min(3, Math.trunc(targetSentences) || 2));
+    if (!board || this.stackScriptShortening()) return;
+    const previousUndo = this.stackScriptShortenUndoNarrations();
+    const sourceNarrations = this.stackScriptLengthSourceNarrations();
+    const cards = this.stackSelectedCards()
+      .map((card) => ({
+        cardId: card.id,
+        title: this.stackScriptTitle(card),
+        narration: this.stackScriptNarration(card).trim(),
+        sourceNarration: this.stackScriptRicherNarration(
+          sourceNarrations[card.id],
+          previousUndo?.[card.id],
+          this.stackScriptNarration(card),
+        ),
+      }))
+      .filter((card) => !!card.narration);
+    if (!cards.length) {
+      this.stackScriptShortenNotice.set('Add narration before adjusting the script.');
+      this.stackScriptShortenMenuOpen.set(false);
+      return;
+    }
+
+    this.stackScriptLengthSourceNarrations.update((sources) => ({
+      ...sources,
+      ...Object.fromEntries(cards.map((card) => [card.cardId, card.sourceNarration])),
+    }));
+
+    this.stackScriptShortening.set(true);
+    this.stackScriptShortenMenuOpen.set(false);
+    this.stackScriptError.set(null);
+    this.stackScriptShortenNotice.set(null);
+    const undoNarrations = Object.fromEntries(cards.map((card) => [card.cardId, card.narration]));
+    let results: StackScriptShortenResult[] = [];
+    let usedLocalFallback = false;
+    try {
+      if (!this.functions) throw new Error('Script rewriting is unavailable.');
+      const callable = httpsCallable<{
+        boardId: string;
+        targetSentences: number;
+        cards: typeof cards;
+      }, { cards?: StackScriptShortenResult[] }>(this.functions, 'shortenStackScript', { timeout: 120_000 });
+      const response = await callable({ boardId: board.id, targetSentences: sentenceLimit, cards });
+      results = Array.isArray(response.data?.cards) ? response.data.cards : [];
+    } catch {
+      usedLocalFallback = true;
+      results = cards.map((card) => ({
+        cardId: card.cardId,
+        narration: adjustStackScriptNarration(card, sentenceLimit),
+      }));
+    }
+
+    const normalized = normalizeStackScriptShortenResults(cards, results, sentenceLimit);
+    const changed = normalized.filter((result) => {
+      const currentCard = this.stackSelectedCards().find((card) => card.id === result.cardId);
+      return result.narration !== undoNarrations[result.cardId]
+        && !!currentCard
+        && this.stackScriptNarration(currentCard).trim() === undoNarrations[result.cardId];
+    });
+    if (changed.length) {
+      this.stackScriptCardDrafts.update((drafts) => {
+        const next = { ...drafts };
+        for (const result of changed) {
+          const current = next[result.cardId];
+          if (!current) continue;
+          next[result.cardId] = { ...current, narration: result.narration };
+        }
+        return next;
+      });
+      this.stackScriptShortenUndoNarrations.set(undoNarrations);
+      this.stackScriptShortenNotice.set(
+        usedLocalFallback
+          ? `Adjusted ${changed.length} card${changed.length === 1 ? '' : 's'} from the fullest available script to about ${sentenceLimit} ${sentenceLimit === 1 ? 'sentence' : 'sentences'} each. Review before saving.`
+          : `Refined ${changed.length} card${changed.length === 1 ? '' : 's'} to about ${sentenceLimit} ${sentenceLimit === 1 ? 'sentence' : 'sentences'} each. Review before saving.`,
+      );
+    } else {
+      this.stackScriptShortenUndoNarrations.set(null);
+      const needsExpansion = cards.some((card) => stackScriptSentenceCount(card.narration) < sentenceLimit);
+      this.stackScriptShortenNotice.set(
+        needsExpansion && usedLocalFallback
+          ? 'No fuller approved source text is available locally for these cards. The AI rewrite service is needed to expand them without inventing details.'
+          : `The selected narration already fits about ${sentenceLimit} ${sentenceLimit === 1 ? 'sentence' : 'sentences'} per card.`,
+      );
+    }
+    this.stackScriptShortening.set(false);
+  }
+
+  undoStackScriptShortening(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const undo = this.stackScriptShortenUndoNarrations();
+    if (!undo) return;
+    this.stackScriptCardDrafts.update((drafts) => {
+      const next = { ...drafts };
+      for (const [cardId, narration] of Object.entries(undo)) {
+        const current = next[cardId];
+        if (current) next[cardId] = { ...current, narration };
+      }
+      return next;
+    });
+    this.stackScriptShortenUndoNarrations.set(null);
+    this.stackScriptShortenNotice.set('Length adjustment undone.');
+  }
+
+  private clearStackScriptShortenUndo(): void {
+    this.stackScriptShortenUndoNarrations.set(null);
+    this.stackScriptShortenNotice.set(null);
+  }
+
+  private stackScriptRicherNarration(...values: Array<string | undefined>): string {
+    return values.reduce<string>((richest, value) => {
+      const candidate = value?.replace(/\s+/g, ' ').trim() || '';
+      if (!candidate) return richest;
+      const candidateSentences = stackScriptSentenceCount(candidate);
+      const richestSentences = stackScriptSentenceCount(richest);
+      if (candidateSentences !== richestSentences) return candidateSentences > richestSentences ? candidate : richest;
+      return candidate.split(/\s+/).length > richest.split(/\s+/).length ? candidate : richest;
+    }, '');
+  }
+
+  private stackDurationLabel(seconds: number): string {
+    const safeSeconds = Math.max(0, Math.ceil(seconds));
+    const minutes = Math.floor(safeSeconds / 60);
+    const remainder = safeSeconds % 60;
     return minutes ? `~${minutes}:${String(remainder).padStart(2, '0')}` : `~${remainder}s`;
   }
 
@@ -14360,6 +14544,10 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
           subtitle: draft.subtitle.trim(),
           notes: card.tour ? card.notes : narration,
           tour: card.tour ? { ...card.tour, guideScript: narration } : card.tour,
+          stackNarrationSource: this.stackScriptRicherNarration(
+            this.stackScriptLengthSourceNarrations()[card.id],
+            narration,
+          ).slice(0, 3000),
           updatedAt: now,
         };
       }),
@@ -14377,8 +14565,17 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         subtitle: card.subtitle,
         narration: card.tour?.guideScript || this.persistedStackCardNarrationText(card) || '',
       }])));
+      const existingLengthSources = this.stackScriptLengthSourceNarrations();
+      this.stackScriptLengthSourceNarrations.set(Object.fromEntries(savedBoard.cards.map((card) => [
+        card.id,
+        this.stackScriptRicherNarration(
+          existingLengthSources[card.id],
+          card.tour?.guideScript || this.persistedStackCardNarrationText(card) || '',
+        ),
+      ])));
       this.stackScriptOriginalSnapshot.set(this.stackScriptSnapshot(savedBoard));
       this.stackScriptSavedAt.set(now);
+      this.clearStackScriptShortenUndo();
       this.setStackShareMessage(
         this.isPhotoStoryBoard(savedBoard)
           ? 'Stories saved. Each card and its narration now use these words.'
@@ -16927,9 +17124,19 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       subtitle: card.subtitle,
       narration: card.tour?.guideScript || this.persistedStackCardNarrationText(card) || '',
     }])));
+    this.stackScriptLengthSourceNarrations.set(Object.fromEntries(board.cards.map((card) => [
+      card.id,
+      this.stackScriptRicherNarration(
+        card.stackNarrationSource,
+        card.tour?.guideScript || this.persistedStackCardNarrationText(card) || '',
+      ),
+    ])));
     this.stackScriptExpandedCardIds.set(new Set(board.cards.slice(0, 1).map((card) => card.id)));
     this.stackScriptOriginalSnapshot.set(this.stackScriptSnapshot(board));
     this.stackScriptSavedAt.set('');
+    this.stackScriptShortenMenuOpen.set(false);
+    this.stackScriptShortening.set(false);
+    this.clearStackScriptShortenUndo();
     this.stackCoverSavedAt.set('');
     this.stackScriptError.set(null);
     this.stackScriptDiscardConfirmOpen.set(false);
@@ -20603,6 +20810,9 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
             videoNarrationRevision: typeof (card as Partial<BoardCard>).videoNarrationRevision === 'number'
               ? Math.max(0, Math.trunc((card as Partial<BoardCard>).videoNarrationRevision!))
               : 0,
+            stackNarrationSource: typeof (card as Partial<BoardCard>).stackNarrationSource === 'string'
+              ? (card as Partial<BoardCard>).stackNarrationSource!.replace(/\s+/g, ' ').trim().slice(0, 3000)
+              : '',
             nearby: this.normalizeNearbyGemMetrics((card as Partial<BoardCard>).nearby),
             stickers: this.normalizeStickers(card.stickers),
             tour: this.normalizeCardTour((card as BoardCard).tour),

@@ -1,0 +1,1146 @@
+.boards-modal-backdrop--stack-studio {
+  background: rgba(6, 19, 14, 0.56);
+  padding: 1rem;
+}
+
+.boards-modal--stack-studio {
+  width: min(98vw, 112rem);
+  max-height: 96vh;
+  border: 2px solid var(--modal-ink);
+  border-radius: 1.45rem;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--accent) 4%, transparent) 1px, transparent 1px),
+    linear-gradient(color-mix(in srgb, var(--accent) 4%, transparent) 1px, transparent 1px),
+    var(--surface-strong);
+  background-size: 30px 30px, 30px 30px, auto;
+  box-shadow: 0 34px 100px rgba(5, 25, 17, 0.34), 4px 5px 0 rgba(8, 42, 31, 0.82);
+  padding: 0;
+}
+
+.boards-modal--stack-studio .boards-modal__head {
+  top: 0;
+  min-height: 5.8rem;
+  margin: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--modal-ink) 16%, var(--line));
+  background: color-mix(in srgb, var(--surface-strong) 96%, transparent);
+  padding: 1.05rem 1.7rem;
+}
+
+.stack-studio-head__identity {
+  display: grid;
+  grid-template-columns: minmax(0, auto) auto;
+  min-width: 0;
+  align-items: center;
+  column-gap: 0.7rem;
+  row-gap: 0.32rem;
+}
+
+.stack-studio-head__identity p {
+  grid-column: 1 / -1;
+  letter-spacing: 0.24em;
+}
+
+.boards-modal--stack-studio .stack-studio-head__identity h3 {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(1.55rem, 2.15vw, 2.15rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stack-studio-head__status {
+  align-self: center;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+  color: var(--accent);
+  font-size: 0.66rem;
+  font-weight: 850;
+  padding: 0.3rem 0.6rem;
+}
+
+.stack-studio-head__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.boards-modal--stack-studio .stack-studio-head__actions > .boards-icon-button {
+  width: 2.85rem;
+  height: 2.85rem;
+  border: 2px solid var(--modal-ink);
+  border-radius: 0.85rem;
+  background: var(--surface);
+  box-shadow: 2px 2px 0 var(--modal-ink);
+}
+
+.stack-studio-export-menu {
+  position: relative;
+}
+
+.stack-studio-export-menu > summary {
+  display: inline-flex;
+  min-height: 2.35rem;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 0.62rem;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 0.72rem;
+  font-weight: 900;
+  list-style: none;
+  padding: 0.45rem 0.7rem;
+}
+
+.stack-studio-export-menu > summary::-webkit-details-marker,
+.stack-card-manager > summary::-webkit-details-marker,
+.stack-script-intro > summary::-webkit-details-marker {
+  display: none;
+}
+
+.stack-studio-export-menu > summary .material-symbols-outlined {
+  font-size: 1rem;
+}
+
+.stack-studio-export-menu > div {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 0.45rem);
+  right: 0;
+  display: grid;
+  width: 16.5rem;
+  gap: 0.3rem;
+  border: 1px solid var(--line);
+  border-radius: 0.8rem;
+  background: var(--surface);
+  box-shadow: 0 18px 42px rgba(5, 25, 17, 0.18);
+  padding: 0.45rem;
+}
+
+.stack-studio-export-menu > div button {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.65rem;
+  border: 0;
+  border-radius: 0.58rem;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  padding: 0.65rem;
+  text-align: left;
+}
+
+.stack-studio-export-menu > div button:hover,
+.stack-studio-export-menu > div button:focus-visible {
+  background: color-mix(in srgb, var(--accent) 7%, var(--surface));
+}
+
+.stack-studio-export-menu > div button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.stack-studio-export-menu > div .material-symbols-outlined {
+  color: var(--accent);
+}
+
+.stack-studio-export-menu > div span:last-child,
+.stack-studio-export-menu > div strong,
+.stack-studio-export-menu > div small {
+  display: block;
+}
+
+.stack-studio-export-menu > div strong {
+  font-size: 0.72rem;
+}
+
+.stack-studio-export-menu > div small {
+  margin-top: 0.1rem;
+  color: var(--muted);
+  font-size: 0.62rem;
+}
+
+.stack-studio {
+  gap: 1rem;
+  margin: 0;
+  padding: 1.15rem 1.35rem 1.35rem;
+}
+
+.stack-card-manager {
+  position: relative;
+  overflow: visible;
+  border: 2px solid var(--modal-ink);
+  border-radius: 1.05rem;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 12%, var(--surface)), color-mix(in srgb, var(--accent) 5%, var(--surface)));
+  box-shadow: 3px 3px 0 var(--modal-ink);
+}
+
+.stack-card-manager > summary {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.95rem;
+  cursor: pointer;
+  list-style: none;
+  padding: 0.9rem 1rem;
+}
+
+.stack-card-manager .stack-studio__thumb {
+  width: 4rem;
+  height: 4rem;
+  border: 2px solid var(--modal-ink);
+  border-radius: 0.8rem;
+  box-shadow: 1px 1px 0 var(--modal-ink);
+}
+
+.stack-card-manager__summary-copy {
+  display: grid;
+  min-width: 0;
+  gap: 0.18rem;
+}
+
+.stack-card-manager__summary-copy strong {
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 950;
+}
+
+.stack-card-manager__summary-copy small {
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 750;
+}
+
+.stack-card-manager__manage {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-right: 22.5rem;
+  border: 2px solid var(--modal-ink);
+  border-radius: 999px;
+  background: var(--surface);
+  box-shadow: 1px 1px 0 var(--modal-ink);
+  color: var(--text);
+  font-size: 0.72rem;
+  font-weight: 900;
+  padding: 0.55rem 0.75rem;
+}
+
+.stack-card-manager__manage .material-symbols-outlined {
+  font-size: 1rem;
+}
+
+.stack-card-manager > summary > .stack-card-manager__manage .material-symbols-outlined:last-child {
+  transition: transform 150ms ease;
+}
+
+.stack-card-manager[open] > summary > .stack-card-manager__manage .material-symbols-outlined:last-child {
+  transform: rotate(180deg);
+}
+
+.stack-card-manager__quick-actions {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transform: translateY(-50%);
+}
+
+.stack-card-manager__quick-actions button {
+  display: inline-flex;
+  min-height: 2.45rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.36rem;
+  border: 2px solid var(--modal-ink);
+  border-radius: 999px;
+  background: var(--surface);
+  box-shadow: 2px 2px 0 var(--modal-ink);
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.7rem;
+  font-weight: 950;
+  padding: 0.5rem 0.72rem;
+  transition: transform 140ms ease, box-shadow 140ms ease, background 140ms ease;
+}
+
+.stack-card-manager__quick-actions button:hover,
+.stack-card-manager__quick-actions button:focus-visible {
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+  box-shadow: 3px 3px 0 var(--modal-ink);
+  transform: translate(-1px, -1px);
+}
+
+.stack-card-manager__quick-actions button:disabled {
+  cursor: not-allowed;
+  box-shadow: none;
+  opacity: 0.46;
+}
+
+.stack-card-manager__quick-actions .material-symbols-outlined {
+  color: var(--accent);
+  font-size: 1.02rem;
+}
+
+.stack-card-manager__body {
+  border-top: 1px solid color-mix(in srgb, var(--modal-ink) 18%, var(--line));
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  border-radius: 0 0 0.9rem 0.9rem;
+  padding: 0.8rem 1rem 0.95rem;
+}
+
+.stack-card-manager__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.4rem;
+  margin-bottom: 0.55rem;
+}
+
+.stack-card-manager__actions > span {
+  margin-right: auto;
+  color: var(--muted);
+  font-size: 0.65rem;
+  font-weight: 750;
+}
+
+.stack-card-manager__actions button {
+  border: 0;
+  border-radius: 0.45rem;
+  background: transparent;
+  color: var(--accent);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.65rem;
+  font-weight: 900;
+  padding: 0.35rem 0.48rem;
+}
+
+.stack-card-manager__actions button:hover {
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+}
+
+.stack-card-manager .stack-card-strip {
+  grid-auto-columns: minmax(5.3rem, 5.8rem);
+  gap: 0.45rem;
+}
+
+.stack-card-manager .stack-card-chip {
+  min-height: 6rem;
+  border: 2px solid var(--modal-ink);
+  border-radius: 0.78rem;
+  box-shadow: 2px 2px 0 var(--modal-ink);
+}
+
+.stack-card-manager .stack-card-chip__count {
+  top: 0.35rem;
+  left: 0.35rem;
+  width: 1.15rem;
+  height: 1.15rem;
+  border: 1px solid var(--line-strong);
+  font-size: 0.55rem;
+}
+
+.stack-studio__grid {
+  grid-template-columns: minmax(0, 1fr) minmax(25rem, 28rem);
+  gap: 1rem;
+}
+
+.stack-editor,
+.stack-preview-panel {
+  gap: 0.85rem;
+}
+
+.boards-modal--stack-studio .stack-panel,
+.boards-modal--stack-studio .stack-export,
+.boards-modal--stack-studio .stack-preview-panel {
+  border: 2px solid var(--modal-ink);
+  border-radius: 1.05rem;
+  background: var(--surface);
+  box-shadow: 3px 3px 0 var(--modal-ink);
+}
+
+.boards-modal--stack-studio .stack-workflow-panel {
+  overflow: visible;
+  padding: 0;
+}
+
+.boards-modal--stack-studio .stack-workflow-heading {
+  padding: 1.15rem 1.25rem 0.9rem;
+}
+
+.boards-modal--stack-studio .stack-workflow-heading p {
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+}
+
+.boards-modal--stack-studio .stack-workflow-heading h4 {
+  margin-top: 0.36rem;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.35rem;
+  letter-spacing: -0.02em;
+}
+
+.boards-modal--stack-studio .stack-workflow-heading small {
+  margin-top: 0.3rem;
+  font-size: 0.77rem;
+}
+
+.boards-modal--stack-studio .stack-workflow-tabs {
+  margin: 0 1.15rem;
+  border: 1px solid color-mix(in srgb, var(--modal-ink) 18%, var(--line));
+  border-radius: 0.9rem;
+  background: var(--surface);
+}
+
+.boards-modal--stack-studio .stack-workflow-tabs .stack-sound-tabs__button {
+  min-height: 4rem;
+  grid-template-columns: auto minmax(0, 1fr);
+  justify-content: stretch;
+  border: 0;
+  border-right: 1px solid var(--line);
+  background: transparent;
+  padding: 0.72rem 0.8rem;
+  text-align: left;
+}
+
+.boards-modal--stack-studio .stack-workflow-tabs .stack-sound-tabs__button:last-child {
+  border-right: 0;
+}
+
+.boards-modal--stack-studio .stack-workflow-tabs .stack-sound-tabs__button--active {
+  background: color-mix(in srgb, var(--accent) 10%, var(--surface));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 38%, transparent);
+}
+
+.stack-workflow-tabs__icon {
+  color: var(--muted);
+  font-size: 1.05rem;
+}
+
+.stack-sound-tabs__button--active .stack-workflow-tabs__icon {
+  color: var(--accent);
+  font-variation-settings: 'FILL' 1;
+}
+
+.boards-modal--stack-studio .stack-workflow-tabs__copy strong {
+  font-size: 0.84rem;
+}
+
+.boards-modal--stack-studio .stack-workflow-tabs__copy small {
+  display: block;
+  font-size: 0.62rem;
+}
+
+.boards-modal--stack-studio .stack-script-editor {
+  gap: 0.9rem;
+  padding: 1.2rem;
+}
+
+.stack-script-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.stack-script-toolbar h4,
+.stack-script-toolbar p {
+  margin: 0;
+}
+
+.stack-script-toolbar h4 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.5rem;
+  line-height: 1.1;
+}
+
+.stack-script-toolbar p {
+  margin-top: 0.2rem;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 750;
+}
+
+.stack-script-toolbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.stack-script-toolbar__actions > button,
+.stack-script-shortener__trigger {
+  display: inline-flex;
+  min-height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 0.7rem;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.69rem;
+  font-weight: 900;
+  padding: 0.5rem 0.7rem;
+}
+
+.stack-script-toolbar__actions > button:hover,
+.stack-script-shortener__trigger:hover {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+  background: color-mix(in srgb, var(--accent) 5%, var(--surface));
+}
+
+.stack-script-shortener__trigger {
+  color: var(--accent);
+}
+
+.stack-script-shortener__trigger:disabled {
+  cursor: wait;
+  opacity: 0.55;
+}
+
+.stack-script-shortener__trigger .material-symbols-outlined {
+  font-size: 0.95rem;
+}
+
+.stack-script-shortener {
+  position: relative;
+}
+
+.stack-script-shortener__menu {
+  position: absolute;
+  z-index: 25;
+  top: calc(100% + 0.4rem);
+  right: 0;
+  width: 18.5rem;
+  overflow: hidden;
+  border: 2px solid var(--modal-ink);
+  border-radius: 0.9rem;
+  background: var(--surface);
+  box-shadow: 3px 3px 0 var(--modal-ink), 0 18px 44px rgba(5, 25, 17, 0.18);
+  padding: 0.4rem;
+}
+
+.stack-script-shortener__menu header {
+  display: grid;
+  gap: 0.1rem;
+  padding: 0.55rem 0.6rem 0.45rem;
+}
+
+.stack-script-shortener__menu header strong {
+  color: var(--text);
+  font-size: 0.72rem;
+}
+
+.stack-script-shortener__menu header small {
+  color: var(--muted);
+  font-size: 0.62rem;
+}
+
+.stack-script-shortener__menu > button {
+  display: grid;
+  width: 100%;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.65rem;
+  border: 0;
+  border-radius: 0.55rem;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  padding: 0.58rem 0.6rem;
+  text-align: left;
+}
+
+.stack-script-shortener__menu > button:hover,
+.stack-script-shortener__menu > button:focus-visible {
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+}
+
+.stack-script-shortener__menu > button span,
+.stack-script-shortener__menu > button strong,
+.stack-script-shortener__menu > button small {
+  display: block;
+}
+
+.stack-script-shortener__menu > button strong {
+  font-size: 0.68rem;
+}
+
+.stack-script-shortener__menu > button small {
+  margin-top: 0.12rem;
+  color: var(--muted);
+  font-size: 0.58rem;
+}
+
+.stack-script-shortener__menu > button em {
+  color: var(--accent);
+  font-size: 0.64rem;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.stack-script-shorten-notice {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--line));
+  border-radius: 0.58rem;
+  background: color-mix(in srgb, var(--accent) 6%, var(--surface));
+  color: var(--muted);
+  font-size: 0.65rem;
+  font-weight: 750;
+  padding: 0.55rem 0.65rem;
+}
+
+.stack-script-shorten-notice .material-symbols-outlined {
+  color: var(--accent);
+  font-size: 1rem;
+}
+
+.stack-script-shorten-notice button {
+  margin-left: auto;
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 950;
+}
+
+.boards-modal--stack-studio .stack-script-intro {
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--line));
+  border-radius: 0.85rem;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 6%, var(--surface)), var(--surface));
+  box-shadow: 0 5px 16px rgba(5, 25, 17, 0.05);
+}
+
+.stack-script-intro > summary {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.7rem;
+  cursor: pointer;
+  list-style: none;
+  padding: 0.85rem 0.9rem;
+}
+
+.stack-script-intro > summary > .material-symbols-outlined:first-child {
+  color: var(--accent);
+  font-size: 1.35rem;
+}
+
+.stack-script-intro > summary > span:nth-child(2),
+.stack-script-intro > summary strong,
+.stack-script-intro > summary small {
+  display: block;
+}
+
+.stack-script-intro > summary strong {
+  font-size: 0.8rem;
+}
+
+.stack-script-intro > summary small {
+  margin-top: 0.1rem;
+  color: var(--muted);
+  font-size: 0.67rem;
+}
+
+.stack-script-intro > summary > .material-symbols-outlined:last-child {
+  color: var(--muted);
+  font-size: 1rem;
+  transition: transform 150ms ease;
+}
+
+.stack-script-intro[open] > summary > .material-symbols-outlined:last-child {
+  transform: rotate(180deg);
+}
+
+.boards-modal--stack-studio .stack-script-intro__fields {
+  border-top: 1px solid var(--line);
+  padding: 1rem;
+}
+
+.boards-modal--stack-studio .stack-script-sequence-head {
+  align-items: center;
+  padding: 0.25rem 0.1rem 0;
+}
+
+.boards-modal--stack-studio .stack-script-sequence-head > div:first-child span {
+  color: var(--accent);
+  font-size: 0.6rem;
+}
+
+.boards-modal--stack-studio .stack-script-sequence-head > div:first-child strong {
+  margin-top: 0.22rem;
+  font-size: 0.86rem;
+}
+
+.boards-modal--stack-studio .stack-script-sequence {
+  gap: 0.68rem;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+}
+
+.boards-modal--stack-studio .stack-script-card {
+  border: 1px solid var(--line-strong);
+  border-radius: 0.88rem;
+  box-shadow: 0 5px 16px rgba(5, 25, 17, 0.05);
+}
+
+.boards-modal--stack-studio .stack-script-card:last-child {
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.boards-modal--stack-studio .stack-script-card--open {
+  border-color: color-mix(in srgb, var(--accent) 62%, var(--line));
+  background: color-mix(in srgb, var(--accent) 3%, var(--surface));
+  box-shadow: inset 4px 0 0 var(--accent), 0 12px 28px rgba(5, 25, 17, 0.09);
+}
+
+.boards-modal--stack-studio .stack-script-card--missing {
+  box-shadow: inset 3px 0 0 #d99a24;
+}
+
+.boards-modal--stack-studio .stack-script-card__summary {
+  grid-template-columns: auto auto minmax(0, 1fr) auto auto;
+  gap: 0.8rem;
+  padding: 0.78rem 0.88rem;
+}
+
+.boards-modal--stack-studio .stack-script-card__number {
+  display: grid;
+  width: 1.65rem;
+  height: 1.65rem;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  color: var(--text);
+  font-size: 0.62rem;
+}
+
+.boards-modal--stack-studio .stack-script-card__thumb {
+  width: 5rem;
+  height: 3.15rem;
+  border: 1px solid color-mix(in srgb, var(--modal-ink) 28%, var(--line));
+  border-radius: 0.62rem;
+}
+
+.boards-modal--stack-studio .stack-script-card__copy strong {
+  font-size: 0.83rem;
+}
+
+.boards-modal--stack-studio .stack-script-card__copy small {
+  max-width: 48rem;
+  font-size: 0.67rem;
+  line-height: 1.35;
+}
+
+.stack-script-card__meta {
+  display: grid;
+  min-width: 4.5rem;
+  gap: 0.1rem;
+  text-align: right;
+}
+
+.stack-script-card__meta strong {
+  color: var(--muted);
+  font-size: 0.6rem;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.stack-script-card__meta small {
+  color: var(--muted);
+  font-size: 0.6rem;
+  font-weight: 750;
+}
+
+.boards-modal--stack-studio .stack-script-card__editor {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--soft-fill) 26%, var(--surface)), var(--surface));
+  padding: 1rem 1rem 1.05rem 8.75rem;
+}
+
+.boards-modal--stack-studio .stack-script-card__editor input,
+.boards-modal--stack-studio .stack-script-card__editor textarea,
+.boards-modal--stack-studio .stack-script-intro__fields input,
+.boards-modal--stack-studio .stack-script-intro__fields textarea {
+  border-radius: 0.78rem;
+  font-size: 0.9rem;
+  padding: 0.75rem 0.82rem;
+}
+
+.boards-modal--stack-studio .stack-script-card__actions button {
+  min-height: 2.2rem;
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
+  background: color-mix(in srgb, var(--accent) 4%, var(--surface));
+}
+
+.boards-modal--stack-studio .stack-script-footer {
+  bottom: -0.95rem;
+  margin: 0 -0.95rem -0.95rem;
+  border-top: 1px solid color-mix(in srgb, var(--modal-ink) 18%, var(--line));
+  background: color-mix(in srgb, var(--surface) 96%, transparent);
+  box-shadow: 0 -12px 32px rgba(5, 25, 17, 0.07);
+  padding: 0.78rem 1.15rem;
+}
+
+.boards-modal--stack-studio .stack-preview-panel {
+  top: 0.75rem;
+  align-content: start;
+  padding: 0.9rem;
+}
+
+.boards-modal--stack-studio .stack-preview-shortcuts {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.42rem;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.boards-modal--stack-studio .stack-preview-shortcuts button {
+  display: grid;
+  min-height: 3.55rem;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 0.78rem;
+  background: var(--surface);
+  box-shadow: none;
+  padding: 0.55rem 0.6rem;
+  text-align: left;
+  transform: none;
+}
+
+.boards-modal--stack-studio .stack-preview-shortcuts button > .material-symbols-outlined {
+  display: grid;
+  width: 1.8rem;
+  height: 1.8rem;
+  place-items: center;
+  border-radius: 0.5rem;
+  background: color-mix(in srgb, var(--accent) 10%, var(--surface));
+  color: var(--accent);
+  font-size: 1rem;
+}
+
+.boards-modal--stack-studio .stack-preview-shortcuts button > span:last-child,
+.boards-modal--stack-studio .stack-preview-shortcuts button strong,
+.boards-modal--stack-studio .stack-preview-shortcuts button small {
+  display: block;
+  min-width: 0;
+}
+
+.boards-modal--stack-studio .stack-preview-shortcuts button strong {
+  font-size: 0.7rem;
+}
+
+.boards-modal--stack-studio .stack-preview-shortcuts button small {
+  margin-top: 0.08rem;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 0.54rem;
+  font-weight: 750;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.boards-modal--stack-studio .stack-preview-shortcuts .stack-preview-shortcuts__active {
+  border: 2px solid var(--modal-ink);
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+  box-shadow: 2px 2px 0 var(--modal-ink);
+  color: var(--accent);
+}
+
+.boards-modal--stack-studio .stack-preview-shortcuts .stack-preview-shortcuts__active > .material-symbols-outlined {
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font-variation-settings: 'FILL' 1;
+}
+
+.boards-modal--stack-studio .stack-preview-toolbar {
+  margin: 0.18rem 0 0;
+  padding: 0 0.12rem;
+}
+
+.boards-modal--stack-studio .stack-preview {
+  width: min(100%, 21rem);
+  max-height: 35rem;
+  justify-self: center;
+  border: 2px solid var(--modal-ink);
+  border-radius: 1.18rem;
+  box-shadow: 3px 3px 0 var(--modal-ink), 0 18px 38px rgba(5, 25, 17, 0.16);
+}
+
+.boards-modal--stack-studio .stack-preview-controls {
+  margin: 0.3rem 0 0;
+}
+
+.stack-preview-live-action {
+  display: inline-flex;
+  min-height: 2.45rem;
+  align-items: center;
+  justify-self: center;
+  gap: 0.4rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 68%, var(--line));
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--accent);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 950;
+  padding: 0.5rem 0.8rem;
+}
+
+.stack-preview-live-action:hover,
+.stack-preview-live-action:focus-visible {
+  background: color-mix(in srgb, var(--accent) 7%, var(--surface));
+}
+
+.stack-preview-live-action .material-symbols-outlined {
+  font-size: 1.05rem;
+  font-variation-settings: 'FILL' 1;
+}
+
+.boards-modal--stack-studio .stack-preview-editor,
+.boards-modal--stack-studio .stack-export {
+  border-color: color-mix(in srgb, var(--modal-ink) 22%, var(--line));
+  box-shadow: 0 8px 24px rgba(5, 25, 17, 0.06);
+}
+
+@media (max-width: 1280px) {
+  .stack-card-manager__manage {
+    margin-right: 0;
+  }
+
+  .stack-card-manager__quick-actions {
+    position: static;
+    justify-content: flex-end;
+    border-top: 1px solid color-mix(in srgb, var(--modal-ink) 14%, var(--line));
+    padding: 0.75rem 1rem 0.85rem;
+    transform: none;
+  }
+}
+
+@media (max-width: 1100px) {
+  .stack-studio__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(18rem, 21rem);
+  }
+
+  .boards-modal--stack-studio .stack-script-card__editor {
+    padding-left: 0.9rem;
+  }
+
+  .stack-script-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .stack-script-toolbar__actions {
+    width: 100%;
+  }
+}
+
+@media (max-width: 820px) {
+  .boards-modal-backdrop--stack-studio {
+    padding: 0;
+  }
+
+  .boards-modal--stack-studio {
+    border-radius: 0;
+  }
+
+  .boards-modal--stack-studio .boards-modal__head {
+    margin: 0;
+    padding: 0.72rem;
+  }
+
+  .stack-studio-head__identity {
+    display: grid;
+    gap: 0.18rem;
+  }
+
+  .stack-studio-head__identity p,
+  .stack-studio-head__status {
+    display: none;
+  }
+
+  .stack-studio-head__actions {
+    gap: 0.35rem;
+  }
+
+  .stack-studio {
+    padding: 0.7rem;
+  }
+
+  .stack-card-manager > summary {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .stack-card-manager .stack-studio__thumb {
+    display: none;
+  }
+
+  .stack-card-manager__quick-actions {
+    justify-content: stretch;
+  }
+
+  .stack-card-manager__quick-actions button {
+    flex: 1;
+  }
+
+  .stack-studio__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .boards-modal--stack-studio .stack-preview-panel {
+    position: static;
+  }
+
+  .boards-modal--stack-studio .stack-preview-toolbar,
+  .boards-modal--stack-studio .stack-preview-panel > .stack-preview,
+  .boards-modal--stack-studio .stack-preview-controls {
+    display: none;
+  }
+
+  .boards-modal--stack-studio .stack-preview-shortcuts {
+    display: grid;
+  }
+
+  .stack-preview-live-action {
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .stack-studio-export-menu > summary {
+    width: 2.35rem;
+    justify-content: center;
+    overflow: hidden;
+    color: transparent;
+    padding: 0;
+  }
+
+  .stack-studio-export-menu > summary .material-symbols-outlined {
+    color: var(--text);
+  }
+
+  .stack-studio-export-menu > summary .material-symbols-outlined:last-child {
+    display: none;
+  }
+
+  .stack-card-manager__manage {
+    width: 2.25rem;
+    justify-content: center;
+    overflow: hidden;
+    color: transparent;
+    padding: 0;
+  }
+
+  .stack-card-manager__quick-actions {
+    gap: 0.35rem;
+    padding: 0.65rem 0.7rem 0.75rem;
+  }
+
+  .stack-card-manager__quick-actions button {
+    min-height: 2.3rem;
+    padding: 0.45rem 0.5rem;
+  }
+
+  .stack-card-manager__quick-actions button span:last-child {
+    font-size: 0.62rem;
+  }
+
+  .stack-card-manager__manage .material-symbols-outlined {
+    color: var(--text);
+  }
+
+  .stack-card-manager__manage .material-symbols-outlined:last-child {
+    display: none;
+  }
+
+  .stack-card-manager__actions > span {
+    display: none;
+  }
+
+  .stack-script-toolbar__actions {
+    flex-wrap: wrap;
+  }
+
+  .boards-modal--stack-studio .stack-workflow-heading {
+    padding: 0.95rem 0.9rem 0.75rem;
+  }
+
+  .boards-modal--stack-studio .stack-workflow-heading h4 {
+    font-size: 1.15rem;
+  }
+
+  .boards-modal--stack-studio .stack-workflow-tabs {
+    margin: 0 0.75rem;
+  }
+
+  .boards-modal--stack-studio .stack-workflow-tabs .stack-sound-tabs__button {
+    min-height: 3.4rem;
+    padding: 0.55rem 0.45rem;
+  }
+
+  .boards-modal--stack-studio .stack-workflow-tabs__copy small {
+    display: none;
+  }
+
+  .boards-modal--stack-studio .stack-script-editor {
+    padding: 0.85rem;
+  }
+
+  .stack-script-shortener {
+    flex: 1 1 100%;
+  }
+
+  .stack-script-shortener__trigger {
+    width: 100%;
+  }
+
+  .stack-script-shortener__menu {
+    right: auto;
+    left: 0;
+    width: min(18.5rem, calc(100vw - 2.8rem));
+  }
+
+  .boards-modal--stack-studio .stack-script-card__summary {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .boards-modal--stack-studio .stack-script-card__number,
+  .stack-script-card__meta {
+    display: none;
+  }
+
+  .boards-modal--stack-studio .stack-script-card__thumb {
+    display: grid;
+    width: 3.4rem;
+  }
+
+  .stack-script-shorten-notice {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+}
