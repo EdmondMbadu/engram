@@ -2728,7 +2728,7 @@
                             <a [class.is-schedule]="action.kind === 'schedule'" [href]="action.url" target="_blank" rel="noopener noreferrer" (click)="trackTalkingCardAction(guide, action, $event)">{{ action.label }}</a>
                           }
                           @if (canEditBoard(board)) {
-                            <button type="button" class="specialty-talking-cards__edit" [attr.aria-label]="'Edit Talking Card ' + guide.title" (click)="openEditTalkingCard(guide, board, $event)"><span class="material-symbols-outlined">edit</span></button>
+                            <button type="button" class="specialty-talking-cards__edit" [attr.aria-label]="'Edit Talking Card ' + guide.title" (click)="openEditTalkingCard(guide, board, $event)"><span class="material-symbols-outlined" aria-hidden="true">edit</span><span>Edit</span></button>
                           }
                         </div>
                       </article>
@@ -3153,7 +3153,7 @@
                               <a [class.is-schedule]="action.kind === 'schedule'" [href]="action.url" target="_blank" rel="noopener noreferrer" (click)="trackTalkingCardAction(guide, action, $event)">{{ action.label }}</a>
                             }
                             @if (canEditBoard(board)) {
-                              <button type="button" class="specialty-talking-cards__edit" [attr.aria-label]="'Edit Talking Card ' + guide.title" (click)="openEditTalkingCard(guide, board, $event)"><span class="material-symbols-outlined">edit</span></button>
+                              <button type="button" class="specialty-talking-cards__edit" [attr.aria-label]="'Edit Talking Card ' + guide.title" (click)="openEditTalkingCard(guide, board, $event)"><span class="material-symbols-outlined" aria-hidden="true">edit</span><span>Edit</span></button>
                             }
                           </div>
                         </article>
