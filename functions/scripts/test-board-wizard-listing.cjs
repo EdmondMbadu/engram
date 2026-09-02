@@ -544,6 +544,26 @@ assert.match(expStory.cards.at(-1).title, /\$729,000/);
 assert.match(expStory.cards.at(-1).notes, /current price, status, disclosures, fees, showing availability/i);
 assert.match(expStory.cards.at(-1).notes, /Site contact/i);
 
+const offPropertyStory = buildBoardWizardListingMarketingBatchFromAnalyses({
+  extraction: expListing,
+  targetBoardTitle: '',
+  count: 3,
+  narrationSecondsPerCard: 15,
+  style: 'warm',
+  analyses: expStoryAnalyses,
+  aiScenes: [{
+    photoIndex: 0,
+    role: 'nearby-attraction',
+    title: 'Cape May County Park & Zoo',
+    subtitle: 'Minutes away',
+    narration: 'The Cape May County Park and Zoo is nearby.',
+    durationSeconds: 15,
+    factKeys: [],
+  }],
+});
+assert.equal(offPropertyStory.cards.some((card) => /Park & Zoo/i.test(card.title)), false, 'a property TalkThru must reject destination and neighborhood detours');
+assert.ok(offPropertyStory.cards.every((card) => card.tags.includes('listing-story')), 'rejected off-property scenes should be replaced with listing-photo scenes');
+
 const stagedSaleAnalyses = [
   {
     index: 0,

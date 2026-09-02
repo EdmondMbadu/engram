@@ -7829,6 +7829,12 @@ export const generateBoardWizardBatch = onCall(
       if (!listingExtraction && !accommodationExtraction && isBoardWizardAccommodationUrl(url)) {
         accommodationExtraction = buildFallbackAccommodationExtraction(url);
       }
+      if (!listingExtraction && isBoardWizardListingPageUrl(url)) {
+        throw new HttpsError(
+          'unavailable',
+          'LivingWiki could not safely extract this property listing. No board was generated because unrelated homes or generic location results would be misleading. Please try again shortly.',
+        );
+      }
       if (!urlExtraction && !listingExtraction && !accommodationExtraction && !commerceExtraction) {
         urlExtraction = buildBoardWizardResearchFallbackExtraction(url);
         urlResearchFallback = true;
@@ -8146,6 +8152,7 @@ export const generateBoardWizardBatch = onCall(
             sourceBlocked: urlSourceBlocked,
             method: urlRecoveryMethod,
             manifest: articleManifest,
+            listing: listingExtraction,
           }),
         }
       : mediaReadyResult;
@@ -11757,6 +11764,7 @@ function buildBoardWizardSourceReport(
     sourceBlocked: boolean;
     method: GeneratedBoardWizardSourceReport['method'];
     manifest?: BoardWizardSourceManifest | null;
+    listing?: BoardWizardListingExtraction | null;
   },
 ): GeneratedBoardWizardSourceReport {
   const productCards = batch.cards.filter((card) => !!card.productUrl);
@@ -11776,11 +11784,12 @@ function buildBoardWizardSourceReport(
   const sourceImageCount = options.manifest?.items.filter((item) => !!item.imageUrl).length
     ?? exactSourceImageUrls.size;
   const recovered = options.method !== 'page' || options.sourceBlocked;
+  const listingExtracted = !!options.listing;
   const deterministicSourceCards = batch.cards.filter((card) =>
     !!card.productUrl
-    || card.tags.some((tag) => ['menu-item', 'lodging', 'listing', 'real-estate'].includes(tag.toLowerCase())),
+    || card.tags.some((tag) => ['menu-item', 'lodging'].includes(tag.toLowerCase()))
+    || (listingExtracted && card.tags.some((tag) => ['listing', 'real-estate'].includes(tag.toLowerCase()))),
   );
-  const listingCards = batch.cards.filter((card) => card.tags.some((tag) => tag.toLowerCase() === 'listing'));
   const manifestExact = !!options.manifest
     && boardWizardSourceManifestIsExact(options.manifest)
     && matchedCardCount === extractedItemCount
@@ -11799,7 +11808,7 @@ function buildBoardWizardSourceReport(
     : options.method === 'reader'
       ? `${productCards.length || batch.cards.length} item${(productCards.length || batch.cards.length) === 1 ? '' : 's'} recovered from the page’s public Reader representation.`
       : deterministicSourceCards.length > 0
-        ? listingCards.length > 0
+        ? listingExtracted
           ? `Structured property listing extracted directly from the page${sourceImageCount ? ` with ${sourceImageCount} exact source photo${sourceImageCount === 1 ? '' : 's'}` : ''}.`
           : `${deterministicSourceCards.length} structured source item${deterministicSourceCards.length === 1 ? '' : 's'} extracted directly from the page.`
         : `${batch.cards.length} card${batch.cards.length === 1 ? '' : 's'} generated from readable source text. The page did not expose a reliable structured item list, so review the names before saving.`;
@@ -11814,7 +11823,9 @@ function buildBoardWizardSourceReport(
     extractedItemCount,
     matchedCardCount,
     sourceImageCount,
-    confidence: options.manifest?.confidence ?? (status === 'exact' ? 1 : status === 'recovered' ? 0.8 : 0.5),
+    confidence: options.manifest?.confidence
+      ?? options.listing?.confidence
+      ?? (status === 'exact' ? 1 : status === 'recovered' ? 0.8 : 0.5),
     snapshotDate: new Date().toISOString().slice(0, 10),
     message,
   };

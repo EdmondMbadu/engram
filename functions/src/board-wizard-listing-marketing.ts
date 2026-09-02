@@ -55,6 +55,11 @@ const PHOTO_BATCH_SIZE = 10;
 const MAX_ANALYZED_PHOTOS = 48;
 const MAX_IMAGE_BYTES = 8 * 1024 * 1024;
 const DISALLOWED_STORY_SCENES = new Set(['agent', 'logo', 'map', 'duplicate']);
+const ALLOWED_PROPERTY_STORY_ROLES = new Set([
+  'hook', 'arrival', 'overview', 'exterior', 'aerial', 'entry', 'living', 'kitchen', 'dining',
+  'bedroom', 'bathroom', 'office', 'flex', 'laundry', 'garage', 'outdoor', 'balcony', 'view',
+  'amenity', 'floor-plan', 'property-view', 'facts', 'fact-and-action', 'action', 'next-step',
+]);
 
 export function normalizeBoardWizardListingMarketingOptions(value: unknown): BoardWizardListingMarketingOptions {
   const record = value && typeof value === 'object' ? value as Record<string, unknown> : {};
@@ -449,6 +454,7 @@ function validateAiScenes(
   return scenes.filter((scene) => {
     const analysis = analysisByIndex.get(scene.photoIndex);
     if (!analysis || seen.has(scene.photoIndex) || DISALLOWED_STORY_SCENES.has(analysis.sceneType)) return false;
+    if (!ALLOWED_PROPERTY_STORY_ROLES.has(normalizedRole(scene.role))) return false;
     if (containsUnsafeListingLanguage(scene.narration)) return false;
     if (
       listingIntent !== 'rental'
