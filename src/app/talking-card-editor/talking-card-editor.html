@@ -28,12 +28,12 @@
               autocomplete="off"
               placeholder="Search avatars by name…"
               [ngModel]="avatarSearch()"
-              (ngModelChange)="avatarSearch.set($event)"
+              (ngModelChange)="onAvatarSearchChange($event)"
               [attr.aria-expanded]="!!avatarSearch().trim()"
               aria-controls="talking-avatar-results"
             />
             @if (avatarSearch()) {
-              <button type="button" aria-label="Clear avatar search" (click)="avatarSearch.set('')"><span class="material-symbols-outlined">close</span></button>
+              <button type="button" aria-label="Clear avatar search" (click)="onAvatarSearchChange('')"><span class="material-symbols-outlined">close</span></button>
             }
           </div>
 
@@ -63,7 +63,8 @@
                   </span>
                 </button>
               } @empty {
-                <p>No avatars match “{{ avatarSearch().trim() }}”.</p>
+                @if (publicAtlasesLoading()) { <p>Searching the public avatar library…</p> }
+                @else { <p>No avatars match “{{ avatarSearch().trim() }}”.</p> }
               }
             </div>
           } @else if (!selectedAtlas()) {
@@ -99,7 +100,8 @@
           <label><span>Name *</span><input maxlength="120" [ngModel]="name()" (ngModelChange)="name.set($event)" placeholder="Maya Chen" /></label>
           <label><span>Role or subtitle</span><input maxlength="240" [ngModel]="role()" (ngModelChange)="role.set($event)" placeholder="Listing specialist" /></label>
         </div>
-        <label><span>Avatar image</span><input type="file" accept="image/*" (change)="onImageSelected($event)" /></label>
+        <label><span>Avatar image</span><input type="file" accept="image/*" [disabled]="imageProcessing()" (change)="onImageSelected($event)" /></label>
+        @if (imageProcessing()) { <small><span class="material-symbols-outlined talking-editor__spin" aria-hidden="true">progress_activity</span> Optimizing portrait for a faster, safer upload…</small> }
         @if (imagePreviewUrl()) { <img class="talking-editor__preview" [src]="imagePreviewUrl()" alt="Avatar preview" /> }
         <label>
           <span>System prompt *</span>
@@ -218,7 +220,7 @@
       </span>
       <button type="button" class="talking-editor__secondary" (click)="close()">Cancel</button>
       <button type="button" class="talking-editor__primary" [disabled]="!canSave()" (click)="save()">
-        @if (saving()) { <span class="material-symbols-outlined talking-editor__spin">progress_activity</span> Saving… }
+        @if (saving()) { <span class="material-symbols-outlined talking-editor__spin">progress_activity</span> {{ saveStage() || 'Saving…' }} }
         @else { <span class="material-symbols-outlined">record_voice_over</span> Add Talking Card }
       </button>
     </footer>

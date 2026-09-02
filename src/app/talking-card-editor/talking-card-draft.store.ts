@@ -21,6 +21,7 @@ export interface TalkingCardDraftRecord {
   voiceChoice: TalkingCardDraftVoiceChoice;
   publishAvatar: boolean;
   imageFile: File | null;
+  uploadedImageUrl: string;
   documentFiles: File[];
   updatedAt: string;
 }
@@ -183,6 +184,7 @@ export class TalkingCardDraftStore {
       voiceChoice,
       publishAvatar: record.publishAvatar === true,
       imageFile,
+      uploadedImageUrl: this.stringValue(record.uploadedImageUrl).slice(0, 2000),
       documentFiles,
       updatedAt: this.stringValue(record.updatedAt),
     };

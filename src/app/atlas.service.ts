@@ -881,7 +881,7 @@ export class AtlasService {
 	    return null;
 	  }
 
-  async listPublicAtlases(): Promise<AtlasItem[]> {
+  async listPublicAtlases(talkingCardAvatarsOnly = false): Promise<AtlasItem[]> {
     if (!this.firestore) {
       return [];
     }
@@ -890,6 +890,7 @@ export class AtlasService {
       query(
         collection(this.firestore, 'atlases'),
         where('is_public', '==', true),
+        ...(talkingCardAvatarsOnly ? [where('wiki_type', '==', 'person'), limit(100)] : []),
       ),
     );
 

@@ -28,8 +28,10 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
   private readonly createdAtlasId = signal('');
   private previewAudio: HTMLAudioElement | null = null;
   private previewRun = 0;
+  private imageProcessingRun = 0;
   private readonly previewUrlCache = new Map<string, string>();
   private draftSaveChain = Promise.resolve();
+  private publicAvatarLoadPromise: Promise<void> | null = null;
 
   readonly boardId = input('');
   readonly boardTitle = input('Board');
@@ -57,11 +59,15 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
   readonly publishAvatar = signal(false);
   readonly imageFile = signal<File | null>(null);
   readonly imagePreviewUrl = signal('');
+  readonly imageProcessing = signal(false);
+  readonly uploadedImageUrl = signal('');
   readonly documentFiles = signal<File[]>([]);
   readonly saving = signal(false);
+  readonly saveStage = signal('');
   readonly errorMessage = signal<string | null>(null);
   readonly publicAtlases = signal<AtlasItem[]>([]);
   readonly publicAtlasesLoading = signal(false);
+  readonly publicAtlasesLoaded = signal(false);
   readonly draftReady = signal(false);
   readonly draftStatus = signal<'restored' | 'saved' | null>(null);
 
@@ -115,7 +121,7 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
     return !!atlas && this.atlasService.canAdminAtlas(atlas);
   });
   readonly canSave = computed(() => {
-    if (this.saving() || this.voiceConfigLoading()) return false;
+    if (this.saving() || this.imageProcessing() || this.voiceConfigLoading()) return false;
     if (!this.openingMessage().trim()) return false;
     if (this.mode() === 'existing') {
       return !!this.selectedAtlas() && (!this.needsPublication() || this.publishAvatar());
@@ -137,7 +143,6 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
 
   async ngOnInit(): Promise<void> {
     await this.restoreDraft();
-    void this.loadPublicAvatars();
   }
 
   setMode(mode: EditorMode): void {
@@ -156,7 +161,12 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
     }
   }
 
-  onImageSelected(event: Event): void {
+  onAvatarSearchChange(value: string): void {
+    this.avatarSearch.set(value);
+    if (value.trim()) void this.loadPublicAvatars();
+  }
+
+  async onImageSelected(event: Event): Promise<void> {
     const file = (event.target as HTMLInputElement).files?.[0] ?? null;
     if (!file) return;
     if (!file.type.startsWith('image/')) {
@@ -167,11 +177,26 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
       this.errorMessage.set('Avatar images must be under 10 MB.');
       return;
     }
-    const previous = this.imagePreviewUrl();
-    if (previous.startsWith('blob:')) URL.revokeObjectURL(previous);
-    this.imageFile.set(file);
-    this.imagePreviewUrl.set(URL.createObjectURL(file));
+    const run = ++this.imageProcessingRun;
+    this.imageProcessing.set(true);
     this.errorMessage.set(null);
+    try {
+      const optimized = await this.optimizeAvatarImage(file);
+      if (run !== this.imageProcessingRun) return;
+      const previous = this.imagePreviewUrl();
+      if (previous.startsWith('blob:')) URL.revokeObjectURL(previous);
+      this.imageFile.set(optimized);
+      this.uploadedImageUrl.set('');
+      this.imagePreviewUrl.set(URL.createObjectURL(optimized));
+    } catch (error) {
+      if (run !== this.imageProcessingRun) return;
+      this.errorMessage.set(error instanceof Error && error.message.trim()
+        ? error.message
+        : 'That avatar image could not be prepared.');
+      (event.target as HTMLInputElement).value = '';
+    } finally {
+      if (run === this.imageProcessingRun) this.imageProcessing.set(false);
+    }
   }
 
   onDocumentsSelected(event: Event): void {
@@ -293,6 +318,7 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
   }
 
   ngOnDestroy(): void {
+    this.imageProcessingRun += 1;
     this.stopVoicePreview();
     const preview = this.imagePreviewUrl();
     if (preview.startsWith('blob:')) URL.revokeObjectURL(preview);
@@ -301,6 +327,7 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
   async save(): Promise<void> {
     if (!this.canSave()) return;
     this.saving.set(true);
+    this.saveStage.set('Preparing avatar…');
     this.errorMessage.set(null);
     try {
       let atlas: AtlasItem | null = this.selectedAtlas();
@@ -310,26 +337,36 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
       let imageUrl = atlas?.chat_guide?.image_url?.trim() || atlas?.logo_url?.trim() || atlas?.hero_url?.trim() || '';
 
       if (this.mode() === 'new') {
-        atlasId = this.createdAtlasId() || (await this.atlasService.createTalkingCardAtlas({
-          name: this.name(),
-          role: this.role(),
-          personaPrompt: this.personaPrompt(),
-          isPublic: false,
-        }) ?? '');
+        const resumedAtlasId = this.createdAtlasId();
+        const createdNow = !resumedAtlasId;
+        if (createdNow) {
+          this.saveStage.set('Creating avatar…');
+          atlasId = await this.atlasService.createTalkingCardAtlas({
+            name: this.name(),
+            role: this.role(),
+            personaPrompt: this.personaPrompt(),
+            isPublic: false,
+          }) ?? '';
+        } else {
+          atlasId = resumedAtlasId;
+        }
         if (!atlasId) throw new Error('The conversational avatar could not be created.');
         this.createdAtlasId.set(atlasId);
+        if (createdNow) await this.persistDraftNow();
         title = this.name().trim();
         subtitle = this.role().trim() || 'Conversational guide';
 
-        await this.atlasService.updatePersonaSettings(atlasId, {
-          wikiType: 'person',
-          responsePerspective: 'first_person',
-          personaPrompt: this.personaPrompt(),
-        });
-
         const imageFile = this.imageFile();
-        if (imageFile) {
-          imageUrl = await this.atlasService.uploadTalkingCardAvatarImage(atlasId, imageFile);
+        imageUrl = this.uploadedImageUrl();
+        if (imageFile || imageUrl) {
+          if (!imageUrl) {
+            this.saveStage.set('Uploading optimized portrait…');
+            if (!imageFile) throw new Error('Choose the avatar portrait again before continuing.');
+            imageUrl = await this.atlasService.uploadTalkingCardAvatarImage(atlasId, imageFile);
+            this.uploadedImageUrl.set(imageUrl);
+            await this.persistDraftNow();
+          }
+          this.saveStage.set('Saving portrait…');
           await Promise.all([
             this.atlasService.updateAtlas(atlasId, { logo_url: imageUrl }),
             this.atlasService.updateChatGuideConfig(atlasId, {
@@ -341,15 +378,18 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
           ]);
         }
         if (this.voiceChoice() === 'catalog' && this.catalogVoiceId()) {
+          this.saveStage.set('Saving conversation voice…');
           await this.atlasService.selectAtlasCatalogVoice(atlasId, this.catalogVoiceId());
         }
         if (this.documentFiles().length) {
+          this.saveStage.set('Uploading knowledge documents…');
           await this.documentsService.uploadFiles(this.documentFiles(), { atlasId });
           if (this.documentsService.uploadError()) {
             throw new Error(this.documentsService.uploadError() || 'One or more knowledge files could not be uploaded.');
           }
         }
         if (this.publicBoard()) {
+          this.saveStage.set('Publishing avatar…');
           await this.atlasService.updateAtlas(atlasId, { is_public: true });
         }
       } else if (atlas) {
@@ -361,6 +401,7 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
         }
       }
 
+      this.saveStage.set('Adding Talking Card…');
       this.draftReady.set(false);
       await this.draftStore.delete(this.draftStorageKey());
       this.saved.emit({
@@ -375,20 +416,27 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
     } catch (error) {
       this.errorMessage.set(this.saveErrorMessage(error));
     } finally {
+      this.saveStage.set('');
       this.saving.set(false);
     }
   }
 
   private async loadPublicAvatars(): Promise<void> {
+    if (this.publicAtlasesLoaded()) return;
+    if (this.publicAvatarLoadPromise) return this.publicAvatarLoadPromise;
     this.publicAtlasesLoading.set(true);
-    try {
-      const atlases = await this.atlasService.listPublicAtlases();
-      this.publicAtlases.set(atlases.filter((atlas) => atlas.is_public && atlas.wiki_type === 'person'));
-    } catch {
-      this.publicAtlases.set([]);
-    } finally {
-      this.publicAtlasesLoading.set(false);
-    }
+    this.publicAvatarLoadPromise = (async () => {
+      try {
+        this.publicAtlases.set(await this.atlasService.listPublicAtlases(true));
+      } catch {
+        this.publicAtlases.set([]);
+      } finally {
+        this.publicAtlasesLoaded.set(true);
+        this.publicAtlasesLoading.set(false);
+        this.publicAvatarLoadPromise = null;
+      }
+    })();
+    return this.publicAvatarLoadPromise;
   }
 
   private async restoreDraft(): Promise<void> {
@@ -412,6 +460,7 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
       this.voiceChoice.set(record.voiceChoice);
       this.publishAvatar.set(record.publishAvatar);
       this.imageFile.set(record.imageFile);
+      this.uploadedImageUrl.set(record.uploadedImageUrl);
       this.documentFiles.set(record.documentFiles);
       if (record.imageFile) {
         const previous = this.imagePreviewUrl();
@@ -449,6 +498,7 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
       voiceChoice: this.voiceChoice(),
       publishAvatar: this.publishAvatar(),
       imageFile: this.imageFile(),
+      uploadedImageUrl: this.uploadedImageUrl(),
       documentFiles: this.documentFiles(),
       updatedAt: new Date().toISOString(),
     };
@@ -488,6 +538,92 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
     return error instanceof Error && error.message.trim()
       ? error.message
       : 'The Talking Card could not be saved.';
+  }
+
+  private async optimizeAvatarImage(file: File): Promise<File> {
+    const maxSide = 1200;
+    const dimensions = await this.readRasterDimensions(file);
+    if (dimensions && Math.max(dimensions.width, dimensions.height) <= maxSide && file.size <= 2 * 1024 * 1024) {
+      return file;
+    }
+    if (typeof createImageBitmap !== 'function') {
+      if (file.size <= 2 * 1024 * 1024) return file;
+      throw new Error('This large portrait cannot be optimized in this browser. Choose an image under 2 MB.');
+    }
+
+    const target = dimensions
+      ? this.scaledImageDimensions(dimensions.width, dimensions.height, maxSide)
+      : null;
+    let bitmap: ImageBitmap;
+    try {
+      bitmap = target
+        ? await createImageBitmap(file, {
+            imageOrientation: 'from-image',
+            resizeWidth: target.width,
+            resizeHeight: target.height,
+            resizeQuality: 'high',
+          })
+        : await createImageBitmap(file, { imageOrientation: 'from-image' });
+    } catch {
+      throw new Error('That portrait could not be decoded. Try a JPEG, PNG, or WebP image.');
+    }
+
+    try {
+      const output = target ?? this.scaledImageDimensions(bitmap.width, bitmap.height, maxSide);
+      const canvas = document.createElement('canvas');
+      canvas.width = output.width;
+      canvas.height = output.height;
+      const context = canvas.getContext('2d', { alpha: true });
+      if (!context) throw new Error('This browser could not prepare the portrait.');
+      context.drawImage(bitmap, 0, 0, output.width, output.height);
+      const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/webp', 0.84));
+      if (!blob) throw new Error('This browser could not compress the portrait.');
+      const baseName = file.name.replace(/\.[^.]+$/, '').trim() || 'avatar';
+      return new File([blob], `${baseName}.webp`, { type: 'image/webp', lastModified: Date.now() });
+    } finally {
+      bitmap.close();
+    }
+  }
+
+  private scaledImageDimensions(width: number, height: number, maxSide: number): { width: number; height: number } {
+    const scale = Math.min(1, maxSide / Math.max(width, height));
+    return {
+      width: Math.max(1, Math.round(width * scale)),
+      height: Math.max(1, Math.round(height * scale)),
+    };
+  }
+
+  private async readRasterDimensions(file: File): Promise<{ width: number; height: number } | null> {
+    const bytes = new Uint8Array(await file.slice(0, Math.min(file.size, 256 * 1024)).arrayBuffer());
+    if (bytes.length >= 24
+      && bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4e && bytes[3] === 0x47) {
+      const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+      return { width: view.getUint32(16), height: view.getUint32(20) };
+    }
+    if (bytes.length >= 4 && bytes[0] === 0xff && bytes[1] === 0xd8) {
+      let offset = 2;
+      while (offset + 9 < bytes.length) {
+        if (bytes[offset] !== 0xff) {
+          offset += 1;
+          continue;
+        }
+        const marker = bytes[offset + 1];
+        if (marker === 0xd8 || marker === 0xd9 || marker === 0x01 || (marker >= 0xd0 && marker <= 0xd7)) {
+          offset += 2;
+          continue;
+        }
+        const segmentLength = (bytes[offset + 2] << 8) | bytes[offset + 3];
+        if (segmentLength < 2 || offset + 2 + segmentLength > bytes.length) break;
+        if ([0xc0, 0xc1, 0xc2, 0xc3, 0xc5, 0xc6, 0xc7, 0xc9, 0xca, 0xcb, 0xcd, 0xce, 0xcf].includes(marker)) {
+          return {
+            width: (bytes[offset + 7] << 8) | bytes[offset + 8],
+            height: (bytes[offset + 5] << 8) | bytes[offset + 6],
+          };
+        }
+        offset += 2 + segmentLength;
+      }
+    }
+    return null;
   }
 
   private async loadExistingVoiceConfig(atlasId: string): Promise<void> {

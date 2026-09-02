@@ -114,9 +114,9 @@ describe('TalkingCardEditorComponent', () => {
     fixture.componentRef.setInput('boardId', 'board-public-avatar');
     fixture.detectChanges();
     await draftStore.load.calls.mostRecent().returnValue;
-    await Promise.resolve();
+    fixture.componentInstance.onAvatarSearchChange('glover');
     await atlasService.listPublicAtlases.calls.mostRecent().returnValue;
-    fixture.componentInstance.avatarSearch.set('glover');
+    await fixture.whenStable();
     fixture.detectChanges();
 
     const result = fixture.nativeElement.querySelector('#talking-avatar-results [role="option"]') as HTMLButtonElement;
@@ -129,6 +129,21 @@ describe('TalkingCardEditorComponent', () => {
     expect(fixture.nativeElement.textContent).toContain('keeps the persona and voice chosen by its creator');
     await fixture.componentInstance.save();
     expect(atlasService.selectAtlasCatalogVoice).not.toHaveBeenCalled();
+  });
+
+  it('does not load the public avatar library until the user searches', async () => {
+    const fixture = TestBed.createComponent(TalkingCardEditorComponent);
+    fixture.componentRef.setInput('boardId', 'board-lazy-avatar-search');
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(atlasService.listPublicAtlases).not.toHaveBeenCalled();
+
+    fixture.componentInstance.onAvatarSearchChange('glover');
+    await fixture.whenStable();
+
+    expect(atlasService.listPublicAtlases).toHaveBeenCalledOnceWith(true);
+    expect(fixture.componentInstance.publicAtlases()).toEqual([publicGlover]);
   });
 
   it('shows the full included voice catalog before the user searches', () => {
@@ -203,7 +218,39 @@ describe('TalkingCardEditorComponent', () => {
     await fixture.componentInstance.save();
 
     expect(atlasService.uploadTalkingCardAvatarImage).toHaveBeenCalledWith('new-avatar', image);
+    expect(atlasService.updateAtlas).toHaveBeenCalledWith('new-avatar', {
+      logo_url: 'https://example.com/avatar.png',
+    });
     expect(atlasService.updateChatGuideConfig).toHaveBeenCalled();
+  });
+
+  it('downscales a large portrait before previewing or uploading it', async () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 2400;
+    canvas.height = 1600;
+    const context = canvas.getContext('2d')!;
+    context.fillStyle = '#315f4c';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    const sourceBlob = await new Promise<Blob>((resolve, reject) => canvas.toBlob((blob) => {
+      if (blob) resolve(blob);
+      else reject(new Error('Could not create test portrait.'));
+    }, 'image/png'));
+    const source = new File([sourceBlob], 'large-portrait.png', { type: 'image/png' });
+    const input = document.createElement('input');
+    Object.defineProperty(input, 'files', { value: [source] });
+    const fixture = TestBed.createComponent(TalkingCardEditorComponent);
+    fixture.componentRef.setInput('boardId', 'board-large-portrait');
+    fixture.detectChanges();
+
+    await fixture.componentInstance.onImageSelected({ target: input } as unknown as Event);
+
+    const optimized = fixture.componentInstance.imageFile();
+    expect(optimized).not.toBeNull();
+    expect(optimized?.type).toBe('image/webp');
+    expect(optimized!.size).toBeLessThan(source.size);
+    const bitmap = await createImageBitmap(optimized!);
+    expect(Math.max(bitmap.width, bitmap.height)).toBe(1200);
+    bitmap.close();
   });
 
   it('restores and saves a board-scoped local draft, including selected files', async () => {
@@ -226,6 +273,7 @@ describe('TalkingCardEditorComponent', () => {
       voiceChoice: 'default',
       publishAvatar: false,
       imageFile: image,
+      uploadedImageUrl: '',
       documentFiles: [document],
       updatedAt: '2026-08-31T00:00:00.000Z',
     };
