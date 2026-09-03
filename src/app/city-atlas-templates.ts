@@ -40,9 +40,10 @@ function cityConfig(input: {
   cityName: string;
   regionName: string;
   timezone: string;
-  censusStateCode: string;
-  censusPlaceCode: string;
-  airnowZipCode: string;
+  countryCode?: string;
+  censusStateCode?: string | null;
+  censusPlaceCode?: string | null;
+  airnowZipCode?: string | null;
   latitude?: number;
   longitude?: number;
   metadata?: CityAtlasMetadata | null;
@@ -51,11 +52,11 @@ function cityConfig(input: {
     enabled: true,
     city_name: input.cityName,
     region_name: input.regionName,
-    country_code: 'US',
+    country_code: input.countryCode ?? 'US',
     timezone: input.timezone,
-    census_state_code: input.censusStateCode,
-    census_place_code: input.censusPlaceCode,
-    airnow_zip_code: input.airnowZipCode,
+    census_state_code: input.censusStateCode ?? null,
+    census_place_code: input.censusPlaceCode ?? null,
+    airnow_zip_code: input.airnowZipCode ?? null,
     latitude: input.latitude ?? null,
     longitude: input.longitude ?? null,
     metadata: input.metadata ?? null,
@@ -236,6 +237,52 @@ export const CITY_ATLAS_TEMPLATES: CityAtlasTemplate[] = [
       'Gainesville',
       'Florida',
       'University of Florida, RTS, neighborhoods, housing, city services, climate resilience, healthcare, local jobs, food, culture, and North Central Florida civic data',
+    ),
+  },
+  {
+    slug: 'guatemala-city',
+    name: 'LivingWiki: Guatemala City',
+    description:
+      $localize`Guatemala City's civic life, neighborhoods, Maya heritage, mobility, volcanic landscape, climate resilience, food, culture, business, and public information.`,
+    landingSummary:
+      'A practical guide to Guatemala City civic life, neighborhoods, Transmetro, Maya heritage, museums, food, business, climate resilience, public services, and local updates.',
+    sources:
+      'Municipalidad de Guatemala, INE Guatemala, Transmetro, INSIVUMEH, CONRED, MARN Guatemala',
+    priority: 'med',
+    badges: ['geo', 'evergreen'],
+    coverColor: '#24564f',
+    logoUrl: livingCitiesLogoUrl,
+    heroUrl: '/assets/public-wikis/guatemala-city-hero.jpg',
+    cityConfig: cityConfig({
+      cityName: 'Guatemala City',
+      regionName: 'Guatemala Department',
+      countryCode: 'GT',
+      timezone: 'America/Guatemala',
+      latitude: 14.641667,
+      longitude: -90.513333,
+      metadata: {
+        global_region: 'Americas',
+        population: 923392,
+        population_year: 2018,
+        area_km2: null,
+        area_source_url: null,
+        population_density_per_km2: null,
+        population_density_source: null,
+        population_scope: 'city_proper',
+        population_source: 'manual',
+        population_source_url:
+          'https://censo2018.ine.gob.gt/archivos/resultados_censo2018.pdf',
+        population_source_record_id: '0101',
+        population_fetched_at: '2026-09-03T00:00:00.000Z',
+        population_confidence: 'high',
+        population_match_method: 'manual',
+      },
+    }),
+    chatGuide: chatGuide('Guatemala City'),
+    personaPrompt: buildCityPersona(
+      'Guatemala City',
+      'Guatemala Department, Guatemala',
+      'municipal services, Transmetro, neighborhoods and zones, Maya heritage, museums, food, business, public safety, volcanic and seismic risk, climate resilience, and local news',
     ),
   },
   {

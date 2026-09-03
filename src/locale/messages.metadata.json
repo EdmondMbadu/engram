@@ -779,10 +779,6 @@
     "source": "{$START_TAG_SPAN}my_location{$CLOSE_TAG_SPAN} Try finding my square again ",
     "file": "src/app/boards/boards.html"
   },
-  "1490158561488943835": {
-    "source": "LivingWiki: Boston",
-    "file": "src/app/public-wiki-catalog.ts"
-  },
   "149127454658592302": {
     "source": "Foundation Models Compared",
     "file": "src/app/public-wiki-catalog.ts"
@@ -3003,10 +2999,6 @@
     "source": "System",
     "file": "src/app/answer-card/answer-card.html"
   },
-  "298449106119424769": {
-    "source": "Personal Voice is available with Personal Plus or Creator. Included narrator voices remain free.",
-    "file": "src/app/boards/boards.ts"
-  },
   "2991576300940539223": {
     "source": "Pin places without street addresses to an exact what3words square.",
     "file": "src/app/boards/boards.ts"
@@ -4295,10 +4287,6 @@
     "source": "Account and linked spaces",
     "file": "src/app/profile/profile.html"
   },
-  "3778426902224526936": {
-    "source": "Show more voices",
-    "file": "src/app/boards/boards.html"
-  },
   "3781832327366529005": {
     "source": "A strong first pass. The cards are here when you’re ready.",
     "file": "src/app/boards/boards.html"
@@ -5487,10 +5475,6 @@
     "source": "Open business page",
     "file": "src/app/atlas-manage/atlas-manage.html"
   },
-  "4574398507471685669": {
-    "source": "{$INTERPOLATION} Stack",
-    "file": "src/app/boards/boards.html"
-  },
   "4576524260024244938": {
     "source": "Place search is unavailable right now. You can still type the card manually.",
     "file": "src/app/boards/boards.ts"
@@ -6439,10 +6423,6 @@
     "source": "Sign in",
     "file": "src/app/atlas-landing/atlas-landing.html"
   },
-  "5209235093923390614": {
-    "source": "Your private, reusable narrator voice.",
-    "file": "src/app/boards/boards.html"
-  },
   "5210885210468560744": {
     "source": " Delete {$INTERPOLATION} selected card{$INTERPOLATION_1} from this board? ",
     "file": "src/app/boards/boards.html"
@@ -6963,10 +6943,6 @@
     "source": "About highlight",
     "file": "src/app/atlas-landing/atlas-landing.html"
   },
-  "5554675552453885058": {
-    "source": "Record or upload 60–90 seconds of your own clear speech.",
-    "file": "src/app/boards/boards.html"
-  },
   "5554739955940677275": {
     "source": "No voices match that search",
     "file": "src/app/boards/boards.html"
@@ -7055,6 +7031,10 @@
     "source": "Design new",
     "file": "src/app/atlas-persona/atlas-persona.html"
   },
+  "5603311982006434448": {
+    "source": "Guatemala City's civic life, neighborhoods, Maya heritage, mobility, volcanic landscape, climate resilience, food, culture, business, and public information.",
+    "file": "src/app/city-atlas-templates.ts"
+  },
   "5603970865625901336": {
     "source": "Give me the key facts about {topic}.",
     "file": "src/app/chat/chat.ts"
@@ -7126,10 +7106,6 @@
   "5653202483299129380": {
     "source": "Weather",
     "file": "src/app/public-wikis/public-wikis.ts"
-  },
-  "565417220514928452": {
-    "source": "LivingWiki: New York City",
-    "file": "src/app/public-wiki-catalog.ts"
   },
   "5654661210833818062": {
     "source": "Describe it",
@@ -7617,7 +7593,7 @@
   },
   "5973232235949744487": {
     "source": "Your voice",
-    "file": "src/app/boards/boards.html"
+    "file": "src/app/boards/boards.ts"
   },
   "5979490733382756093": {
     "source": "Context, jokes, caveats, and the full explanation behind the cards.",
@@ -7774,10 +7750,6 @@
   "6085335332272203520": {
     "source": "Could not refresh Philly green jobs.",
     "file": "src/app/green-jobs/green-jobs.ts"
-  },
-  "6093939691029377104": {
-    "source": "LivingWiki: Portland",
-    "file": "src/app/public-wiki-catalog.ts"
   },
   "6095357695778876239": {
     "source": "Article",
@@ -10291,10 +10263,6 @@
     "source": "Lead in drinking water",
     "file": "src/app/fence-line/fence-line.ts"
   },
-  "7777537614959681339": {
-    "source": "LivingWiki: Gainesville",
-    "file": "src/app/public-wiki-catalog.ts"
-  },
   "7780444731963875194": {
     "source": "Could not load Spotify devices.",
     "file": "src/app/spotify-playback.service.ts"
@@ -10678,10 +10646,6 @@
   "8043744286369764692": {
     "source": "How should this board be told? You can change the voice later.",
     "file": "src/app/boards/boards.html"
-  },
-  "8045427885413898831": {
-    "source": "LivingWiki: Austin",
-    "file": "src/app/public-wiki-catalog.ts"
   },
   "8045832601562366161": {
     "source": "Failed to clear the persona prompt.",
@@ -11469,7 +11433,7 @@
   },
   "8610504659433544583": {
     "source": "Live",
-    "file": "src/app/boards/boards.html"
+    "file": "src/app/business-claim/business-claim.html"
   },
   "8611456471670320249": {
     "source": "Review status",
@@ -11993,7 +11957,7 @@
   },
   "8958531078371076584": {
     "source": "Premium",
-    "file": "src/app/boards/boards.html"
+    "file": "src/app/business-claim/business-claim.ts"
   },
   "8960713122116301226": {
     "source": "Longitude {$START_TAG_SPAN}(optional · for the map){$CLOSE_TAG_SPAN}",
@@ -12374,10 +12338,6 @@
   "9217508806407291565": {
     "source": "One command bar to search across your source files, web results, and existing LivingWiki simultaneously.",
     "file": "src/app/marketing/marketing.html"
-  },
-  "9218227291989588857": {
-    "source": "LivingWiki: San Francisco",
-    "file": "src/app/public-wiki-catalog.ts"
   },
   "926039708040434207": {
     "source": "Add trip",

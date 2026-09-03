@@ -93,6 +93,22 @@ const PUBLIC_WIKI_PRESENTATION_BY_SLUG: Record<string, PublicWikiPresentation> =
   },
 };
 
+const CITY_COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = CITY_ATLAS_TEMPLATES
+  .filter((template) => template.slug !== 'philly')
+  .map((template) => ({
+    title: template.name,
+    slug: template.slug,
+    subtitle: $localize`Cities & Regions`,
+    description: template.description,
+    status: 'coming-soon',
+    category: 'Cities & Regions',
+    priority: template.priority,
+    badges: template.badges,
+    sources: template.sources,
+    fallbackHeroUrl: template.heroUrl ?? undefined,
+    fallbackLogoUrl: template.logoUrl ?? undefined,
+  }));
+
 export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
   {
     title: $localize`The AI Landscape 2026`,
@@ -502,81 +518,7 @@ export const COMING_SOON_PUBLIC_WIKIS: PublicWikiCatalogItem[] = [
   },
 
   // ===== CITIES & REGIONS =====
-  {
-    title: $localize`LivingWiki: Boston`,
-    slug: 'boston',
-    subtitle: $localize`Cities & Regions`,
-    description:
-      $localize`Boston's sustainability, innovation, and civic data — universities, transit, climate resilience, healthcare, and the innovation economy.`,
-    status: 'coming-soon',
-    category: 'Cities & Regions',
-    priority: 'high',
-    badges: ['geo', 'business'],
-    sources:
-      'Boston Open Data, MBTA, Mass.gov, EPA, Census, Harvard/MIT public research',
-  },
-  {
-    title: $localize`LivingWiki: Portland`,
-    slug: 'portland',
-    subtitle: $localize`Cities & Regions`,
-    description:
-      $localize`Portland's sustainability ecosystem — urban planning, transit, climate action, food systems, and the green economy of the Pacific Northwest.`,
-    status: 'coming-soon',
-    category: 'Cities & Regions',
-    priority: 'med',
-    badges: ['geo', 'evergreen'],
-    sources:
-      'Portland Open Data, TriMet, Oregon DEQ, Metro regional government',
-  },
-  {
-    title: $localize`LivingWiki: Austin`,
-    slug: 'austin',
-    subtitle: $localize`Cities & Regions`,
-    description:
-      $localize`Austin's tech ecosystem, energy transition, growth management, and sustainability challenges — from ERCOT grid data to open city records.`,
-    status: 'coming-soon',
-    category: 'Cities & Regions',
-    priority: 'med',
-    badges: ['geo', 'trending'],
-    sources: 'Austin Open Data, ERCOT, Texas PUC, Census, Austin Energy',
-  },
-  {
-    title: $localize`LivingWiki: Gainesville`,
-    slug: 'gainesville',
-    subtitle: $localize`Cities & Regions`,
-    description:
-      $localize`Gainesville's university city, civic, climate, transit, housing, innovation, health, culture, and North Central Florida public data.`,
-    status: 'coming-soon',
-    category: 'Cities & Regions',
-    priority: 'med',
-    badges: ['geo', 'evergreen'],
-    sources:
-      'City of Gainesville Open Data, Alachua County, RTS, University of Florida, EPA, Census',
-  },
-  {
-    title: $localize`LivingWiki: San Francisco`,
-    slug: 'san-francisco',
-    subtitle: $localize`Cities & Regions`,
-    description:
-      $localize`SF's tech ecosystem, housing crisis, transit, climate policy, and civic innovation — compiled from one of the world's best open data programs.`,
-    status: 'coming-soon',
-    category: 'Cities & Regions',
-    priority: 'med',
-    badges: ['geo', 'ai'],
-    sources: 'DataSF, SFMTA, SFPUC, Bay Area Census, California state data',
-  },
-  {
-    title: $localize`LivingWiki: New York City`,
-    slug: 'new-york-city',
-    subtitle: $localize`Cities & Regions`,
-    description:
-      $localize`NYC's sustainability infrastructure, transit, climate resilience, and green economy — the largest open data program in the world, compiled.`,
-    status: 'coming-soon',
-    category: 'Cities & Regions',
-    priority: 'med',
-    badges: ['geo', 'trending'],
-    sources: 'NYC Open Data (2,700+ datasets), MTA, NYC DEP, PlaNYC, Census',
-  },
+  ...CITY_COMING_SOON_PUBLIC_WIKIS,
 
   // ===== EDUCATION & REFERENCE =====
   {
