@@ -3,12 +3,14 @@ import { ReactiveFormsModule, Validators, NonNullableFormBuilder } from '@angula
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { passwordsMatchValidator } from '../auth-form-validators';
+import { AuthStoryPanelComponent } from '../auth-story-panel/auth-story-panel';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 
 @Component({
   selector: 'app-create-account',
-  imports: [ReactiveFormsModule, RouterLink, ThemeToggleComponent],
+  imports: [ReactiveFormsModule, RouterLink, ThemeToggleComponent, AuthStoryPanelComponent],
   templateUrl: './create-account.html',
+  styleUrl: '../auth-page.css',
 })
 export class CreateAccountComponent {
   private readonly formBuilder = inject(NonNullableFormBuilder);

@@ -1,0 +1,64 @@
+<aside class="auth-story" aria-label="LivingWiki inspiration" i18n-aria-label>
+  <div class="auth-story__wash auth-story__wash--one"></div>
+  <div class="auth-story__wash auth-story__wash--two"></div>
+
+  <div class="auth-story__intro">
+    <a routerLink="/" class="auth-story__crane" aria-label="LivingWiki home" i18n-aria-label>
+      <img src="/assets/image/lucky-paper-crane.png" alt="" />
+    </a>
+    @if (mode() === 'create') {
+      <p class="auth-story__eyebrow" i18n>Make knowledge personal</p>
+      <h1 i18n="@@authStoryCreateTitle">Your world is full of connections.</h1>
+      <p class="auth-story__lede" i18n="@@authStoryCreateDescription">
+        Save what sparks you. Build what comes next.
+      </p>
+    } @else {
+      <p class="auth-story__eyebrow" i18n>Pick up where you left off</p>
+      <h1 i18n="@@authStorySignInTitle">Welcome back to your world.</h1>
+      <p class="auth-story__lede" i18n="@@authStorySignInDescription">
+        Your saved places, ideas, and connections are right where you left them.
+      </p>
+    }
+  </div>
+
+  <div class="auth-story__collage" aria-hidden="true">
+    <svg class="auth-story__thread" viewBox="0 0 700 560" preserveAspectRatio="none">
+      <path d="M40 360 C170 240 220 470 340 330 S520 150 660 260" />
+      <circle cx="42" cy="359" r="7" />
+      <circle cx="340" cy="330" r="7" />
+      <circle cx="660" cy="260" r="7" />
+    </svg>
+
+    <figure class="auth-story__photo auth-story__photo--city">
+      <img src="/assets/public-wikis/san-francisco-hero.jpg" alt="" />
+      <figcaption i18n>City stories</figcaption>
+    </figure>
+    <figure class="auth-story__photo auth-story__photo--people">
+      <img src="/assets/membership/students.jpg" alt="" />
+      <figcaption i18n>Shared discoveries</figcaption>
+    </figure>
+    <figure class="auth-story__photo auth-story__photo--trail">
+      <img src="/assets/membership/canyon.jpg" alt="" />
+      <figcaption i18n>Go somewhere new</figcaption>
+    </figure>
+
+    <div class="auth-story__note auth-story__note--ideas">
+      <span class="material-symbols-outlined">lightbulb</span>
+      <strong i18n>Ideas</strong>
+      <small i18n>Worth exploring</small>
+    </div>
+    <div class="auth-story__note auth-story__note--places">
+      <span class="material-symbols-outlined">map</span>
+      <strong i18n>Places</strong>
+      <small i18n>Ready to remember</small>
+    </div>
+    <div class="auth-story__stamp">
+      <img src="/assets/image/lucky-paper-crane.png" alt="" />
+      <span i18n>Explore · Learn · Connect</span>
+    </div>
+  </div>
+
+  <p class="auth-story__company" i18n>
+    LivingWiki™ is a product of <strong>Mind Palace Inc.</strong>
+  </p>
+</aside>

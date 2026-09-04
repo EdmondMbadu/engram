@@ -2,12 +2,14 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { ReactiveFormsModule, Validators, NonNullableFormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { AuthStoryPanelComponent } from '../auth-story-panel/auth-story-panel';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 
 @Component({
   selector: 'app-sign-in',
-  imports: [ReactiveFormsModule, RouterLink, ThemeToggleComponent],
+  imports: [ReactiveFormsModule, RouterLink, ThemeToggleComponent, AuthStoryPanelComponent],
   templateUrl: './sign-in.html',
+  styleUrl: '../auth-page.css',
 })
 export class SignInComponent {
   private readonly formBuilder = inject(NonNullableFormBuilder);

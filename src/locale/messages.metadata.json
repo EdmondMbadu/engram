@@ -279,10 +279,6 @@
     "source": "Green",
     "file": "src/app/boards/boards.ts"
   },
-  "1196249421838051956": {
-    "source": " LivingWiki™ is a product of Mind Palace Inc. It is not affiliated with, endorsed by, or sponsored by the Wikimedia Foundation, Wikipedia, or any related Wikimedia project. ",
-    "file": "src/app/create-account/create-account.html"
-  },
   "1198549113650077336": {
     "source": "{$START_TAG_SPAN}verified_user{$CLOSE_TAG_SPAN} Full playback is handled by Spotify when supported by your browser. No LivingWiki connection needed. ",
     "file": "src/app/spotify-player/spotify-player.html"
@@ -435,6 +431,10 @@
     "source": "Sign in to keep chatting",
     "file": "src/app/chat/chat.ts"
   },
+  "129363314605254888": {
+    "source": "{$START_TAG_SPAN}verified_user{$CLOSE_TAG_SPAN} Your knowledge stays yours. ",
+    "file": "src/app/sign-in/sign-in.html"
+  },
   "1293814537870499116": {
     "source": "{$START_TAG_SPAN}auto_awesome_motion{$CLOSE_TAG_SPAN} Stack Studio ",
     "file": "src/app/boards/boards.html"
@@ -547,6 +547,10 @@
     "source": "Chat date",
     "file": "src/app/chat/chat.ts"
   },
+  "1378935884076461598": {
+    "source": "LivingWiki inspiration",
+    "file": "src/app/auth-story-panel/auth-story-panel.html"
+  },
   "1381308436651796702": {
     "source": "No logo",
     "file": "src/app/atlas-landing/atlas-landing.html"
@@ -581,7 +585,7 @@
   },
   "1397512334982372726": {
     "source": "Places",
-    "file": "src/app/chat/chat.html"
+    "file": "src/app/auth-story-panel/auth-story-panel.html"
   },
   "1399751150846675372": {
     "source": "{$START_TAG_SPAN}add{$CLOSE_TAG_SPAN} Create board ",
@@ -1126,6 +1130,10 @@
   "1730649559478468407": {
     "source": "Public Atlas",
     "file": "src/app/public-wiki-catalog.ts"
+  },
+  "1733032782702468487": {
+    "source": "Ideas",
+    "file": "src/app/auth-story-panel/auth-story-panel.html"
   },
   "1735117771094549261": {
     "source": "LivingWiki guide",
@@ -1965,7 +1973,7 @@
   },
   "230223899767284884": {
     "source": "LivingWiki home",
-    "file": "src/app/boards/boards.html"
+    "file": "src/app/auth-story-panel/auth-story-panel.html"
   },
   "2312076048705890765": {
     "source": "DONE",
@@ -2033,7 +2041,7 @@
   },
   "2341938591438593427": {
     "source": " By continuing, you agree to the {$START_LINK}Terms and Conditions{$CLOSE_LINK} and {$START_LINK_1}Privacy Policy{$CLOSE_LINK}. ",
-    "file": "src/app/sign-in/sign-in.html"
+    "file": "src/app/create-account/create-account.html"
   },
   "2343381069243527122": {
     "source": "LivingWiki logo",
@@ -2550,6 +2558,10 @@
   "2668558045895541159": {
     "source": "This business page has not been created yet.",
     "file": "src/app/business-detail/business-activity.ts"
+  },
+  "2668864227584228682": {
+    "source": "Welcome Back",
+    "file": "src/app/sign-in/sign-in.html"
   },
   "2669089806865964375": {
     "source": "What belongs in this collection?",
@@ -3395,6 +3407,10 @@
     "source": "Jobs",
     "file": "src/app/public-wikis/public-wikis.ts"
   },
+  "3234567005598160107": {
+    "source": " Start with Google or use your email. Email accounts require verification before workspace access. ",
+    "file": "src/app/create-account/create-account.html"
+  },
   "3236977915969072967": {
     "source": " See plans ",
     "file": "src/app/business/business.html"
@@ -3462,10 +3478,6 @@
   "3269846656078250863": {
     "source": "Local rating",
     "file": "src/app/city-places/city-places.html"
-  },
-  "3271632370618157002": {
-    "source": " New here? {$START_LINK}Create an account{$CLOSE_LINK}",
-    "file": "src/app/sign-in/sign-in.html"
   },
   "32725357558423761": {
     "source": "Edit in account admin",
@@ -4066,10 +4078,6 @@
   "3598149869061531189": {
     "source": "The scrape run has finished.",
     "file": "src/app/web-scraper/web-scraper.ts"
-  },
-  "3611138004748408234": {
-    "source": " Sign in with Google or use your email and password. Email/password accounts must be verified first. ",
-    "file": "src/app/sign-in/sign-in.html"
   },
   "3612656624168118976": {
     "source": " I agree to the {$START_LINK}Terms and Conditions{$CLOSE_LINK} and {$START_LINK_1}Privacy Policy{$CLOSE_LINK}. ",
@@ -4947,10 +4955,6 @@
     "source": "Burger",
     "file": "src/app/business-badge-icons.ts"
   },
-  "4212806369073984082": {
-    "source": " Start with your name, email, and password, or continue with Google. Email sign-up requires verification before workspace access. ",
-    "file": "src/app/create-account/create-account.html"
-  },
   "4215991549357490776": {
     "source": "My Videos | LivingWiki",
     "file": "src/app/app.routes.ts"
@@ -5427,6 +5431,10 @@
     "source": "Global region",
     "file": "src/app/atlas-manage/atlas-manage.html"
   },
+  "4543624635093700189": {
+    "source": "8+ characters",
+    "file": "src/app/create-account/create-account.html"
+  },
   "4550958265168690830": {
     "source": "Logo",
     "file": "src/app/boards/boards.html"
@@ -5774,6 +5782,10 @@
   "476014195758025586": {
     "source": "Close voice library",
     "file": "src/app/boards/boards.html"
+  },
+  "4760597356075474732": {
+    "source": "Explore · Learn · Connect",
+    "file": "src/app/auth-story-panel/auth-story-panel.html"
   },
   "4765010664772309058": {
     "source": "Failed to load connected businesses.",
@@ -6683,6 +6695,10 @@
     "source": "Ready to drop",
     "file": "src/app/boards/boards.html"
   },
+  "5366387659619466139": {
+    "source": "Pick up where you left off",
+    "file": "src/app/auth-story-panel/auth-story-panel.html"
+  },
   "5370514775040296334": {
     "source": "Exact square saved",
     "file": "src/app/boards/boards.html"
@@ -6690,6 +6706,10 @@
   "5373471252507137577": {
     "source": "Block-group environmental justice percentiles preserved for community review.",
     "file": "src/app/fence-line/fence-line.html"
+  },
+  "5373727393387841282": {
+    "source": "Repeat password",
+    "file": "src/app/create-account/create-account.html"
   },
   "5374948793948746137": {
     "source": "Sends the full board—not the Stack or video.",
@@ -7306,6 +7326,10 @@
   "5780495571999615992": {
     "source": "Global Intelligence",
     "file": "src/app/marketing/marketing.html"
+  },
+  "5781356912190876219": {
+    "source": " LivingWiki™ is a product of {$START_TAG_STRONG}Mind Palace Inc.{$CLOSE_TAG_STRONG}",
+    "file": "src/app/auth-story-panel/auth-story-panel.html"
   },
   "5784562787186428712": {
     "source": "Grand Lux Cafe",
@@ -9023,6 +9047,10 @@
     "source": "Preparing your stop…",
     "file": "src/app/boards/boards.html"
   },
+  "6888578444159399848": {
+    "source": "Shared discoveries",
+    "file": "src/app/auth-story-panel/auth-story-panel.html"
+  },
   "688901269573530260": {
     "source": "Landing",
     "file": "src/app/atlas-manage/atlas-manage.html"
@@ -9595,6 +9623,10 @@
     "source": "Public question limit reached",
     "file": "src/app/chat/chat.ts"
   },
+  "7321460514659675664": {
+    "source": "Worth exploring",
+    "file": "src/app/auth-story-panel/auth-story-panel.html"
+  },
   "7322362260005537577": {
     "source": "Compiled knowledge from your uploaded documents",
     "file": "src/app/wiki/wiki.ts"
@@ -9958,6 +9990,14 @@
   "7585826646011739428": {
     "source": "Edit",
     "file": "src/app/admin-users/admin-users.html"
+  },
+  "7586132045800582566": {
+    "source": "Ready to remember",
+    "file": "src/app/auth-story-panel/auth-story-panel.html"
+  },
+  "7589436217527370846": {
+    "source": "City stories",
+    "file": "src/app/auth-story-panel/auth-story-panel.html"
   },
   "7590597986100375007": {
     "source": "Play video",
@@ -10727,6 +10767,10 @@
     "source": "Take",
     "file": "src/app/boards/boards.ts"
   },
+  "8099281902216661193": {
+    "source": " Sign in to continue exploring your saved places, ideas, and connections. ",
+    "file": "src/app/sign-in/sign-in.html"
+  },
   "8101261929942565807": {
     "source": "The Data Privacy & Surveillance Atlas",
     "file": "src/app/public-wiki-catalog.ts"
@@ -11123,6 +11167,10 @@
     "source": "Describe the picture you want.",
     "file": "src/app/boards/boards.ts"
   },
+  "8359416463206832778": {
+    "source": "Make knowledge personal",
+    "file": "src/app/auth-story-panel/auth-story-panel.html"
+  },
   "8361732972302624132": {
     "source": "No usable pictures were found. Try a more specific search.",
     "file": "src/app/boards/boards.ts"
@@ -11410,6 +11458,10 @@
   "8569814378547466507": {
     "source": "Estimating...",
     "file": "src/app/atlas-manage/atlas-manage.ts"
+  },
+  "8582746569559668669": {
+    "source": " New to LivingWiki? {$START_LINK}Create an account{$CLOSE_LINK}",
+    "file": "src/app/sign-in/sign-in.html"
   },
   "8585558416935641261": {
     "source": "Ask up to 5 questions without signing in. {count} remaining.",
@@ -12087,6 +12139,10 @@
     "source": "LivingWiki: Philly consolidates the Delaware Valley’s fragmented sustainability and economic data — currently scattered across 60+ agencies, portals, and databases — into the region’s living institutional memory.",
     "file": "src/app/city-atlas-templates.ts"
   },
+  "9035784767875424322": {
+    "source": "Go somewhere new",
+    "file": "src/app/auth-story-panel/auth-story-panel.html"
+  },
   "9038317138730122649": {
     "source": "Chat with Wiki",
     "file": "src/app/atlas-landing/atlas-landing.html"
@@ -12462,6 +12518,22 @@
   "999205338894734695": {
     "source": "{$START_BOLD_TEXT}LivingWiki{$CLOSE_BOLD_TEXT} · The Global Serendipity Engine",
     "file": "src/app/public-wikis/public-wikis.html"
+  },
+  "authStoryCreateDescription": {
+    "source": " Save what sparks you. Build what comes next. ",
+    "file": "src/app/auth-story-panel/auth-story-panel.html"
+  },
+  "authStoryCreateTitle": {
+    "source": "Your world is full of connections.",
+    "file": "src/app/auth-story-panel/auth-story-panel.html"
+  },
+  "authStorySignInDescription": {
+    "source": " Your saved places, ideas, and connections are right where you left them. ",
+    "file": "src/app/auth-story-panel/auth-story-panel.html"
+  },
+  "authStorySignInTitle": {
+    "source": "Welcome back to your world.",
+    "file": "src/app/auth-story-panel/auth-story-panel.html"
   },
   "languageSwitcher.menuLabel": {
     "source": "Languages",

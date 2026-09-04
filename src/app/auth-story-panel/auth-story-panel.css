@@ -1,0 +1,331 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.auth-story {
+  position: relative;
+  isolation: isolate;
+  height: 100dvh;
+  min-height: 42rem;
+  overflow: hidden;
+  border-right: 1px solid var(--line);
+  background:
+    linear-gradient(115deg, color-mix(in srgb, var(--bg) 91%, #fff7e8 9%), color-mix(in srgb, var(--surface) 92%, #e7f5e8 8%));
+  color: var(--text);
+}
+
+.auth-story::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(rgba(38, 72, 47, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(38, 72, 47, 0.025) 1px, transparent 1px);
+  background-size: 28px 28px;
+  content: '';
+  mask-image: linear-gradient(to bottom, black, transparent 88%);
+}
+
+.auth-story__wash {
+  position: absolute;
+  z-index: -1;
+  border-radius: 999px;
+  filter: blur(14px);
+  opacity: 0.7;
+}
+
+.auth-story__wash--one {
+  top: -8rem;
+  right: -5rem;
+  width: 24rem;
+  height: 24rem;
+  background: rgba(59, 175, 98, 0.12);
+}
+
+.auth-story__wash--two {
+  bottom: -10rem;
+  left: -8rem;
+  width: 27rem;
+  height: 27rem;
+  background: rgba(234, 116, 82, 0.1);
+}
+
+.auth-story__intro {
+  position: relative;
+  z-index: 5;
+  width: min(87%, 38rem);
+  padding: clamp(2rem, 4.5vw, 4.5rem);
+}
+
+.auth-story__crane {
+  display: inline-flex;
+  width: 4.25rem;
+  height: 4.25rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 1.35rem;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  box-shadow: var(--shadow-floating);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.auth-story__crane:hover {
+  transform: translateY(-2px) rotate(-2deg);
+  box-shadow: var(--shadow-elevated);
+}
+
+.auth-story__crane img {
+  width: 2.7rem;
+  height: 2.7rem;
+  object-fit: contain;
+}
+
+.auth-story__eyebrow {
+  margin-top: clamp(1.5rem, 3vh, 2.4rem);
+  color: var(--accent);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.auth-story h1 {
+  max-width: 33rem;
+  margin-top: 0.7rem;
+  font-size: clamp(2.6rem, 4.5vw, 5rem);
+  font-weight: 900;
+  letter-spacing: -0.065em;
+  line-height: 0.94;
+}
+
+.auth-story__lede {
+  max-width: 31rem;
+  margin-top: 1rem;
+  color: var(--muted);
+  font-size: clamp(0.95rem, 1.25vw, 1.2rem);
+  line-height: 1.6;
+}
+
+.auth-story__collage {
+  position: absolute;
+  inset: 31% 2.5% 2.5%;
+}
+
+.auth-story__thread {
+  position: absolute;
+  inset: 3% 1% 1%;
+  z-index: 3;
+  width: 98%;
+  height: 96%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.auth-story__thread path {
+  fill: none;
+  stroke: #d76545;
+  stroke-width: 2.5;
+}
+
+.auth-story__thread circle {
+  fill: #d76545;
+  stroke: #fff9ef;
+  stroke-width: 3;
+}
+
+.auth-story__photo {
+  position: absolute;
+  z-index: 2;
+  margin: 0;
+  padding: 0.48rem 0.48rem 1.9rem;
+  border: 1px solid rgba(20, 42, 28, 0.14);
+  background: #fffcf5;
+  box-shadow: 0 18px 45px rgba(24, 42, 30, 0.2);
+}
+
+.auth-story__photo::before {
+  position: absolute;
+  top: -0.7rem;
+  left: 50%;
+  width: 4.6rem;
+  height: 1.35rem;
+  background: rgba(202, 190, 148, 0.72);
+  content: '';
+  transform: translateX(-50%) rotate(-2deg);
+  clip-path: polygon(3% 8%, 98% 0, 94% 100%, 0 91%);
+}
+
+.auth-story__photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.auth-story__photo figcaption {
+  position: absolute;
+  right: 0.8rem;
+  bottom: 0.42rem;
+  left: 0.8rem;
+  overflow: hidden;
+  color: #36483d;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.auth-story__photo--city {
+  top: 2%;
+  right: 4%;
+  width: 47%;
+  height: 48%;
+  transform: rotate(4deg);
+}
+
+.auth-story__photo--people {
+  bottom: 3%;
+  left: 4%;
+  width: 49%;
+  height: 48%;
+  transform: rotate(-5deg);
+}
+
+.auth-story__photo--trail {
+  right: 6%;
+  bottom: 2%;
+  width: 42%;
+  height: 41%;
+  transform: rotate(5deg);
+}
+
+.auth-story__note {
+  position: absolute;
+  z-index: 4;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  min-width: 9.5rem;
+  gap: 0.05rem 0.5rem;
+  border: 1px solid rgba(20, 42, 28, 0.13);
+  border-radius: 0.3rem;
+  background: #f9f3df;
+  box-shadow: 0 12px 28px rgba(24, 42, 30, 0.16);
+  color: #20372a;
+  padding: 0.75rem 0.85rem;
+}
+
+.auth-story__note .material-symbols-outlined {
+  grid-row: span 2;
+  align-self: center;
+  color: #348d51;
+  font-size: 1.25rem;
+  font-variation-settings: 'FILL' 1;
+}
+
+.auth-story__note strong {
+  font-size: 0.72rem;
+  line-height: 1.2;
+}
+
+.auth-story__note small {
+  color: #617166;
+  font-size: 0.58rem;
+}
+
+.auth-story__note--ideas {
+  top: 20%;
+  left: 8%;
+  transform: rotate(-3deg);
+}
+
+.auth-story__note--places {
+  right: 31%;
+  bottom: 7%;
+  transform: rotate(2deg);
+}
+
+.auth-story__stamp {
+  position: absolute;
+  top: 46%;
+  left: 45%;
+  z-index: 4;
+  display: flex;
+  width: 6.8rem;
+  height: 6.8rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  border: 2px dashed rgba(42, 119, 68, 0.45);
+  border-radius: 999px;
+  background: rgba(255, 252, 245, 0.92);
+  color: #2a7744;
+  transform: rotate(-7deg);
+}
+
+.auth-story__stamp img {
+  width: 2.35rem;
+  height: 2.35rem;
+  object-fit: contain;
+}
+
+.auth-story__stamp span {
+  max-width: 5rem;
+  font-size: 0.48rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.auth-story__company {
+  position: absolute;
+  right: 2rem;
+  bottom: 1rem;
+  z-index: 8;
+  color: color-mix(in srgb, var(--muted) 80%, transparent);
+  font-size: 0.6rem;
+}
+
+@media (max-width: 1180px) {
+  .auth-story__intro {
+    padding: 2rem;
+  }
+
+  .auth-story__collage {
+    top: 35%;
+  }
+
+  .auth-story__note--places,
+  .auth-story__stamp {
+    display: none;
+  }
+}
+
+@media (max-height: 800px) {
+  .auth-story__intro {
+    padding-top: 1.5rem;
+  }
+
+  .auth-story__crane {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+
+  .auth-story__crane img {
+    width: 2.2rem;
+    height: 2.2rem;
+  }
+
+  .auth-story__eyebrow {
+    margin-top: 1.2rem;
+  }
+
+  .auth-story__collage {
+    top: 33%;
+  }
+}
