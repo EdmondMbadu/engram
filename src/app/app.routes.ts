@@ -1,27 +1,13 @@
 import { Routes } from '@angular/router';
-import { MarketingComponent } from './marketing/marketing';
-import { LandingComponent } from './landing/landing';
-import { WikiComponent } from './wiki/wiki';
-import { ChatComponent } from './chat/chat';
-import { LibraryComponent } from './library/library';
-import { AtlasManageComponent } from './atlas-manage/atlas-manage';
-import { AtlasLandingComponent } from './atlas-landing/atlas-landing';
-import { LegalComponent } from './legal/legal';
 import { PublicWikisComponent } from './public-wikis/public-wikis';
-import { WebScraperComponent } from './web-scraper/web-scraper';
-import { WikiHomeComponent } from './wiki-home/wiki-home';
-import { SharedChatComponent } from './shared-chat/shared-chat';
-import { AnswerCardComponent } from './answer-card/answer-card';
-import { AnswerQuizComponent } from './answer-quiz/answer-quiz';
-import { GreenJobsComponent } from './green-jobs/green-jobs';
-import { CityPulseAdminComponent } from './city-pulse-admin/city-pulse-admin';
-import { AdminUsersComponent } from './admin-users/admin-users';
-import { CityPlacesComponent } from './city-places/city-places';
-import { BusinessComponent } from './business/business';
-import { NotFoundComponent } from './not-found/not-found';
 import { adminGuard, authGuard, boardsRootRedirectGuard, guestOnlyGuard } from './auth.guards';
 
 const loadBoardsComponent = () => import('./boards/boards').then((m) => m.BoardsComponent);
+const loadChatComponent = () => import('./chat/chat').then((m) => m.ChatComponent);
+const loadLandingComponent = () => import('./landing/landing').then((m) => m.LandingComponent);
+const loadLegalComponent = () => import('./legal/legal').then((m) => m.LegalComponent);
+const loadLibraryComponent = () => import('./library/library').then((m) => m.LibraryComponent);
+const loadWikiComponent = () => import('./wiki/wiki').then((m) => m.WikiComponent);
 
 export const routes: Routes = [
   { path: '', component: PublicWikisComponent, title: $localize`Public Wikis | LivingWiki` },
@@ -36,9 +22,17 @@ export const routes: Routes = [
     loadComponent: () => import('./membership/membership').then((m) => m.MembershipComponent),
     title: 'Membership | LivingWiki',
   },
-  { path: 'landing', component: MarketingComponent, title: $localize`LivingWiki` },
+  {
+    path: 'landing',
+    loadComponent: () => import('./marketing/marketing').then((m) => m.MarketingComponent),
+    title: $localize`LivingWiki`,
+  },
   { path: 'marketing', redirectTo: 'landing', pathMatch: 'full' },
-  { path: 'business', component: BusinessComponent, title: $localize`For Business | LivingWiki` },
+  {
+    path: 'business',
+    loadComponent: () => import('./business/business').then((m) => m.BusinessComponent),
+    title: $localize`For Business | LivingWiki`,
+  },
   {
     path: 'business/claim',
     loadComponent: () => import('./business-claim/business-claim').then((m) => m.BusinessClaimComponent),
@@ -87,7 +81,12 @@ export const routes: Routes = [
     loadComponent: () => import('./trove/trove').then((m) => m.TroveComponent),
     title: $localize`My Trove | LivingWiki`,
   },
-  { path: 'wikis', component: WikiHomeComponent, title: $localize`My Wikis | LivingWiki`, canActivate: [authGuard] },
+  {
+    path: 'wikis',
+    loadComponent: () => import('./wiki-home/wiki-home').then((m) => m.WikiHomeComponent),
+    title: $localize`My Wikis | LivingWiki`,
+    canActivate: [authGuard],
+  },
   {
     path: 'videos',
     loadComponent: () => import('./video-library/video-library').then((m) => m.VideoLibraryComponent),
@@ -154,24 +153,45 @@ export const routes: Routes = [
     path: 'trips/:boardId',
     loadComponent: loadBoardsComponent,
   },
-  { path: 'upload/:slug', component: LandingComponent, title: $localize`Upload | LivingWiki` },
-  { path: 'upload', component: LandingComponent, title: $localize`Upload | LivingWiki`, canActivate: [authGuard] },
-  { path: 'chat/shared/:threadId', component: SharedChatComponent, title: $localize`Shared Chat | LivingWiki` },
-  { path: 'answer-card/:cardId', component: AnswerCardComponent, title: $localize`Answer Card | LivingWiki` },
-  { path: 'quiz/:quizId', component: AnswerQuizComponent, title: $localize`Quiz Challenge | LivingWiki` },
-  { path: 'places/:slug', component: CityPlacesComponent, title: $localize`Places | LivingWiki` },
+  { path: 'upload/:slug', loadComponent: loadLandingComponent, title: $localize`Upload | LivingWiki` },
+  { path: 'upload', loadComponent: loadLandingComponent, title: $localize`Upload | LivingWiki`, canActivate: [authGuard] },
+  {
+    path: 'chat/shared/:threadId',
+    loadComponent: () => import('./shared-chat/shared-chat').then((m) => m.SharedChatComponent),
+    title: $localize`Shared Chat | LivingWiki`,
+  },
+  {
+    path: 'answer-card/:cardId',
+    loadComponent: () => import('./answer-card/answer-card').then((m) => m.AnswerCardComponent),
+    title: $localize`Answer Card | LivingWiki`,
+  },
+  {
+    path: 'quiz/:quizId',
+    loadComponent: () => import('./answer-quiz/answer-quiz').then((m) => m.AnswerQuizComponent),
+    title: $localize`Quiz Challenge | LivingWiki`,
+  },
+  {
+    path: 'places/:slug',
+    loadComponent: () => import('./city-places/city-places').then((m) => m.CityPlacesComponent),
+    title: $localize`Places | LivingWiki`,
+  },
   {
     path: 'chat/:slug/boards',
     loadComponent: () => import('./city-board-collection/city-board-collection').then((m) => m.CityBoardCollectionComponent),
     title: 'Boards | LivingWiki',
   },
-  { path: 'chat/:slug', component: ChatComponent, title: $localize`Chat | LivingWiki` },
-  { path: 'chat', component: ChatComponent, title: $localize`Chat | LivingWiki`, canActivate: [authGuard] },
-  { path: 'library/:slug', component: LibraryComponent, title: $localize`Source Files | LivingWiki` },
-  { path: 'library', component: LibraryComponent, title: $localize`Source Files | LivingWiki`, canActivate: [authGuard] },
-  { path: 'scrapper', component: WebScraperComponent, title: $localize`Scrapper | LivingWiki`, canActivate: [authGuard] },
-  { path: 'wiki/:slug', component: WikiComponent, title: $localize`Public Wiki | LivingWiki` },
-  { path: 'wiki', component: WikiComponent, title: $localize`Wiki | LivingWiki`, canActivate: [authGuard] },
+  { path: 'chat/:slug', loadComponent: loadChatComponent, title: $localize`Chat | LivingWiki` },
+  { path: 'chat', loadComponent: loadChatComponent, title: $localize`Chat | LivingWiki`, canActivate: [authGuard] },
+  { path: 'library/:slug', loadComponent: loadLibraryComponent, title: $localize`Source Files | LivingWiki` },
+  { path: 'library', loadComponent: loadLibraryComponent, title: $localize`Source Files | LivingWiki`, canActivate: [authGuard] },
+  {
+    path: 'scrapper',
+    loadComponent: () => import('./web-scraper/web-scraper').then((m) => m.WebScraperComponent),
+    title: $localize`Scrapper | LivingWiki`,
+    canActivate: [authGuard],
+  },
+  { path: 'wiki/:slug', loadComponent: loadWikiComponent, title: $localize`Public Wiki | LivingWiki` },
+  { path: 'wiki', loadComponent: loadWikiComponent, title: $localize`Wiki | LivingWiki`, canActivate: [authGuard] },
   { path: 'public-wikis', component: PublicWikisComponent, title: $localize`Public Wikis | LivingWiki` },
   {
     path: 'profile',
@@ -179,8 +199,18 @@ export const routes: Routes = [
     title: $localize`Profile | LivingWiki`,
     canActivate: [authGuard],
   },
-  { path: 'atlases', component: AtlasManageComponent, title: $localize`Atlas Settings | LivingWiki`, canActivate: [authGuard] },
-  { path: 'admin/users', component: AdminUsersComponent, title: $localize`Users | LivingWiki`, canActivate: [adminGuard] },
+  {
+    path: 'atlases',
+    loadComponent: () => import('./atlas-manage/atlas-manage').then((m) => m.AtlasManageComponent),
+    title: $localize`Atlas Settings | LivingWiki`,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'admin/users',
+    loadComponent: () => import('./admin-users/admin-users').then((m) => m.AdminUsersComponent),
+    title: $localize`Users | LivingWiki`,
+    canActivate: [adminGuard],
+  },
   {
     path: 'admin/city-board-factory',
     loadComponent: () => import('./bulk-board-admin/bulk-board-admin').then((m) => m.BulkBoardAdminComponent),
@@ -201,11 +231,23 @@ export const routes: Routes = [
     title: $localize`Wiki Voice | LivingWiki`,
     canActivate: [authGuard],
   },
-  { path: 'atlas/:slug/green-jobs', component: GreenJobsComponent, title: $localize`Philly Green Jobs | LivingWiki` },
-  { path: 'atlas/:slug/worldometers', component: CityPulseAdminComponent, title: $localize`Worldometers Maintenance | LivingWiki` },
-  { path: 'atlas/:slug', component: AtlasLandingComponent, title: $localize`Atlas | LivingWiki` },
-  { path: 'privacy', component: LegalComponent, title: $localize`Privacy Policy | LivingWiki`, data: { legalPage: 'privacy' } },
-  { path: 'terms', component: LegalComponent, title: $localize`Terms and Conditions | LivingWiki`, data: { legalPage: 'terms' } },
+  {
+    path: 'atlas/:slug/green-jobs',
+    loadComponent: () => import('./green-jobs/green-jobs').then((m) => m.GreenJobsComponent),
+    title: $localize`Philly Green Jobs | LivingWiki`,
+  },
+  {
+    path: 'atlas/:slug/worldometers',
+    loadComponent: () => import('./city-pulse-admin/city-pulse-admin').then((m) => m.CityPulseAdminComponent),
+    title: $localize`Worldometers Maintenance | LivingWiki`,
+  },
+  {
+    path: 'atlas/:slug',
+    loadComponent: () => import('./atlas-landing/atlas-landing').then((m) => m.AtlasLandingComponent),
+    title: $localize`Atlas | LivingWiki`,
+  },
+  { path: 'privacy', loadComponent: loadLegalComponent, title: $localize`Privacy Policy | LivingWiki`, data: { legalPage: 'privacy' } },
+  { path: 'terms', loadComponent: loadLegalComponent, title: $localize`Terms and Conditions | LivingWiki`, data: { legalPage: 'terms' } },
   {
     path: 'sign-in',
     loadComponent: () => import('./sign-in/sign-in').then((m) => m.SignInComponent),
@@ -234,5 +276,9 @@ export const routes: Routes = [
     loadComponent: () => import('./auth-action/auth-action').then((m) => m.AuthActionComponent),
     title: $localize`Account Action | LivingWiki`,
   },
-  { path: '**', component: NotFoundComponent, title: $localize`Page Not Found | LivingWiki` },
+  {
+    path: '**',
+    loadComponent: () => import('./not-found/not-found').then((m) => m.NotFoundComponent),
+    title: $localize`Page Not Found | LivingWiki`,
+  },
 ];

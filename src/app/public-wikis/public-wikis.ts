@@ -639,6 +639,8 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
   private discoverLoadObserver: IntersectionObserver | null = null;
   private publicWikiLoadSentinelElement: HTMLElement | null = null;
   private publicWikiLoadObserver: IntersectionObserver | null = null;
+  private mobileVideosIdleHandle: number | null = null;
+  private mobileVideosFallbackTimer: ReturnType<typeof setTimeout> | null = null;
 
   readonly publicWikis = computed(() => this.liveWikis());
 
@@ -974,7 +976,7 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
     void this.loadMobileBoards();
     void this.loadMobileDiscoverBoards();
     if (this.isSignedIn() && this.isHomeRoute()) {
-      void this.loadMobileVideos();
+      this.scheduleMobileVideosLoad();
     }
     this.scheduleMobileFriendsLoad();
     void this.handleMobileHomeHash();
@@ -1016,6 +1018,14 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
     this.discoverLoadObserver = null;
     this.publicWikiLoadObserver?.disconnect();
     this.publicWikiLoadObserver = null;
+    if (this.isBrowser) {
+      if (this.mobileVideosIdleHandle !== null && 'cancelIdleCallback' in window) {
+        window.cancelIdleCallback(this.mobileVideosIdleHandle);
+      }
+      if (this.mobileVideosFallbackTimer !== null) {
+        clearTimeout(this.mobileVideosFallbackTimer);
+      }
+    }
   }
 
   @HostListener('window:hashchange')
@@ -1516,6 +1526,23 @@ export class PublicWikisComponent implements OnInit, AfterViewChecked, OnDestroy
     } finally {
       this.mobileVideosLoading.set(false);
     }
+  }
+
+  private scheduleMobileVideosLoad(): void {
+    if (!this.isBrowser) return;
+
+    const load = () => {
+      this.mobileVideosIdleHandle = null;
+      this.mobileVideosFallbackTimer = null;
+      void this.loadMobileVideos();
+    };
+
+    if ('requestIdleCallback' in window) {
+      this.mobileVideosIdleHandle = window.requestIdleCallback(load, { timeout: 1_500 });
+      return;
+    }
+
+    this.mobileVideosFallbackTimer = setTimeout(load, 250);
   }
 
   private async loadMobileBoards(): Promise<void> {
