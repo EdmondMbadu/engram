@@ -1,4 +1,10 @@
-<aside class="auth-story" aria-label="LivingWiki inspiration" i18n-aria-label>
+<aside
+  class="auth-story"
+  [class.auth-story--create]="mode() === 'create'"
+  [class.auth-story--sign-in]="mode() === 'sign-in'"
+  aria-label="LivingWiki inspiration"
+  i18n-aria-label
+>
   <div class="auth-story__wash auth-story__wash--one"></div>
   <div class="auth-story__wash auth-story__wash--two"></div>
 
@@ -30,15 +36,15 @@
     </svg>
 
     <figure class="auth-story__photo auth-story__photo--city">
-      <img src="/assets/public-wikis/san-francisco-hero.jpg" alt="" />
+      <img src="/assets/public-wikis/san-francisco-hero.jpg" alt="" width="2172" height="724" decoding="async" fetchpriority="high" />
       <figcaption i18n>City stories</figcaption>
     </figure>
     <figure class="auth-story__photo auth-story__photo--people">
-      <img src="/assets/membership/students.jpg" alt="" />
+      <img src="/assets/membership/students.jpg" alt="" width="900" height="506" loading="lazy" decoding="async" fetchpriority="low" />
       <figcaption i18n>Shared discoveries</figcaption>
     </figure>
     <figure class="auth-story__photo auth-story__photo--trail">
-      <img src="/assets/membership/canyon.jpg" alt="" />
+      <img src="/assets/membership/canyon.jpg" alt="" width="1400" height="927" loading="lazy" decoding="async" fetchpriority="low" />
       <figcaption i18n>Go somewhere new</figcaption>
     </figure>
 

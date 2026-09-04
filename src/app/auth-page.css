@@ -5,7 +5,7 @@
 .auth-experience {
   display: grid;
   min-height: 100dvh;
-  grid-template-columns: minmax(0, 1.05fr) minmax(34rem, 0.95fr);
+  grid-template-columns: minmax(0, 1.12fr) minmax(33rem, 0.88fr);
   background: var(--bg);
   color: var(--text);
 }
@@ -18,7 +18,8 @@
   flex-direction: column;
   overflow: hidden;
   background:
-    radial-gradient(circle at 90% 5%, rgba(59, 175, 98, 0.08), transparent 29rem),
+    radial-gradient(circle at 88% 7%, rgba(59, 175, 98, 0.09), transparent 25rem),
+    radial-gradient(circle at 8% 92%, rgba(215, 101, 69, 0.045), transparent 22rem),
     var(--bg);
 }
 
@@ -79,16 +80,33 @@
   align-items: center;
   justify-content: center;
   overflow-y: auto;
-  padding: 0.5rem clamp(1.25rem, 4vw, 3.5rem) 1.25rem;
+  padding: 0.5rem clamp(1.35rem, 3.5vw, 3.25rem) 1.25rem;
 }
 
 .auth-card {
-  width: min(100%, 33.5rem);
-  border: 1px solid var(--line);
-  border-radius: 1.75rem;
-  background: color-mix(in srgb, var(--surface) 94%, transparent);
-  box-shadow: 0 28px 80px rgba(20, 42, 28, 0.13), var(--shadow-floating);
-  padding: clamp(1.35rem, 2.5vw, 2rem);
+  position: relative;
+  width: min(100%, 32.5rem);
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--line) 76%, var(--accent) 24%);
+  border-radius: 1.65rem;
+  background:
+    linear-gradient(145deg, color-mix(in srgb, var(--surface) 98%, white 2%), color-mix(in srgb, var(--surface) 94%, #eef8f0 6%));
+  box-shadow:
+    0 30px 72px rgba(20, 42, 28, 0.12),
+    0 3px 12px rgba(20, 42, 28, 0.05),
+    inset 0 1px rgba(255, 255, 255, 0.7);
+  padding: clamp(1.4rem, 2.25vw, 1.85rem);
+}
+
+.auth-card::before {
+  position: absolute;
+  top: 0;
+  left: 1.85rem;
+  width: 3.5rem;
+  height: 0.2rem;
+  border-radius: 0 0 999px 999px;
+  background: linear-gradient(90deg, var(--accent), #8ac99d);
+  content: '';
 }
 
 .auth-card__eyebrow {
@@ -101,10 +119,10 @@
 
 .auth-card h1 {
   margin-top: 0.35rem;
-  font-size: clamp(1.85rem, 3vw, 2.55rem);
-  font-weight: 900;
-  letter-spacing: -0.045em;
-  line-height: 1.05;
+  font-size: clamp(1.9rem, 2.75vw, 2.45rem);
+  font-weight: 850;
+  letter-spacing: -0.052em;
+  line-height: 1.02;
 }
 
 .auth-card__intro {
@@ -139,10 +157,13 @@
 }
 
 .auth-google .social-btn {
-  min-height: 3rem;
-  border-radius: 0.9rem;
+  min-height: 3.05rem;
+  border-color: color-mix(in srgb, var(--line-strong) 82%, var(--accent) 18%);
+  border-radius: 0.95rem;
+  background: color-mix(in srgb, var(--surface-strong) 96%, var(--soft-fill) 4%);
   padding: 0.7rem 1rem;
   font-size: 0.84rem;
+  box-shadow: 0 8px 24px rgba(20, 42, 28, 0.055);
 }
 
 .auth-google__terms {
@@ -204,9 +225,15 @@
 
 .auth-field .auth-input {
   min-height: 2.9rem;
+  border-color: color-mix(in srgb, var(--line) 85%, var(--muted) 15%);
   border-radius: 0.85rem;
+  background: color-mix(in srgb, var(--panel-strong) 94%, var(--soft-fill) 6%);
   padding: 0.68rem 0.8rem;
   font-size: 0.82rem;
+}
+
+.auth-field .auth-input:hover:not(:focus) {
+  border-color: color-mix(in srgb, var(--line-strong) 76%, var(--accent) 24%);
 }
 
 .auth-field__control {
@@ -257,6 +284,8 @@
   min-width: 0;
   align-items: flex-start;
   gap: 0.5rem;
+  color: var(--muted);
+  font-size: 0.68rem;
   line-height: 1.45;
 }
 
@@ -282,6 +311,7 @@
   border-radius: 0.9rem;
   padding: 0.72rem 1rem;
   font-size: 0.84rem;
+  box-shadow: 0 15px 30px rgba(59, 175, 98, 0.22);
 }
 
 .auth-account-switch {
@@ -352,6 +382,10 @@
   .auth-card {
     border-radius: 1.35rem;
     padding: 1.1rem;
+  }
+
+  .auth-card::before {
+    left: 1.1rem;
   }
 
   .auth-form__row {
