@@ -27,7 +27,7 @@ export const authGuard: CanActivateFn = async (_route, state) => {
     : true;
 };
 
-export const guestOnlyGuard: CanActivateFn = async () => {
+export const guestOnlyGuard: CanActivateFn = async (route) => {
   const platformId = inject(PLATFORM_ID);
   if (!isPlatformBrowser(platformId)) {
     return true;
@@ -42,10 +42,17 @@ export const guestOnlyGuard: CanActivateFn = async () => {
     return true;
   }
 
+  const requestedRedirect = route.queryParamMap.get('redirectTo');
+  const redirectTo = isSafeInternalRedirect(requestedRedirect) ? requestedRedirect : '/home';
+
   return authService.needsEmailVerification()
-    ? router.createUrlTree(['/verify-email'])
-    : router.createUrlTree(['/home']);
+    ? router.createUrlTree(['/verify-email'], { queryParams: { redirectTo } })
+    : router.parseUrl(redirectTo);
 };
+
+function isSafeInternalRedirect(value: string | null): value is string {
+  return typeof value === 'string' && value.startsWith('/') && !value.startsWith('//');
+}
 
 export const boardsRootRedirectGuard: CanActivateFn = (route) => {
   const authService = inject(AuthService);

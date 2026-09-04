@@ -23,7 +23,7 @@
         </div>
 
         @if (submitError()) {
-          <div class="mb-6 rounded-2xl border border-rose-500/25 bg-rose-500/10 px-4 py-3 text-sm text-rose-600 dark:text-rose-200">
+          <div role="alert" aria-live="assertive" class="mb-6 rounded-2xl border border-rose-500/25 bg-rose-500/10 px-4 py-3 text-sm text-rose-600 dark:text-rose-200">
             {{ submitError() }}
           </div>
         }
@@ -35,6 +35,13 @@
           {{ googleButtonLabel() }}
         </button>
 
+        <p class="mt-3 text-center text-xs leading-5 text-[var(--muted)]" i18n>
+          By continuing, you agree to the
+          <a routerLink="/terms" class="font-semibold text-[var(--accent)] hover:opacity-80">Terms and Conditions</a>
+          and
+          <a routerLink="/privacy" class="font-semibold text-[var(--accent)] hover:opacity-80">Privacy Policy</a>.
+        </p>
+
         <div class="my-8 flex items-center gap-4">
           <div class="h-px flex-1 bg-[var(--line)]"></div>
           <span class="text-xs font-bold uppercase tracking-[0.25em] text-[var(--muted)]" i18n>or use your email</span>
@@ -44,7 +51,7 @@
         <form class="space-y-5" [formGroup]="form" (ngSubmit)="createAccount()">
           <div>
             <label class="auth-label" for="create-name" i18n>Full name</label>
-            <input id="create-name" type="text" formControlName="fullName" autocomplete="name" class="auth-input" placeholder="Ada Lovelace"  i18n-placeholder/>
+            <input id="create-name" type="text" formControlName="fullName" autocomplete="name" class="auth-input" placeholder="Ada Lovelace" required [attr.aria-invalid]="form.controls.fullName.touched && form.controls.fullName.invalid" (blur)="normalizeIdentityFields()" i18n-placeholder/>
             @if (form.controls.fullName.touched && form.controls.fullName.invalid) {
               <p class="mt-2 text-sm text-rose-400" i18n>Enter your full name.</p>
             }
@@ -52,7 +59,7 @@
 
           <div>
             <label class="auth-label" for="create-email" i18n>Email</label>
-            <input id="create-email" type="email" formControlName="email" autocomplete="email" class="auth-input" placeholder="you@company.com"  i18n-placeholder/>
+            <input id="create-email" type="email" formControlName="email" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" class="auth-input" placeholder="you@company.com" required [attr.aria-invalid]="form.controls.email.touched && form.controls.email.invalid" (blur)="normalizeIdentityFields()" i18n-placeholder/>
             @if (form.controls.email.touched && form.controls.email.invalid) {
               <p class="mt-2 text-sm text-rose-400" i18n>Enter a valid email address.</p>
             }
@@ -60,7 +67,12 @@
 
           <div>
             <label class="auth-label" for="create-password" i18n>Password</label>
-            <input id="create-password" type="password" formControlName="password" autocomplete="new-password" class="auth-input" placeholder="Choose a strong password"  i18n-placeholder/>
+            <div class="relative">
+              <input id="create-password" [type]="showPassword() ? 'text' : 'password'" formControlName="password" autocomplete="new-password" class="auth-input !pr-12" placeholder="Choose a strong password" required minlength="8" [attr.aria-invalid]="form.controls.password.touched && form.controls.password.invalid" i18n-placeholder/>
+              <button type="button" class="absolute inset-y-0 right-1 flex w-11 items-center justify-center rounded-xl text-[var(--muted)] transition-colors hover:text-[var(--text)]" [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'" [attr.title]="showPassword() ? 'Hide password' : 'Show password'" (click)="togglePasswordVisibility()">
+                <span class="material-symbols-outlined text-xl">{{ showPassword() ? 'visibility_off' : 'visibility' }}</span>
+              </button>
+            </div>
             @if (form.controls.password.touched && form.controls.password.invalid) {
               <p class="mt-2 text-sm text-rose-400" i18n>Use at least 8 characters.</p>
             }
@@ -68,7 +80,7 @@
 
           <div>
             <label class="auth-label" for="create-confirm-password" i18n>Confirm password</label>
-            <input id="create-confirm-password" type="password" formControlName="confirmPassword" autocomplete="new-password" class="auth-input" placeholder="Re-enter your password"  i18n-placeholder/>
+            <input id="create-confirm-password" [type]="showPassword() ? 'text' : 'password'" formControlName="confirmPassword" autocomplete="new-password" class="auth-input" placeholder="Re-enter your password" required [attr.aria-invalid]="form.touched && form.hasError('passwordMismatch')" i18n-placeholder/>
             @if (form.touched && form.hasError('passwordMismatch')) {
               <p class="mt-2 text-sm text-rose-400" i18n>Passwords do not match.</p>
             }
@@ -103,7 +115,7 @@
 
         <p class="mt-8 text-center text-sm text-[var(--muted)]" i18n>
           Already have an account?
-          <a routerLink="/sign-in" class="font-semibold text-[var(--accent)] hover:opacity-80">Sign in</a>
+          <a routerLink="/sign-in" [queryParams]="{ redirectTo: redirectUrl }" class="font-semibold text-[var(--accent)] hover:opacity-80">Sign in</a>
         </p>
       </section>
     </main>

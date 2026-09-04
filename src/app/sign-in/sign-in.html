@@ -9,7 +9,7 @@
       <div class="flex items-center gap-2 sm:gap-3">
         <app-theme-toggle></app-theme-toggle>
         <a routerLink="/" class="ghost-btn !px-3 !py-2 sm:!px-4 sm:!py-2.5 text-xs sm:text-sm" i18n>Home</a>
-        <a routerLink="/create-account" class="primary-btn !px-3 !py-2 sm:!px-5 sm:!py-2.5 text-xs sm:text-sm" i18n>Create Account</a>
+        <a routerLink="/create-account" [queryParams]="{ redirectTo: redirectUrl }" class="primary-btn !px-3 !py-2 sm:!px-5 sm:!py-2.5 text-xs sm:text-sm" i18n>Create Account</a>
       </div>
     </header>
 
@@ -30,7 +30,7 @@
         }
 
         @if (submitError()) {
-          <div class="mb-6 rounded-2xl border border-rose-500/25 bg-rose-500/10 px-4 py-3 text-sm text-rose-600 dark:text-rose-200">
+          <div role="alert" aria-live="assertive" class="mb-6 rounded-2xl border border-rose-500/25 bg-rose-500/10 px-4 py-3 text-sm text-rose-600 dark:text-rose-200">
             {{ submitError() }}
           </div>
         }
@@ -51,7 +51,7 @@
         <form class="space-y-5" [formGroup]="form" (ngSubmit)="signInWithEmail()">
           <div>
             <label class="auth-label" for="sign-in-email" i18n>Email</label>
-            <input id="sign-in-email" type="email" formControlName="email" autocomplete="email" class="auth-input" placeholder="you@company.com"  i18n-placeholder/>
+            <input id="sign-in-email" type="email" formControlName="email" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" class="auth-input" placeholder="you@company.com" required [attr.aria-invalid]="form.controls.email.touched && form.controls.email.invalid" (blur)="normalizeEmail()" i18n-placeholder/>
             @if (form.controls.email.touched && form.controls.email.invalid) {
               <p class="mt-2 text-sm text-rose-400" i18n>Enter a valid email address.</p>
             }
@@ -59,7 +59,12 @@
 
           <div>
             <label class="auth-label" for="sign-in-password" i18n>Password</label>
-            <input id="sign-in-password" type="password" formControlName="password" autocomplete="current-password" class="auth-input" placeholder="Enter your password"  i18n-placeholder/>
+            <div class="relative">
+              <input id="sign-in-password" [type]="showPassword() ? 'text' : 'password'" formControlName="password" autocomplete="current-password" class="auth-input !pr-12" placeholder="Enter your password" required [attr.aria-invalid]="form.controls.password.touched && form.controls.password.invalid" i18n-placeholder/>
+              <button type="button" class="absolute inset-y-0 right-1 flex w-11 items-center justify-center rounded-xl text-[var(--muted)] transition-colors hover:text-[var(--text)]" [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'" [attr.title]="showPassword() ? 'Hide password' : 'Show password'" (click)="togglePasswordVisibility()">
+                <span class="material-symbols-outlined text-xl">{{ showPassword() ? 'visibility_off' : 'visibility' }}</span>
+              </button>
+            </div>
             @if (form.controls.password.touched && form.controls.password.invalid) {
               <p class="mt-2 text-sm text-rose-400" i18n>Enter your password.</p>
             }
@@ -91,7 +96,7 @@
 
         <p class="mt-8 text-center text-sm text-[var(--muted)]" i18n>
           New here?
-          <a routerLink="/create-account" class="font-semibold text-[var(--accent)] hover:opacity-80">Create an account</a>
+          <a routerLink="/create-account" [queryParams]="{ redirectTo: redirectUrl }" class="font-semibold text-[var(--accent)] hover:opacity-80">Create an account</a>
         </p>
       </section>
     </main>

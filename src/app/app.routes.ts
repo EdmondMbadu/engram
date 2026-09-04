@@ -1,11 +1,6 @@
 import { Routes } from '@angular/router';
 import { MarketingComponent } from './marketing/marketing';
 import { LandingComponent } from './landing/landing';
-import { SignInComponent } from './sign-in/sign-in';
-import { CreateAccountComponent } from './create-account/create-account';
-import { ForgotPasswordComponent } from './forgot-password/forgot-password';
-import { VerifyEmailComponent } from './verify-email/verify-email';
-import { AuthActionComponent } from './auth-action/auth-action';
 import { WikiComponent } from './wiki/wiki';
 import { ChatComponent } from './chat/chat';
 import { LibraryComponent } from './library/library';
@@ -211,10 +206,33 @@ export const routes: Routes = [
   { path: 'atlas/:slug', component: AtlasLandingComponent, title: $localize`Atlas | LivingWiki` },
   { path: 'privacy', component: LegalComponent, title: $localize`Privacy Policy | LivingWiki`, data: { legalPage: 'privacy' } },
   { path: 'terms', component: LegalComponent, title: $localize`Terms and Conditions | LivingWiki`, data: { legalPage: 'terms' } },
-  { path: 'sign-in', component: SignInComponent, title: $localize`Sign In | LivingWiki`, canActivate: [guestOnlyGuard] },
-  { path: 'create-account', component: CreateAccountComponent, title: $localize`Create Account | LivingWiki`, canActivate: [guestOnlyGuard] },
-  { path: 'forgot-password', component: ForgotPasswordComponent, title: $localize`Forgot Password | LivingWiki`, canActivate: [guestOnlyGuard] },
-  { path: 'verify-email', component: VerifyEmailComponent, title: $localize`Verify Email | LivingWiki` },
-  { path: 'auth/action', component: AuthActionComponent, title: $localize`Account Action | LivingWiki` },
+  {
+    path: 'sign-in',
+    loadComponent: () => import('./sign-in/sign-in').then((m) => m.SignInComponent),
+    title: $localize`Sign In | LivingWiki`,
+    canActivate: [guestOnlyGuard],
+  },
+  {
+    path: 'create-account',
+    loadComponent: () => import('./create-account/create-account').then((m) => m.CreateAccountComponent),
+    title: $localize`Create Account | LivingWiki`,
+    canActivate: [guestOnlyGuard],
+  },
+  {
+    path: 'forgot-password',
+    loadComponent: () => import('./forgot-password/forgot-password').then((m) => m.ForgotPasswordComponent),
+    title: $localize`Forgot Password | LivingWiki`,
+    canActivate: [guestOnlyGuard],
+  },
+  {
+    path: 'verify-email',
+    loadComponent: () => import('./verify-email/verify-email').then((m) => m.VerifyEmailComponent),
+    title: $localize`Verify Email | LivingWiki`,
+  },
+  {
+    path: 'auth/action',
+    loadComponent: () => import('./auth-action/auth-action').then((m) => m.AuthActionComponent),
+    title: $localize`Account Action | LivingWiki`,
+  },
   { path: '**', component: NotFoundComponent, title: $localize`Page Not Found | LivingWiki` },
 ];

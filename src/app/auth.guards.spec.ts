@@ -2,7 +2,7 @@ import { PLATFORM_ID, provideZonelessChangeDetection, signal } from '@angular/co
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree, convertToParamMap, provideRouter } from '@angular/router';
 import { AuthService } from './auth.service';
-import { boardsRootRedirectGuard } from './auth.guards';
+import { boardsRootRedirectGuard, guestOnlyGuard } from './auth.guards';
 
 describe('boardsRootRedirectGuard', () => {
   const isAuthenticated = signal(true);
@@ -44,5 +44,69 @@ describe('boardsRootRedirectGuard', () => {
       route,
       {} as RouterStateSnapshot,
     ));
+  }
+});
+
+describe('guestOnlyGuard', () => {
+  const isAuthenticated = signal(false);
+  const needsEmailVerification = signal(false);
+
+  beforeEach(() => {
+    isAuthenticated.set(false);
+    needsEmailVerification.set(false);
+    TestBed.configureTestingModule({
+      providers: [
+        provideZonelessChangeDetection(),
+        provideRouter([]),
+        { provide: PLATFORM_ID, useValue: 'browser' },
+        {
+          provide: AuthService,
+          useValue: {
+            isAuthenticated,
+            needsEmailVerification,
+            waitForReady: async () => undefined,
+          },
+        },
+      ],
+    });
+  });
+
+  it('allows signed-out visitors to open account pages', async () => {
+    expect(await runGuestGuard('/wikis')).toBeTrue();
+  });
+
+  it('preserves a safe destination for an existing signed-in account', async () => {
+    isAuthenticated.set(true);
+
+    const result = await runGuestGuard('/pricing?audience=general');
+
+    expect(TestBed.inject(Router).serializeUrl(result as UrlTree)).toBe('/pricing?audience=general');
+  });
+
+  it('preserves the destination while an existing account verifies its email', async () => {
+    isAuthenticated.set(true);
+    needsEmailVerification.set(true);
+
+    const result = await runGuestGuard('/wikis');
+
+    expect(TestBed.inject(Router).serializeUrl(result as UrlTree)).toBe('/verify-email?redirectTo=%2Fwikis');
+  });
+
+  it('rejects external redirect attempts', async () => {
+    isAuthenticated.set(true);
+
+    const result = await runGuestGuard('//example.com');
+
+    expect(TestBed.inject(Router).serializeUrl(result as UrlTree)).toBe('/home');
+  });
+
+  function runGuestGuard(redirectTo: string | null): Promise<unknown> {
+    const route = {
+      queryParamMap: convertToParamMap(redirectTo ? { redirectTo } : {}),
+    } as ActivatedRouteSnapshot;
+    return TestBed.runInInjectionContext(() => guestOnlyGuard(
+      route,
+      {} as RouterStateSnapshot,
+    )) as Promise<unknown>;
   }
 });

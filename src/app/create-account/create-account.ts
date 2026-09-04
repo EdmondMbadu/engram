@@ -16,14 +16,17 @@ export class CreateAccountComponent {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
-  readonly isSubmitting = signal(false);
+  readonly submissionMethod = signal<'email' | 'google' | null>(null);
+  readonly isSubmitting = computed(() => this.submissionMethod() !== null);
   readonly submitError = signal<string | null>(null);
   readonly googleButtonLabel = computed(() =>
-    this.isSubmitting() ? $localize`Working...` : $localize`Continue with Google`,
+    this.submissionMethod() === 'google' ? $localize`Working...` : $localize`Continue with Google`,
   );
   readonly createButtonLabel = computed(() =>
-    this.isSubmitting() ? $localize`Creating Account...` : $localize`Create Account`,
+    this.submissionMethod() === 'email' ? $localize`Creating Account...` : $localize`Create Account`,
   );
+  readonly showPassword = signal(false);
+  readonly redirectUrl = this.getRedirectUrl();
 
   readonly form = this.formBuilder.group(
     {
@@ -46,16 +49,23 @@ export class CreateAccountComponent {
     if (email) {
       this.form.controls.email.setValue(email);
     }
+
+    this.form.valueChanges.subscribe(() => this.submitError.set(null));
   }
 
   async createAccount(): Promise<void> {
+    if (this.isSubmitting()) {
+      return;
+    }
+
+    this.normalizeIdentityFields();
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
 
     this.submitError.set(null);
-    this.isSubmitting.set(true);
+    this.submissionMethod.set('email');
 
     try {
       const { fullName, email, password, rememberMe } = this.form.getRawValue();
@@ -64,24 +74,28 @@ export class CreateAccountComponent {
         email,
         password,
         remember: rememberMe,
-        redirectTo: this.getRedirectUrl(),
+        redirectTo: this.redirectUrl,
       });
       await this.router.navigate(['/verify-email'], {
         queryParams: {
-          redirectTo: this.getRedirectUrl(),
+          redirectTo: this.redirectUrl,
           sent: result.verificationEmailSent ? '1' : '0',
         },
       });
     } catch (error) {
       this.submitError.set(this.authService.toFriendlyError(error));
     } finally {
-      this.isSubmitting.set(false);
+      this.submissionMethod.set(null);
     }
   }
 
   async continueWithGoogle(): Promise<void> {
+    if (this.isSubmitting()) {
+      return;
+    }
+
     this.submitError.set(null);
-    this.isSubmitting.set(true);
+    this.submissionMethod.set('google');
 
     try {
       const result = await this.authService.signInWithGoogle(
@@ -90,17 +104,28 @@ export class CreateAccountComponent {
 
       if (result.needsEmailVerification) {
         await this.router.navigate(['/verify-email'], {
-          queryParams: { redirectTo: this.getRedirectUrl() },
+          queryParams: { redirectTo: this.redirectUrl },
         });
         return;
       }
 
-      await this.router.navigateByUrl(this.getRedirectUrl());
+      await this.router.navigateByUrl(this.redirectUrl);
     } catch (error) {
       this.submitError.set(this.authService.toFriendlyError(error));
     } finally {
-      this.isSubmitting.set(false);
+      this.submissionMethod.set(null);
     }
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword.update((visible) => !visible);
+  }
+
+  normalizeIdentityFields(): void {
+    const fullName = this.form.controls.fullName.getRawValue().trim().replace(/\s+/g, ' ');
+    const email = this.form.controls.email.getRawValue().trim().toLowerCase();
+    this.form.controls.fullName.setValue(fullName, { emitEvent: false });
+    this.form.controls.email.setValue(email, { emitEvent: false });
   }
 
   private getRedirectUrl(): string {
