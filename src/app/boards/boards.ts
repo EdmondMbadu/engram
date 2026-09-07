@@ -183,6 +183,12 @@ import {
   type ListingCardPresentation,
 } from './listing-card-presentation';
 import {
+  isListingContactCard as isListingContactCardRecord,
+  listingContactCardDetails as contactDetailsForListingCard,
+  listingContactNarration,
+  type ListingContactCardDetails,
+} from './listing-contact-card';
+import {
   boardCityMetadataForFirestore,
   boardDescriptionForFirestore,
   omitUndefinedDeep,
@@ -1622,7 +1628,7 @@ type BoardLoadContext = {
   imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink, BoardCollectionCreateComponent, BoardCollectionListComponent, CustomPublicUrlDialogComponent, BoardPromoImageDialogComponent, NearbyGemsBoardComponent, TalkingCardEditorComponent, TalkingCardConversationComponent, BackdropDismissDirective],
   providers: [DocxExportService],
   templateUrl: './boards.html',
-  styleUrls: ['./boards.css', './boards-mobile-create.css', './tour-experience.css', './board-wizard-drafts.css', './board-wizard-media-mode.css', './board-narration-style.css', './board-wizard-redesign.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css', './stack-script.css', './stack-listing-groups.css', './stack-cover-final.css', './stack-doc-export.css', './stack-studio-redesign.css', './board-city-tag.css', './board-custom-link.css', './nearby-gems-gallery.css', './talking-card.css', './board-settings.css'],
+  styleUrls: ['./boards.css', './boards-mobile-create.css', './tour-experience.css', './board-wizard-drafts.css', './board-wizard-media-mode.css', './board-narration-style.css', './board-wizard-redesign.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css', './stack-script.css', './stack-listing-groups.css', './listing-contact-card.css', './stack-cover-final.css', './stack-doc-export.css', './stack-studio-redesign.css', './board-city-tag.css', './board-custom-link.css', './nearby-gems-gallery.css', './talking-card.css', './board-settings.css'],
 })
 export class BoardsComponent implements AfterViewInit, OnDestroy {
   private readonly localeId = inject(LOCALE_ID);
@@ -15892,6 +15898,14 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     ].filter(Boolean).join(' · ');
   }
 
+  isListingContactCard(card: BoardCard): boolean {
+    return isListingContactCardRecord(card);
+  }
+
+  listingContactDetails(card: BoardCard): ListingContactCardDetails {
+    return contactDetailsForListingCard(card);
+  }
+
   stackCardSummary(board: Board, card: BoardCard): string {
     const subtitle = this.cardDisplaySubtitle(board, card);
     const summary = cardPresentationSubtitle(
@@ -15997,6 +16011,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   }
 
   private persistedStackCardNarrationText(card: BoardCard): string {
+    if (this.isListingContactCard(card)) return listingContactNarration(card);
     return (card.notes || card.shortSummary || card.subtitle).trim();
   }
 

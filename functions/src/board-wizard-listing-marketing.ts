@@ -718,6 +718,7 @@ function buildMarketingBatch(options: {
     const contactEmail = showContact ? options.marketing?.contactEmail.trim() || '' : '';
     const contactPhone = showContact ? options.marketing?.contactPhone.trim() || '' : '';
     const agency = showContact ? options.marketing?.agency.trim() || '' : options.extraction.realEstate.brokerage;
+    const isListingContact = showContact && !!(contactPhone || contactEmail);
     const contactLines = [
       contactName,
       agency && agency !== contactName ? agency : '',
@@ -726,24 +727,27 @@ function buildMarketingBatch(options: {
     ].filter(Boolean);
     const nextStepTitle = options.listingIntent === 'rental'
       ? options.extraction.kind === 'vacation-rental' ? 'Check availability & book' : 'Check availability & apply'
-      : contactName ? `Contact ${contactName}`
+      : isListingContact ? `Contact ${contactName || 'the listing agent'}`
       : options.extraction.price ? `The next step · ${options.extraction.price}` : 'See the full listing';
-    const closingNotes = [
-      ...contactLines,
-      finalScene?.narration || listingClose(options.extraction, options.listingIntent, boardWizardListingFurnishingsIncluded(options.extraction)),
-    ].filter(Boolean).join('\n');
+    const contactInvitation = `Interested in this home? ${contactName ? `Contact ${contactName}` : 'Get in touch with the listing agent'} to ask a question or arrange a private showing.`;
+    const closingSubtitleText = isListingContact
+      ? `Questions about this home? Get in touch with ${contactName || 'the listing agent'}.`
+      : closingSubtitle(options.extraction, options.listingIntent);
+    const closingNotes = isListingContact
+      ? [contactInvitation, ...contactLines].filter(Boolean).join('\n')
+      : [finalScene?.narration || listingClose(options.extraction, options.listingIntent, boardWizardListingFurnishingsIncluded(options.extraction))].filter(Boolean).join('\n');
     cards.push({
       ...shared,
       title: nextStepTitle.slice(0, 80),
-      subtitle: (contactLines.length ? contactLines.join(' · ') : closingSubtitle(options.extraction, options.listingIntent)).slice(0, 120),
+      subtitle: closingSubtitleText.slice(0, 120),
       notes: closingNotes.slice(0, 3600),
       type: 'note',
       status: 'planned',
       rating: 4,
-      tags: ['listing', rentalTag, 'listing-story', 'listing-group', 'group-next-step', 'action'],
+      tags: ['listing', rentalTag, 'listing-story', 'listing-group', 'group-next-step', 'action', ...(isListingContact ? ['listing-contact'] : [])],
       image_query: `${options.extraction.listingName} next step`.slice(0, 120),
       image_context: options.extraction.address || options.extraction.listingName,
-      short_summary: closingSubtitle(options.extraction, options.listingIntent).slice(0, 160),
+      short_summary: closingSubtitleText.slice(0, 160),
       rank: cards.length + 1,
       imageUrl: nextStepImage,
       imageUrls: nextStepImage ? [nextStepImage] : [],

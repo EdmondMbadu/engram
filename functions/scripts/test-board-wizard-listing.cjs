@@ -750,9 +750,14 @@ assert.equal(personalizedStory.cards[0].notes, personalizedMarketing.introMessag
 assert.equal(personalizedStory.cards[0].authorOnly, false);
 assert.match(personalizedStory.board.description, /Townhouse/);
 assert.equal(personalizedStory.cards.at(-1).title, 'Contact Jenny Morgan');
+assert.equal(personalizedStory.cards.at(-1).subtitle, 'Questions about this home? Get in touch with Jenny Morgan.');
+assert.equal(personalizedStory.cards.at(-1).short_summary, 'Questions about this home? Get in touch with Jenny Morgan.');
 assert.match(personalizedStory.cards.at(-1).notes, /Phone: \(609\) 555-0147/);
 assert.match(personalizedStory.cards.at(-1).notes, /Email: jenny@harborrealty.com/);
 assert.match(personalizedStory.cards.at(-1).notes, /Harbor Realty/);
+assert.match(personalizedStory.cards.at(-1).notes, /arrange a private showing/i);
+assert.doesNotMatch(personalizedStory.cards.at(-1).notes, /current price|status, disclosures|showing availability/i);
+assert.ok(personalizedStory.cards.at(-1).tags.includes('listing-contact'));
 
 const missingIntroStory = buildBoardWizardListingMarketingBatchFromAnalyses({
   extraction: expListing,

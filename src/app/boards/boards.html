@@ -92,7 +92,41 @@
                     @if (stackCurrentCardImage(); as activeCardImage) {
                       <img class="stack-preview__media" [src]="activeCardImage" [alt]="card.title + (stackCardPhotoPosition() ? ' · photo ' + stackCardPhotoPosition() : '')" decoding="async" />
                     }
-                    @if (!isPhotoOnlyCard(card)) {
+                    @if (isListingContactCard(card)) {
+                      @if (listingContactDetails(card); as contact) {
+                        <div class="stack-preview__shade stack-preview__shade--contact"></div>
+                        <div class="stack-preview__content stack-preview__content--contact">
+                          <span class="listing-contact-live__eyebrow">
+                            <span class="material-symbols-outlined">waving_hand</span>
+                            Let’s connect
+                          </span>
+                          <div class="listing-contact-live__heading">
+                            <h4>Interested in this home?</h4>
+                            <p>Contact {{ contact.name || 'the listing agent' }}</p>
+                          </div>
+                          @if (contact.agency) {
+                            <span class="listing-contact-live__agency">{{ contact.agency }}</span>
+                          }
+                          <p class="listing-contact-live__invitation">I’d be happy to answer your questions or arrange a private showing.</p>
+                          @if (contact.phoneHref || contact.emailHref) {
+                            <div class="listing-contact-live__actions" [class.listing-contact-live__actions--single]="!contact.phoneHref || !contact.emailHref">
+                              @if (contact.phoneHref) {
+                                <a [href]="contact.phoneHref" [attr.aria-label]="'Call ' + (contact.name || 'the listing agent')" (click)="$event.stopPropagation()">
+                                  <span class="material-symbols-outlined">call</span>
+                                  <span><small>Call</small><strong>{{ contact.phone }}</strong></span>
+                                </a>
+                              }
+                              @if (contact.emailHref) {
+                                <a [href]="contact.emailHref" [attr.aria-label]="'Email ' + (contact.name || 'the listing agent')" (click)="$event.stopPropagation()">
+                                  <span class="material-symbols-outlined">mail</span>
+                                  <span><small>Email</small><strong>{{ contact.email }}</strong></span>
+                                </a>
+                              }
+                            </div>
+                          }
+                        </div>
+                      }
+                    } @else if (!isPhotoOnlyCard(card)) {
                       <div class="stack-preview__shade"></div>
                       <div class="stack-preview__content">
                         @if (stackCardEyebrow(board, card); as eyebrow) {
@@ -3173,6 +3207,7 @@
                   [class.detail-card--managing]="!exploredRelatedCardParent() && !isAlongsideInnerCard(board, card) && isManagingBoard(board.id)"
                   [class.detail-card--inside-alongside]="isAlongsideInnerCard(board, card)"
                   [class.detail-card--photo-only]="isPhotoOnlyCard(card)"
+                  [class.detail-card--listing-contact]="isListingContactCard(card)"
                   [class.detail-card--has-memories]="hasBoardInside(card) || relatedCardCount(card) > 0"
                   [class.detail-card--expanded]="isCardExpanded(card.id)"
                   [class.detail-card--dragging]="isDraggingCard(card.id)"
@@ -3430,7 +3465,7 @@
                             </span>
                           </button>
                         }
-                        @if (!isPhotoOnlyCard(card)) {
+                        @if (!isPhotoOnlyCard(card) && !isListingContactCard(card)) {
                           <span class="detail-card__status">
                             <span class="material-symbols-outlined">{{ statusIcon(card.status) }}</span>
                             {{ statusLabel(card.status) }}
@@ -3472,32 +3507,58 @@
                         }
                       </div>
 
-                      <div class="detail-card__summary">
-                        <button
-                          type="button"
-                          class="detail-card__peek"
-                          [attr.aria-expanded]="isCardExpanded(card.id)"
-                          [attr.aria-label]="(isCardExpanded(card.id) ? 'Hide details for ' : 'Show details for ') + card.title"
-                          (click)="toggleCardExpanded(card.id, $event)"
-                        >
-                          <small>{{ isTalkingCard(card) ? 'Talking Card' : cardTypeLabel(card.type) }}</small>
-                          <strong>{{ card.title }}</strong>
-                          @if (cardDisplaySubtitle(board, card); as summarySubtitle) {
-                            <span>{{ summarySubtitle }}</span>
-                          }
-                        </button>
-                        <button
-                          type="button"
-                          class="card-flip-button detail-card__flip-button detail-card__flip-button--inline"
-                          aria-label="Show card back"
-                          (click)="toggleCardFlip(card.id, $event)"
-                          i18n-aria-label>
-                          <span class="material-symbols-outlined" aria-hidden="true">autorenew</span>
-                          <span>Flip</span>
-                        </button>
-                      </div>
+                      @if (isListingContactCard(card)) {
+                        @if (listingContactDetails(card); as contact) {
+                          <div class="listing-contact-board">
+                            <span class="listing-contact-board__eyebrow">Questions about this home?</span>
+                            <strong>Contact {{ contact.name || 'the listing agent' }}</strong>
+                            @if (contact.agency) { <small>{{ contact.agency }}</small> }
+                            @if (contact.phoneHref || contact.emailHref) {
+                              <div class="listing-contact-board__actions">
+                                @if (contact.phoneHref) {
+                                  <a [href]="contact.phoneHref" [attr.aria-label]="'Call ' + (contact.name || 'the listing agent')" (click)="$event.stopPropagation()">
+                                    <span class="material-symbols-outlined">call</span>
+                                    <b>Call</b>
+                                  </a>
+                                }
+                                @if (contact.emailHref) {
+                                  <a [href]="contact.emailHref" [attr.aria-label]="'Email ' + (contact.name || 'the listing agent')" (click)="$event.stopPropagation()">
+                                    <span class="material-symbols-outlined">mail</span>
+                                    <b>Email</b>
+                                  </a>
+                                }
+                              </div>
+                            }
+                          </div>
+                        }
+                      } @else {
+                        <div class="detail-card__summary">
+                          <button
+                            type="button"
+                            class="detail-card__peek"
+                            [attr.aria-expanded]="isCardExpanded(card.id)"
+                            [attr.aria-label]="(isCardExpanded(card.id) ? 'Hide details for ' : 'Show details for ') + card.title"
+                            (click)="toggleCardExpanded(card.id, $event)"
+                          >
+                            <small>{{ isTalkingCard(card) ? 'Talking Card' : cardTypeLabel(card.type) }}</small>
+                            <strong>{{ card.title }}</strong>
+                            @if (cardDisplaySubtitle(board, card); as summarySubtitle) {
+                              <span>{{ summarySubtitle }}</span>
+                            }
+                          </button>
+                          <button
+                            type="button"
+                            class="card-flip-button detail-card__flip-button detail-card__flip-button--inline"
+                            aria-label="Show card back"
+                            (click)="toggleCardFlip(card.id, $event)"
+                            i18n-aria-label>
+                            <span class="material-symbols-outlined" aria-hidden="true">autorenew</span>
+                            <span>Flip</span>
+                          </button>
+                        </div>
+                      }
 
-                      @if (!isPhotoOnlyCard(card)) {
+                      @if (!isPhotoOnlyCard(card) && !isListingContactCard(card)) {
                       <div class="detail-card__body">
                         <div class="detail-card__line">
                           <span>
@@ -3573,9 +3634,11 @@
                       </div>
                       }
 
-                      <div class="detail-card__footer">
-                        <span i18n>Updated {{ cardUpdatedLabel(card) }}</span>
-                      </div>
+                      @if (!isListingContactCard(card)) {
+                        <div class="detail-card__footer">
+                          <span i18n>Updated {{ cardUpdatedLabel(card) }}</span>
+                        </div>
+                      }
                     </div>
 
                     <div
