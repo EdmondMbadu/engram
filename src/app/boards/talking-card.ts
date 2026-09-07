@@ -15,6 +15,16 @@ export type BoardCardConversation = {
   openingMessage: string;
   ctaLabel?: string;
   actions?: TalkingCardAction[];
+  starters?: string[];
+};
+
+export type TalkingCardEditorPrefill = {
+  draftKey?: string;
+  name?: string;
+  role?: string;
+  personaPrompt?: string;
+  openingMessage?: string;
+  ctaLabel?: string;
 };
 
 export type TalkingCardEditorResult = {
@@ -47,6 +57,8 @@ const ACTION_LABEL_MAX_LENGTH = 48;
 const ACTION_DESCRIPTION_MAX_LENGTH = 180;
 const ACTION_URL_MAX_LENGTH = 2000;
 const ACTION_LIMIT = 4;
+const STARTER_LIMIT = 3;
+const STARTER_MAX_LENGTH = 120;
 
 function cleanString(value: unknown, maxLength: number): string {
   return typeof value === 'string' ? value.trim().slice(0, maxLength) : '';
@@ -127,6 +139,12 @@ export function normalizeBoardCardConversation(value: unknown): BoardCardConvers
   const openingMessage = cleanString(data['openingMessage'], OPENING_MESSAGE_MAX_LENGTH);
   const ctaLabel = cleanString(data['ctaLabel'], CTA_LABEL_MAX_LENGTH);
   const actions = normalizeTalkingCardActions(data['actions']);
+  const starters = Array.isArray(data['starters'])
+    ? Array.from(new Set(data['starters']
+        .map((item) => cleanString(item, STARTER_MAX_LENGTH))
+        .filter(Boolean)))
+        .slice(0, STARTER_LIMIT)
+    : [];
   return {
     version: 1,
     provider: 'atlas',
@@ -134,6 +152,7 @@ export function normalizeBoardCardConversation(value: unknown): BoardCardConvers
     openingMessage,
     ...(ctaLabel ? { ctaLabel } : {}),
     ...(actions.length ? { actions } : {}),
+    ...(starters.length ? { starters } : {}),
   };
 }
 
@@ -143,4 +162,8 @@ export function talkingCardCtaLabel(conversation: BoardCardConversation | null |
 
 export function talkingCardActions(conversation: BoardCardConversation | null | undefined): TalkingCardAction[] {
   return normalizeTalkingCardActions(conversation?.actions);
+}
+
+export function talkingCardStarters(conversation: BoardCardConversation | null | undefined): string[] {
+  return normalizeBoardCardConversation(conversation)?.starters ?? [];
 }

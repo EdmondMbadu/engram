@@ -17,6 +17,7 @@ import {
   type TalkingCardAction,
   type TalkingCardActionKind,
   type TalkingCardEditorResult,
+  type TalkingCardEditorPrefill,
   type TalkingCardEditorValue,
 } from '../boards/talking-card';
 import {
@@ -62,6 +63,7 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
   readonly boardTitle = input('Board');
   readonly boardVisibility = input<'private' | 'public' | 'unlisted'>('private');
   readonly editingCard = input<TalkingCardEditorValue | null>(null);
+  readonly prefill = input<TalkingCardEditorPrefill | null>(null);
   readonly closed = output<void>();
   readonly saved = output<TalkingCardEditorResult>();
 
@@ -212,8 +214,20 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
   async ngOnInit(): Promise<void> {
     if (this.editingCard()) {
       await this.initializeEditingCard();
+    } else {
+      this.applyPrefill();
     }
     await Promise.all([this.restoreDraft(), this.loadPersonalVoices()]);
+  }
+
+  private applyPrefill(): void {
+    const prefill = this.prefill();
+    if (!prefill) return;
+    if (prefill.name?.trim()) this.name.set(prefill.name.trim().slice(0, 120));
+    if (prefill.role?.trim()) this.role.set(prefill.role.trim().slice(0, 240));
+    if (prefill.personaPrompt?.trim()) this.personaPrompt.set(prefill.personaPrompt.trim().slice(0, 40_000));
+    if (prefill.openingMessage?.trim()) this.openingMessage.set(prefill.openingMessage.trim().slice(0, 500));
+    if (prefill.ctaLabel?.trim()) this.ctaLabel.set(prefill.ctaLabel.trim().slice(0, 48));
   }
 
   setMode(mode: EditorMode): void {
@@ -931,9 +945,16 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
 
   private draftStorageKey(): string {
     const boardId = this.boardId().trim();
-    if (boardId) return this.editingCard()?.id
-      ? `board:${boardId}:card:${this.editingCard()!.id}`
-      : `board:${boardId}`;
+    if (boardId) {
+      if (this.editingCard()?.id) return `board:${boardId}:card:${this.editingCard()!.id}`;
+      const prefillDraftKey = this.prefill()?.draftKey
+        ?.trim()
+        .toLocaleLowerCase()
+        .replace(/[^a-z0-9_-]+/g, '-')
+        .replace(/^-+|-+$/g, '')
+        .slice(0, 48);
+      return prefillDraftKey ? `board:${boardId}:${prefillDraftKey}` : `board:${boardId}`;
+    }
     const title = this.boardTitle().trim().toLocaleLowerCase().replace(/[^a-z0-9]+/g, '-');
     return title ? `board-title:${title}` : '';
   }

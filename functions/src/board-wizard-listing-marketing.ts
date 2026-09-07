@@ -706,6 +706,27 @@ function buildMarketingBatch(options: {
     });
   }
   cards.push(overview, ...groupCards);
+  if (options.marketing?.personalized && options.listingIntent !== 'rental') {
+    const setupImage = overviewUrls[0] || gallery[0];
+    cards.push({
+      ...shared,
+      title: 'Your Talking Card',
+      subtitle: 'Let buyers ask you questions about this property.',
+      notes: 'Set up your agent Talking Card when you are ready. This card is visible only to you until setup is complete.',
+      type: 'note',
+      status: 'saved',
+      rating: 5,
+      authorOnly: true,
+      tags: ['listing', 'real-estate', 'listing-story', 'listing-talking-card-placeholder', 'author-only'],
+      image_query: `${options.extraction.listingName} agent conversation`.slice(0, 120),
+      image_context: options.extraction.address || options.extraction.listingName,
+      short_summary: 'Make yourself available to buyers.',
+      rank: cards.length + 1,
+      imageUrl: setupImage,
+      imageUrls: setupImage ? [setupImage] : [],
+      imageSource: setupImage ? 'source-page' : 'missing',
+    });
+  }
   if (reserveNextStep) {
     const finalScene = options.scenes.at(-1);
     const nextStepImage = overviewUrls[0] || gallery[0];

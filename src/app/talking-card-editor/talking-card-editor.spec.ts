@@ -150,6 +150,27 @@ describe('TalkingCardEditorComponent', () => {
     expect(results[0].textContent).toContain('George Washington');
   });
 
+  it('prefills the real-estate guide and isolates its draft from the generic editor', async () => {
+    const fixture = TestBed.createComponent(TalkingCardEditorComponent);
+    fixture.componentRef.setInput('boardId', 'listing-board');
+    fixture.componentRef.setInput('prefill', {
+      draftKey: 'listing-agent-setup',
+      name: 'Jenny Morgan',
+      role: 'North Star Realty · Listing agent',
+      personaPrompt: 'Answer from the supplied property context.',
+      openingMessage: 'Hi, I’m Jenny. Ask me about this home.',
+      ctaLabel: 'Ask Jenny',
+    });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(fixture.componentInstance.name()).toBe('Jenny Morgan');
+    expect(fixture.componentInstance.role()).toContain('Listing agent');
+    expect(fixture.componentInstance.openingMessage()).toContain('Ask me about this home');
+    expect(fixture.componentInstance.ctaLabel()).toBe('Ask Jenny');
+    expect(draftStore.load).toHaveBeenCalledWith('board:listing-board:listing-agent-setup');
+  });
+
   it('selects a searched avatar and clears the result list', () => {
     const fixture = TestBed.createComponent(TalkingCardEditorComponent);
     fixture.detectChanges();

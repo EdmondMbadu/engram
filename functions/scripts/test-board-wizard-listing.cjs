@@ -749,6 +749,11 @@ assert.equal(personalizedStory.cards[0].title, 'Welcome from Jenny Morgan');
 assert.equal(personalizedStory.cards[0].notes, personalizedMarketing.introMessage, 'the agent introduction must remain verbatim');
 assert.equal(personalizedStory.cards[0].authorOnly, false);
 assert.match(personalizedStory.board.description, /Townhouse/);
+const personalizedTalkingCardSetup = personalizedStory.cards.at(-2);
+assert.equal(personalizedTalkingCardSetup.title, 'Your Talking Card');
+assert.equal(personalizedTalkingCardSetup.authorOnly, true);
+assert.ok(personalizedTalkingCardSetup.tags.includes('listing-talking-card-placeholder'));
+assert.ok(personalizedTalkingCardSetup.tags.includes('author-only'));
 assert.equal(personalizedStory.cards.at(-1).title, 'Contact Jenny Morgan');
 assert.equal(personalizedStory.cards.at(-1).subtitle, 'Questions about this home? Get in touch with Jenny Morgan.');
 assert.equal(personalizedStory.cards.at(-1).short_summary, 'Questions about this home? Get in touch with Jenny Morgan.');
@@ -776,6 +781,7 @@ const missingIntroStory = buildBoardWizardListingMarketingBatchFromAnalyses({
 assert.equal(missingIntroStory.cards[0].title, 'Intro card');
 assert.equal(missingIntroStory.cards[0].authorOnly, true);
 assert.ok(missingIntroStory.cards[0].tags.includes('author-only'));
+assert.equal(missingIntroStory.cards.filter((card) => card.tags.includes('listing-talking-card-placeholder')).length, 1);
 
 const privateContactStory = buildBoardWizardListingMarketingBatchFromAnalyses({
   extraction: expListing,

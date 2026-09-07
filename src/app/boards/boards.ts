@@ -168,8 +168,10 @@ import {
   normalizeBoardCardConversation,
   talkingCardActions,
   talkingCardCtaLabel,
+  talkingCardStarters,
   type BoardCardConversation,
   type TalkingCardAction,
+  type TalkingCardEditorPrefill,
   type TalkingCardEditorResult,
   type TalkingCardEditorValue,
 } from './talking-card';
@@ -188,6 +190,12 @@ import {
   listingContactNarration,
   type ListingContactCardDetails,
 } from './listing-contact-card';
+import {
+  hasListingTalkingCard,
+  isListingTalkingCardPlaceholder as isListingTalkingCardPlaceholderRecord,
+  placeListingTalkingCard,
+  shouldOfferListingTalkingCardSetup,
+} from './listing-talking-card';
 import {
   boardCityMetadataForFirestore,
   boardDescriptionForFirestore,
@@ -1628,7 +1636,7 @@ type BoardLoadContext = {
   imports: [WorkspaceSidebarComponent, MobileMenuComponent, ThemeToggleComponent, AccountMenuComponent, RouterLink, BoardCollectionCreateComponent, BoardCollectionListComponent, CustomPublicUrlDialogComponent, BoardPromoImageDialogComponent, NearbyGemsBoardComponent, TalkingCardEditorComponent, TalkingCardConversationComponent, BackdropDismissDirective],
   providers: [DocxExportService],
   templateUrl: './boards.html',
-  styleUrls: ['./boards.css', './boards-mobile-create.css', './tour-experience.css', './board-wizard-drafts.css', './board-wizard-media-mode.css', './board-narration-style.css', './board-wizard-redesign.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css', './stack-script.css', './stack-listing-groups.css', './listing-contact-card.css', './stack-cover-final.css', './stack-doc-export.css', './stack-studio-redesign.css', './board-city-tag.css', './board-custom-link.css', './nearby-gems-gallery.css', './talking-card.css', './board-settings.css'],
+  styleUrls: ['./boards.css', './boards-mobile-create.css', './tour-experience.css', './board-wizard-drafts.css', './board-wizard-media-mode.css', './board-narration-style.css', './board-wizard-redesign.css', './card-image-tools.css', './wizard-card-editor.css', './youtube-video.css', './board-live-entry.css', './board-learning.css', './tour-order.css', './tour-stop-editor.css', './stack-audio.css', './stack-voice.css', './stack-script.css', './stack-listing-groups.css', './listing-contact-card.css', './listing-talking-card.css', './stack-cover-final.css', './stack-doc-export.css', './stack-studio-redesign.css', './board-city-tag.css', './board-custom-link.css', './nearby-gems-gallery.css', './talking-card.css', './board-settings.css'],
 })
 export class BoardsComponent implements AfterViewInit, OnDestroy {
   private readonly localeId = inject(LOCALE_ID);
@@ -1856,6 +1864,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly cardDialogOpen = signal(false);
   readonly talkingCardEditorBoardId = signal<string | null>(null);
   readonly talkingCardEditingCardId = signal<string | null>(null);
+  readonly listingTalkingCardSetup = signal<{ boardId: string; placeholderCardId: string } | null>(null);
   readonly talkingConversationCardId = signal<string | null>(null);
   readonly talkingConversationSurface = signal<'board' | 'live'>('board');
   readonly talkingCardEditorBoard = computed(() => {
@@ -1874,6 +1883,27 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       imageUrl: card.imageUrl,
       placement: 'keep',
       conversation: card.conversation,
+    };
+  });
+  readonly talkingCardEditorPrefill = computed<TalkingCardEditorPrefill | null>(() => {
+    const setup = this.listingTalkingCardSetup();
+    const board = setup ? this.boards().find((candidate) => candidate.id === setup.boardId) : null;
+    if (!board) return null;
+    const contactCard = board.cards.find((card) => isListingContactCardRecord(card));
+    const contact = contactCard ? contactDetailsForListingCard(contactCard) : null;
+    const agentName = contact?.name || '';
+    const firstName = agentName.split(/\s+/).filter(Boolean)[0] || 'the agent';
+    return {
+      draftKey: 'listing-agent-setup',
+      name: agentName,
+      role: contact?.agency ? `${contact.agency} · Listing agent` : 'Listing agent',
+      openingMessage: `Hi${agentName ? `, I’m ${agentName}` : ''}. Ask me about ${board.title}, or how to arrange a private showing.`,
+      ctaLabel: `Ask ${firstName}`.slice(0, 48),
+      personaPrompt: [
+        agentName ? `You are ${agentName}, the real-estate agent presenting ${board.title}. Speak naturally in the first person.` : `You are the real-estate agent presenting ${board.title}.`,
+        'Answer concisely and use the property context supplied with this Talking Card.',
+        'Never invent property facts, pricing, availability, disclosures, or showing times. When information is missing or may have changed, say so and invite the visitor to contact the agent directly.',
+      ].join(' '),
     };
   });
   readonly talkingConversationCard = computed(() => {
@@ -7060,6 +7090,22 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       this.boardsSyncError.set('Only the board owner can add Talking Cards.');
       return;
     }
+    this.listingTalkingCardSetup.set(null);
+    this.talkingCardEditingCardId.set(null);
+    this.talkingCardEditorBoardId.set(board.id);
+  }
+
+  openListingTalkingCardSetup(board: Board, placeholderCard?: BoardCard, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (!this.canEditBoard(board)) {
+      this.boardsSyncError.set('Only the board owner can set up this Talking Card.');
+      return;
+    }
+    this.listingTalkingCardSetup.set({
+      boardId: board.id,
+      placeholderCardId: placeholderCard && this.isListingTalkingCardPlaceholder(placeholderCard) ? placeholderCard.id : '',
+    });
     this.talkingCardEditingCardId.set(null);
     this.talkingCardEditorBoardId.set(board.id);
   }
@@ -7072,6 +7118,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       this.boardsSyncError.set('Only the board owner can edit this Talking Card.');
       return;
     }
+    this.listingTalkingCardSetup.set(null);
     this.talkingCardEditingCardId.set(card.id);
     this.talkingCardEditorBoardId.set(board.id);
   }
@@ -7083,6 +7130,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       this.boardSettingsError.set('Only the board owner can add Talking Cards.');
       return;
     }
+    this.listingTalkingCardSetup.set(null);
     this.boardSettingsBoardId.set(null);
     this.boardSettingsError.set(null);
     this.talkingCardEditingCardId.set(null);
@@ -7092,11 +7140,13 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   closeTalkingCardEditor(): void {
     this.talkingCardEditorBoardId.set(null);
     this.talkingCardEditingCardId.set(null);
+    this.listingTalkingCardSetup.set(null);
   }
 
   async addTalkingCard(result: TalkingCardEditorResult): Promise<void> {
     const board = this.talkingCardEditorBoard();
     if (!board || !this.canEditBoard(board)) return;
+    const listingSetup = this.listingTalkingCardSetup();
     const now = new Date().toISOString();
     if (result.cardId) {
       const existing = board.cards.find((card) => card.id === result.cardId);
@@ -7116,6 +7166,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
           atlasId: result.atlasId,
           openingMessage: result.openingMessage,
           ctaLabel: result.ctaLabel,
+          ...(existing.conversation.starters?.length ? { starters: existing.conversation.starters } : {}),
           ...(result.actions.length ? { actions: result.actions } : {}),
         },
         updatedAt: now,
@@ -7125,6 +7176,48 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         cards = cards.filter((card) => card.id !== updated.id);
         cards = result.placement === 'start' ? [updated, ...cards] : [...cards, updated];
       }
+      const nextBoard = { ...board, cards, updatedAt: now };
+      this.boards.update((boards) => boards.map((item) => item.id === board.id ? nextBoard : item));
+      this.closeTalkingCardEditor();
+      await this.persistAndReplaceBoard(nextBoard);
+      return;
+    }
+    if (listingSetup?.boardId === board.id) {
+      const placeholder = board.cards.find((candidate) => candidate.id === listingSetup.placeholderCardId);
+      const card = this.cardFromRecord({
+        id: this.createId(),
+        title: result.title,
+        subtitle: result.subtitle || 'Ask me about this property',
+        notes: result.openingMessage,
+        type: 'note',
+        scope: 'place',
+        status: 'saved',
+        rating: 5,
+        rank: placeholder?.rank || 0,
+        authorOnly: false,
+        imageUrl: result.imageUrl,
+        imageUrls: result.imageUrl ? [result.imageUrl] : [],
+        tags: ['talking-card', 'conversational-guide', 'listing-agent-guide', 'listing', 'real-estate'],
+        sourceUrl: placeholder?.sourceUrl || '',
+        tour: null,
+        conversation: {
+          version: 1,
+          provider: 'atlas',
+          atlasId: result.atlasId,
+          openingMessage: result.openingMessage,
+          ctaLabel: result.ctaLabel,
+          starters: [
+            'What are this home’s key features?',
+            'What should I know before scheduling a showing?',
+            'How can I arrange a private tour?',
+          ],
+          ...(result.actions.length ? { actions: result.actions } : {}),
+        },
+        createdAt: placeholder?.createdAt || now,
+        updatedAt: now,
+      });
+      if (!card) return;
+      const cards = placeListingTalkingCard(board.cards, card, listingSetup.placeholderCardId);
       const nextBoard = { ...board, cards, updatedAt: now };
       this.boards.update((boards) => boards.map((item) => item.id === board.id ? nextBoard : item));
       this.closeTalkingCardEditor();
@@ -7167,12 +7260,51 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     return !!card?.conversation?.atlasId;
   }
 
+  isListingTalkingCardPlaceholder(card: BoardCard | null | undefined): boolean {
+    return isListingTalkingCardPlaceholderRecord(card);
+  }
+
+  shouldShowListingTalkingCardSetupBefore(board: Board, card: BoardCard): boolean {
+    return this.canEditBoard(board)
+      && this.isListingContactCard(card)
+      && shouldOfferListingTalkingCardSetup(board);
+  }
+
+  shouldShowListingTalkingCardSetupAtEnd(board: Board): boolean {
+    return this.canEditBoard(board)
+      && !board.cards.some((card) => this.isListingContactCard(card))
+      && shouldOfferListingTalkingCardSetup(board);
+  }
+
   talkingCardButtonLabel(card: Pick<BoardCard, 'conversation'>): string {
     return talkingCardCtaLabel(card.conversation);
   }
 
   talkingCardActionLinks(card: Pick<BoardCard, 'conversation'>): TalkingCardAction[] {
     return talkingCardActions(card.conversation);
+  }
+
+  talkingCardStarterQuestions(card: Pick<BoardCard, 'conversation'>): string[] {
+    return talkingCardStarters(card.conversation);
+  }
+
+  talkingCardBoardContext(board: Board | null, card: BoardCard): string {
+    if (!board || !card.tags.includes('listing-agent-guide')) return '';
+    const chapters = board.cards
+      .filter((candidate) => candidate.id !== card.id
+        && !candidate.authorOnly
+        && !this.isListingContactCard(candidate)
+        && !this.isTalkingCard(candidate))
+      .slice(0, 16)
+      .map((candidate) => [candidate.title, candidate.subtitle, candidate.notes]
+        .map((value) => value.replace(/\s+/g, ' ').trim())
+        .filter(Boolean)
+        .join(' — '));
+    return [
+      `Property board: ${board.title}`,
+      board.description,
+      ...chapters,
+    ].filter(Boolean).join('\n').slice(0, 3500);
   }
 
   trackTalkingCardAction(card: BoardCard, action: TalkingCardAction, event?: Event): void {

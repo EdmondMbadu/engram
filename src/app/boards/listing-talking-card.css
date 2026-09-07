@@ -1,0 +1,150 @@
+/* Author-only setup step for a real-estate agent's conversational guide. */
+.board-detail .listing-talking-setup-card,
+.board-detail .detail-card--listing-talking-setup {
+  border-color: #b8cdc1;
+  background: #f7fbf8;
+  box-shadow: 0 14px 36px rgba(12, 62, 45, 0.11);
+}
+
+.listing-talking-setup-card--virtual {
+  display: grid;
+  min-height: 0;
+  grid-template-rows: minmax(0, 1fr) auto;
+  overflow: hidden;
+  aspect-ratio: 1 / 1.08;
+  border: 1px solid #b8cdc1;
+  border-radius: 1.15rem;
+}
+
+.listing-talking-setup-card__visual {
+  position: relative;
+  display: grid;
+  min-height: 12rem;
+  place-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 46%, rgba(116, 235, 193, 0.35), transparent 24%),
+    linear-gradient(135deg, #123f31, #071d16);
+}
+
+.listing-talking-setup-card__visual::before,
+.listing-talking-setup-card__visual::after,
+.listing-talking-setup-card__visual i {
+  position: absolute;
+  border: 1px solid rgba(157, 244, 212, 0.24);
+  border-radius: 999px;
+  content: '';
+}
+
+.listing-talking-setup-card__visual::before { width: 10rem; height: 10rem; }
+.listing-talking-setup-card__visual::after { width: 7rem; height: 7rem; }
+.listing-talking-setup-card__visual i { width: 13rem; height: 13rem; }
+
+.listing-talking-setup-card__visual > .material-symbols-outlined {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  width: 5rem;
+  height: 5rem;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.62);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  color: #eafff7;
+  box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.24);
+  font-size: 2.4rem;
+  font-variation-settings: 'FILL' 1;
+  backdrop-filter: blur(12px);
+}
+
+.board-detail .detail-card--listing-talking-setup .detail-card__media {
+  aspect-ratio: 3 / 2;
+  border-bottom-color: #c8dad0;
+}
+
+.board-detail .detail-card--listing-talking-setup .detail-card__photo-button::after {
+  height: 62%;
+  background: linear-gradient(to top, rgba(7, 42, 31, 0.58), transparent);
+}
+
+.listing-talking-setup-card__content {
+  position: relative;
+  z-index: 4;
+  display: grid;
+  align-content: center;
+  gap: 0.46rem;
+  background:
+    radial-gradient(circle at 96% 0%, rgba(79, 179, 137, 0.12), transparent 40%),
+    linear-gradient(145deg, #fbfdfb, #edf7f1);
+  padding: 0.95rem 1rem 1rem;
+}
+
+.listing-talking-setup-card__content--saved {
+  min-height: 0;
+  flex: 1;
+}
+
+.listing-talking-setup-card__content > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  color: #6a766f;
+  font-size: 0.59rem;
+  font-weight: 850;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.listing-talking-setup-card__content > span .material-symbols-outlined { font-size: 0.9rem; }
+
+.listing-talking-setup-card__content > strong {
+  color: #102c22;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(1.12rem, 1.65vw, 1.38rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+}
+
+.listing-talking-setup-card__content > p {
+  margin: 0;
+  color: #64776d;
+  font-size: 0.72rem;
+  font-weight: 620;
+  line-height: 1.35;
+}
+
+.listing-talking-setup-card__content > button {
+  display: inline-flex;
+  width: fit-content;
+  min-height: 2.4rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.42rem;
+  margin-top: 0.25rem;
+  border: 1px solid #185d46;
+  border-radius: 999px;
+  background: #185d46;
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 850;
+  padding: 0.55rem 0.82rem;
+  transition: transform 150ms ease, background 150ms ease;
+}
+
+.listing-talking-setup-card__content > button:hover {
+  transform: translateY(-1px);
+  background: #104a37;
+}
+
+.listing-talking-setup-card__content > button:focus-visible {
+  outline: 2px solid #2d7b62;
+  outline-offset: 3px;
+}
+
+.listing-talking-setup-card__content > button .material-symbols-outlined {
+  font-size: 1rem;
+  font-variation-settings: 'FILL' 1;
+}

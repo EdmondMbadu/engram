@@ -220,6 +220,17 @@
           @if (submitting()) { <div class="talking-chat__typing" aria-label="Avatar is answering"><i></i><i></i><i></i></div> }
         </div>
 
+        @if (showStarters()) {
+          <div class="talking-chat__starters" aria-label="Suggested questions">
+            <span>Try asking</span>
+            <div>
+              @for (question of starters(); track question) {
+                <button type="button" [disabled]="submitting()" (click)="askStarter(question)">{{ question }}</button>
+              }
+            </div>
+          </div>
+        }
+
         @if (errorMessage()) { <p class="talking-chat__error" role="alert">{{ errorMessage() }}</p> }
         <form class="talking-chat__composer" (submit)="$event.preventDefault(); send()">
           <textarea rows="2" maxlength="2000" aria-label="Message" placeholder="Ask a question…" [ngModel]="draft()" (ngModelChange)="draft.set($event)" name="message"></textarea>

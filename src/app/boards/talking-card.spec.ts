@@ -2,6 +2,7 @@ import {
   normalizeBoardCardConversation,
   normalizeTalkingCardActions,
   talkingCardCtaLabel,
+  talkingCardStarters,
 } from './talking-card';
 
 describe('Talking Card model', () => {
@@ -55,6 +56,22 @@ describe('Talking Card model', () => {
       actions: [{ kind: 'schedule', label: 'Schedule', url: 'https://cal.com/maya' }],
     })?.actions).toEqual([
       { id: 'schedule-1', kind: 'schedule', label: 'Schedule', url: 'https://cal.com/maya' },
+    ]);
+  });
+
+  it('keeps at most three concise, unique starter questions', () => {
+    const longQuestion = 'x'.repeat(140);
+    const conversation = normalizeBoardCardConversation({
+      provider: 'atlas',
+      atlasId: 'agent-avatar',
+      openingMessage: 'Ask me about this home.',
+      starters: ['  What are the key features?  ', 'What are the key features?', longQuestion, 'How do I book a tour?'],
+    });
+
+    expect(talkingCardStarters(conversation)).toEqual([
+      'What are the key features?',
+      longQuestion.slice(0, 120),
+      'How do I book a tour?',
     ]);
   });
 });

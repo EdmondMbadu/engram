@@ -3199,6 +3199,23 @@
             } @else {
             <div class="detail-cards-grid">
               @for (card of filteredCards(); track card.id) {
+                @if (shouldShowListingTalkingCardSetupBefore(board, card)) {
+                  <article class="detail-card listing-talking-setup-card listing-talking-setup-card--virtual">
+                    <div class="listing-talking-setup-card__visual" aria-hidden="true">
+                      <span class="material-symbols-outlined">record_voice_over</span>
+                      <i></i>
+                    </div>
+                    <div class="listing-talking-setup-card__content">
+                      <span><span class="material-symbols-outlined">visibility_lock</span>Only you can see this setup card</span>
+                      <strong>Make yourself available to buyers</strong>
+                      <p>Let visitors ask you questions about this property.</p>
+                      <button type="button" (click)="openListingTalkingCardSetup(board, undefined, $event)">
+                        <span class="material-symbols-outlined">add_comment</span>
+                        Set up Talking Card
+                      </button>
+                    </div>
+                  </article>
+                }
                 <article
                   class="detail-card"
                   [attr.data-analytics-card-id]="card.id"
@@ -3208,6 +3225,7 @@
                   [class.detail-card--inside-alongside]="isAlongsideInnerCard(board, card)"
                   [class.detail-card--photo-only]="isPhotoOnlyCard(card)"
                   [class.detail-card--listing-contact]="isListingContactCard(card)"
+                  [class.detail-card--listing-talking-setup]="isListingTalkingCardPlaceholder(card)"
                   [class.detail-card--has-memories]="hasBoardInside(card) || relatedCardCount(card) > 0"
                   [class.detail-card--expanded]="isCardExpanded(card.id)"
                   [class.detail-card--dragging]="isDraggingCard(card.id)"
@@ -3227,7 +3245,7 @@
                   @if (boardShowsCardNumbers(board)) {
                     <span class="detail-card__rank" aria-label="Card {{ $index + 1 }}">{{ $index + 1 }}</span>
                   }
-                  @if (card.authorOnly) {
+                  @if (card.authorOnly && !isListingTalkingCardPlaceholder(card)) {
                     <span class="detail-card__author-only">
                       <span class="material-symbols-outlined">visibility_lock</span>
                       Only you can see this
@@ -3267,20 +3285,22 @@
                       <span class="material-symbols-outlined">{{ isCardSelected(card.id) ? 'check_circle' : 'radio_button_unchecked' }}</span>
                     </button>
                   }
-                  <button
-                    type="button"
-                    class="detail-card__like"
-                    [class.detail-card__like--solo]="!canEditBoard(cardHostBoard(board, card))"
-                    [class.detail-card__like--active]="isCardLiked(cardHostBoard(board, card), card)"
-                    [attr.aria-label]="isCardLiked(cardHostBoard(board, card), card) ? 'Unlike card' : 'Like card'"
-                    [attr.aria-pressed]="isCardLiked(cardHostBoard(board, card), card)"
-                    [disabled]="isLikePending(cardHostBoard(board, card), card)"
-                    (click)="toggleCardLike(cardHostBoard(board, card), card, $event)"
-                  >
-                    <span class="material-symbols-outlined">{{ isCardLiked(cardHostBoard(board, card), card) ? 'favorite' : 'favorite_border' }}</span>
-                    <span class="detail-card__like-count">{{ cardLikeCount(cardHostBoard(board, card), card) }}</span>
-                  </button>
-                  @if (canEditBoard(cardHostBoard(board, card)) && (!exploredRelatedCardParent() || !isLegacyMemoryRelatedCard(card))) {
+                  @if (!isListingTalkingCardPlaceholder(card)) {
+                    <button
+                      type="button"
+                      class="detail-card__like"
+                      [class.detail-card__like--solo]="!canEditBoard(cardHostBoard(board, card))"
+                      [class.detail-card__like--active]="isCardLiked(cardHostBoard(board, card), card)"
+                      [attr.aria-label]="isCardLiked(cardHostBoard(board, card), card) ? 'Unlike card' : 'Like card'"
+                      [attr.aria-pressed]="isCardLiked(cardHostBoard(board, card), card)"
+                      [disabled]="isLikePending(cardHostBoard(board, card), card)"
+                      (click)="toggleCardLike(cardHostBoard(board, card), card, $event)"
+                    >
+                      <span class="material-symbols-outlined">{{ isCardLiked(cardHostBoard(board, card), card) ? 'favorite' : 'favorite_border' }}</span>
+                      <span class="detail-card__like-count">{{ cardLikeCount(cardHostBoard(board, card), card) }}</span>
+                    </button>
+                  }
+                  @if (!isListingTalkingCardPlaceholder(card) && canEditBoard(cardHostBoard(board, card)) && (!exploredRelatedCardParent() || !isLegacyMemoryRelatedCard(card))) {
                     <div
                       class="card-action-menu detail-card__action-menu"
                       [class.card-action-menu--open]="isCardActionMenuOpen('card:' + card.id)"
@@ -3437,7 +3457,7 @@
                           </button>
                         } @else {
                           <span class="detail-card__fallback">
-                            <span class="material-symbols-outlined">{{ isTalkingCard(card) ? 'record_voice_over' : cardTypeIcon(card.type) }}</span>
+                            <span class="material-symbols-outlined">{{ isTalkingCard(card) || isListingTalkingCardPlaceholder(card) ? 'record_voice_over' : cardTypeIcon(card.type) }}</span>
                           </span>
                         }
                         @if (!exploredRelatedCardParent() && (hasBoardInside(card) || relatedCardCount(card) > 0)) {
@@ -3465,7 +3485,7 @@
                             </span>
                           </button>
                         }
-                        @if (!isPhotoOnlyCard(card) && !isListingContactCard(card)) {
+                        @if (!isPhotoOnlyCard(card) && !isListingContactCard(card) && !isListingTalkingCardPlaceholder(card)) {
                           <span class="detail-card__status">
                             <span class="material-symbols-outlined">{{ statusIcon(card.status) }}</span>
                             {{ statusLabel(card.status) }}
@@ -3507,7 +3527,17 @@
                         }
                       </div>
 
-                      @if (isListingContactCard(card)) {
+                      @if (isListingTalkingCardPlaceholder(card)) {
+                        <div class="listing-talking-setup-card__content listing-talking-setup-card__content--saved">
+                          <span><span class="material-symbols-outlined">visibility_lock</span>Only you can see this setup card</span>
+                          <strong>Make yourself available to buyers</strong>
+                          <p>Let visitors ask you questions about this property.</p>
+                          <button type="button" (click)="openListingTalkingCardSetup(cardHostBoard(board, card), card, $event)">
+                            <span class="material-symbols-outlined">add_comment</span>
+                            Set up Talking Card
+                          </button>
+                        </div>
+                      } @else if (isListingContactCard(card)) {
                         @if (listingContactDetails(card); as contact) {
                           <div class="listing-contact-board">
                             <span class="listing-contact-board__eyebrow">Questions about this home?</span>
@@ -3558,7 +3588,7 @@
                         </div>
                       }
 
-                      @if (!isPhotoOnlyCard(card) && !isListingContactCard(card)) {
+                      @if (!isPhotoOnlyCard(card) && !isListingContactCard(card) && !isListingTalkingCardPlaceholder(card)) {
                       <div class="detail-card__body">
                         <div class="detail-card__line">
                           <span>
@@ -3634,7 +3664,7 @@
                       </div>
                       }
 
-                      @if (!isListingContactCard(card)) {
+                      @if (!isListingContactCard(card) && !isListingTalkingCardPlaceholder(card)) {
                         <div class="detail-card__footer">
                           <span i18n>Updated {{ cardUpdatedLabel(card) }}</span>
                         </div>
@@ -3739,6 +3769,23 @@
                   <h2 i18n>No cards match that search.</h2>
                   <p i18n>Clear the search or add another card to this board.</p>
                 </div>
+              }
+              @if (shouldShowListingTalkingCardSetupAtEnd(board)) {
+                <article class="detail-card listing-talking-setup-card listing-talking-setup-card--virtual">
+                  <div class="listing-talking-setup-card__visual" aria-hidden="true">
+                    <span class="material-symbols-outlined">record_voice_over</span>
+                    <i></i>
+                  </div>
+                  <div class="listing-talking-setup-card__content">
+                    <span><span class="material-symbols-outlined">visibility_lock</span>Only you can see this setup card</span>
+                    <strong>Make yourself available to buyers</strong>
+                    <p>Let visitors ask you questions about this property.</p>
+                    <button type="button" (click)="openListingTalkingCardSetup(board, undefined, $event)">
+                      <span class="material-symbols-outlined">add_comment</span>
+                      Set up Talking Card
+                    </button>
+                  </div>
+                </article>
               }
             </div>
             }
@@ -6122,7 +6169,7 @@
                           <output aria-live="polite">{{ wizardCount() }} scenes</output>
                           <button type="button" aria-label="Use one more property scene" [disabled]="wizardCount() >= wizardListingSceneMax" (click)="setWizardListingSceneCount(wizardCount() + 1)"><span class="material-symbols-outlined">add</span></button>
                         </div>
-                        <small class="boards-listing-story-helper">The Intro and closing cards are added automatically.</small>
+                        <small class="boards-listing-story-helper">The Intro, private Talking Card setup, and closing cards are added automatically.</small>
                       </section>
                       <label class="boards-listing-story-control-panel boards-listing-story-direction">
                         <span class="boards-listing-story-control-label"><strong>What should the story emphasize?</strong><small>Optional</small></span>
@@ -7141,7 +7188,7 @@
                         <strong>{{ card.title }}</strong>
                       }
                     </button>
-                  } @empty {
+              } @empty {
                     <div class="stack-empty-note">
                       <span class="material-symbols-outlined">add_card</span>
                       <strong i18n>No cards yet</strong>
@@ -11084,6 +11131,7 @@
     [boardTitle]="talkingBoard.title"
     [boardVisibility]="talkingBoard.visibility"
     [editingCard]="talkingCardEditorValue()"
+    [prefill]="talkingCardEditorPrefill()"
     (closed)="closeTalkingCardEditor()"
     (saved)="addTalkingCard($event)"
   ></app-talking-card-editor>
@@ -11101,6 +11149,8 @@
       [imageUrl]="talkingCard.imageUrl"
       [openingMessage]="conversation.openingMessage"
       [actions]="talkingCardActionLinks(talkingCard)"
+      [starterQuestions]="talkingCardStarterQuestions(talkingCard)"
+      [boardContext]="talkingCardBoardContext(talkingConversationBoard(), talkingCard)"
       [surface]="talkingConversationSurface()"
       (activity)="trackTalkingCardActivity(talkingCard, $event)"
       (closed)="closeTalkingCardConversation()"

@@ -110,7 +110,7 @@
 .talking-chat__voice-experience,
 .talking-chat__text-experience { min-height: 0; overflow: hidden; }
 .talking-chat__voice-experience { display: grid; grid-template-rows: auto minmax(7rem, 1fr) auto auto; }
-.talking-chat__text-experience { display: grid; grid-template-rows: minmax(10rem, 1fr) auto auto auto; }
+.talking-chat__text-experience { display: grid; grid-template-rows: minmax(10rem, 1fr) auto auto auto auto; }
 
 .talking-chat__voice-stage {
   display: flex;
@@ -239,6 +239,13 @@
 .talking-chat__voice-composer button:disabled { cursor: not-allowed; opacity: .42; }
 
 .talking-chat__messages { overflow-y: auto; padding: 22px; background: color-mix(in srgb, var(--soft-fill) 55%, var(--surface)); }
+.talking-chat__starters { display: grid; gap: .45rem; border-top: 1px solid var(--line); padding: .65rem 1rem .35rem; background: var(--surface); }
+.talking-chat__starters > span { color: var(--muted); font-size: .58rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
+.talking-chat__starters > div { display: flex; gap: .4rem; overflow-x: auto; padding-bottom: .15rem; scrollbar-width: thin; }
+.talking-chat__starters button { flex: 0 0 auto; max-width: min(18rem, 82vw); min-height: 2.2rem; border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--line)); border-radius: 999px; padding: .45rem .75rem; color: var(--accent); background: color-mix(in srgb, var(--accent) 6%, var(--surface)); font: inherit; font-size: .7rem; font-weight: 760; cursor: pointer; white-space: nowrap; }
+.talking-chat__starters button:hover { border-color: color-mix(in srgb, var(--accent) 54%, var(--line)); background: color-mix(in srgb, var(--accent) 11%, var(--surface)); }
+.talking-chat__starters button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.talking-chat__starters button:disabled { cursor: wait; opacity: .55; }
 .talking-chat__message { max-width: 82%; margin-bottom: 15px; }
 .talking-chat__message > span { display: block; margin: 0 0 5px 5px; color: var(--muted); font-size: .65rem; font-weight: 800; }
 .talking-chat__message p { margin: 0; padding: 12px 14px; border: 1px solid var(--line); border-radius: 6px 18px 18px 18px; background: var(--surface); font-size: .9rem; line-height: 1.55; white-space: pre-wrap; }
