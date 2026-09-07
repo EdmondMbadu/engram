@@ -1584,7 +1584,7 @@ export class AtlasService {
 
   private assertCanCreateWiki(): void {
     if (!this.authService.canCreateWikis()) {
-      throw new Error('Upgrade to Personal Plus or Creator to create Wikis.');
+      throw new Error('Upgrade to Personal Plus or Professional to create Wikis.');
     }
   }
 

@@ -20,9 +20,6 @@
             <a routerLink="/" class="hidden text-xs font-bold uppercase tracking-[0.16em] text-[var(--muted)] transition-colors hover:text-[var(--text)] sm:inline-flex" i18n>
               Public Wikis
             </a>
-            <a routerLink="/business" class="hidden text-xs font-bold uppercase tracking-[0.16em] text-[var(--muted)] transition-colors hover:text-[var(--text)] md:inline-flex" i18n>
-              Business
-            </a>
             <app-theme-toggle></app-theme-toggle>
             <app-account-menu></app-account-menu>
           </div>
@@ -45,31 +42,10 @@
               <div class="max-w-3xl">
                 <p class="text-[10px] font-black uppercase tracking-[0.26em] text-[var(--accent)]" i18n>LivingWiki pricing</p>
                 <h1 class="mt-2 text-3xl font-black leading-tight tracking-tight text-[var(--text)] sm:text-4xl" i18n>Choose your plan</h1>
-                <p class="mt-2 text-sm leading-6 text-[var(--muted)] sm:text-base">{{ activeCopy().description }}</p>
+                <p class="mt-2 text-sm leading-6 text-[var(--muted)] sm:text-base">{{ pricingDescription }}</p>
               </div>
 
               <div class="flex flex-col gap-3 sm:flex-row sm:flex-wrap lg:justify-end">
-                <div class="flex w-full items-center rounded-full border border-[var(--line)] bg-[var(--surface)] p-1 shadow-[var(--shadow-floating)] sm:w-auto">
-                  <button
-                    type="button"
-                    (click)="setAudience('general')"
-                    class="inline-flex min-h-10 flex-1 items-center justify-center gap-1.5 rounded-full px-3 py-2 text-[10px] font-black uppercase tracking-[0.12em] transition-colors sm:flex-none sm:px-4"
-                    [style.background-color]="activeAudience() === 'general' ? 'var(--accent)' : null"
-                    [style.color]="activeAudience() === 'general' ? 'var(--accent-contrast)' : 'var(--muted)'"
-                  >
-                    <span i18n>Personal users</span>
-                  </button>
-                  <button
-                    type="button"
-                    (click)="setAudience('business')"
-                    class="inline-flex min-h-10 flex-1 items-center justify-center gap-1.5 rounded-full px-3 py-2 text-[10px] font-black uppercase tracking-[0.12em] transition-colors sm:flex-none sm:px-4"
-                    [style.background-color]="activeAudience() === 'business' ? 'var(--accent)' : null"
-                    [style.color]="activeAudience() === 'business' ? 'var(--accent-contrast)' : 'var(--muted)'"
-                  >
-                    <span i18n>Businesses</span>
-                  </button>
-                </div>
-
                 <div class="flex w-full items-center rounded-full border border-[var(--line)] bg-[var(--surface)] p-1 shadow-[var(--shadow-floating)] sm:w-auto">
                   <button
                     type="button"
@@ -109,6 +85,7 @@
                 <article
                   class="pricing-card"
                   [class.pricing-card--featured]="plan.featured"
+                  [class.pricing-card--contact]="plan.contact"
                 >
                   @if (plan.featured) {
                     <span class="pricing-card__badge" i18n>
@@ -122,7 +99,7 @@
                     <span class="pricing-card__mark" aria-hidden="true"></span>
                     <div class="min-w-0">
                       <p class="pricing-card__eyebrow">
-                        {{ activeAudience() === 'business' ? 'Business plan' : 'Personal plan' }}
+                        {{ plan.eyebrow || 'Personal plan' }}
                       </p>
                       <h3 class="pricing-card__title">{{ plan.name }}</h3>
                     </div>
@@ -130,7 +107,9 @@
 
                   <div class="pricing-card__price-row">
                     <div>
-                      @if (plan.price === 0) {
+                      @if (plan.contact) {
+                        <p class="pricing-card__price" i18n>Let’s talk</p>
+                      } @else if (plan.price === 0) {
                         <p class="pricing-card__price" i18n>Free</p>
                       } @else {
                         <div class="flex flex-wrap items-baseline gap-2">
@@ -172,6 +151,14 @@
                       {{ checkoutLoading() === checkoutKey(plan) ? 'Starting checkout...' : plan.cta }}
                       <span class="pricing-card__arrow" aria-hidden="true"></span>
                     </button>
+                  } @else if (plan.contact) {
+                    <a
+                      [href]="plan.route"
+                      class="pricing-card__cta"
+                    >
+                      {{ plan.cta }}
+                      <span class="pricing-card__arrow" aria-hidden="true"></span>
+                    </a>
                   } @else {
                     <a
                       [routerLink]="plan.route"
@@ -209,7 +196,6 @@
             </div>
             <div class="flex flex-wrap items-center justify-center gap-2">
               <a routerLink="/" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]" i18n>Public Wikis</a>
-              <a routerLink="/business" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]" i18n>Business</a>
               <a routerLink="/privacy" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]" i18n>Privacy</a>
               <a routerLink="/terms" class="text-xs font-bold uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--text)]" i18n>Terms</a>
             </div>

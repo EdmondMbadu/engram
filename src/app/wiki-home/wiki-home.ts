@@ -146,7 +146,7 @@ export class WikiHomeComponent {
 
   openCreate(): void {
     if (!this.canCreateWikis()) {
-      this.createError.set($localize`Upgrade to Personal Plus or Creator to create Wikis.`);
+      this.createError.set($localize`Upgrade to Personal Plus or Professional to create Wikis.`);
       return;
     }
     this.createOpen.set(true);
@@ -182,7 +182,7 @@ export class WikiHomeComponent {
       return;
     }
     if (!this.canCreateWikis()) {
-      this.createError.set($localize`Upgrade to Personal Plus or Creator to create Wikis.`);
+      this.createError.set($localize`Upgrade to Personal Plus or Professional to create Wikis.`);
       return;
     }
 

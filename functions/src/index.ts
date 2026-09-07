@@ -472,7 +472,7 @@ async function assertCanCreateWiki(userId: string): Promise<void> {
   if (profile?.role === 'admin' || hasActivePersonalWikiPlan(profile)) {
     return;
   }
-  throw new HttpsError('permission-denied', 'Upgrade to Personal Plus or Creator to create Wikis.');
+  throw new HttpsError('permission-denied', 'Upgrade to Personal Plus or Professional to create Wikis.');
 }
 
 type BusinessCheckoutPlanKey = 'local' | 'favorite' | 'sponsor';
@@ -504,7 +504,7 @@ const businessCheckoutPlans: Record<BusinessCheckoutPlanKey, {
 
 const userPricingPlanLabels: Record<UserPricingPlanKey, string> = {
   personal_plus: 'LivingWiki Personal Plus',
-  creator: 'LivingWiki Creator',
+  creator: 'LivingWiki Professional',
 };
 
 const membershipCheckoutPlans: Record<MembershipCheckoutPlanKey, {

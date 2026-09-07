@@ -16790,7 +16790,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     if (this.stackVideoNarrationEnabled()
       && stackNarratorVoiceRequiresPaidPlan(this.stackNarratorVoiceId())
       && !this.personalVoiceEligible()) {
-      throw new Error('Personal Voice requires Personal Plus or Creator. Choose an included narrator voice to continue for free.');
+      throw new Error('Personal Voice requires Personal Plus or Professional. Choose an included narrator voice to continue for free.');
     }
     const narration = this.stackVideoNarrationEnabled()
       ? await this.stackVideoNarration(selectedCards, board)

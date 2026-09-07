@@ -663,10 +663,6 @@
     "source": "Thursday",
     "file": "src/app/atlas-manage/atlas-manage.ts"
   },
-  "1434874317823023024": {
-    "source": "Creating a reusable narrator from your own recording is available with Personal Plus or Creator. All included narrator voices and narrated video exports remain free.",
-    "file": "src/app/pricing/pricing.ts"
-  },
   "1435345575180427494": {
     "source": "Businesses",
     "file": "src/app/admin-users/admin-users.html"
@@ -1142,10 +1138,6 @@
   "1735185125548036037": {
     "source": "Board | LivingWiki",
     "file": "src/app/app.routes.ts"
-  },
-  "1735260665337785653": {
-    "source": "Start free, then upgrade when you need private spaces, document uploads, publishing, and stronger tools for personal research or community projects.",
-    "file": "src/app/pricing/pricing.ts"
   },
   "1735467286234971818": {
     "source": "We speak your language",
@@ -2215,10 +2207,6 @@
     "source": "People per square kilometer",
     "file": "src/app/atlas-manage/atlas-manage.html"
   },
-  "2459804762666882710": {
-    "source": "Business upgrades",
-    "file": "src/app/pricing/pricing.ts"
-  },
   "2466635436899617454": {
     "source": "Snapshot refreshed {$INTERPOLATION}",
     "file": "src/app/atlas-landing/atlas-landing.html"
@@ -2622,10 +2610,6 @@
   "2717154698502259883": {
     "source": "{count} reviewed places",
     "file": "src/app/chat/chat.ts"
-  },
-  "2718109484487214389": {
-    "source": "Browse public LivingWikis and create narrated Stack videos for free, then upgrade when you need private spaces, Personal Voice, publishing, uploads, or business tools.",
-    "file": "src/app/pricing/pricing.ts"
   },
   "2724745748710734378": {
     "source": "Open quiz",
@@ -3203,10 +3187,6 @@
     "source": "Could not render the additional QR PNG.",
     "file": "src/app/business-detail/business-detail.ts"
   },
-  "313241635408744637": {
-    "source": "Simple launch tiers for businesses that want a better profile, guide placement, badges, and insight into what people ask around the city.",
-    "file": "src/app/pricing/pricing.ts"
-  },
   "3133472824237616509": {
     "source": "{$START_TAG_SPAN}chat{$CLOSE_TAG_SPAN} Chat ",
     "file": "src/app/atlas-landing/atlas-landing.html"
@@ -3250,6 +3230,10 @@
   "3144737072790374060": {
     "source": "Attempt recorded. Your best score stayed on the board.",
     "file": "src/app/answer-quiz/answer-quiz.ts"
+  },
+  "315138230279829754": {
+    "source": "Your free account is active. Upgrade only when you need private spaces, Personal Voice, richer publishing, or team collaboration.",
+    "file": "src/app/pricing/pricing.ts"
   },
   "3151634115987524057": {
     "source": "Review the board at your own pace, or test what you remember with a short quiz.",
@@ -3526,10 +3510,6 @@
   "3287571785619269404": {
     "source": "The Essex County incinerator burns much of New York City's trash in a dense immigrant neighborhood ringed by airport, port, and chemical plants.",
     "file": "src/app/fence-line/fence-line.ts"
-  },
-  "3289565440172441380": {
-    "source": "Upgrade to Personal Plus or Creator to create Wikis.",
-    "file": "src/app/atlas-manage/atlas-manage.ts"
   },
   "3293831104851635065": {
     "source": "Teal",
@@ -4526,10 +4506,6 @@
   "3926265586042118276": {
     "source": "Share Stack",
     "file": "src/app/boards/boards.html"
-  },
-  "3927445949487606889": {
-    "source": "Build a LivingWiki for the things you care about.",
-    "file": "src/app/pricing/pricing.ts"
   },
   "3928780226197623817": {
     "source": "Claim business",
@@ -5551,6 +5527,10 @@
     "source": "Select a flag first",
     "file": "src/app/chat/chat.ts"
   },
+  "4623165747810117177": {
+    "source": "Upgrade to Personal Plus or Professional to create Wikis.",
+    "file": "src/app/atlas-manage/atlas-manage.ts"
+  },
   "4625955273392144028": {
     "source": "How does {topic} connect to {city}?",
     "file": "src/app/chat/chat.ts"
@@ -6007,6 +5987,10 @@
     "source": "{$INTERPOLATION} cards · {$INTERPOLATION_1}",
     "file": "src/app/boards/boards.html"
   },
+  "4893649931718075519": {
+    "source": "Start free, then choose the plan that fits how you research, publish, and collaborate.",
+    "file": "src/app/pricing/pricing.ts"
+  },
   "4896523885733546562": {
     "source": "Stop 15 second audio recap",
     "file": "src/app/chat/chat.ts"
@@ -6102,6 +6086,10 @@
   "4960474194717428075": {
     "source": "Boards | LivingWiki",
     "file": "src/app/app.routes.ts"
+  },
+  "4962186772816311298": {
+    "source": "Bring LivingWiki to a team, classroom, newsroom, nonprofit, or organization with a plan shaped around your needs.",
+    "file": "src/app/pricing/pricing.ts"
   },
   "496676769389287251": {
     "source": " Live ",
@@ -6422,6 +6410,10 @@
   "5192115562853445828": {
     "source": "Copy message",
     "file": "src/app/chat/chat.ts"
+  },
+  "5195034224491577053": {
+    "source": "Let’s talk",
+    "file": "src/app/pricing/pricing.html"
   },
   "5195225147845101680": {
     "source": "Nobel Prize Winners & Discoveries",
@@ -7419,10 +7411,6 @@
     "source": " Modeled live estimate {$INTERPOLATION} ",
     "file": "src/app/city-pulse-admin/city-pulse-admin.html"
   },
-  "5836685090080776453": {
-    "source": "Get on the city map and give people a better first answer than a static listing.",
-    "file": "src/app/pricing/pricing.ts"
-  },
   "5837536470574731837": {
     "source": "Just me",
     "file": "src/app/boards/boards.ts"
@@ -7486,6 +7474,10 @@
   "5876509115002255508": {
     "source": "What matters now",
     "file": "src/app/chat/chat.ts"
+  },
+  "5877200838844976710": {
+    "source": "Creating a reusable narrator from your own recording is available with Personal Plus or Professional. All included narrator voices and narrated video exports remain free.",
+    "file": "src/app/pricing/pricing.ts"
   },
   "5878305334612867800": {
     "source": "(optional)",
@@ -7599,6 +7591,10 @@
     "source": "Step 0{$INTERPOLATION}",
     "file": "src/app/marketing/marketing.html"
   },
+  "5963692520522864034": {
+    "source": "Choose Personal Plus or Professional to keep LivingWiki spaces private. Public boards and narrated Stack video exports remain free.",
+    "file": "src/app/pricing/pricing.ts"
+  },
   "5966987131514388332": {
     "source": "All Wikis",
     "file": "src/app/atlas-manage/atlas-manage.html"
@@ -7634,10 +7630,6 @@
   "5990667807137294486": {
     "source": "Local Favorite",
     "file": "src/app/business-claim/business-claim.ts"
-  },
-  "5995926993425996892": {
-    "source": "Publish richer LivingWiki pages for communities, collections, classes, or public projects.",
-    "file": "src/app/pricing/pricing.ts"
   },
   "5999667395236736553": {
     "source": "AGI timelines, capability research, existential risk arguments, policy proposals, and the philosophical questions around superintelligent AI.",
@@ -7690,10 +7682,6 @@
   "60352816361248234": {
     "source": " Choose an article from the left to read compiled knowledge from the source documents. ",
     "file": "src/app/wiki/wiki.html"
-  },
-  "6035340171804387251": {
-    "source": "Stand out with trust signals, featured context, and a clearer business voice.",
-    "file": "src/app/pricing/pricing.ts"
   },
   "6036400827568487024": {
     "source": "You are pinning",
@@ -7870,10 +7858,6 @@
   "6165308040554736592": {
     "source": "X opened with your challenge.",
     "file": "src/app/boards/boards.ts"
-  },
-  "6165554337484865770": {
-    "source": "Choose Personal Plus or Creator to keep LivingWiki spaces private. Public boards and narrated Stack video exports remain free.",
-    "file": "src/app/pricing/pricing.ts"
   },
   "6166411589217463623": {
     "source": "Search pictures",
@@ -9171,6 +9155,10 @@
     "source": "Add sources",
     "file": "src/app/chat/chat.html"
   },
+  "6959872088852202480": {
+    "source": "Browse public LivingWikis and create narrated Stack videos for free, then upgrade when you need private spaces, Personal Voice, publishing, uploads, or team collaboration.",
+    "file": "src/app/pricing/pricing.ts"
+  },
   "6962699013778688473": {
     "source": "Continue",
     "file": "src/app/auth-action/auth-action.html"
@@ -9530,10 +9518,6 @@
   "7239750919884229270": {
     "source": "Updated",
     "file": "src/app/boards/boards.html"
-  },
-  "7242507497265979260": {
-    "source": "Personal users",
-    "file": "src/app/pricing/pricing.html"
   },
   "724768127591825886": {
     "source": "Hazardous waste landfill",
@@ -9895,10 +9879,6 @@
     "source": "Card editor sections",
     "file": "src/app/boards/boards.html"
   },
-  "7507709861736990294": {
-    "source": "Anchor a city wiki with citywide placement and deeper local discovery signals.",
-    "file": "src/app/pricing/pricing.ts"
-  },
   "7507746824658234201": {
     "source": "Account-owned setup",
     "file": "src/app/business-claim/business-claim.html"
@@ -10239,10 +10219,6 @@
     "source": "{$START_TAG_SPAN}forum{$CLOSE_TAG_SPAN} Refine batch ",
     "file": "src/app/boards/boards.html"
   },
-  "7745349486718145595": {
-    "source": "Personal upgrades",
-    "file": "src/app/pricing/pricing.ts"
-  },
   "7745769908341091680": {
     "source": "New Jersey cumulative-impact law grew from fights like this one.",
     "file": "src/app/fence-line/fence-line.ts"
@@ -10554,6 +10530,10 @@
   "7946391287907516342": {
     "source": "{$INTERPOLATION} configured override(s)",
     "file": "src/app/city-pulse-admin/city-pulse-admin.html"
+  },
+  "7947176458181815069": {
+    "source": "Publish polished LivingWiki pages for your work, community, classes, collections, or public projects.",
+    "file": "src/app/pricing/pricing.ts"
   },
   "7950796063672592069": {
     "source": "Flip through all {$INTERPOLATION} cards and reveal the details.",
@@ -11515,10 +11495,6 @@
     "source": "Sign in after playing",
     "file": "src/app/answer-quiz/answer-quiz.html"
   },
-  "8641815833895206556": {
-    "source": "Turn local discovery into an owned channel.",
-    "file": "src/app/pricing/pricing.ts"
-  },
   "8644257483386995954": {
     "source": "Why does {topic} matter?",
     "file": "src/app/chat/chat.ts"
@@ -11786,10 +11762,6 @@
   "8835385465814339521": {
     "source": "We will reveal additional member features as they come online for this LivingWiki.",
     "file": "src/app/chat/chat.ts"
-  },
-  "8835471938996842616": {
-    "source": "Your free account is active. Upgrade only when you need private spaces, Personal Voice, richer publishing, or local business tools.",
-    "file": "src/app/pricing/pricing.ts"
   },
   "8838644041016899774": {
     "source": "LivingWiki menu",

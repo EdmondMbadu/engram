@@ -8,25 +8,23 @@ import { ThemeToggleComponent } from '../theme-toggle/theme-toggle';
 import { WorkspaceSidebarComponent } from '../workspace-sidebar/workspace-sidebar';
 import { MobileMenuComponent } from '../mobile-menu/mobile-menu';
 
-type PricingAudience = 'general' | 'business';
 type BillingCycle = 'monthly' | 'annual';
 type PricingFeature = 'personal-voice' | 'private-boards' | 'video-narration' | null;
 type PersonalPaidPlanId = 'personal_plus' | 'creator';
 type PricingPlanId =
   | 'reader'
   | PersonalPaidPlanId
-  | 'business_local'
-  | 'business_favorite'
-  | 'business_sponsor';
+  | 'teams';
 
 type PricingPlan = {
   id: PricingPlanId;
-  audience: PricingAudience;
   name: string;
+  eyebrow?: string;
   description: string;
   monthlyPrice: number;
   annualMonthlyPrice: number;
   featured?: boolean;
+  contact?: boolean;
   icon: string;
   cta: string;
   route: string;
@@ -45,7 +43,6 @@ export class PricingComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
 
   readonly isSignedIn = this.authService.isAuthenticated;
-  readonly activeAudience = signal<PricingAudience>('general');
   readonly billingCycle = signal<BillingCycle>('monthly');
   readonly requestedFeature = signal<PricingFeature>(null);
   readonly checkoutLoading = signal<string | null>(null);
@@ -55,7 +52,6 @@ export class PricingComponent implements OnInit {
   readonly plans: PricingPlan[] = [
     {
       id: 'reader',
-      audience: 'general',
       name: 'Reader',
       description: $localize`Follow public LivingWiki pages and keep a lightweight local knowledge home.`,
       monthlyPrice: 0,
@@ -72,7 +68,6 @@ export class PricingComponent implements OnInit {
     },
     {
       id: 'personal_plus',
-      audience: 'general',
       name: 'Personal Plus',
       description: $localize`Build private source-aware wikis for trips, research, family projects, or local obsessions.`,
       monthlyPrice: 12,
@@ -90,13 +85,13 @@ export class PricingComponent implements OnInit {
     },
     {
       id: 'creator',
-      audience: 'general',
-      name: 'Creator',
-      description: $localize`Publish richer LivingWiki pages for communities, collections, classes, or public projects.`,
+      name: 'Professional',
+      eyebrow: 'Professional plan',
+      description: $localize`Publish polished LivingWiki pages for your work, community, classes, collections, or public projects.`,
       monthlyPrice: 29,
       annualMonthlyPrice: 24,
       icon: 'campaign',
-      cta: 'Start publishing',
+      cta: 'Go professional',
       route: '/landing',
       features: [
         'Public topic page publishing',
@@ -104,63 +99,30 @@ export class PricingComponent implements OnInit {
         'Source library and update workflow',
         'Basic visitor and question insights',
         'Create a reusable Personal Voice narrator',
+        'Talking Avatars available as an add-on',
       ],
     },
     {
-      id: 'business_local',
-      audience: 'business',
-      name: 'Local',
-      description: $localize`Get on the city map and give people a better first answer than a static listing.`,
-      monthlyPrice: 25,
-      annualMonthlyPrice: 20,
-      icon: 'location_on',
-      cta: 'Claim a business',
-      route: '/business/claim',
+      id: 'teams',
+      name: 'Teams & organizations',
+      eyebrow: 'More seats',
+      description: $localize`Bring LivingWiki to a team, classroom, newsroom, nonprofit, or organization with a plan shaped around your needs.`,
+      monthlyPrice: 0,
+      annualMonthlyPrice: 0,
+      contact: true,
+      icon: 'groups',
+      cta: 'Contact us',
+      route: 'mailto:jim.walker@mindpalace.com?subject=LivingWiki%20team%20plan',
       features: [
-        'Living business profile with story, photos, hours, and links',
-        'Neighborhood map placement',
-        'Connections to nearby guides and events',
-        'Standard setup support',
-      ],
-    },
-    {
-      id: 'business_favorite',
-      audience: 'business',
-      name: 'Local Favorite',
-      description: $localize`Stand out with trust signals, featured context, and a clearer business voice.`,
-      monthlyPrice: 65,
-      annualMonthlyPrice: 54,
-      featured: true,
-      icon: 'verified',
-      cta: 'Upgrade business',
-      route: '/business/claim',
-      features: [
-        'Everything in Local',
-        'Verified Local Favorite badge',
-        'Featured placement in a neighborhood guide',
-        'Events and promotions on your profile',
-        'Monthly local-search insight summary',
-      ],
-    },
-    {
-      id: 'business_sponsor',
-      audience: 'business',
-      name: 'City Sponsor',
-      description: $localize`Anchor a city wiki with citywide placement and deeper local discovery signals.`,
-      monthlyPrice: 180,
-      annualMonthlyPrice: 150,
-      icon: 'apartment',
-      cta: 'Talk to us',
-      route: '/business',
-      features: [
-        'Everything in Local Favorite',
-        'Citywide sponsor placement',
-        'Discovery and analytics dashboard',
-        'Sponsor a neighborhood guide or topic hub',
-        'Dedicated local partner support',
+        'Flexible pricing for additional seats',
+        'Shared publishing and collaboration workflows',
+        'Guided onboarding for your team',
+        'Priority support and rollout planning',
       ],
     },
   ];
+
+  readonly pricingDescription = $localize`Start free, then choose the plan that fits how you research, publish, and collaborate.`;
 
   readonly hasPaidPricingPlan = computed(() => {
     const profile = this.authService.profile();
@@ -188,14 +150,14 @@ export class PricingComponent implements OnInit {
 
   readonly promptDescription = computed(() =>
     this.requestedFeature() === 'personal-voice'
-      ? $localize`Creating a reusable narrator from your own recording is available with Personal Plus or Creator. All included narrator voices and narrated video exports remain free.`
+      ? $localize`Creating a reusable narrator from your own recording is available with Personal Plus or Professional. All included narrator voices and narrated video exports remain free.`
       : this.requestedFeature() === 'video-narration'
         ? $localize`Return to Stack Studio to create a narrated video with any included voice. A paid plan is only required when you create and use your own Personal Voice.`
         : this.requestedFeature() === 'private-boards'
-          ? $localize`Choose Personal Plus or Creator to keep LivingWiki spaces private. Public boards and narrated Stack video exports remain free.`
+          ? $localize`Choose Personal Plus or Professional to keep LivingWiki spaces private. Public boards and narrated Stack video exports remain free.`
           : this.isSignedIn()
-            ? $localize`Your free account is active. Upgrade only when you need private spaces, Personal Voice, richer publishing, or local business tools.`
-            : $localize`Browse public LivingWikis and create narrated Stack videos for free, then upgrade when you need private spaces, Personal Voice, publishing, uploads, or business tools.`,
+            ? $localize`Your free account is active. Upgrade only when you need private spaces, Personal Voice, richer publishing, or team collaboration.`
+            : $localize`Browse public LivingWikis and create narrated Stack videos for free, then upgrade when you need private spaces, Personal Voice, publishing, uploads, or team collaboration.`,
   );
 
   readonly promptEyebrow = computed(() =>
@@ -206,39 +168,25 @@ export class PricingComponent implements OnInit {
         : $localize`Free`,
   );
 
-  readonly activeCopy = computed(() =>
-    this.activeAudience() === $localize`business`
-      ? {
-          eyebrow: $localize`Business upgrades`,
-          title: $localize`Turn local discovery into an owned channel.`,
-          description: $localize`Simple launch tiers for businesses that want a better profile, guide placement, badges, and insight into what people ask around the city.`,
-        }
-      : {
-          eyebrow: $localize`Personal upgrades`,
-          title: $localize`Build a LivingWiki for the things you care about.`,
-          description: $localize`Start free, then upgrade when you need private spaces, document uploads, publishing, and stronger tools for personal research or community projects.`,
-        },
-  );
-
   readonly activePlans = computed(() => {
     const annual = this.billingCycle() === 'annual';
     return this.plans
-      .filter((plan) => plan.audience === this.activeAudience())
       .map((plan) => ({
         ...plan,
         price: annual ? plan.annualMonthlyPrice : plan.monthlyPrice,
-        cadence: plan.monthlyPrice === 0 ? 'free to start' : annual ? 'per month, billed annually' : 'per month',
-        showStrike: annual && plan.annualMonthlyPrice < plan.monthlyPrice,
+        cadence: plan.contact
+          ? 'Flexible plans for growing teams'
+          : plan.monthlyPrice === 0
+            ? 'free to start'
+            : annual
+              ? 'per month, billed annually'
+              : 'per month',
+        showStrike: !plan.contact && annual && plan.annualMonthlyPrice < plan.monthlyPrice,
       }));
   });
 
   ngOnInit(): void {
     void this.restoreCheckoutReturn();
-  }
-
-  setAudience(audience: PricingAudience): void {
-    this.checkoutError.set(null);
-    this.activeAudience.set(audience);
   }
 
   setBillingCycle(cycle: BillingCycle): void {
@@ -304,7 +252,6 @@ export class PricingComponent implements OnInit {
 
   private async restoreCheckoutReturn(): Promise<void> {
     const feature = this.route.snapshot.queryParamMap.get('feature');
-    const audience = this.route.snapshot.queryParamMap.get('audience');
     const billing = this.route.snapshot.queryParamMap.get('billing');
     const plan = this.route.snapshot.queryParamMap.get('plan');
     const payment = this.route.snapshot.queryParamMap.get('pricingPayment');
@@ -314,9 +261,6 @@ export class PricingComponent implements OnInit {
       this.requestedFeature.set(feature);
     }
 
-    if (audience === 'general' || audience === 'business') {
-      this.activeAudience.set(audience);
-    }
     if (billing === 'monthly' || billing === 'annual') {
       this.billingCycle.set(billing);
     }

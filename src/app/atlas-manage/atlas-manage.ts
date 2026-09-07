@@ -1529,7 +1529,7 @@ export class AtlasManageComponent {
   async createCustomCityAtlas(event: Event): Promise<void> {
     event.preventDefault();
     if (!this.canCreateWikis()) {
-      this.pageError.set($localize`Upgrade to Personal Plus or Creator to create Wikis.`);
+      this.pageError.set($localize`Upgrade to Personal Plus or Professional to create Wikis.`);
       return;
     }
     if (!this.canCreateCustomCity()) {
@@ -1857,7 +1857,7 @@ export class AtlasManageComponent {
 
 	  async createBulkCityAtlases(): Promise<void> {
     if (!this.canCreateWikis()) {
-      this.bulkCityError.set($localize`Upgrade to Personal Plus or Creator to create Wikis.`);
+      this.bulkCityError.set($localize`Upgrade to Personal Plus or Professional to create Wikis.`);
       return;
     }
     this.refreshBulkCityDuplicateStatus();
@@ -2384,7 +2384,7 @@ export class AtlasManageComponent {
 
   async createCityAtlas(template: CityAtlasTemplate): Promise<void> {
     if (!this.canCreateWikis()) {
-      this.pageError.set($localize`Upgrade to Personal Plus or Creator to create Wikis.`);
+      this.pageError.set($localize`Upgrade to Personal Plus or Professional to create Wikis.`);
       return;
     }
     if (this.cityTemplateExists(template) || this.creatingCitySlug()) {
