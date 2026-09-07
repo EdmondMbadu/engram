@@ -416,7 +416,7 @@ async function loadBoardShare(boardId: string): Promise<BoardShare | null> {
   }
 
   const cards = Array.isArray(data.cards)
-    ? data.cards
+    ? data.cards.filter((card) => !card || typeof card !== 'object' || (card as Record<string, unknown>)['authorOnly'] !== true)
         .map(cleanBoardShareCard)
         .filter((card): card is BoardShareCard => !!card)
         .slice(0, 50)

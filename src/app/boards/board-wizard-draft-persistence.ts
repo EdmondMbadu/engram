@@ -47,6 +47,13 @@ type PersistedWizardPreferences = {
   listing_marketing?: {
     style: 'warm' | 'guided' | 'luxury' | 'brisk' | 'investor';
     direction: string;
+    propertyType: string;
+    introMessage: string;
+    contactName: string;
+    contactEmail: string;
+    contactPhone: string;
+    agency: string;
+    showContact: boolean;
   };
 };
 
@@ -114,6 +121,13 @@ export function boardWizardDraftPayloadWithPreferences<
     listingMarketing?: {
       style?: unknown;
       direction?: unknown;
+      propertyType?: unknown;
+      introMessage?: unknown;
+      contactName?: unknown;
+      contactEmail?: unknown;
+      contactPhone?: unknown;
+      agency?: unknown;
+      showContact?: unknown;
     };
   } = {},
 ): Record<string, unknown> & { result: TResult & { wizard_preferences: PersistedWizardPreferences } } {
@@ -189,6 +203,13 @@ export function boardWizardDraftNarrationSeconds(value: Record<string, unknown>)
 export function boardWizardDraftListingMarketing(value: Record<string, unknown>): {
   style: 'warm' | 'guided' | 'luxury' | 'brisk' | 'investor';
   direction: string;
+  propertyType: string;
+  introMessage: string;
+  contactName: string;
+  contactEmail: string;
+  contactPhone: string;
+  agency: string;
+  showContact: boolean;
 } {
   return normalizePersistedListingMarketing(boardWizardDraftPreferences(value)['listing_marketing']);
 }
@@ -204,6 +225,13 @@ function normalizePersistedListingIntent(value: unknown): BoardWizardPersistedLi
 function normalizePersistedListingMarketing(value: unknown): {
   style: 'warm' | 'guided' | 'luxury' | 'brisk' | 'investor';
   direction: string;
+  propertyType: string;
+  introMessage: string;
+  contactName: string;
+  contactEmail: string;
+  contactPhone: string;
+  agency: string;
+  showContact: boolean;
 } {
   const record = value && typeof value === 'object' ? value as Record<string, unknown> : {};
   const style = record['style'];
@@ -214,5 +242,18 @@ function normalizePersistedListingMarketing(value: unknown): {
     direction: typeof record['direction'] === 'string'
       ? record['direction'].replace(/\s+/g, ' ').trim().slice(0, 500)
       : '',
+    propertyType: cleanPreferenceText(record['property_type'] ?? record['propertyType'], 100),
+    introMessage: cleanPreferenceText(record['intro_message'] ?? record['introMessage'], 800, false),
+    contactName: cleanPreferenceText(record['contact_name'] ?? record['contactName'], 140),
+    contactEmail: cleanPreferenceText(record['contact_email'] ?? record['contactEmail'], 254),
+    contactPhone: cleanPreferenceText(record['contact_phone'] ?? record['contactPhone'], 40),
+    agency: cleanPreferenceText(record['agency'], 160),
+    showContact: (record['show_contact'] ?? record['showContact']) !== false,
   };
+}
+
+function cleanPreferenceText(value: unknown, maxLength: number, collapseWhitespace = true): string {
+  if (typeof value !== 'string') return '';
+  const text = collapseWhitespace ? value.replace(/\s+/g, ' ') : value.replace(/\r\n?/g, '\n');
+  return text.trim().slice(0, maxLength);
 }

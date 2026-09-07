@@ -84,6 +84,7 @@ import {
   type BoardTranslationLanguage,
   type BoardTranslationResult,
 } from './board-translation';
+import { cardsForPublishedExperience, cardsVisibleToBoardViewer } from './board-card-visibility';
 import {
   BOARD_WIZARD_PASTE_MAX_LENGTH,
   detectBoardWizardSourceUrl,
@@ -348,6 +349,7 @@ type BoardWizardListingPreview = {
   bathrooms: string;
   mlsId: string;
   imageCount: number;
+  imageUrl: string;
   contactName: string;
   contactRole: string;
   brokerage: string;
@@ -471,6 +473,7 @@ type BoardCard = {
   scope: BoardCardScope;
   status: BoardCardStatus;
   rating: number;
+  authorOnly?: boolean;
   entityName?: string;
   entityType?: BoardEntityType;
   imageIntent?: BoardImageIntent;
@@ -801,6 +804,7 @@ type BoardWizardGeneratedCard = {
   scope: BoardCardScope;
   status: BoardCardStatus;
   rating: number;
+  authorOnly?: boolean;
   tags: string[];
   image_query: string;
   place_query: string;
@@ -948,6 +952,13 @@ type BoardWizardDraft = {
   narrationSecondsPerCard: number;
   listingMarketingStyle: BoardWizardListingMarketingStyle;
   listingMarketingDirection: string;
+  listingPropertyType: string;
+  listingIntroMessage: string;
+  listingContactName: string;
+  listingContactEmail: string;
+  listingContactPhone: string;
+  listingAgency: string;
+  listingShowContact: boolean;
   prompt: string;
   pastedList: string;
   sourceUrl: string;
@@ -2048,6 +2059,23 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly wizardListingPreview = signal<BoardWizardListingPreview | null>(null);
   readonly wizardListingMarketingStyle = signal<BoardWizardListingMarketingStyle>('warm');
   readonly wizardListingMarketingDirection = signal('');
+  readonly wizardListingPropertyType = signal('');
+  readonly wizardListingIntroMessage = signal('');
+  readonly wizardListingContactName = signal('');
+  readonly wizardListingContactEmail = signal('');
+  readonly wizardListingContactPhone = signal('');
+  readonly wizardListingAgency = signal('');
+  readonly wizardListingShowContact = signal(true);
+  readonly wizardListingPersonalizationError = signal('');
+  readonly wizardListingPropertyTypeOptions = [
+    'Single-family home',
+    'Condominium',
+    'Townhouse',
+    'Multi-family home',
+    'Land',
+    'Other',
+  ] as const;
+  readonly wizardListingCanContinue = computed(() => !this.wizardListingValidationMessage());
   readonly wizardListingSceneMin = 5;
   readonly wizardListingSceneMax = 16;
   readonly wizardListingMarketingStyles: ReadonlyArray<{
@@ -2861,12 +2889,12 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         return [{
           id,
           mode: 'url',
-          label: isRental ? 'Rental Property TalkThru Wizard' : 'Real Estate TalkThru Wizard',
+          label: isRental ? 'Rental Property TalkThru Wizard' : 'Real Estate VirtualTalkThru',
           description: isRental
             ? 'Easily launch a unique rental listing as a personal, engaging TalkThru.'
-            : 'Create a personal, engaging TalkThru—not a static photo-by-photo walkthrough.',
+            : 'Create a personal, engaging virtual tour—not a static photo-by-photo walkthrough.',
           icon: isRental ? 'key' : 'home_work',
-          eyebrow: 'TalkThru Wizard',
+          eyebrow: isRental ? 'TalkThru Wizard' : 'VirtualTalkThru',
           actionLabel: isRental ? 'Launch a rental' : 'Launch a listing',
           talkThru: true,
           ...BOARD_WIZARD_DOORWAY_VISUALS[id],
@@ -2980,13 +3008,16 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     if (!board) {
       return [];
     }
+    // Draft-only cards help the owner finish the board, but must never become
+    // part of Live View, narrated videos, trailers, or exported documents.
+    const experienceCards = cardsForPublishedExperience(board.cards);
     // Live View is the complete board experience. A board can first arrive as
     // a one-card collection preview and then be replaced by its full record;
     // never let that temporary selection limit the public Stack.
     if (directView) {
-      return cardsForStackView(board.cards, this.stackSelectedCardIds(), true);
+      return cardsForStackView(experienceCards, this.stackSelectedCardIds(), true);
     }
-    return cardsForStackView(board.cards, this.stackSelectedCardIds(), false);
+    return cardsForStackView(experienceCards, this.stackSelectedCardIds(), false);
   });
   readonly selectedBoardCity = computed(() => {
     const board = this.selectedBoard();
@@ -4310,6 +4341,9 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       return;
     }
     this.wizardMode.set(mode);
+    if (entryIntent === 'real-estate') {
+      this.wizardTargetBoardId.set('new');
+    }
     if (mode === 'nearby-gems') {
       this.wizardTargetBoardId.set('new');
       this.wizardDefaultType.set('place');
@@ -4572,6 +4606,13 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.wizardNarrationLengthCustomized.set(true);
     this.wizardListingMarketingStyle.set(draft.listingMarketingStyle);
     this.wizardListingMarketingDirection.set(draft.listingMarketingDirection);
+    this.wizardListingPropertyType.set(draft.listingPropertyType);
+    this.wizardListingIntroMessage.set(draft.listingIntroMessage);
+    this.wizardListingContactName.set(draft.listingContactName);
+    this.wizardListingContactEmail.set(draft.listingContactEmail);
+    this.wizardListingContactPhone.set(draft.listingContactPhone);
+    this.wizardListingAgency.set(draft.listingAgency);
+    this.wizardListingShowContact.set(draft.listingShowContact);
     this.wizardPrompt.set(draft.prompt);
     this.wizardPastedList.set(draft.pastedList);
     this.wizardUrl.set(draft.sourceUrl);
@@ -5209,7 +5250,16 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       this.wizardSourceReviewExact.set(data['exact'] === true);
       this.wizardSourceReviewWarning.set(this.stringValue(data['warning'], '', 500));
       if (data['specializedKind'] === 'real-estate' || data['specializedKind'] === 'rental') {
-        this.wizardListingPreview.set(this.normalizeWizardListingPreview(data['listingPreview'], sourceUrl));
+        const listingPreview = this.normalizeWizardListingPreview(data['listingPreview'], sourceUrl);
+        this.wizardListingPreview.set(listingPreview);
+        this.wizardListingPropertyType.set(listingPreview.propertyType);
+        this.wizardListingIntroMessage.set('');
+        this.wizardListingContactName.set(listingPreview.contactName || this.userName());
+        this.wizardListingContactEmail.set('');
+        this.wizardListingContactPhone.set('');
+        this.wizardListingAgency.set(listingPreview.brokerage);
+        this.wizardListingShowContact.set(true);
+        this.wizardListingPersonalizationError.set('');
         this.wizardSourceManifest.set(null);
         this.wizardSourceConfirmedUrl.set('');
         if (this.wizardCountMode() === 'auto') {
@@ -5258,8 +5308,66 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   async confirmWizardListingStory(): Promise<void> {
     const sourceUrl = this.wizardSourceReviewUrl() || this.wizardDetectedSourceUrl();
     if (!sourceUrl || !this.wizardListingPreview()) return;
+    if (this.wizardEntryIntent() === 'real-estate') {
+      const validationMessage = this.wizardListingValidationMessage();
+      if (validationMessage) {
+        this.wizardListingPersonalizationError.set(validationMessage);
+        return;
+      }
+    }
+    this.wizardListingPersonalizationError.set('');
     this.wizardSourceConfirmedUrl.set(sourceUrl);
     await this.generateWizardBatch('', true);
+  }
+
+  updateWizardListingPersonalization(
+    field: 'propertyType' | 'introMessage' | 'contactName' | 'contactEmail' | 'contactPhone' | 'agency',
+    value: string,
+  ): void {
+    const limits = {
+      propertyType: 100,
+      introMessage: 800,
+      contactName: 140,
+      contactEmail: 254,
+      contactPhone: 40,
+      agency: 160,
+    } as const;
+    const nextValue = value.slice(0, limits[field]);
+    switch (field) {
+      case 'propertyType': this.wizardListingPropertyType.set(nextValue); break;
+      case 'introMessage': this.wizardListingIntroMessage.set(nextValue); break;
+      case 'contactName': this.wizardListingContactName.set(nextValue); break;
+      case 'contactEmail': this.wizardListingContactEmail.set(nextValue); break;
+      case 'contactPhone': this.wizardListingContactPhone.set(nextValue); break;
+      case 'agency': this.wizardListingAgency.set(nextValue); break;
+    }
+    this.wizardListingPersonalizationError.set('');
+  }
+
+  setWizardListingShowContact(value: boolean): void {
+    this.wizardListingShowContact.set(value);
+    this.wizardListingPersonalizationError.set('');
+  }
+
+  wizardListingPropertyTypeIsStandard(): boolean {
+    return (this.wizardListingPropertyTypeOptions as readonly string[]).includes(this.wizardListingPropertyType());
+  }
+
+  private wizardListingValidationMessage(): string {
+    if (this.wizardEntryIntent() !== 'real-estate') return '';
+    if (!this.wizardListingPropertyType().trim()) return 'Choose the property type.';
+    if (!this.wizardListingContactName().trim()) return 'Enter your name so buyers know who is presenting the property.';
+    const email = this.wizardListingContactEmail().trim();
+    const phone = this.wizardListingContactPhone().trim();
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'Enter a valid email address.';
+    const phoneDigits = phone.replace(/\D/g, '');
+    if (phone && (phoneDigits.length < 7 || phoneDigits.length > 15 || !/^[+\d().\-\s]+$/.test(phone))) {
+      return 'Enter a valid phone number.';
+    }
+    if (this.wizardListingShowContact() && !email && !phone) {
+      return 'Add an email address or phone number, or turn off the public contact card.';
+    }
+    return '';
   }
 
   setWizardListingSceneCount(value: string | number, userInitiated = true): void {
@@ -5903,7 +6011,19 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     value: BoardWizardPreviewCard[K],
   ): void {
     this.wizardPreviewCards.update((cards) =>
-      cards.map((card) => card.id === cardId ? { ...card, [field]: value } : card),
+      cards.map((card) => {
+        if (card.id !== cardId) return card;
+        const updated = { ...card, [field]: value };
+        if (card.authorOnly && (field === 'title' || field === 'subtitle' || field === 'notes')) {
+          const hasIntroduction = String(updated.notes ?? '').trim()
+            && String(updated.notes ?? '').trim() !== 'Add a short welcome message about the property and invite buyers to look around.';
+          if (hasIntroduction) {
+            updated.authorOnly = false;
+            updated.tags = card.tags.filter((tag) => tag !== 'author-only' && tag !== 'intro-placeholder');
+          }
+        }
+        return updated;
+      }),
     );
   }
 
@@ -6017,6 +6137,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       scope: card.scope,
       status: card.status,
       rating: Math.max(1, Math.min(5, Math.round(card.rating) || 4)),
+      authorOnly: card.authorOnly === true,
       entityName: card.entity_name?.trim() || card.title.trim(),
       entityType: card.entity_type ?? (card.type === 'place' || card.type === 'shop' ? 'place' : card.type === 'food' ? 'food' : 'other'),
       imageIntent: card.image_intent ?? (card.type === 'place' || card.type === 'shop' ? 'place' : card.type === 'food' ? 'food' : 'other'),
@@ -8536,6 +8657,13 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     const effectiveTags = relatedParentId
       ? this.mergeWizardTags(tags, ['related-card']).slice(0, 6)
       : tags;
+    const editingCard = editingId ? board.cards.find((card) => card.id === editingId) ?? null : null;
+    const completingAuthorOnlyCard = editingCard?.authorOnly === true
+      && draft.notes.trim().length > 0
+      && draft.notes.trim() !== 'Add a short welcome message about the property and invite buyers to look around.';
+    const persistedTags = completingAuthorOnlyCard
+      ? effectiveTags.filter((tag) => tag !== 'author-only' && tag !== 'intro-placeholder')
+      : effectiveTags;
     const cardFromDraft = (existing: BoardCard | null = null): BoardCard => ({
       ...(existing ?? {}),
       id: existing?.id ?? this.createId(),
@@ -8553,6 +8681,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       scope: cardScope,
       status: draft.status,
       rating,
+      authorOnly: existing?.authorOnly === true && !completingAuthorOnlyCard,
       imageUrl,
       imageUrls,
       ...(existing?.listingPresentation ? {
@@ -8584,7 +8713,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       placeId,
       googleMapsUrl,
       what3wordsAddress,
-      tags: effectiveTags,
+      tags: persistedTags,
       stickers: draft.stickers,
       tour: songMode ? null : draftTour ?? existing?.tour ?? null,
       relatedCards: existing?.relatedCards ?? [],
@@ -17965,7 +18094,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
 
   wizardModeLabel(): string {
     if (this.wizardMode() === 'url' && this.wizardEntryIntent() === 'real-estate') {
-      return 'Real Estate TalkThru';
+      return 'Real Estate VirtualTalkThru';
     }
     if (this.wizardMode() === 'url' && this.wizardEntryIntent() === 'rental') {
       return 'Rental Property TalkThru';
@@ -18068,6 +18197,13 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       narrationSecondsPerCard: this.wizardNarrationSecondsPerCard(),
       listingMarketingStyle: this.wizardListingMarketingStyle(),
       listingMarketingDirection: this.wizardListingMarketingDirection(),
+      listingPropertyType: this.wizardListingPropertyType(),
+      listingIntroMessage: this.wizardListingIntroMessage(),
+      listingContactName: this.wizardListingContactName(),
+      listingContactEmail: this.wizardListingContactEmail(),
+      listingContactPhone: this.wizardListingContactPhone(),
+      listingAgency: this.wizardListingAgency(),
+      listingShowContact: this.wizardListingShowContact(),
       prompt: this.wizardPrompt(),
       pastedList: this.wizardPastedList(),
       sourceUrl: this.wizardUrl(),
@@ -18179,6 +18315,13 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         narrationSecondsPerCard: this.wizardNarrationSecondsPerCard(),
         listingMarketingStyle: this.wizardListingMarketingStyle(),
         listingMarketingDirection: this.wizardListingMarketingDirection(),
+        listingPropertyType: this.wizardListingPropertyType(),
+        listingIntroMessage: this.wizardListingIntroMessage(),
+        listingContactName: this.wizardListingContactName(),
+        listingContactEmail: this.wizardListingContactEmail(),
+        listingContactPhone: this.wizardListingContactPhone(),
+        listingAgency: this.wizardListingAgency(),
+        listingShowContact: this.wizardListingShowContact(),
         prompt: this.wizardPrompt(),
         pastedList: this.wizardPastedList(),
         sourceUrl: this.wizardUrl(),
@@ -18229,6 +18372,13 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         listingMarketing: {
           style: draft.listingMarketingStyle,
           direction: draft.listingMarketingDirection,
+          propertyType: draft.listingPropertyType,
+          introMessage: draft.listingIntroMessage,
+          contactName: draft.listingContactName,
+          contactEmail: draft.listingContactEmail,
+          contactPhone: draft.listingContactPhone,
+          agency: draft.listingAgency,
+          showContact: draft.listingShowContact,
         },
       });
       await setDoc(
@@ -18344,6 +18494,13 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
         narrationSecondsPerCard,
         listingMarketingStyle: listingMarketing.style,
         listingMarketingDirection: listingMarketing.direction,
+        listingPropertyType: listingMarketing.propertyType,
+        listingIntroMessage: listingMarketing.introMessage,
+        listingContactName: listingMarketing.contactName,
+        listingContactEmail: listingMarketing.contactEmail,
+        listingContactPhone: listingMarketing.contactPhone,
+        listingAgency: listingMarketing.agency,
+        listingShowContact: listingMarketing.showContact,
         prompt: this.stringValue(value['prompt'], '', 2000),
         pastedList: this.stringValue(value['pasted_list'], '', BOARD_WIZARD_PASTE_MAX_LENGTH),
         sourceUrl: this.stringValue(value['source_url'], '', 2000),
@@ -18402,6 +18559,14 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     this.wizardListingPreview.set(null);
     this.wizardListingMarketingStyle.set('warm');
     this.wizardListingMarketingDirection.set('');
+    this.wizardListingPropertyType.set('');
+    this.wizardListingIntroMessage.set('');
+    this.wizardListingContactName.set('');
+    this.wizardListingContactEmail.set('');
+    this.wizardListingContactPhone.set('');
+    this.wizardListingAgency.set('');
+    this.wizardListingShowContact.set(true);
+    this.wizardListingPersonalizationError.set('');
     this.wizardPhotos.set([]);
     this.wizardPhotoImportRun += 1;
     this.wizardPhotosLoading.set(false);
@@ -18620,8 +18785,16 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       narrationLengthCustomized: this.wizardNarrationLengthCustomized(),
       listingMarketing: {
         enabled: true,
+        personalized: this.wizardEntryIntent() === 'real-estate',
         style: this.wizardListingMarketingStyle(),
         direction: this.wizardListingMarketingDirection().trim(),
+        propertyType: this.wizardListingPropertyType().trim(),
+        introMessage: this.wizardListingIntroMessage().trim(),
+        contactName: this.wizardListingContactName().trim(),
+        contactEmail: this.wizardListingContactEmail().trim(),
+        contactPhone: this.wizardListingContactPhone().trim(),
+        agency: this.wizardListingAgency().trim(),
+        showContactOnClosingCard: this.wizardListingShowContact(),
       },
       listingIntent: this.wizardListingIntentForApi(),
       deferMediaEnrichment: this.wizardShouldDeferMediaEnrichment(),
@@ -18793,6 +18966,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       bathrooms: this.stringValue(data['bathrooms'], '', 40),
       mlsId: this.stringValue(data['mlsId'], '', 80),
       imageCount: Math.round(this.numberValue(data['imageCount'], 0, 0, 100)),
+      imageUrl: this.stringValue(data['imageUrl'], '', 2000),
       contactName: this.stringValue(data['contactName'], '', 140),
       contactRole: this.stringValue(data['contactRole'], '', 80),
       brokerage: this.stringValue(data['brokerage'], '', 160),
@@ -18888,6 +19062,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       scope: this.isBoardCardScope(data['scope']) ? data['scope'] : 'place',
       status: this.isBoardCardStatus(data['status']) ? data['status'] : 'saved',
       rating: this.numberValue(data['rating'], 4, 1, 5),
+      authorOnly: data['authorOnly'] === true,
       tags,
       image_query: this.normalizeWizardImageQuery(title, imageQuery, subtitle, notes, tags, entityType, imageIntent),
       place_query: this.stringValue(data['place_query'], title, 140),
@@ -21145,7 +21320,12 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       return null;
     }
 
-    const rawCards = Array.isArray(data['cards']) ? data['cards'] : [];
+    const ownerUserId = typeof data['owner_user_id'] === 'string' ? data['owner_user_id'] : '';
+    const rawCards = cardsVisibleToBoardViewer(
+      Array.isArray(data['cards']) ? data['cards'] as Array<Record<string, unknown>> : [],
+      ownerUserId,
+      this.authService.uid(),
+    );
     const photoStudioDraft = data['photoStudioDraft'] === true;
     return {
       id,
@@ -21296,6 +21476,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       scope: this.isBoardCardScope(data['scope']) ? data['scope'] : this.inferLegacyCardScope(data),
       status: this.isBoardCardStatus(data['status']) ? data['status'] : 'saved',
       rating: typeof data['rating'] === 'number' ? Math.max(1, Math.min(5, data['rating'])) : 4,
+      authorOnly: data['authorOnly'] === true,
       entityName: typeof data['entityName'] === 'string' ? data['entityName'] : title,
       entityType: this.isBoardEntityType(data['entityType']) ? data['entityType'] : (this.isBoardCardType(data['type']) && (data['type'] === 'place' || data['type'] === 'shop') ? 'place' : 'other'),
       imageIntent: this.isBoardImageIntent(data['imageIntent']) ? data['imageIntent'] : 'other',

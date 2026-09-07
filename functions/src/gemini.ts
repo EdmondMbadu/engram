@@ -533,6 +533,7 @@ export type GeneratedBoardWizardCard = {
   scope: 'place' | 'city' | 'country' | 'region';
   status: 'planned' | 'saved' | 'visited' | 'favorite';
   rating: number;
+  authorOnly?: boolean;
   tags: string[];
   image_query: string;
   entity_name?: string;

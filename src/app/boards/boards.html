@@ -3192,6 +3192,12 @@
                   @if (boardShowsCardNumbers(board)) {
                     <span class="detail-card__rank" aria-label="Card {{ $index + 1 }}">{{ $index + 1 }}</span>
                   }
+                  @if (card.authorOnly) {
+                    <span class="detail-card__author-only">
+                      <span class="material-symbols-outlined">visibility_lock</span>
+                      Only you can see this
+                    </span>
+                  }
                   @if (isAlongsideInnerCard(board, card)) {
                     <span class="detail-card__inside-context">
                       <button
@@ -4600,7 +4606,10 @@
               <h3 id="board-wizard-modal-title">Describe your board</h3>
               <span class="boards-wizard-modal__subtitle">Tell us what you want. You can review every card before saving.</span>
             } @else if (wizardStep() === 'listing-setup') {
-              <h3 id="board-wizard-modal-title">Shape the listing story</h3>
+              <h3 id="board-wizard-modal-title">{{ wizardIsRentalTalkThru() ? 'Shape the listing story' : 'Personalize your VirtualTalkThru' }}</h3>
+              @if (!wizardIsRentalTalkThru()) {
+                <span class="boards-wizard-modal__subtitle">Help buyers meet the property — and the person behind it.</span>
+              }
             } @else {
               <h3 id="board-wizard-modal-title">{{ wizardStep() === 'choose' ? (wizardLockedTargetBoard() ? 'Choose how to add cards' : 'Choose how to start') : wizardModeLabel() }}</h3>
             }
@@ -5460,20 +5469,22 @@
                     </small>
                   }
                 </label>
-                <label>
-                  <span>{{ wizardIsTalkThruListing() ? 'What should the TalkThru emphasize?' : 'Optional direction' }}</span>
-                  <input
-                    type="text"
-                    maxlength="220"
-                    [placeholder]="wizardIsRentalTalkThru() ? 'Lead with the setting, living spaces, amenities, or guest experience' : wizardEntryIntent() === 'real-estate' ? 'Lead with the setting, kitchen, outdoor space, or another visible strength' : 'Focus on places, food, and things worth saving'"
-                    [value]="wizardPrompt()"
-                    (input)="wizardPrompt.set($any($event.target).value)"
-                  />
-                </label>
+                @if (wizardEntryIntent() !== 'real-estate') {
+                  <label>
+                    <span>{{ wizardIsTalkThruListing() ? 'What should the TalkThru emphasize?' : 'Optional direction' }}</span>
+                    <input
+                      type="text"
+                      maxlength="220"
+                      [placeholder]="wizardIsRentalTalkThru() ? 'Lead with the setting, living spaces, amenities, or guest experience' : 'Focus on places, food, and things worth saving'"
+                      [value]="wizardPrompt()"
+                      (input)="wizardPrompt.set($any($event.target).value)"
+                    />
+                  </label>
+                }
               }
             </section>
 
-            <aside class="boards-wizard-config" [hidden]="wizardMode() === 'nearby-gems'">
+            <aside class="boards-wizard-config" [hidden]="wizardMode() === 'nearby-gems' || wizardEntryIntent() === 'real-estate'">
               @if (wizardMode() === 'describe') {
                 <h4>Board shape</h4>
               }
@@ -5856,7 +5867,7 @@
                 @if (wizardMode() !== 'photos') {
                   <button type="submit" class="boards-primary-action" [disabled]="!wizardCanGenerate()">
                     <span class="material-symbols-outlined">auto_awesome</span>
-                    {{ wizardMode() === 'off-grid' ? 'Preview card' : wizardMode() === 'describe' ? 'Create preview' : 'Generate preview' }}
+                    {{ wizardEntryIntent() === 'real-estate' ? 'Analyze listing' : wizardMode() === 'off-grid' ? 'Preview card' : wizardMode() === 'describe' ? 'Create preview' : 'Generate preview' }}
                     @if (wizardMode() === 'describe') {
                       <span class="material-symbols-outlined">arrow_forward</span>
                     }
@@ -5927,121 +5938,159 @@
         } @else if (wizardStep() === 'listing-setup') {
           @if (wizardListingPreview(); as listing) {
             <div class="boards-wizard boards-listing-story-setup">
-              <section class="boards-listing-story-hero">
-                <span class="boards-listing-story-hero__icon material-symbols-outlined">auto_stories</span>
-                <div>
-                  <small>{{ wizardIsRentalTalkThru() ? 'Rental listing detected' : 'Real-estate listing detected' }}</small>
-                  <h4>{{ listing.listingName }}</h4>
-                  @if (listing.address && listing.address !== listing.listingName) {
-                    <p>{{ listing.address }}</p>
+              @if (!wizardIsRentalTalkThru()) {
+                <nav class="boards-listing-steps" aria-label="VirtualTalkThru creation progress">
+                  <span><b>1</b> Listing</span>
+                  <i aria-hidden="true"></i>
+                  <span class="boards-listing-steps__active" aria-current="step"><b>2</b> Personalize</span>
+                  <i aria-hidden="true"></i>
+                  <span><b>3</b> Review</span>
+                </nav>
+
+                <section class="boards-listing-story-hero boards-listing-story-hero--personalize">
+                  @if (listing.imageUrl) {
+                    <img class="boards-listing-story-hero__image" [src]="listing.imageUrl" [alt]="listing.listingName" referrerpolicy="no-referrer" />
+                  } @else {
+                    <span class="boards-listing-story-hero__icon material-symbols-outlined">home_work</span>
                   }
-                  <div class="boards-listing-story-facts">
-                    @if (listing.price) { <strong>{{ listing.price }}</strong> }
-                    @if (listing.bedrooms) { <span>{{ listing.bedrooms }} beds</span> }
-                    @if (listing.bathrooms) { <span>{{ listing.bathrooms }} baths</span> }
-                    @if (listing.propertyType) { <span>{{ listing.propertyType }}</span> }
-                    @if (listing.status) { <span>{{ listing.status }}</span> }
-                    @if (listing.mlsId) { <span>MLS# {{ listing.mlsId }}</span> }
-                  </div>
-                </div>
-                <div class="boards-listing-story-photo-count">
-                  <strong>{{ listing.imageCount || '—' }}</strong>
-                  <small>source photos</small>
-                </div>
-              </section>
-
-              <section class="boards-listing-story-explainer">
-                <span class="material-symbols-outlined">account_tree</span>
-                <div>
-                  <strong>Turn the gallery into a connected {{ wizardIsRentalTalkThru() ? 'rental TalkThru' : 'property TalkThru' }}</strong>
-                  <small>LivingWiki will identify each space, choose the strongest photographs, remove repetition, and arrange the cards from the opening view through the {{ wizardIsRentalTalkThru() ? 'availability and booking or application details' : 'final listing details' }}.</small>
-                </div>
-              </section>
-
-              <section>
-                <span class="boards-wizard-label">Choose a story approach</span>
-                <div class="boards-listing-story-styles" role="radiogroup" aria-label="Listing story approach">
-                  @for (style of wizardListingMarketingStyles; track style.id) {
-                    <button
-                      type="button"
-                      class="boards-listing-story-style"
-                      role="radio"
-                      [attr.aria-checked]="wizardListingMarketingStyle() === style.id"
-                      [class.boards-listing-story-style--active]="wizardListingMarketingStyle() === style.id"
-                      (click)="wizardListingMarketingStyle.set(style.id)"
-                    >
-                      <span class="boards-listing-story-style__radio" aria-hidden="true"></span>
-                      <span class="boards-listing-story-style__icon material-symbols-outlined">{{ style.icon }}</span>
-                      <span class="boards-listing-story-style__copy"><strong>{{ style.label }}</strong><small>{{ style.description }}</small></span>
-                    </button>
-                  }
-                </div>
-              </section>
-
-              <div class="boards-listing-story-controls">
-                <section class="boards-listing-story-control-panel" aria-labelledby="listing-story-scenes-label">
-                  <div class="boards-listing-story-control-label">
-                    <strong id="listing-story-scenes-label">Narrative photos</strong>
-                    <small>Recommended: 8–12</small>
-                  </div>
-                  <div class="boards-listing-story-stepper">
-                    <button
-                      type="button"
-                      aria-label="Use one fewer narrative photo"
-                      [disabled]="wizardCount() <= wizardListingSceneMin"
-                      (click)="setWizardListingSceneCount(wizardCount() - 1)"
-                    >
-                      <span class="material-symbols-outlined">remove</span>
-                    </button>
-                    <output aria-live="polite">{{ wizardCount() }} photos</output>
-                    <button
-                      type="button"
-                      aria-label="Use one more narrative photo"
-                      [disabled]="wizardCount() >= wizardListingSceneMax"
-                      (click)="setWizardListingSceneCount(wizardCount() + 1)"
-                    >
-                      <span class="material-symbols-outlined">add</span>
-                    </button>
-                  </div>
-                  <small class="boards-listing-story-helper">All {{ listing.imageCount || 'source' }} photos will be classified into space groups. The strongest {{ wizardCount() }} guide the narration.</small>
-                </section>
-                <label class="boards-listing-story-control-panel boards-listing-story-direction">
-                  <span class="boards-listing-story-control-label">
-                    <strong>What should the story emphasize?</strong>
-                    <small>Optional</small>
-                  </span>
-                  <textarea
-                    rows="3"
-                    maxlength="500"
-                    placeholder="For example: lead with the deck, keep it warm, and emphasize the kitchen and top-floor privacy."
-                    [value]="wizardListingMarketingDirection()"
-                    (input)="wizardListingMarketingDirection.set($any($event.target).value)"
-                  ></textarea>
-                </label>
-              </div>
-
-              @if (listing.contactName || listing.brokerage) {
-                <section class="boards-listing-story-attribution">
-                  <span class="material-symbols-outlined">verified</span>
                   <div>
-                    <strong>Listing attribution will be retained</strong>
-                    <small>
-                      @if (listing.contactName) { {{ listing.contactRole || 'Site contact' }}: {{ listing.contactName }} }
-                      @if (listing.contactName && listing.brokerage) { · }
-                      @if (listing.brokerage) { Listed by {{ listing.brokerage }} }
-                      · Source and contact details stay attached to the final story.
-                    </small>
+                    <small>Property listing detected</small>
+                    <h4>{{ listing.listingName }}</h4>
+                    @if (listing.address && listing.address !== listing.listingName) { <p>{{ listing.address }}</p> }
+                    <div class="boards-listing-story-facts">
+                      @if (listing.price) { <strong>{{ listing.price }}</strong> }
+                      @if (listing.bedrooms) { <span>{{ listing.bedrooms }} beds</span> }
+                      @if (listing.bathrooms) { <span>{{ listing.bathrooms }} baths</span> }
+                      @if (listing.status) { <span>{{ listing.status }}</span> }
+                      @if (listing.mlsId) { <span>MLS# {{ listing.mlsId }}</span> }
+                    </div>
                   </div>
+                  <div class="boards-listing-story-photo-count"><strong>{{ listing.imageCount || '—' }}</strong><small>source photos</small></div>
                 </section>
-              }
 
-              <div class="boards-form__actions">
-                <button type="button" class="boards-ghost-action" (click)="backWizardStep()">Back</button>
-                <button type="button" class="boards-primary-action" (click)="confirmWizardListingStory()">
-                  <span class="material-symbols-outlined">auto_awesome</span>
-                  Build {{ wizardCount() }}-scene TalkThru
-                </button>
-              </div>
+                <div class="boards-listing-personalize-grid">
+                  <section class="boards-listing-personalize-section">
+                    <h4>Property details</h4>
+                    <label class="boards-listing-field">
+                      <span>Property type <b aria-hidden="true">*</b></span>
+                      <select
+                        required
+                        [value]="wizardListingPropertyType()"
+                        (change)="updateWizardListingPersonalization('propertyType', $any($event.target).value)"
+                      >
+                        <option value="">Choose the property type</option>
+                        @if (wizardListingPropertyType() && !wizardListingPropertyTypeIsStandard()) {
+                          <option [value]="wizardListingPropertyType()">{{ wizardListingPropertyType() }}</option>
+                        }
+                        @for (propertyType of wizardListingPropertyTypeOptions; track propertyType) {
+                          <option [value]="propertyType">{{ propertyType }}</option>
+                        }
+                      </select>
+                    </label>
+
+                    <div class="boards-listing-section-rule"></div>
+                    <h4>Your introduction</h4>
+                    <label class="boards-listing-field boards-listing-field--message">
+                      <span>Welcome message <em>Optional</em></span>
+                      <textarea
+                        rows="5"
+                        maxlength="800"
+                        placeholder="Hi, I’m Jenny. Take a look around this beautiful four-bedroom home. I’d be happy to show you in person."
+                        [value]="wizardListingIntroMessage()"
+                        (input)="updateWizardListingPersonalization('introMessage', $any($event.target).value)"
+                      ></textarea>
+                      <small>Shown on the opening card. You can edit it later.</small>
+                    </label>
+                    <p class="boards-listing-intro-reminder">
+                      <span class="material-symbols-outlined">info</span>
+                      No message yet? An author-only Intro card will be added as a reminder.
+                    </p>
+                  </section>
+
+                  <section class="boards-listing-personalize-section boards-listing-personalize-section--contact">
+                    <h4>Agent contact</h4>
+                    <label class="boards-listing-field">
+                      <span>Your name <b aria-hidden="true">*</b></span>
+                      <input type="text" required maxlength="140" autocomplete="name" [value]="wizardListingContactName()" (input)="updateWizardListingPersonalization('contactName', $any($event.target).value)" />
+                    </label>
+                    <label class="boards-listing-field">
+                      <span>Email</span>
+                      <input type="email" maxlength="254" autocomplete="email" placeholder="jenny@example.com" [value]="wizardListingContactEmail()" (input)="updateWizardListingPersonalization('contactEmail', $any($event.target).value)" />
+                    </label>
+                    <label class="boards-listing-field">
+                      <span>Phone</span>
+                      <input type="tel" maxlength="40" autocomplete="tel" placeholder="(609) 555-0147" [value]="wizardListingContactPhone()" (input)="updateWizardListingPersonalization('contactPhone', $any($event.target).value)" />
+                    </label>
+                    <label class="boards-listing-field">
+                      <span>Agency <em>Optional</em></span>
+                      <input type="text" maxlength="160" autocomplete="organization" [value]="wizardListingAgency()" (input)="updateWizardListingPersonalization('agency', $any($event.target).value)" />
+                    </label>
+                    <button
+                      type="button"
+                      class="boards-listing-contact-toggle"
+                      role="switch"
+                      [attr.aria-checked]="wizardListingShowContact()"
+                      (click)="setWizardListingShowContact(!wizardListingShowContact())"
+                    >
+                      <span class="boards-listing-contact-toggle__box material-symbols-outlined">{{ wizardListingShowContact() ? 'check' : '' }}</span>
+                      <span><strong>Show my contact details on the closing card</strong><small>This information will be visible to anyone who can view the board.</small></span>
+                    </button>
+                  </section>
+                </div>
+
+                <details class="boards-listing-advanced">
+                  <summary><span class="material-symbols-outlined">tune</span><strong>Story style &amp; number of scenes</strong><small>Optional</small><span class="material-symbols-outlined">expand_more</span></summary>
+                  <div class="boards-listing-advanced__body">
+                    <section>
+                      <span class="boards-wizard-label">Story approach</span>
+                      <div class="boards-listing-story-styles" role="radiogroup" aria-label="Listing story approach">
+                        @for (style of wizardListingMarketingStyles; track style.id) {
+                          <button type="button" class="boards-listing-story-style" role="radio" [attr.aria-checked]="wizardListingMarketingStyle() === style.id" [class.boards-listing-story-style--active]="wizardListingMarketingStyle() === style.id" (click)="wizardListingMarketingStyle.set(style.id)">
+                            <span class="boards-listing-story-style__radio" aria-hidden="true"></span><span class="boards-listing-story-style__icon material-symbols-outlined">{{ style.icon }}</span><span class="boards-listing-story-style__copy"><strong>{{ style.label }}</strong><small>{{ style.description }}</small></span>
+                          </button>
+                        }
+                      </div>
+                    </section>
+                    <div class="boards-listing-story-controls">
+                      <section class="boards-listing-story-control-panel" aria-labelledby="listing-story-scenes-label">
+                        <div class="boards-listing-story-control-label"><strong id="listing-story-scenes-label">Property scenes</strong><small>Recommended: 8–12</small></div>
+                        <div class="boards-listing-story-stepper">
+                          <button type="button" aria-label="Use one fewer property scene" [disabled]="wizardCount() <= wizardListingSceneMin" (click)="setWizardListingSceneCount(wizardCount() - 1)"><span class="material-symbols-outlined">remove</span></button>
+                          <output aria-live="polite">{{ wizardCount() }} scenes</output>
+                          <button type="button" aria-label="Use one more property scene" [disabled]="wizardCount() >= wizardListingSceneMax" (click)="setWizardListingSceneCount(wizardCount() + 1)"><span class="material-symbols-outlined">add</span></button>
+                        </div>
+                        <small class="boards-listing-story-helper">The Intro and closing cards are added automatically.</small>
+                      </section>
+                      <label class="boards-listing-story-control-panel boards-listing-story-direction">
+                        <span class="boards-listing-story-control-label"><strong>What should the story emphasize?</strong><small>Optional</small></span>
+                        <textarea rows="3" maxlength="500" placeholder="For example: lead with the deck and emphasize the kitchen." [value]="wizardListingMarketingDirection()" (input)="wizardListingMarketingDirection.set($any($event.target).value)"></textarea>
+                      </label>
+                    </div>
+                  </div>
+                </details>
+
+                @if (wizardListingPersonalizationError()) {
+                  <div class="boards-form__soft-error" role="alert">{{ wizardListingPersonalizationError() }}</div>
+                }
+                <div class="boards-form__actions">
+                  <button type="button" class="boards-ghost-action" (click)="backWizardStep()">Back</button>
+                  <button type="button" class="boards-primary-action" [disabled]="!wizardListingCanContinue()" (click)="confirmWizardListingStory()">
+                    Review VirtualTalkThru <span class="material-symbols-outlined">arrow_forward</span>
+                  </button>
+                </div>
+              } @else {
+                <section class="boards-listing-story-hero">
+                  <span class="boards-listing-story-hero__icon material-symbols-outlined">auto_stories</span>
+                  <div><small>Rental listing detected</small><h4>{{ listing.listingName }}</h4>@if (listing.address && listing.address !== listing.listingName) { <p>{{ listing.address }}</p> }<div class="boards-listing-story-facts">@if (listing.price) { <strong>{{ listing.price }}</strong> }@if (listing.bedrooms) { <span>{{ listing.bedrooms }} beds</span> }@if (listing.bathrooms) { <span>{{ listing.bathrooms }} baths</span> }@if (listing.propertyType) { <span>{{ listing.propertyType }}</span> }</div></div>
+                  <div class="boards-listing-story-photo-count"><strong>{{ listing.imageCount || '—' }}</strong><small>source photos</small></div>
+                </section>
+                <section><span class="boards-wizard-label">Choose a story approach</span><div class="boards-listing-story-styles" role="radiogroup" aria-label="Listing story approach">@for (style of wizardListingMarketingStyles; track style.id) { <button type="button" class="boards-listing-story-style" role="radio" [attr.aria-checked]="wizardListingMarketingStyle() === style.id" [class.boards-listing-story-style--active]="wizardListingMarketingStyle() === style.id" (click)="wizardListingMarketingStyle.set(style.id)"><span class="boards-listing-story-style__radio" aria-hidden="true"></span><span class="boards-listing-story-style__icon material-symbols-outlined">{{ style.icon }}</span><span class="boards-listing-story-style__copy"><strong>{{ style.label }}</strong><small>{{ style.description }}</small></span></button> }</div></section>
+                <div class="boards-listing-story-controls">
+                  <section class="boards-listing-story-control-panel"><div class="boards-listing-story-control-label"><strong>Rental scenes</strong><small>Recommended: 8–12</small></div><div class="boards-listing-story-stepper"><button type="button" aria-label="Use one fewer scene" [disabled]="wizardCount() <= wizardListingSceneMin" (click)="setWizardListingSceneCount(wizardCount() - 1)"><span class="material-symbols-outlined">remove</span></button><output>{{ wizardCount() }} scenes</output><button type="button" aria-label="Use one more scene" [disabled]="wizardCount() >= wizardListingSceneMax" (click)="setWizardListingSceneCount(wizardCount() + 1)"><span class="material-symbols-outlined">add</span></button></div></section>
+                  <label class="boards-listing-story-control-panel boards-listing-story-direction"><span class="boards-listing-story-control-label"><strong>What should the story emphasize?</strong><small>Optional</small></span><textarea rows="3" maxlength="500" [value]="wizardListingMarketingDirection()" (input)="wizardListingMarketingDirection.set($any($event.target).value)"></textarea></label>
+                </div>
+                <div class="boards-form__actions"><button type="button" class="boards-ghost-action" (click)="backWizardStep()">Back</button><button type="button" class="boards-primary-action" (click)="confirmWizardListingStory()"><span class="material-symbols-outlined">auto_awesome</span>Build {{ wizardCount() }}-scene TalkThru</button></div>
+              }
             </div>
           }
         } @else if (wizardStep() === 'preview') {
@@ -6572,6 +6621,12 @@
                           >
                             <span class="material-symbols-outlined">{{ wizardProductImageIcon(card) }}</span>
                             {{ wizardProductImageLabel(card) }}
+                          </span>
+                        }
+                        @if (card.authorOnly) {
+                          <span class="boards-wizard-card__author-only">
+                            <span class="material-symbols-outlined">visibility_lock</span>
+                            Author only
                           </span>
                         }
                         @if (wizardListingStoryRole(card); as storyRole) {

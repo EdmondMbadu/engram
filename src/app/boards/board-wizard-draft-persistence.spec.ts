@@ -88,15 +88,39 @@ describe('board wizard draft persistence contract', () => {
       result: { board: { title: 'Listing' }, cards: [] },
     }, 'images', {
       listingIntent: 'rental',
-      listingMarketing: { style: 'luxury', direction: '  Lead with the deck.  ' },
+      listingMarketing: {
+        style: 'luxury',
+        direction: '  Lead with the deck.  ',
+        propertyType: 'Townhouse',
+        introMessage: ' Welcome to this home. ',
+        contactName: 'Jenny Morgan',
+        contactEmail: 'jenny@example.com',
+        contactPhone: '(609) 555-0147',
+        agency: 'Harbor Realty',
+        showContact: false,
+      },
     });
     expect(payload.result.wizard_preferences.listing_marketing).toEqual({
       style: 'luxury',
       direction: 'Lead with the deck.',
+      propertyType: 'Townhouse',
+      introMessage: 'Welcome to this home.',
+      contactName: 'Jenny Morgan',
+      contactEmail: 'jenny@example.com',
+      contactPhone: '(609) 555-0147',
+      agency: 'Harbor Realty',
+      showContact: false,
     });
     expect(boardWizardDraftListingMarketing(payload)).toEqual({
       style: 'luxury',
       direction: 'Lead with the deck.',
+      propertyType: 'Townhouse',
+      introMessage: 'Welcome to this home.',
+      contactName: 'Jenny Morgan',
+      contactEmail: 'jenny@example.com',
+      contactPhone: '(609) 555-0147',
+      agency: 'Harbor Realty',
+      showContact: false,
     });
     expect(boardWizardDraftListingIntent(payload)).toBe('rental');
     expect(Object.prototype.hasOwnProperty.call(payload, 'listing_marketing')).toBeFalse();

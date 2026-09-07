@@ -12,6 +12,7 @@ const board = {
   cards: [
     { id: 'one', title: 'Keep', status: 'saved', notes: 'large private-to-the-detail payload' },
     { id: 'two', title: 'Skip', status: 'favorite', notes: 'another large payload' },
+    { id: 'private-intro', title: 'Intro card', status: 'saved', authorOnly: true },
   ],
   created_at_iso: '2026-08-21T00:00:00.000Z',
   updated_at_iso: '2026-08-21T01:00:00.000Z',

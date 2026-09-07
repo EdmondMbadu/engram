@@ -52,6 +52,8 @@ export type BoardWizardRealEstateDetails = {
   agentRole: string;
   agentProfileUrl: string;
   agentImageUrl: string;
+  agentEmail?: string;
+  agentPhone?: string;
   brokerage: string;
   dataSource: string;
   virtualTours: string[];
@@ -114,9 +116,11 @@ export function extractBoardWizardListing(
   }
   const document = dom.window.document;
   const loftyEmbeddedNode = extractLoftyEmbeddedListingNode(document, inputUrl || baseUrl);
+  const expRealtyEmbeddedNode = extractExpRealtyEmbeddedListingNode(document, inputUrl || baseUrl);
   const jsonNodes = [
     ...extractJsonLdNodes(document),
     ...(loftyEmbeddedNode ? [loftyEmbeddedNode] : []),
+    ...(expRealtyEmbeddedNode ? [expRealtyEmbeddedNode] : []),
   ];
   const candidates = jsonNodes
     .map((node) => ({ node, ...classifyListingNode(node) }))
@@ -789,6 +793,96 @@ function extractLoftyEmbeddedListingNode(document: Document, sourceUrl: string):
   return null;
 }
 
+/**
+ * eXp's newer address pages expose the authoritative listing in Next.js page
+ * state instead of the older BoldTrail markup. Normalize only the active
+ * listing whose addressPath matches the requested URL; nearby and comparable
+ * listings in the same payload are deliberately ignored.
+ */
+function extractExpRealtyEmbeddedListingNode(document: Document, sourceUrl: string): JsonRecord | null {
+  if (!isExpRealtyAddressPropertyUrl(sourceUrl)) return null;
+  const raw = document.querySelector('script#__NEXT_DATA__')?.textContent?.trim() || '';
+  if (!raw || raw.length > 5_000_000) return null;
+  try {
+    const root = recordValue(JSON.parse(raw));
+    const pageProps = recordValue(recordValue(root.props).pageProps);
+    const props = recordValue(pageProps.props);
+    const listing = recordValue(recordValue(props.activeListing).listing);
+    const parsedSourceUrl = new URL(sourceUrl);
+    const requestedListingId = parsedSourceUrl.searchParams.get('listingId')?.trim() || '';
+    const activeListingId = firstText(listing.id);
+    const requestedPath = parsedSourceUrl.pathname.replace(/\/$/, '').toLowerCase();
+    const listingPath = firstText(listing.addressPath).replace(/\/$/, '').toLowerCase();
+    const requestedAddressSlug = requestedPath.split('/').filter(Boolean).at(-1) || '';
+    const listingAddressSlug = listingPath.split('/').filter(Boolean).at(-1) || '';
+    const identityMatches = requestedListingId
+      ? !!activeListingId && activeListingId === requestedListingId
+      : listingPath === requestedPath
+        || (!!requestedAddressSlug && requestedAddressSlug === listingAddressSlug);
+    if (!firstText(activeListingId, listing.mlsNum) || !listingPath || !identityMatches) return null;
+
+    const images = arrayValue(listing.imageUrls)
+      .map((value) => firstText(value))
+      .filter((value) => /^https?:\/\//i.test(value))
+      .slice(0, BOARD_WIZARD_SOURCE_GALLERY_LIMIT);
+    const locale = recordValue(recordValue(listing.localeData).en);
+    const misc = recordValue(listing.misc);
+    const squareFootage = recordValue(listing.squareFootage);
+    const agents = arrayValue(listing.agentsInfo).map(recordValue);
+    const agent = agents.find((value) => firstText(value.name)) || {};
+    const address = {
+      '@type': 'PostalAddress',
+      streetAddress: [firstText(listing.streetNumber), firstText(listing.streetName)].filter(Boolean).join(' '),
+      addressLocality: firstText(listing.city),
+      addressRegion: firstText(listing.province),
+      postalCode: firstText(listing.postalCode),
+    };
+    const position = recordValue(listing.position);
+    const coordinates = arrayValue(position.coordinates);
+    const additionalProperty = [
+      loftyPropertyValue('Property Type', firstText(listing.propertySubType, listing.propertyType, listing.styleName)),
+      loftyPropertyValue('Listing Status', firstText(listing.lastStatus, listing.status)),
+      loftyPropertyValue('HOA Fee', positiveListingValue(listing.maintenanceFees)),
+      loftyPropertyValue('Taxes', positiveListingValue(listing.taxes)),
+      loftyPropertyValue('Heating', listing.heat),
+      loftyPropertyValue('Cooling', listing.ac),
+      loftyPropertyValue('Parking', firstText(listing.driveway, listing.garage)),
+      loftyPropertyValue('Lot Size', listing.lotSize),
+      loftyPropertyValue('Living Area', firstText(squareFootage.min, squareFootage.max)),
+      loftyPropertyValue('Features', [listing.exterior, listing.pool ? `Pool: ${firstText(listing.pool)}` : ''].filter(Boolean).join(', ')),
+    ].filter((value): value is JsonRecord => !!value);
+    return {
+      '@type': 'RealEstateListing',
+      name: formatAddress(address) || firstText(listing.addressSlug),
+      description: firstText(locale.description, listing.imageDesc),
+      address,
+      image: images.length ? images : firstText(listing.imageUrl),
+      offers: {
+        '@type': 'Offer',
+        price: formattedUsdPrice(listing.price),
+      },
+      identifier: firstText(listing.mlsNum),
+      numberOfBedrooms: firstText(listing.bedrooms),
+      numberOfBathroomsTotal: firstText(listing.bathrooms),
+      yearBuilt: firstText(misc.approxAge),
+      virtualTour: firstText(listing.virtualTourUrl),
+      agentName: firstText(agent.name, listing.listingAgent),
+      agentEmail: firstText(agent.email, listing.brokerageEmail),
+      agentPhone: firstText(agent.phone, listing.listingAgentContact, listing.brokeragePhone),
+      brokerage: firstText(listing.brokerage),
+      dataSource: firstText(listing.originalMlsName),
+      additionalProperty,
+      geo: coordinates.length >= 2 ? {
+        '@type': 'GeoCoordinates',
+        longitude: coordinates[0],
+        latitude: coordinates[1],
+      } : undefined,
+    };
+  } catch {
+    return null;
+  }
+}
+
 function findLoftyListingInfo(root: unknown, listingId: string): JsonRecord | null {
   const pending: unknown[] = [root];
   let inspected = 0;
@@ -822,6 +916,14 @@ function positiveListingValue(value: unknown): string {
   const text = firstText(value);
   const numeric = Number(text);
   return text && (!Number.isFinite(numeric) || numeric >= 0) ? text : '';
+}
+
+function formattedUsdPrice(value: unknown): string {
+  const raw = firstText(value).replace(/[$,\s]/g, '');
+  const amount = Number(raw);
+  return Number.isFinite(amount) && amount >= 0
+    ? `$${amount.toLocaleString('en-US', { maximumFractionDigits: 2 })}`
+    : firstText(value);
 }
 
 function collectJsonRecords(value: unknown, target: JsonRecord[]): void {
@@ -1199,7 +1301,7 @@ function plausibleListingImage(
       && (evidence !== 'listing-gallery' || /building photo|property photo|listing photo/i.test(alt));
   }
   if (hostname.includes('exprealty.') || isBoldTrailListingImageUrl(url)) {
-    return isBoldTrailListingImageUrl(url)
+    return (isBoldTrailListingImageUrl(url) || safeHostname(url) === 'images.expcloud.com')
       && (evidence !== 'listing-gallery' || /listing thumbnail image|property photo|listing photo/i.test(alt));
   }
   if (evidence === 'structured-data' || evidence === 'page-metadata') return true;
@@ -1455,6 +1557,7 @@ function extractRealEstateDetails(
     combinedBathroomCount(fullBathrooms, halfBathrooms),
   );
   const contact = extractSiteContact(document, baseUrl);
+  const structuredAgentName = firstText(primary.agentName, about.agentName);
   const featureLabels = [
     'Heating', 'Cooling', 'Parking', 'Other Rooms', 'Pet Friendly', 'Stories Count',
     'New Construction Y/N', 'Features', 'Location', 'SEASONAL/YEAR ROUND', 'Unit',
@@ -1503,12 +1606,14 @@ function extractRealEstateDetails(
       structuredPropertyValue(primary, 'Taxes'),
       structuredPropertyValue(about, 'Taxes'),
     ), true),
-    agentName: contact.name,
-    agentRole: contact.name ? 'Site contact' : '',
+    agentName: firstText(structuredAgentName, contact.name),
+    agentEmail: firstText(primary.agentEmail, about.agentEmail),
+    agentPhone: firstText(primary.agentPhone, about.agentPhone),
+    agentRole: structuredAgentName ? 'Listing agent' : contact.name ? 'Site contact' : '',
     agentProfileUrl: contact.profileUrl,
     agentImageUrl: contact.imageUrl,
-    brokerage: extractBrokerage(document),
-    dataSource: extractDataSource(document),
+    brokerage: firstText(primary.brokerage, about.brokerage, extractBrokerage(document)),
+    dataSource: firstText(primary.dataSource, about.dataSource, extractDataSource(document)),
     virtualTours: mergeTextValues(
       [firstText(primary.virtualTour), firstText(about.virtualTour)],
       virtualTours,
@@ -1860,9 +1965,26 @@ function isStrongListingUrl(value: string): boolean {
         || /\/b\/[^/]+\/[A-Za-z0-9_-]{5,}\/?$/i.test(url.pathname)
         || /\/apartments\/[^/]+\/[^/]+\/[A-Za-z0-9_-]{5,}\/?$/i.test(url.pathname);
     }
-    if (/exprealty\./i.test(url.hostname)) return isBoldTrailPropertyUrl(url.toString());
+    if (/exprealty\./i.test(url.hostname)) {
+      return isBoldTrailPropertyUrl(url.toString()) || isExpRealtyAddressPropertyUrl(url.toString());
+    }
     if (/(?:^|\/)(?:search|vacation-rentals|category|browse|s\/homes)(?:\/|$)/i.test(url.pathname)) return false;
     return url.pathname.split('/').filter(Boolean).length >= 2;
+  } catch {
+    return false;
+  }
+}
+
+function isExpRealtyAddressPropertyUrl(value: string): boolean {
+  try {
+    const url = new URL(value);
+    if (!/(?:^|\.)exprealty\.com$/i.test(url.hostname)) return false;
+    const parts = url.pathname.split('/').filter(Boolean);
+    if (parts.length < 2 || parts.length > 3) return false;
+    const location = parts[0] || '';
+    const address = parts.at(-1) || '';
+    return /-real-estate$/i.test(location)
+      && /^\d+[a-z]?(?:-[a-z0-9]+){2,}$/i.test(address);
   } catch {
     return false;
   }

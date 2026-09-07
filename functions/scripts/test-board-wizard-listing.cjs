@@ -23,6 +23,9 @@ assert.equal(isBoardWizardZillowListingPageUrl('https://www.zillow.com/homedetai
 assert.equal(isBoardWizardZillowListingPageUrl('https://www.airbnb.com/rooms/1684310791539108474'), false);
 assert.equal(isLikelyBoardWizardRealEstateUrl('https://cmc.exprealty.com/property/26-261262-example'), true);
 assert.equal(isLikelyBoardWizardRealEstateUrl('https://www.airbnb.com/rooms/1684310791539108474'), false);
+const expAddressListingUrl = 'https://www.exprealty.com/las-vegas-nv-real-estate/sun-city-las-vegas/3140-darby-falls-dr';
+assert.equal(isBoardWizardListingPageUrl(expAddressListingUrl), true, 'new eXp address routes must be classified as individual listings');
+assert.equal(isBoardWizardListingPageUrl('https://www.exprealty.com/las-vegas-nv-real-estate/sun-city-las-vegas'), false, 'eXp area pages must not be classified as individual listings');
 const loftyListingUrl = 'https://findcapemayhomes.com/listing-detail/1188241439/8-Galloping-Way-Cape-May-Court-House-NJ?source=feature_listing&page=1';
 assert.equal(isBoardWizardListingPageUrl(loftyListingUrl), true, 'white-label /listing-detail routes should be protected as property pages');
 assert.equal(isLikelyBoardWizardRealEstateUrl(loftyListingUrl), true, 'white-label listing-detail routes should enter real-estate recovery');
@@ -124,8 +127,16 @@ assert.ok(loftyLegacyListing.images.every((image) => image.url.includes('/mls-li
 assert.equal(loftyLegacyListing.description, 'Exact public Lofty listing description.');
 assert.deepEqual(normalizeBoardWizardListingMarketingOptions({ style: 'luxury', direction: '  Lead with the deck.  ' }), {
   enabled: true,
+  personalized: false,
   style: 'luxury',
   direction: 'Lead with the deck.',
+  propertyType: '',
+  introMessage: '',
+  contactName: '',
+  contactEmail: '',
+  contactPhone: '',
+  agency: '',
+  showContactOnClosingCard: true,
 });
 
 const zillowReaderMarkdown = `Title: 27 Cranberry Cove Ct, Las Vegas, NV 89135 | MLS #2809912 | Zillow
@@ -433,6 +444,118 @@ assert.equal(fullZillow.images.some((image) => image.url.includes(unrelatedZillo
 assert.equal(buildBoardWizardListingBatch({ extraction: fullZillow, targetBoardTitle: '', count: 1 }).cards[0].imageUrls.length, 41);
 assert.ok(BOARD_WIZARD_SOURCE_GALLERY_LIMIT >= 41);
 
+const expAddressImages = Array.from({ length: 5 }, (_, index) => `https://images.expcloud.com/property-3140/photo-${index + 1}`);
+const expAddressHtml = `<!doctype html><html><head>
+  <title>3140 Darby Falls Dr, For Sale in Las Vegas - eXp Realty</title>
+  <meta property="og:site_name" content="eXp Realty®">
+  <script id="__NEXT_DATA__" type="application/json">${JSON.stringify({
+    props: {
+      pageProps: {
+        props: {
+          activeListing: {
+            listing: {
+              id: 88087371,
+              addressPath: '/las-vegas-nv-real-estate/sun-city-las-vegas/3140-darby-falls-dr',
+              price: 1090000,
+              imageUrls: expAddressImages,
+              mlsNum: '2803599',
+              streetNumber: '3140',
+              streetName: 'Darby Falls Dr',
+              city: 'Las Vegas',
+              province: 'NV',
+              postalCode: '89134-7420',
+              bedrooms: 3,
+              bathrooms: 2,
+              lastStatus: 'Active',
+              propertyType: 'Residential',
+              propertySubType: 'Single Family Residence',
+              maintenanceFees: 232,
+              taxes: 3094,
+              heat: 'Central, Gas',
+              ac: 'Central Air, Electric',
+              driveway: 'Attached Garage',
+              virtualTourUrl: 'https://www.propertypanorama.com/instaview/las/2803599',
+              brokerage: 'GDK Realty',
+              originalMlsName: 'GLVAR',
+              listingAgent: 'Khomkrit E. Klaharn',
+              listingAgentContact: '(702) 416-8267',
+              misc: { approxAge: '1997' },
+              position: { type: 'Point', coordinates: [-115.322939, 36.21705] },
+              localeData: { en: { description: 'Completely renovated single-story home with golf-course and mountain views.' } },
+              agentsInfo: [{ name: 'Khomkrit E. Klaharn', email: 'Eric@klaharnre.com', phone: '(702) 416-8267' }],
+            },
+          },
+          history: [{ addressPath: '/las-vegas-nv-real-estate/sun-city-las-vegas/unrelated-comparable', imageUrl: 'https://images.expcloud.com/comparable/ignore-me' }],
+        },
+      },
+    },
+  })}</script>
+</head><body><h2>Similar Listings</h2></body></html>`;
+const expAddressListing = extractBoardWizardListing(expAddressListingUrl, expAddressListingUrl, expAddressHtml);
+assert.ok(expAddressListing, 'new eXp Next.js address pages should extract deterministically');
+assert.equal(expAddressListing.listingName, '3140 Darby Falls Dr, Las Vegas, NV, 89134-7420');
+assert.equal(expAddressListing.price, '$1,090,000');
+assert.equal(expAddressListing.images.length, 5);
+assert.equal(expAddressListing.images.some((image) => /comparable/i.test(image.url)), false, 'comparable listings must not contaminate the active property gallery');
+assert.equal(expAddressListing.realEstate.mlsId, '2803599');
+assert.equal(expAddressListing.realEstate.propertyType, 'Single Family Residence');
+assert.equal(expAddressListing.realEstate.bedrooms, '3');
+assert.equal(expAddressListing.realEstate.bathrooms, '2');
+assert.equal(expAddressListing.realEstate.agentName, 'Khomkrit E. Klaharn');
+assert.equal(expAddressListing.realEstate.agentEmail, 'Eric@klaharnre.com');
+assert.equal(expAddressListing.realEstate.agentPhone, '(702) 416-8267');
+assert.equal(expAddressListing.realEstate.brokerage, 'GDK Realty');
+
+const expAliasListingUrl = 'https://www.exprealty.com/las-vegas-nv-real-estate/sun-city-summerlin/2837-billy-casper-dr?listingId=89286994';
+const expAliasImages = Array.from({ length: 45 }, (_, index) => `https://images.expcloud.com/property-2837/photo-${index + 1}`);
+const expAliasHtml = `<!doctype html><html><head>
+  <title>2837 Billy Casper Dr, For Sale in Las Vegas - eXp Realty</title>
+  <script id="__NEXT_DATA__" type="application/json">${JSON.stringify({
+    query: { listingId: '89286994' },
+    props: {
+      pageProps: {
+        props: {
+          activeListing: {
+            listing: {
+              id: 89286994,
+              // eXp accepts the Summerlin alias but emits this canonical neighborhood path.
+              addressPath: '/las-vegas-nv-real-estate/sun-city-las-vegas/2837-billy-casper-dr',
+              price: 1315000,
+              imageUrls: expAliasImages,
+              mlsNum: '2816148',
+              streetNumber: '2837',
+              streetName: 'Billy Casper Dr',
+              city: 'Las Vegas',
+              province: 'NV',
+              postalCode: '89134',
+              bedrooms: 3,
+              bathrooms: 3,
+              propertySubType: 'Single Family Residence',
+              localeData: { en: { description: 'A complete description for the exact requested property.' } },
+            },
+          },
+          similarListings: [{ id: 99999999, imageUrls: ['https://images.expcloud.com/comparable/ignore-me'] }],
+        },
+      },
+    },
+  })}</script>
+</head><body></body></html>`;
+const expAliasListing = extractBoardWizardListing(expAliasListingUrl, expAliasListingUrl, expAliasHtml);
+assert.ok(expAliasListing, 'eXp neighborhood aliases should resolve when listingId matches the active listing');
+assert.equal(expAliasListing.listingName, '2837 Billy Casper Dr, Las Vegas, NV, 89134');
+assert.equal(expAliasListing.price, '$1,315,000');
+assert.equal(expAliasListing.images.length, 45, 'the matching active listing must retain its complete gallery');
+assert.equal(expAliasListing.images.some((image) => /comparable/i.test(image.url)), false);
+assert.equal(expAliasListing.realEstate.mlsId, '2816148');
+
+const expMismatchedIdListing = extractBoardWizardListing(
+  expAliasListingUrl.replace('89286994', '11111111'),
+  expAliasListingUrl.replace('89286994', '11111111'),
+  expAliasHtml,
+);
+assert.ok(expMismatchedIdListing, 'metadata fallback should remain available when the embedded listing identity is unsafe');
+assert.equal(expMismatchedIdListing.images.length, 0, 'a mismatched listingId must never leak the active or comparable galleries');
+
 const expListingUrl = 'https://cmc.exprealty.com/property/26-261262-3721-pacific-avenue-wildwood-NJ-08260';
 assert.equal(isBoardWizardListingPageUrl(expListingUrl), true, 'eXp property detail URLs should use the listing extractor');
 assert.equal(isBoardWizardListingPageUrl('https://cmc.exprealty.com/areas/wildwood'), false, 'eXp area/search pages must remain generic');
@@ -601,6 +724,73 @@ assert.ok(expStory.cards.at(-1).tags.includes('group-next-step'));
 assert.match(expStory.cards.at(-1).title, /\$729,000/);
 assert.match(expStory.cards.at(-1).notes, /current price, status, disclosures, fees, showing availability/i);
 assert.match(expStory.cards.at(-1).notes, /Site contact/i);
+
+const personalizedMarketing = normalizeBoardWizardListingMarketingOptions({
+  personalized: true,
+  style: 'warm',
+  propertyType: 'Townhouse',
+  introMessage: 'Hi, I’m Jenny. Take a look around this beautiful home. I’d be happy to show you in person.',
+  contactName: 'Jenny Morgan',
+  contactEmail: 'JENNY@HarborRealty.com',
+  contactPhone: '(609) 555-0147',
+  agency: 'Harbor Realty',
+  showContactOnClosingCard: true,
+});
+const personalizedStory = buildBoardWizardListingMarketingBatchFromAnalyses({
+  extraction: expListing,
+  targetBoardTitle: '',
+  count: 10,
+  narrationSecondsPerCard: 15,
+  style: 'warm',
+  analyses: expStoryAnalyses,
+  marketing: personalizedMarketing,
+});
+assert.equal(personalizedStory.cards[0].title, 'Welcome from Jenny Morgan');
+assert.equal(personalizedStory.cards[0].notes, personalizedMarketing.introMessage, 'the agent introduction must remain verbatim');
+assert.equal(personalizedStory.cards[0].authorOnly, false);
+assert.match(personalizedStory.board.description, /Townhouse/);
+assert.equal(personalizedStory.cards.at(-1).title, 'Contact Jenny Morgan');
+assert.match(personalizedStory.cards.at(-1).notes, /Phone: \(609\) 555-0147/);
+assert.match(personalizedStory.cards.at(-1).notes, /Email: jenny@harborrealty.com/);
+assert.match(personalizedStory.cards.at(-1).notes, /Harbor Realty/);
+
+const missingIntroStory = buildBoardWizardListingMarketingBatchFromAnalyses({
+  extraction: expListing,
+  targetBoardTitle: '',
+  count: 10,
+  narrationSecondsPerCard: 15,
+  style: 'warm',
+  analyses: expStoryAnalyses,
+  marketing: normalizeBoardWizardListingMarketingOptions({
+    personalized: true,
+    propertyType: 'Condominium',
+    contactName: 'Jenny Morgan',
+    contactEmail: 'jenny@example.com',
+  }),
+});
+assert.equal(missingIntroStory.cards[0].title, 'Intro card');
+assert.equal(missingIntroStory.cards[0].authorOnly, true);
+assert.ok(missingIntroStory.cards[0].tags.includes('author-only'));
+
+const privateContactStory = buildBoardWizardListingMarketingBatchFromAnalyses({
+  extraction: expListing,
+  targetBoardTitle: '',
+  count: 10,
+  narrationSecondsPerCard: 15,
+  style: 'warm',
+  analyses: expStoryAnalyses,
+  marketing: normalizeBoardWizardListingMarketingOptions({
+    personalized: true,
+    propertyType: 'Condominium',
+    contactName: 'Jenny Morgan',
+    contactEmail: 'jenny@example.com',
+    contactPhone: '(609) 555-0147',
+    agency: 'Harbor Realty',
+    showContactOnClosingCard: false,
+  }),
+});
+const privateContactClosingText = `${privateContactStory.cards.at(-1).title} ${privateContactStory.cards.at(-1).subtitle} ${privateContactStory.cards.at(-1).notes}`;
+assert.doesNotMatch(privateContactClosingText, /Jenny Morgan|jenny@example\.com|609.*555.*0147|Harbor Realty/i, 'turning off the closing contact card must remove every personal contact value');
 
 const offPropertyStory = buildBoardWizardListingMarketingBatchFromAnalyses({
   extraction: expListing,

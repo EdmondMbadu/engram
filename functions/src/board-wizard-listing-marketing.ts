@@ -27,8 +27,16 @@ export type BoardWizardListingMarketingStyle = 'warm' | 'guided' | 'luxury' | 'b
 
 export type BoardWizardListingMarketingOptions = {
   enabled: boolean;
+  personalized: boolean;
   style: BoardWizardListingMarketingStyle;
   direction: string;
+  propertyType: string;
+  introMessage: string;
+  contactName: string;
+  contactEmail: string;
+  contactPhone: string;
+  agency: string;
+  showContactOnClosingCard: boolean;
 };
 
 export type BoardWizardListingPreview = {
@@ -42,6 +50,7 @@ export type BoardWizardListingPreview = {
   bathrooms: string;
   mlsId: string;
   imageCount: number;
+  imageUrl: string;
   contactName: string;
   contactRole: string;
   brokerage: string;
@@ -112,8 +121,59 @@ export function normalizeBoardWizardListingMarketingOptions(value: unknown): Boa
     : 'warm';
   return {
     enabled: record.enabled !== false,
+    personalized: record.personalized === true,
     style,
     direction: cleanText(record.direction, 500),
+    propertyType: cleanText(record.propertyType, 100),
+    introMessage: cleanMultilineText(record.introMessage, 800),
+    contactName: cleanText(record.contactName, 140),
+    contactEmail: normalizedContactEmail(record.contactEmail),
+    contactPhone: normalizedContactPhone(record.contactPhone),
+    agency: cleanText(record.agency, 160),
+    showContactOnClosingCard: record.showContactOnClosingCard !== false,
+  };
+}
+
+function normalizedContactEmail(value: unknown): string {
+  const email = cleanText(value, 254).toLowerCase();
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : '';
+}
+
+function normalizedContactPhone(value: unknown): string {
+  const phone = cleanText(value, 40);
+  const digits = phone.replace(/\D/g, '');
+  return digits.length >= 7 && digits.length <= 15 && /^[+\d().\-\s]+$/.test(phone) ? phone : '';
+}
+
+function cleanMultilineText(value: unknown, max: number): string {
+  return typeof value === 'string'
+    ? value.replace(/\r\n?/g, '\n').trim().slice(0, max)
+    : '';
+}
+
+function personalizedListingExtraction(
+  extraction: BoardWizardListingExtraction,
+  marketing: BoardWizardListingMarketingOptions,
+): BoardWizardListingExtraction {
+  const exposePersonalContact = !marketing.personalized || marketing.showContactOnClosingCard;
+  return {
+    ...extraction,
+    realEstate: {
+      ...extraction.realEstate,
+      propertyType: marketing.personalized ? marketing.propertyType : marketing.propertyType || extraction.realEstate.propertyType,
+      agentName: marketing.personalized
+        ? (exposePersonalContact ? marketing.contactName : '')
+        : marketing.contactName || extraction.realEstate.agentName,
+      agentEmail: marketing.personalized
+        ? (exposePersonalContact ? marketing.contactEmail : '')
+        : extraction.realEstate.agentEmail,
+      agentPhone: marketing.personalized
+        ? (exposePersonalContact ? marketing.contactPhone : '')
+        : extraction.realEstate.agentPhone,
+      brokerage: marketing.personalized
+        ? (exposePersonalContact ? marketing.agency : '')
+        : marketing.agency || extraction.realEstate.brokerage,
+    },
   };
 }
 
@@ -133,6 +193,7 @@ export function boardWizardListingPreview(
     bathrooms: extraction.realEstate.bathrooms,
     mlsId: extraction.realEstate.mlsId,
     imageCount: extraction.images.length,
+    imageUrl: extraction.images[0]?.url || '',
     contactName: extraction.realEstate.agentName,
     contactRole: extraction.realEstate.agentRole,
     brokerage: extraction.realEstate.brokerage,
@@ -162,34 +223,39 @@ export function buildBoardWizardListingMarketingBatchFromAnalyses(options: {
   listingIntent?: BoardWizardListingIntent;
   analyses: BoardWizardListingPhotoAnalysis[];
   aiScenes?: BoardWizardListingStoryScene[];
+  marketing?: BoardWizardListingMarketingOptions;
 }): GeneratedBoardWizardBatch {
-  const allAnalyses = mergeWithFallbackAnalyses(options.extraction, options.analyses);
+  const extraction = options.marketing
+    ? personalizedListingExtraction(options.extraction, options.marketing)
+    : options.extraction;
+  const allAnalyses = mergeWithFallbackAnalyses(extraction, options.analyses);
   const listingIntent = normalizeBoardWizardListingIntent(options.listingIntent);
-  const furnishingsIncluded = boardWizardListingFurnishingsIncluded(options.extraction);
+  const furnishingsIncluded = boardWizardListingFurnishingsIncluded(extraction);
   const aiScenes = validateAiScenes(
     options.aiScenes ?? [],
     allAnalyses,
-    options.extraction,
+    extraction,
     listingIntent,
     furnishingsIncluded,
   );
   const scenes = completeStoryScenes({
-    extraction: options.extraction,
+    extraction,
     analyses: allAnalyses,
     aiScenes,
-    count: Math.max(1, Math.min(24, options.extraction.images.length, Math.round(options.count) || 12)),
+    count: Math.max(1, Math.min(24, extraction.images.length, Math.round(options.count) || 12)),
     secondsPerCard: options.narrationSecondsPerCard,
     style: options.style,
     listingIntent,
     furnishingsIncluded,
   });
   return buildMarketingBatch({
-    extraction: options.extraction,
+    extraction,
     targetBoardTitle: options.targetBoardTitle,
     scenes,
     analyses: allAnalyses,
     maxCards: Math.max(1, Math.min(24, Math.round(options.count) || 12)),
     listingIntent,
+    marketing: options.marketing,
   });
 }
 
@@ -202,11 +268,11 @@ export async function generateBoardWizardListingMarketingBatch(options: {
   marketing: BoardWizardListingMarketingOptions;
   listingIntent?: BoardWizardListingIntent;
 }): Promise<GeneratedBoardWizardBatch> {
-  const { extraction } = options;
+  const extraction = personalizedListingExtraction(options.extraction, options.marketing);
   const listingIntent = normalizeBoardWizardListingIntent(options.listingIntent);
   const supportsTalkThru = extraction.kind === 'real-estate' || listingIntent === 'rental';
   const furnishingsIncluded = boardWizardListingFurnishingsIncluded(extraction);
-  if (!supportsTalkThru || options.marketing.enabled === false || extraction.images.length < 2) {
+  if (!supportsTalkThru || options.marketing.enabled === false || extraction.images.length === 0) {
     return buildBoardWizardListingBatch({
       extraction,
       targetBoardTitle: options.targetBoardTitle,
@@ -287,6 +353,7 @@ export async function generateBoardWizardListingMarketingBatch(options: {
     analyses: allAnalyses,
     maxCards: sceneCount,
     listingIntent,
+    marketing: options.marketing,
   });
 }
 
@@ -520,6 +587,7 @@ function buildMarketingBatch(options: {
   analyses: BoardWizardListingPhotoAnalysis[];
   maxCards: number;
   listingIntent: BoardWizardListingIntent;
+  marketing?: BoardWizardListingMarketingOptions;
 }): GeneratedBoardWizardBatch {
   const extractedAt = new Date().toISOString();
   const gallery = options.extraction.images.map((image) => image.url).slice(0, BOARD_WIZARD_SOURCE_GALLERY_LIMIT);
@@ -538,7 +606,7 @@ function buildMarketingBatch(options: {
   const overviewScene = overviewAnalyses.map((analysis) => sceneByPhotoIndex.get(analysis.index)).find(Boolean)
     ?? options.scenes[0];
   const maxCards = Math.max(1, options.maxCards);
-  const reserveNextStep = maxCards > 1;
+  const reserveNextStep = maxCards > 1 || (options.marketing?.personalized === true && options.listingIntent !== 'rental');
   // Once grouping is enabled, every confidently identified space remains
   // represented. The requested scene count controls narrative depth, not
   // whether a bedroom or bathroom silently disappears from the board.
@@ -607,18 +675,68 @@ function buildMarketingBatch(options: {
       listingPresentation: listingPresentation(group.key, urls, ordered, group.reviewStatus),
     };
   });
-  const cards = [overview, ...groupCards];
+  const cards: GeneratedBoardWizardCard[] = [];
+  if (options.marketing?.personalized && options.listingIntent !== 'rental') {
+    const introMessage = options.marketing?.introMessage.trim() || '';
+    const contactName = options.marketing?.contactName.trim() || options.extraction.realEstate.agentName;
+    const introImage = overviewUrls[0] || gallery[0];
+    cards.push({
+      ...shared,
+      title: introMessage ? `Welcome from ${contactName || 'your agent'}`.slice(0, 80) : 'Intro card',
+      subtitle: introMessage
+        ? `A personal introduction to ${options.extraction.listingName}`.slice(0, 120)
+        : 'Only you can see this reminder until you add your introduction.',
+      notes: introMessage || 'Add a short welcome message about the property and invite buyers to look around.',
+      type: 'note',
+      status: 'saved',
+      rating: 5,
+      authorOnly: !introMessage,
+      tags: introMessage
+        ? ['listing', 'real-estate', 'listing-story', 'story-intro', 'agent-intro']
+        : ['listing', 'real-estate', 'listing-story', 'story-intro', 'intro-placeholder', 'author-only'],
+      image_query: `${options.extraction.listingName} welcome`.slice(0, 120),
+      image_context: options.extraction.address || options.extraction.listingName,
+      short_summary: introMessage
+        ? introMessage.slice(0, 160)
+        : 'Add your personal property introduction.',
+      rank: 1,
+      imageUrl: introImage,
+      imageUrls: introImage ? [introImage] : [],
+      imageSource: introImage ? 'source-page' : 'missing',
+    });
+  }
+  cards.push(overview, ...groupCards);
   if (reserveNextStep) {
     const finalScene = options.scenes.at(-1);
     const nextStepImage = overviewUrls[0] || gallery[0];
+    const showContact = options.marketing?.personalized === true
+      && options.listingIntent !== 'rental'
+      && options.marketing?.showContactOnClosingCard !== false;
+    const contactName = showContact
+      ? options.marketing?.contactName.trim() || options.extraction.realEstate.agentName
+      : '';
+    const contactEmail = showContact ? options.marketing?.contactEmail.trim() || '' : '';
+    const contactPhone = showContact ? options.marketing?.contactPhone.trim() || '' : '';
+    const agency = showContact ? options.marketing?.agency.trim() || '' : options.extraction.realEstate.brokerage;
+    const contactLines = [
+      contactName,
+      agency && agency !== contactName ? agency : '',
+      contactPhone ? `Phone: ${contactPhone}` : '',
+      contactEmail ? `Email: ${contactEmail}` : '',
+    ].filter(Boolean);
     const nextStepTitle = options.listingIntent === 'rental'
       ? options.extraction.kind === 'vacation-rental' ? 'Check availability & book' : 'Check availability & apply'
+      : contactName ? `Contact ${contactName}`
       : options.extraction.price ? `The next step · ${options.extraction.price}` : 'See the full listing';
+    const closingNotes = [
+      ...contactLines,
+      finalScene?.narration || listingClose(options.extraction, options.listingIntent, boardWizardListingFurnishingsIncluded(options.extraction)),
+    ].filter(Boolean).join('\n');
     cards.push({
       ...shared,
       title: nextStepTitle.slice(0, 80),
-      subtitle: closingSubtitle(options.extraction, options.listingIntent).slice(0, 120),
-      notes: (finalScene?.narration || listingClose(options.extraction, options.listingIntent, boardWizardListingFurnishingsIncluded(options.extraction))).slice(0, 3600),
+      subtitle: (contactLines.length ? contactLines.join(' · ') : closingSubtitle(options.extraction, options.listingIntent)).slice(0, 120),
+      notes: closingNotes.slice(0, 3600),
       type: 'note',
       status: 'planned',
       rating: 4,
@@ -640,7 +758,7 @@ function buildMarketingBatch(options: {
       icon: options.listingIntent === 'rental' ? 'key' : 'apartment',
       tone: options.listingIntent === 'rental' ? 'sky' : 'teal',
     },
-    cards,
+    cards: cards.map((card, index) => ({ ...card, rank: index + 1 })),
   };
 }
 
@@ -886,7 +1004,7 @@ function storyBoardDescription(extraction: BoardWizardListingExtraction, listing
     extraction.realEstate.bathrooms ? `${extraction.realEstate.bathrooms} bathrooms` : '',
     extraction.realEstate.propertyType,
   ].filter(Boolean).join(' · ');
-  return `A connected ${listingIntent === 'rental' ? 'rental TalkThru' : 'property TalkThru'} of ${extraction.listingName}${details ? ` — ${details}` : ''}, arranged from arrival through the living spaces to the next step.`;
+  return `A connected ${listingIntent === 'rental' ? 'rental TalkThru' : 'Real Estate VirtualTalkThru'} of ${extraction.listingName}${details ? ` — ${details}` : ''}, arranged from arrival through the living spaces to the next step.`;
 }
 
 function listingClose(

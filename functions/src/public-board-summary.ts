@@ -182,7 +182,8 @@ export function publicBoardSummaryFromBoard(
   board: BoardData,
   cover: OptimizedBoardCover | null = null,
 ): Record<string, unknown> {
-  const cards = Array.isArray(board['cards']) ? board['cards'] : [];
+  const cards = (Array.isArray(board['cards']) ? board['cards'] : []).filter((card) =>
+    !card || typeof card !== 'object' || (card as BoardData)['authorOnly'] !== true);
   const favoriteCardCount = cards.filter((card) =>
     card && typeof card === 'object' && (card as BoardData)['status'] === 'favorite').length;
   const sourceImageUrl = stringValue(board['imageUrl']);
