@@ -148,3 +148,229 @@
   font-size: 1rem;
   font-variation-settings: 'FILL' 1;
 }
+
+/* Purpose-built author setup state for the opening real-estate card. */
+.board-detail .detail-card--listing-intro-setup {
+  border-color: #d9c58d;
+  background: #fffdf7;
+  box-shadow: 0 14px 36px rgba(92, 67, 20, 0.12);
+}
+
+.board-detail .detail-card--listing-intro-setup .detail-card__media {
+  aspect-ratio: 3 / 2;
+  border-bottom-color: #e5d8b3;
+}
+
+.board-detail .detail-card--listing-intro-setup .detail-card__photo-button::after {
+  height: 66%;
+  background: linear-gradient(to top, rgba(39, 29, 12, 0.56), transparent);
+}
+
+.listing-intro-setup-card__media-label {
+  position: absolute;
+  z-index: 4;
+  bottom: 0.72rem;
+  left: 0.72rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  border: 1px solid rgba(255, 255, 255, 0.68);
+  border-radius: 999px;
+  background: rgba(23, 43, 31, 0.82);
+  padding: 0.4rem 0.62rem;
+  color: #fff;
+  font-size: 0.64rem;
+  font-weight: 850;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  backdrop-filter: blur(8px);
+}
+
+.listing-intro-setup-card__media-label .material-symbols-outlined { font-size: 0.95rem; }
+
+.listing-intro-setup-card__content {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  flex: 1;
+  align-content: center;
+  gap: 0.5rem;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(216, 181, 91, 0.14), transparent 44%),
+    linear-gradient(145deg, #fffefb, #fbf6e9);
+  padding: 1rem 1.05rem 1.08rem;
+}
+
+.listing-intro-setup-card__content > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  color: #766849;
+  font-size: 0.59rem;
+  font-weight: 850;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.listing-intro-setup-card__content > span .material-symbols-outlined { font-size: 0.9rem; }
+
+.listing-intro-setup-card__content > strong {
+  color: #1f2f25;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(1.14rem, 1.7vw, 1.42rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+}
+
+.listing-intro-setup-card__content > p {
+  margin: 0;
+  color: #726a58;
+  font-size: 0.73rem;
+  font-weight: 620;
+  line-height: 1.4;
+}
+
+.listing-intro-setup-card__content > button {
+  display: inline-flex;
+  width: fit-content;
+  min-height: 2.45rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.42rem;
+  margin-top: 0.24rem;
+  border: 1px solid #8b691f;
+  border-radius: 999px;
+  background: #8b691f;
+  padding: 0.56rem 0.88rem;
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.73rem;
+  font-weight: 850;
+  transition: transform 150ms ease, background 150ms ease;
+}
+
+.listing-intro-setup-card__content > button:hover { transform: translateY(-1px); background: #705215; }
+.listing-intro-setup-card__content > button:focus-visible { outline: 2px solid #a77d25; outline-offset: 3px; }
+.listing-intro-setup-card__content > button .material-symbols-outlined { font-size: 1rem; }
+
+.listing-intro-editor {
+  width: min(42rem, calc(100vw - 2rem));
+  max-height: min(46rem, calc(100dvh - 2rem));
+  overflow: auto;
+  border-color: #dccb9d;
+}
+
+.listing-intro-editor__head small {
+  display: block;
+  max-width: 34rem;
+  margin-top: 0.28rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+.listing-intro-editor__form {
+  display: grid;
+  gap: 1rem;
+  padding: 1.1rem;
+}
+
+.listing-intro-editor__purpose {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  border: 1px solid #e5d9b9;
+  border-radius: 1rem;
+  background: #fffaf0;
+  padding: 0.88rem 0.95rem;
+}
+
+.listing-intro-editor__purpose > .material-symbols-outlined {
+  display: grid;
+  width: 2.6rem;
+  height: 2.6rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 50%;
+  background: #8b691f;
+  color: #fff;
+  font-size: 1.25rem;
+}
+
+.listing-intro-editor__purpose > span:last-child { display: grid; gap: 0.18rem; }
+.listing-intro-editor__purpose strong { color: #26342b; font-size: 0.88rem; }
+.listing-intro-editor__purpose small { color: #6f6a5d; font-size: 0.74rem; line-height: 1.4; }
+
+.listing-intro-editor__message {
+  display: grid;
+  gap: 0.42rem;
+  color: var(--text);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.listing-intro-editor__message textarea {
+  width: 100%;
+  min-height: 9rem;
+  resize: vertical;
+  border: 1px solid var(--line);
+  border-radius: 0.9rem;
+  background: var(--surface);
+  padding: 0.85rem 0.9rem;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 520;
+  line-height: 1.55;
+}
+
+.listing-intro-editor__message textarea:focus { border-color: #9b772b; outline: 3px solid rgba(155, 119, 43, 0.15); }
+.listing-intro-editor__message > small { display: flex; justify-content: space-between; gap: 1rem; color: var(--muted); font-size: 0.68rem; font-weight: 650; }
+
+.listing-intro-editor__preview {
+  display: grid;
+  grid-template-columns: 5.4rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0.85rem;
+  overflow: hidden;
+  border: 1px solid #dfe5dc;
+  border-radius: 1rem;
+  background: #f8faf7;
+  padding: 0.58rem;
+}
+
+.listing-intro-editor__preview > img,
+.listing-intro-editor__preview > .material-symbols-outlined {
+  width: 5.4rem;
+  height: 4.4rem;
+  border-radius: 0.72rem;
+  object-fit: cover;
+}
+
+.listing-intro-editor__preview > .material-symbols-outlined { display: grid; place-items: center; background: #dfece4; color: #29523e; font-size: 1.7rem; }
+.listing-intro-editor__preview > span:last-child { display: grid; gap: 0.25rem; min-width: 0; }
+.listing-intro-editor__preview small { color: #8b691f; font-size: 0.63rem; font-weight: 850; letter-spacing: 0.07em; text-transform: uppercase; }
+.listing-intro-editor__preview strong { overflow: hidden; color: #29382f; font-family: Georgia, 'Times New Roman', serif; font-size: 0.9rem; font-weight: 600; line-height: 1.38; text-overflow: ellipsis; }
+
+.listing-intro-editor__privacy {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 650;
+}
+
+.listing-intro-editor__privacy .material-symbols-outlined { color: #356249; font-size: 1rem; }
+.listing-intro-editor__actions { margin-top: 0.1rem; }
+
+@media (max-width: 600px) {
+  .listing-intro-editor { width: calc(100vw - 1rem); max-height: calc(100dvh - 1rem); }
+  .listing-intro-editor__form { padding: 0.9rem; }
+  .listing-intro-editor__preview { grid-template-columns: 4.6rem minmax(0, 1fr); }
+  .listing-intro-editor__preview > img,
+  .listing-intro-editor__preview > .material-symbols-outlined { width: 4.6rem; height: 4rem; }
+}

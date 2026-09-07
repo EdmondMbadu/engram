@@ -191,6 +191,10 @@ import {
   type ListingContactCardDetails,
 } from './listing-contact-card';
 import {
+  completeListingIntroCard,
+  isListingIntroCardPlaceholder as isListingIntroCardPlaceholderRecord,
+} from './listing-intro-card';
+import {
   buildListingAgentPersonaPrompt,
   hasListingTalkingCard,
   isListingTalkingCardPlaceholder as isListingTalkingCardPlaceholderRecord,
@@ -1866,6 +1870,19 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
   readonly talkingCardEditorBoardId = signal<string | null>(null);
   readonly talkingCardEditingCardId = signal<string | null>(null);
   readonly listingTalkingCardSetup = signal<{ boardId: string; placeholderCardId: string } | null>(null);
+  readonly listingIntroEditorTarget = signal<{ boardId: string; cardId: string } | null>(null);
+  readonly listingIntroMessage = signal('');
+  readonly listingIntroSaving = signal(false);
+  readonly listingIntroError = signal<string | null>(null);
+  readonly listingIntroEditorBoard = computed(() => {
+    const target = this.listingIntroEditorTarget();
+    return target ? this.boards().find((board) => board.id === target.boardId) ?? null : null;
+  });
+  readonly listingIntroEditorCard = computed(() => {
+    const target = this.listingIntroEditorTarget();
+    const board = this.listingIntroEditorBoard();
+    return target && board ? board.cards.find((card) => card.id === target.cardId) ?? null : null;
+  });
   readonly talkingConversationCardId = signal<string | null>(null);
   readonly talkingConversationSurface = signal<'board' | 'live'>('board');
   readonly talkingCardEditorBoard = computed(() => {
@@ -7278,6 +7295,75 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
 
   isListingTalkingCardPlaceholder(card: BoardCard | null | undefined): boolean {
     return isListingTalkingCardPlaceholderRecord(card);
+  }
+
+  isListingIntroCardPlaceholder(card: BoardCard | null | undefined): boolean {
+    return isListingIntroCardPlaceholderRecord(card);
+  }
+
+  openListingIntroCardSetup(board: Board, card: BoardCard, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (!this.canEditBoard(board) || !isListingIntroCardPlaceholderRecord(card)) {
+      this.boardsSyncError.set('Only the board owner can set up this introduction.');
+      return;
+    }
+    this.closeCardActionMenu();
+    this.listingIntroMessage.set('');
+    this.listingIntroError.set(null);
+    this.listingIntroEditorTarget.set({ boardId: board.id, cardId: card.id });
+  }
+
+  closeListingIntroCardSetup(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (this.listingIntroSaving()) return;
+    this.listingIntroEditorTarget.set(null);
+    this.listingIntroMessage.set('');
+    this.listingIntroError.set(null);
+  }
+
+  async saveListingIntroCard(event: Event): Promise<void> {
+    event.preventDefault();
+    if (this.listingIntroSaving()) return;
+    const board = this.listingIntroEditorBoard();
+    const card = this.listingIntroEditorCard();
+    const message = this.listingIntroMessage().replace(/\s+/g, ' ').trim();
+    if (!board || !card || !this.canEditBoard(board) || !isListingIntroCardPlaceholderRecord(card)) {
+      this.listingIntroError.set('This intro card is no longer available.');
+      return;
+    }
+    if (message.length < 12) {
+      this.listingIntroError.set('Add a brief personal welcome before publishing.');
+      return;
+    }
+    const contactCard = board.cards.find((candidate) => !candidate.authorOnly && this.isListingContactCard(candidate));
+    const contact = contactCard ? contactDetailsForListingCard(contactCard) : null;
+    const now = new Date().toISOString();
+    const completed = completeListingIntroCard(card, {
+      message,
+      propertyTitle: board.title,
+      agentName: contact?.name || this.userName(),
+      updatedAt: now,
+    }) as BoardCard;
+    const nextBoard: Board = {
+      ...board,
+      cards: board.cards.map((candidate) => candidate.id === completed.id ? completed : candidate),
+      updatedAt: now,
+    };
+    this.listingIntroSaving.set(true);
+    this.listingIntroError.set(null);
+    try {
+      const saved = await this.persistAndReplaceBoard(nextBoard);
+      if (!saved) {
+        this.listingIntroError.set('Your introduction could not sync. Please try again.');
+        return;
+      }
+      this.listingIntroEditorTarget.set(null);
+      this.listingIntroMessage.set('');
+    } finally {
+      this.listingIntroSaving.set(false);
+    }
   }
 
   shouldShowListingTalkingCardSetupBefore(board: Board, card: BoardCard): boolean {

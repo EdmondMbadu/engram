@@ -1265,8 +1265,8 @@
                       </span>
                     }
                     <span class="mosaic-card__overlay">
-                      <strong>{{ item.card.title }}</strong>
-                      <small>{{ item.board.title }}</small>
+                      <strong>{{ isListingIntroCardPlaceholder(item.card) ? 'Set up intro card' : item.card.title }}</strong>
+                      <small>{{ isListingIntroCardPlaceholder(item.card) ? 'Only you can see this setup card · ' + item.board.title : item.board.title }}</small>
                     </span>
                   </button>
                   <button
@@ -1318,9 +1318,9 @@
                         role="menu"
                         (click)="$event.stopPropagation()"
                       >
-                        <button type="button" role="menuitem" (click)="closeCardActionMenu(); isTalkingCard(item.card) ? openEditTalkingCard(item.card, item.board) : openEditGalleryCard(item.board.id, item.card)">
-                          <span class="material-symbols-outlined">{{ isTalkingCard(item.card) ? 'manage_accounts' : 'edit' }}</span>
-                          {{ isTalkingCard(item.card) ? 'Edit Talking Card & avatar' : 'Edit card' }}
+                        <button type="button" role="menuitem" (click)="closeCardActionMenu(); isListingIntroCardPlaceholder(item.card) ? openListingIntroCardSetup(item.board, item.card, $event) : isTalkingCard(item.card) ? openEditTalkingCard(item.card, item.board) : openEditGalleryCard(item.board.id, item.card)">
+                          <span class="material-symbols-outlined">{{ isTalkingCard(item.card) ? 'manage_accounts' : isListingIntroCardPlaceholder(item.card) ? 'waving_hand' : 'edit' }}</span>
+                          {{ isTalkingCard(item.card) ? 'Edit Talking Card & avatar' : isListingIntroCardPlaceholder(item.card) ? 'Set up intro card' : 'Edit card' }}
                         </button>
                         <button type="button" role="menuitem" (click)="closeCardActionMenu(); openEditGalleryCardPhotos(item.board.id, item.card, $event)">
                           <span class="material-symbols-outlined">add_photo_alternate</span>
@@ -3226,6 +3226,7 @@
                   [class.detail-card--photo-only]="isPhotoOnlyCard(card)"
                   [class.detail-card--listing-contact]="isListingContactCard(card)"
                   [class.detail-card--listing-talking-setup]="isListingTalkingCardPlaceholder(card)"
+                  [class.detail-card--listing-intro-setup]="isListingIntroCardPlaceholder(card)"
                   [class.detail-card--has-memories]="hasBoardInside(card) || relatedCardCount(card) > 0"
                   [class.detail-card--expanded]="isCardExpanded(card.id)"
                   [class.detail-card--dragging]="isDraggingCard(card.id)"
@@ -3245,7 +3246,7 @@
                   @if (boardShowsCardNumbers(board)) {
                     <span class="detail-card__rank" aria-label="Card {{ $index + 1 }}">{{ $index + 1 }}</span>
                   }
-                  @if (card.authorOnly && !isListingTalkingCardPlaceholder(card)) {
+                  @if (card.authorOnly && !isListingTalkingCardPlaceholder(card) && !isListingIntroCardPlaceholder(card)) {
                     <span class="detail-card__author-only">
                       <span class="material-symbols-outlined">visibility_lock</span>
                       Only you can see this
@@ -3285,7 +3286,7 @@
                       <span class="material-symbols-outlined">{{ isCardSelected(card.id) ? 'check_circle' : 'radio_button_unchecked' }}</span>
                     </button>
                   }
-                  @if (!isListingTalkingCardPlaceholder(card)) {
+                  @if (!isListingTalkingCardPlaceholder(card) && !isListingIntroCardPlaceholder(card)) {
                     <button
                       type="button"
                       class="detail-card__like"
@@ -3362,9 +3363,9 @@
                               </button>
                             }
                           } @else {
-                            <button type="button" role="menuitem" (click)="closeCardActionMenu(); isTalkingCard(card) ? openEditTalkingCard(card, cardHostBoard(board, card)) : openEditCard(card, cardHostBoard(board, card))">
-                              <span class="material-symbols-outlined">{{ isTalkingCard(card) ? 'manage_accounts' : 'edit' }}</span>
-                              <span>{{ isTalkingCard(card) ? 'Edit Talking Card & avatar' : 'Edit card' }}</span>
+                            <button type="button" role="menuitem" (click)="closeCardActionMenu(); isListingIntroCardPlaceholder(card) ? openListingIntroCardSetup(cardHostBoard(board, card), card, $event) : isTalkingCard(card) ? openEditTalkingCard(card, cardHostBoard(board, card)) : openEditCard(card, cardHostBoard(board, card))">
+                              <span class="material-symbols-outlined">{{ isTalkingCard(card) ? 'manage_accounts' : isListingIntroCardPlaceholder(card) ? 'waving_hand' : 'edit' }}</span>
+                              <span>{{ isTalkingCard(card) ? 'Edit Talking Card & avatar' : isListingIntroCardPlaceholder(card) ? 'Set up intro card' : 'Edit card' }}</span>
                             </button>
                             @if (isTourBoard(board) && card.tour) {
                               <button type="button" role="menuitem" (click)="openAddTourStop(card.id, $event)">
@@ -3426,6 +3427,8 @@
                       <div class="detail-card__media">
                         @if (isTalkingCard(card)) {
                           <span class="talking-card-badge"><span class="material-symbols-outlined">graphic_eq</span> Talking Card</span>
+                        } @else if (isListingIntroCardPlaceholder(card)) {
+                          <span class="listing-intro-setup-card__media-label"><span class="material-symbols-outlined">waving_hand</span> Opening card</span>
                         }
                         @if (cardMediaPoster(card)) {
                           <button
@@ -3485,7 +3488,7 @@
                             </span>
                           </button>
                         }
-                        @if (!isPhotoOnlyCard(card) && !isListingContactCard(card) && !isListingTalkingCardPlaceholder(card)) {
+                        @if (!isPhotoOnlyCard(card) && !isListingContactCard(card) && !isListingTalkingCardPlaceholder(card) && !isListingIntroCardPlaceholder(card)) {
                           <span class="detail-card__status">
                             <span class="material-symbols-outlined">{{ statusIcon(card.status) }}</span>
                             {{ statusLabel(card.status) }}
@@ -3527,7 +3530,17 @@
                         }
                       </div>
 
-                      @if (isListingTalkingCardPlaceholder(card)) {
+                      @if (isListingIntroCardPlaceholder(card)) {
+                        <div class="listing-intro-setup-card__content">
+                          <span><span class="material-symbols-outlined">visibility_lock</span>Only you can see this setup card</span>
+                          <strong>Welcome buyers in your own words</strong>
+                          <p>Add a short personal introduction. Once published, this becomes the opening card visitors see first.</p>
+                          <button type="button" (click)="openListingIntroCardSetup(cardHostBoard(board, card), card, $event)">
+                            <span class="material-symbols-outlined">edit_note</span>
+                            Set up intro card
+                          </button>
+                        </div>
+                      } @else if (isListingTalkingCardPlaceholder(card)) {
                         <div class="listing-talking-setup-card__content listing-talking-setup-card__content--saved">
                           <span><span class="material-symbols-outlined">visibility_lock</span>Only you can see this setup card</span>
                           <strong>Make yourself available to buyers</strong>
@@ -3588,7 +3601,7 @@
                         </div>
                       }
 
-                      @if (!isPhotoOnlyCard(card) && !isListingContactCard(card) && !isListingTalkingCardPlaceholder(card)) {
+                      @if (!isPhotoOnlyCard(card) && !isListingContactCard(card) && !isListingTalkingCardPlaceholder(card) && !isListingIntroCardPlaceholder(card)) {
                       <div class="detail-card__body">
                         <div class="detail-card__line">
                           <span>
@@ -9646,6 +9659,84 @@
         </form>
       </section>
     </div>
+  }
+
+  @if (listingIntroEditorBoard(); as introBoard) {
+    @if (listingIntroEditorCard(); as introCard) {
+      <div class="boards-modal-backdrop listing-intro-editor-backdrop" appBackdropDismiss (backdropDismiss)="closeListingIntroCardSetup()">
+        <section
+          class="boards-modal listing-intro-editor"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="listing-intro-editor-title"
+          aria-describedby="listing-intro-editor-description"
+          (click)="$event.stopPropagation()"
+        >
+          <header class="boards-modal__head listing-intro-editor__head">
+            <div>
+              <p>Opening card</p>
+              <h3 id="listing-intro-editor-title">Set up your introduction</h3>
+              <small id="listing-intro-editor-description">A short personal welcome before buyers explore {{ introBoard.title }}.</small>
+            </div>
+            <button type="button" class="boards-icon-button" aria-label="Close intro setup" [disabled]="listingIntroSaving()" (click)="closeListingIntroCardSetup($event)">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </header>
+
+          <form class="listing-intro-editor__form" (submit)="saveListingIntroCard($event)">
+            <div class="listing-intro-editor__purpose">
+              <span class="material-symbols-outlined">waving_hand</span>
+              <span>
+                <strong>Make the walkthrough feel personal</strong>
+                <small>Introduce yourself, highlight what you love about the home, and invite the buyer to contact you.</small>
+              </span>
+            </div>
+
+            <label class="listing-intro-editor__message">
+              <span>Your welcome message</span>
+              <textarea
+                rows="6"
+                maxlength="800"
+                required
+                placeholder="Hi, I’m Jenny. Welcome to this beautiful home. Take a look around, and call or email me if you would like a private showing."
+                [value]="listingIntroMessage()"
+                [disabled]="listingIntroSaving()"
+                (input)="listingIntroMessage.set($any($event.target).value); listingIntroError.set(null)"
+              ></textarea>
+              <small><span>Keep it warm, specific, and easy to read.</span><span>{{ listingIntroMessage().length }}/800</span></small>
+            </label>
+
+            <div class="listing-intro-editor__preview">
+              @if (introCard.imageUrl) {
+                <img [src]="introCard.imageUrl" [alt]="introBoard.title" />
+              } @else {
+                <span class="material-symbols-outlined">home</span>
+              }
+              <span>
+                <small>Opening card preview</small>
+                <strong>{{ listingIntroMessage().trim() || 'Your personal introduction will appear here.' }}</strong>
+              </span>
+            </div>
+
+            <p class="listing-intro-editor__privacy">
+              <span class="material-symbols-outlined">visibility_lock</span>
+              This setup card remains visible only to you until you publish the introduction.
+            </p>
+            @if (listingIntroError()) {
+              <p class="boards-form__soft-error" role="alert">{{ listingIntroError() }}</p>
+            }
+
+            <div class="boards-form__actions listing-intro-editor__actions">
+              <button type="button" class="boards-ghost-action" [disabled]="listingIntroSaving()" (click)="closeListingIntroCardSetup($event)">Not now</button>
+              <button type="submit" class="boards-primary-action" [disabled]="listingIntroSaving() || listingIntroMessage().trim().length < 12">
+                <span class="material-symbols-outlined">{{ listingIntroSaving() ? 'progress_activity' : 'check' }}</span>
+                {{ listingIntroSaving() ? 'Publishing…' : 'Publish intro card' }}
+              </button>
+            </div>
+          </form>
+        </section>
+      </div>
+    }
   }
 
   @if (cardDialogOpen()) {
