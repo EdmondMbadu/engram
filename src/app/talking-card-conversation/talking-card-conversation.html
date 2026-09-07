@@ -50,7 +50,9 @@
           <p>
             {{ completionReason() === 'interrupted'
               ? 'The call stopped, but your conversation is safe and can still be summarized.'
-              : 'Send yourself a clear recap before you return to ' + (boardTitle() || 'the board') + '.' }}
+              : hasListingContact()
+                ? 'Send yourself the property details, photos, agent contact information, and conversation highlights.'
+                : 'Send yourself a clear recap before you return to ' + (boardTitle() || 'the board') + '.' }}
           </p>
         </div>
 
@@ -100,7 +102,12 @@
         <span class="talking-chat__recap-success material-symbols-outlined" aria-hidden="true">check_circle</span>
         <p class="talking-chat__recap-eyebrow">Recap sent</p>
         <h3>It’s on the way</h3>
-        <p class="talking-chat__recap-sent-copy">We sent the conversation summary and transcript to <strong>{{ recapSentTo() }}</strong>.</p>
+        <p class="talking-chat__recap-sent-copy">
+          {{ hasListingContact()
+            ? 'We sent the property details, agent contact information, and conversation recap to'
+            : 'We sent the conversation summary and transcript to' }}
+          <strong>{{ recapSentTo() }}</strong>.
+        </p>
         @for (action of actions(); track action.id) {
           @if (action.kind === 'schedule') {
             <a class="talking-chat__recap-schedule" [href]="action.url" target="_blank" rel="noopener noreferrer">

@@ -34,6 +34,7 @@
     "test:tour-handoff": "npm run build && node scripts/test-tour-handoff.cjs",
     "test:atlas-realtime-voice": "npm run build && node scripts/test-atlas-realtime-voice.cjs",
     "test:atlas-identity": "npm run build && node scripts/test-atlas-identity.cjs",
+    "test:real-estate-talking-card-recap": "npm run build && node scripts/test-real-estate-talking-card-recap.cjs",
     "test:board-doc-export": "npm run build && node scripts/test-board-doc-export.cjs",
     "repair:board-videos": "npm run build && node scripts/repair-board-videos.cjs",
     "backfill:public-board-summaries": "npm run build && node scripts/backfill-public-board-summaries.cjs",

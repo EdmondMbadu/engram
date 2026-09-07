@@ -114,6 +114,30 @@ describe('TalkingCardConversationComponent', () => {
     expect(context.instruction).toContain('Kitchen — Renovated in 2025');
   });
 
+  it('directly shares exact public contact details when a property visitor asks', () => {
+    const boardContext = [
+      'Property board: 2837 Billy Casper Dr',
+      'Public listing-agent contact: Jenny Morgan · Harbor Realty · Phone: (702) 555-0102 · Email: jenny@example.com',
+    ].join('\n');
+    const voice = buildTalkingCardVoiceContext(atlas, {}, boardContext);
+    const typed = talkingCardScopedQuestion('How can I contact Jenny?', boardContext);
+
+    expect(voice.instruction).toContain('answer directly with the exact public phone number and email');
+    expect(voice.instruction).toContain('Call and Email controls');
+    expect(voice.instruction).toContain('included in the recap email');
+    expect(typed).toContain('give the exact public phone and email below');
+    expect(typed).toContain('(702) 555-0102');
+    expect(typed).toContain('jenny@example.com');
+  });
+
+  it('does not add contact promises to an ordinary Talking Card', () => {
+    const voice = buildTalkingCardVoiceContext(atlas, {}, 'Kitchen — Renovated in 2025');
+    const typed = talkingCardScopedQuestion('How can I learn more?', 'Kitchen — Renovated in 2025');
+
+    expect(voice.instruction).not.toContain('Call and Email controls');
+    expect(typed).not.toContain('included in the recap email');
+  });
+
   it('builds a meaningful recap only from the first visitor turn onward', () => {
     const transcript = meaningfulTalkingCardTranscript([
       { role: 'agent', text: 'Welcome to the conversation.' },
@@ -166,6 +190,12 @@ describe('TalkingCardConversationComponent', () => {
     expect(contact.querySelector<HTMLAnchorElement>('a[href="tel:7025550102"]')?.textContent).toContain('Call');
     expect(contact.querySelector<HTMLAnchorElement>('a[href="mailto:jenny@example.com"]')?.textContent).toContain('Email');
     expect(contact.querySelector<HTMLAnchorElement>('a[href="https://cal.example.com/jenny"]')?.textContent).toContain('Schedule');
+
+    fixture.componentInstance.recapTranscript.set([
+      { role: 'user', text: 'How can I arrange a private showing?' },
+      { role: 'agent', text: 'You can call or email Jenny using the contact controls.' },
+    ]);
+    expect(fixture.componentInstance.recapPreview()).toContain('photos, agent contact details');
   });
 
   it('does not show contact controls unless contact or scheduling data is explicitly provided', async () => {

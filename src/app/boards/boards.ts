@@ -7326,8 +7326,8 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     return [
       `Property board: ${board.title}`,
       board.description,
-      ...chapters,
       publicContact ? `Public listing-agent contact: ${publicContact}` : '',
+      ...chapters,
     ].filter(Boolean).join('\n').slice(0, 3500);
   }
 

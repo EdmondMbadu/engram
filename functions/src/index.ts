@@ -85,6 +85,11 @@ export { getBoardInsights, recordBoardAnalyticsEvent } from './board-analytics';
 export { exportBoardToDocx } from './board-doc-export';
 import { handleAnswerCardShare, handleBoardShare, handleTravelCardShare } from './answer-card-share';
 import { buildDirectBoardShareEmail, safeBoardShareImageUrl } from './board-share-email';
+import {
+  buildRealEstateTalkingCardRecapContext,
+  safeRecapHttpsUrl,
+  type RealEstateTalkingCardRecapContext,
+} from './real-estate-talking-card-recap';
 import { resolveSpotifyOAuthRedirectUri } from './spotify-oauth';
 import {
   SPOTIFY_PLAYLIST_SCOPE,
@@ -4238,11 +4243,16 @@ function buildVoiceConversationSummaryEmail(params: {
   placeLinks: VoiceConversationPlaceLink[];
   continueChatUrl: string;
   talkingCardActions?: TalkingCardSummaryAction[];
+  realEstate?: RealEstateTalkingCardRecapContext | null;
+  talkingCardAvatar?: { name: string; imageUrl: string | null } | null;
 }) {
   const isTalkingCard = params.source === 'talking_card';
   const placeName = params.subjectName || params.cityName || params.atlasName || 'this wiki';
   const recapLabel = isTalkingCard ? 'conversation recap' : 'voice recap';
-  const subject = `Your Living Wiki ${recapLabel} for ${placeName}`;
+  const realEstate = isTalkingCard ? params.realEstate ?? null : null;
+  const subject = realEstate
+    ? `${realEstate.propertyTitle} — conversation recap & agent contact`
+    : `Your Living Wiki ${recapLabel} for ${placeName}`;
   const greetingName = params.recipientName || params.recipientEmail;
   const safeGreetingName = escapeHtml(greetingName);
   const safePlaceName = escapeHtml(placeName);
@@ -4253,12 +4263,69 @@ function buildVoiceConversationSummaryEmail(params: {
   const talkingCardActions = isTalkingCard ? params.talkingCardActions ?? [] : [];
   const scheduleAction = talkingCardActions.find((action) => action.kind === 'schedule') ?? null;
   const additionalActions = talkingCardActions.filter((action) => action.kind === 'link');
-  const scheduleActionHtml = scheduleAction ? `
+  const scheduleActionHtml = scheduleAction && (!realEstate || !realEstate.contact) ? `
     <div style="background:#fffaf0;border:1px solid #e4c86d;border-radius:16px;padding:20px;margin:0 0 20px;text-align:center;">
       <p style="margin:0 0 5px;color:#74540c;font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;">Continue the conversation</p>
       <h3 style="margin:0 0 7px;color:#0d1f15;font-size:20px;line-height:1.2;">${escapeHtml(scheduleAction.label)}</h3>
       ${scheduleAction.description ? `<p style="margin:0 0 15px;color:#526057;font-size:14px;line-height:1.55;">${escapeHtml(scheduleAction.description)}</p>` : ''}
       <a href="${escapeHtml(scheduleAction.url)}" style="display:inline-block;border-radius:999px;padding:13px 22px;color:#ffffff;background:#187a50;text-decoration:none;font-size:14px;font-weight:900;">${escapeHtml(scheduleAction.label)}</a>
+    </div>
+  ` : '';
+  const propertyHeroUrl = realEstate?.propertyImageUrls[0] ?? null;
+  const propertyFactsHtml = realEstate?.propertyFacts.length
+    ? realEstate.propertyFacts.map((fact) => `<span style="display:inline-block;margin:0 7px 7px 0;padding:7px 10px;border-radius:999px;background:#edf4ef;color:#173c29;font-size:12px;font-weight:800;">${escapeHtml(fact)}</span>`).join('')
+    : '';
+  const propertyHeroHtml = realEstate ? `
+    <div style="margin:0 0 20px;border:1px solid #dfe8dc;border-radius:18px;overflow:hidden;background:#f7faf7;">
+      ${propertyHeroUrl ? `<a href="${safeContinueChatUrl}" style="display:block;text-decoration:none;"><img src="${escapeHtml(propertyHeroUrl)}" alt="${escapeHtml(realEstate.propertyTitle)}" width="618" style="display:block;width:100%;max-width:618px;height:auto;max-height:360px;object-fit:cover;border:0;"></a>` : ''}
+      <div style="padding:20px 21px;">
+        <p style="margin:0 0 6px;color:#7a5a13;font-size:11px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;">Property follow-up</p>
+        <h2 style="margin:0 0 8px;color:#0d1f15;font-size:24px;line-height:1.2;font-weight:900;letter-spacing:-.02em;">${escapeHtml(realEstate.propertyTitle)}</h2>
+        ${realEstate.propertySubtitle && !realEstate.propertyFacts.length ? `<p style="margin:0 0 11px;color:#526057;font-size:14px;line-height:1.5;">${escapeHtml(realEstate.propertySubtitle)}</p>` : ''}
+        ${propertyFactsHtml ? `<div style="margin:0 0 8px;">${propertyFactsHtml}</div>` : ''}
+        ${realEstate.propertyDescription ? `<p style="margin:0 0 15px;color:#3f4d45;font-size:13px;line-height:1.55;">${escapeHtml(realEstate.propertyDescription)}</p>` : ''}
+        <a href="${safeContinueChatUrl}" style="display:inline-block;border-radius:999px;padding:12px 18px;color:#ffffff;background:#173c29;text-decoration:none;font-size:13px;font-weight:900;">View VirtualTalkThru</a>
+        ${realEstate.listingUrl ? `<a href="${escapeHtml(realEstate.listingUrl)}" style="display:inline-block;margin-left:12px;color:#1c7c41;text-decoration:none;font-size:13px;font-weight:850;">View original listing →</a>` : ''}
+      </div>
+    </div>
+  ` : '';
+  const contact = realEstate?.contact ?? null;
+  const contactName = contact?.name || params.talkingCardAvatar?.name || 'the listing agent';
+  const avatarImageUrl = safeRecapHttpsUrl(params.talkingCardAvatar?.imageUrl) ?? null;
+  const avatarInitials = contactName.split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]?.toUpperCase() || '').join('') || 'RE';
+  const phoneTarget = contact?.phone.replace(/[^+\d]/g, '') || '';
+  const agentContactHtml = contact ? `
+    <div style="margin:0 0 22px;padding:20px;border:1px solid #dcc681;border-radius:18px;background:#fffaf0;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+        <tr>
+          <td width="78" valign="top" style="padding:0 14px 0 0;">
+            ${avatarImageUrl
+              ? `<img src="${escapeHtml(avatarImageUrl)}" alt="${escapeHtml(contactName)}" width="64" height="64" style="display:block;width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid #ffffff;">`
+              : `<div style="width:64px;height:64px;line-height:64px;border-radius:50%;background:#173c29;color:#ffffff;text-align:center;font-size:18px;font-weight:900;">${escapeHtml(avatarInitials)}</div>`}
+          </td>
+          <td valign="top">
+            <p style="margin:0 0 4px;color:#7a5a13;font-size:11px;font-weight:900;letter-spacing:.13em;text-transform:uppercase;">Interested in this property?</p>
+            <h3 style="margin:0 0 4px;color:#0d1f15;font-size:20px;line-height:1.2;font-weight:900;">Contact ${escapeHtml(contactName)}</h3>
+            ${contact.agency ? `<p style="margin:0 0 10px;color:#66736b;font-size:13px;line-height:1.4;">${escapeHtml(contact.agency)}</p>` : ''}
+            ${contact.phone ? `<p style="margin:0 0 5px;color:#24352b;font-size:14px;line-height:1.4;"><strong>Phone:</strong> ${phoneTarget ? `<a href="tel:${escapeHtml(phoneTarget)}" style="color:#173c29;text-decoration:none;font-weight:800;">${escapeHtml(contact.phone)}</a>` : `<strong>${escapeHtml(contact.phone)}</strong>`}</p>` : ''}
+            ${contact.email ? `<p style="margin:0;color:#24352b;font-size:14px;line-height:1.4;"><strong>Email:</strong> <a href="mailto:${escapeHtml(contact.email)}" style="color:#173c29;text-decoration:none;font-weight:800;">${escapeHtml(contact.email)}</a></p>` : ''}
+          </td>
+        </tr>
+      </table>
+      <div style="margin:16px 0 0;">
+        ${phoneTarget ? `<a href="tel:${escapeHtml(phoneTarget)}" style="display:inline-block;margin:0 7px 7px 0;border-radius:999px;padding:12px 18px;background:#173c29;color:#ffffff;text-decoration:none;font-size:13px;font-weight:900;">Call ${escapeHtml(contactName)}</a>` : ''}
+        ${contact.email ? `<a href="mailto:${escapeHtml(contact.email)}" style="display:inline-block;margin:0 7px 7px 0;border-radius:999px;padding:11px 18px;border:1px solid #173c29;color:#173c29;text-decoration:none;font-size:13px;font-weight:900;">Email</a>` : ''}
+        ${scheduleAction ? `<a href="${escapeHtml(scheduleAction.url)}" style="display:inline-block;margin:0 0 7px;border-radius:999px;padding:12px 18px;background:#b48624;color:#ffffff;text-decoration:none;font-size:13px;font-weight:900;">${escapeHtml(scheduleAction.label)}</a>` : ''}
+      </div>
+    </div>
+  ` : '';
+  const galleryImages = realEstate?.propertyImageUrls.slice(1, 4) ?? [];
+  const propertyGalleryHtml = galleryImages.length ? `
+    <div style="margin:0 0 22px;">
+      <p style="margin:0 0 11px;color:#0d1f15;font-size:13px;font-weight:900;letter-spacing:.13em;text-transform:uppercase;">More property photos</p>
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;"><tr>
+        ${galleryImages.map((url) => `<td width="33.33%" valign="top" style="padding:0 5px;"><a href="${safeContinueChatUrl}"><img src="${escapeHtml(url)}" alt="Property photo" width="190" style="display:block;width:100%;height:120px;object-fit:cover;border-radius:10px;border:0;"></a></td>`).join('')}
+      </tr></table>
     </div>
   ` : '';
   const additionalActionsHtml = additionalActions.length ? `
@@ -4302,12 +4369,14 @@ function buildVoiceConversationSummaryEmail(params: {
     .slice(0, 16)
     .map((line) => `<p style="margin:0 0 10px;color:#3f4d45;font-size:13px;line-height:1.55;">${escapeHtml(line)}</p>`)
     .join('');
+  const propertyText = realEstate ? `Property:\n${realEstate.propertyTitle}${realEstate.propertyFacts.length ? `\n${realEstate.propertyFacts.join(' · ')}` : realEstate.propertySubtitle ? `\n${realEstate.propertySubtitle}` : ''}${realEstate.propertyDescription ? `\n${realEstate.propertyDescription}` : ''}\nView the VirtualTalkThru: ${params.continueChatUrl}${realEstate.listingUrl ? `\nOriginal listing: ${realEstate.listingUrl}` : ''}\n\n` : '';
+  const contactText = contact ? `Contact ${contactName}:\n${contact.agency ? `${contact.agency}\n` : ''}${contact.phone ? `Phone: ${contact.phone}\n` : ''}${contact.email ? `Email: ${contact.email}\n` : ''}${scheduleAction ? `${scheduleAction.label}: ${scheduleAction.url}\n` : ''}\n` : '';
 
   const text = `Hi ${greetingName},
 
-Here is your Living Wiki ${recapLabel} for ${placeName}.
+${realEstate ? `Here is your property conversation recap.` : `Here is your Living Wiki ${recapLabel} for ${placeName}.`}
 
-${params.summary.summary}
+${propertyText}${contactText}${params.summary.summary}
 
 Questions and prompts:
 ${params.summary.keyQuestions.map((item) => `- ${item}`).join('\n') || '- See transcript below.'}
@@ -4315,8 +4384,10 @@ ${params.summary.keyQuestions.map((item) => `- ${item}`).join('\n') || '- See tr
 Useful takeaways:
 ${params.summary.takeaways.map((item) => `- ${item}`).join('\n') || (isTalkingCard ? '- Return to the board to continue the conversation.' : '- Continue in the wiki chat.')}
 
-${scheduleAction ? `${scheduleAction.label}:\n${scheduleAction.description ? `${scheduleAction.description}\n` : ''}${scheduleAction.url}\n\n` : ''}${additionalActions.length ? `More links:\n${additionalActions.map((action) => `- ${action.label}: ${action.url}${action.description ? ` — ${action.description}` : ''}`).join('\n')}\n\n` : ''}${params.placeLinks.length ? `Places and links:\n${params.placeLinks.map((place) => `- ${place.name}${place.address ? `, ${place.address}` : ''}${place.websiteUrl ? `\n  Website: ${place.websiteUrl}` : ''}\n  Maps: ${place.googleMapsUrl}`).join('\n')}\n\n` : ''}${params.answerCardUrl ? `Open the full recap card:\n${params.answerCardUrl}\n\n` : ''}${isTalkingCard ? 'Return to the board' : 'Continue the chat'}:
+${scheduleAction && !realEstate ? `${scheduleAction.label}:\n${scheduleAction.description ? `${scheduleAction.description}\n` : ''}${scheduleAction.url}\n\n` : ''}${additionalActions.length ? `More links:\n${additionalActions.map((action) => `- ${action.label}: ${action.url}${action.description ? ` — ${action.description}` : ''}`).join('\n')}\n\n` : ''}${params.placeLinks.length ? `Places and links:\n${params.placeLinks.map((place) => `- ${place.name}${place.address ? `, ${place.address}` : ''}${place.websiteUrl ? `\n  Website: ${place.websiteUrl}` : ''}\n  Maps: ${place.googleMapsUrl}`).join('\n')}\n\n` : ''}${params.answerCardUrl ? `Open the full recap card:\n${params.answerCardUrl}\n\n` : ''}${isTalkingCard ? 'Return to the board' : 'Continue the chat'}:
 ${params.continueChatUrl}
+
+${contact ? `Questions or want to arrange a showing?\n${contactText}` : ''}
 
 Transcript:
 ${params.summary.transcriptText}
@@ -4325,12 +4396,15 @@ The Living Wiki Team`;
 
   const html = `
     <div style="font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;max-width:680px;margin:0 auto;padding:0;background:#f6f8f5;">
+      <div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent;">${realEstate ? `Property details, photos, conversation highlights, and contact information for ${escapeHtml(contactName)}.` : `Your ${recapLabel} for ${safePlaceName}.`}</div>
       <div style="background:linear-gradient(135deg,#07160f 0%,#1c7c41 68%,#d6a94a 100%);padding:34px 30px;border-radius:20px 20px 0 0;">
         <h1 style="color:#ffffff;margin:0;font-size:27px;font-weight:900;letter-spacing:-0.02em;">Living Wiki</h1>
-        <p style="color:rgba(255,255,255,0.78);margin:10px 0 0;font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;">${isTalkingCard ? 'Conversation recap' : 'Voice recap'}</p>
+        <p style="color:rgba(255,255,255,0.78);margin:10px 0 0;font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;">${realEstate ? 'Property conversation recap' : isTalkingCard ? 'Conversation recap' : 'Voice recap'}</p>
       </div>
       <div style="background:#ffffff;padding:30px;border:1px solid #e3e8df;border-top:none;border-radius:0 0 20px 20px;">
         <p style="color:#111827;font-size:15px;line-height:1.65;margin:0 0 18px;">Hi <strong>${safeGreetingName}</strong>,</p>
+        ${propertyHeroHtml}
+        ${agentContactHtml}
         <h2 style="color:#0d1f15;font-size:24px;line-height:1.15;margin:0 0 12px;font-weight:900;letter-spacing:-0.03em;">${safeTitle}</h2>
         <p style="color:#3f4d45;font-size:15px;line-height:1.65;margin:0 0 18px;">${safeSummary}</p>
         <div style="background:#f8faf7;border:1px solid #dfe8dc;border-radius:16px;padding:18px 20px;margin:0 0 20px;">
@@ -4352,10 +4426,20 @@ The Living Wiki Team`;
           ${placeLinksHtml}
         </div>
         ` : ''}
+        ${propertyGalleryHtml}
         <div style="text-align:center;margin:26px 0;">
           ${safeAnswerCardUrl ? `<a href="${safeAnswerCardUrl}" style="background:#0f2417;color:#ffffff;text-decoration:none;padding:14px 24px;border-radius:999px;font-weight:900;display:inline-block;font-size:14px;margin:0 6px 10px;">Open Full Recap Card</a>` : ''}
           <a href="${safeContinueChatUrl}" style="background:#1c7c41;color:#ffffff;text-decoration:none;padding:14px 24px;border-radius:999px;font-weight:900;display:inline-block;font-size:14px;margin:0 6px 10px;">${isTalkingCard ? 'Return to board' : `Continue in ${safePlaceName}`}</a>
         </div>
+        ${contact ? `
+        <div style="margin:24px 0 0;padding:20px;border-radius:16px;background:#0f2417;text-align:center;">
+          <p style="margin:0 0 6px;color:#d9c37b;font-size:11px;font-weight:900;letter-spacing:.13em;text-transform:uppercase;">Questions or ready to see the property?</p>
+          <p style="margin:0 0 10px;color:#ffffff;font-size:18px;line-height:1.35;font-weight:900;">Contact ${escapeHtml(contactName)}</p>
+          ${contact.phone ? phoneTarget ? `<a href="tel:${escapeHtml(phoneTarget)}" style="color:#ffffff;text-decoration:none;font-size:14px;font-weight:800;">${escapeHtml(contact.phone)}</a>` : `<span style="color:#ffffff;font-size:14px;font-weight:800;">${escapeHtml(contact.phone)}</span>` : ''}
+          ${contact.phone && contact.email ? `<span style="color:#809286;margin:0 8px;">·</span>` : ''}
+          ${contact.email ? `<a href="mailto:${escapeHtml(contact.email)}" style="color:#ffffff;text-decoration:none;font-size:14px;font-weight:800;">${escapeHtml(contact.email)}</a>` : ''}
+        </div>
+        ` : ''}
         <div style="border-top:1px solid #e5e7eb;margin:24px 0 0;padding-top:20px;">
           <p style="margin:0 0 12px;color:#0d1f15;font-size:13px;font-weight:900;letter-spacing:.13em;text-transform:uppercase;">Transcript excerpt</p>
           ${transcriptHtml}
@@ -18770,6 +18854,7 @@ type TalkingCardSummaryContext = {
   cardTitle: string;
   boardUrl: string;
   actions: TalkingCardSummaryAction[];
+  realEstate: RealEstateTalkingCardRecapContext | null;
 };
 
 type TalkingCardSummaryAction = {
@@ -18891,6 +18976,7 @@ async function loadTalkingCardSummaryContext(params: {
     cardTitle,
     boardUrl: `${publicAppUrl}/boards/${encodeURIComponent(routeKey)}`,
     actions: talkingCardSummaryActions(conversation?.actions),
+    realEstate: buildRealEstateTalkingCardRecapContext(board, card),
   };
 }
 
@@ -18964,7 +19050,20 @@ export const sendVoiceConversationSummary = onCall(
     const atlasSlug = typeof atlas?.slug === 'string' && atlas.slug.trim()
       ? atlas.slug.trim()
       : requestAtlasSlug || null;
-    const subjectName = talkingCardContext?.cardTitle || cityName || atlasName;
+    const talkingCardGuide = atlas?.chat_guide && typeof atlas.chat_guide === 'object'
+      ? atlas.chat_guide as Record<string, unknown>
+      : null;
+    const talkingCardAvatar = source === 'talking_card' ? {
+      name: typeof talkingCardGuide?.name === 'string' && talkingCardGuide.name.trim()
+        ? talkingCardGuide.name.trim().slice(0, 140)
+        : atlasName,
+      imageUrl: safeRecapHttpsUrl(talkingCardGuide?.image_url)
+        ?? safeRecapHttpsUrl(atlas?.logo_url),
+    } : null;
+    const subjectName = talkingCardContext?.realEstate?.propertyTitle
+      || talkingCardContext?.cardTitle
+      || cityName
+      || atlasName;
     const continueChatUrl = talkingCardContext?.boardUrl
       ?? (atlasSlug ? `${publicAppUrl}/chat/${encodeURIComponent(atlasSlug)}` : publicAppUrl);
     const cityHint = [cityName, regionName].filter(Boolean).join(', ') || null;
@@ -19006,7 +19105,25 @@ export const sendVoiceConversationSummary = onCall(
     });
     const firstUserQuestion = transcript.find((item) => item.role === 'user')?.text
       ?? `${source === 'talking_card' ? 'Conversation' : 'Voice conversation'} about ${subjectName}`;
+    const realEstate = talkingCardContext?.realEstate ?? null;
+    const realEstateContact = realEstate?.contact ?? null;
+    const realEstateAnswerContext = realEstate ? [
+      `Property: ${realEstate.propertyTitle}`,
+      realEstate.propertyFacts.length
+        ? `Property details: ${realEstate.propertyFacts.join(' · ')}`
+        : realEstate.propertySubtitle,
+      realEstateContact
+        ? `Listing agent contact: ${[
+            realEstateContact.name,
+            realEstateContact.agency,
+            realEstateContact.phone ? `Phone: ${realEstateContact.phone}` : '',
+            realEstateContact.email ? `Email: ${realEstateContact.email}` : '',
+          ].filter(Boolean).join(' · ')}`
+        : '',
+      `VirtualTalkThru: ${continueChatUrl}`,
+    ].filter(Boolean).join('\n') : '';
     const cardAnswer = [
+      realEstateAnswerContext,
       summary.contextualAnswer,
       summary.summary,
       summary.keyQuestions.length ? `Questions:\n${summary.keyQuestions.map((item) => `- ${item}`).join('\n')}` : '',
@@ -19058,6 +19175,8 @@ export const sendVoiceConversationSummary = onCall(
       placeLinks: resolvedPlaces.links,
       continueChatUrl,
       talkingCardActions: talkingCardContext?.actions ?? [],
+      realEstate,
+      talkingCardAvatar,
     });
     const [response] = await sgMail.send({
       to: recipientEmail,
@@ -19085,6 +19204,14 @@ export const sendVoiceConversationSummary = onCall(
       card_id: talkingCardContext?.cardId ?? null,
       card_title: talkingCardContext?.cardTitle ?? null,
       talking_card_actions: talkingCardContext?.actions ?? [],
+      real_estate_property: realEstate ? {
+        title: realEstate.propertyTitle,
+        subtitle: realEstate.propertySubtitle,
+        facts: realEstate.propertyFacts,
+        image_urls: realEstate.propertyImageUrls,
+        listing_url: realEstate.listingUrl,
+      } : null,
+      real_estate_contact: realEstateContact,
       completion_reason: completionReason,
       city_name: cityName,
       city_region: regionName,
