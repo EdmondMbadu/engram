@@ -27,6 +27,14 @@ function contactFragments(card: ListingContactCardLike): string[] {
   return [...notes, ...subtitle].map(clean).filter(Boolean);
 }
 
+function cleanAgency(value: string, name: string): string {
+  let agency = clean(value);
+  if (name && agency.toLocaleLowerCase().startsWith(name.toLocaleLowerCase())) {
+    agency = clean(agency.slice(name.length));
+  }
+  return clean(agency.replace(/\b(?:phone|email)\s*:.*$/i, ''));
+}
+
 export function isListingContactCard(card: ListingContactCardLike | null | undefined): boolean {
   if (!card) return false;
   const tags = new Set((card.tags ?? []).map((tag) => clean(tag).toLowerCase()));
@@ -53,7 +61,7 @@ export function listingContactCardDetails(card: ListingContactCardLike): Listing
       && fragment !== email
       && fragment !== phone;
   }) || '';
-  const agency = fragments.find((fragment) => {
+  const agencyFragment = fragments.find((fragment) => {
     return fragment !== name
       && fragment !== email
       && fragment !== phone
@@ -61,6 +69,7 @@ export function listingContactCardDetails(card: ListingContactCardLike): Listing
       && !INVITATION_LANGUAGE.test(fragment)
       && fragment.length <= 120;
   }) || '';
+  const agency = cleanAgency(agencyFragment, name);
   const phoneTarget = phone.replace(/[^+\d]/g, '');
   return {
     name,

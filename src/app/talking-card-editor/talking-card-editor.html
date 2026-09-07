@@ -3,8 +3,8 @@
     <header class="talking-editor__header">
       <div>
         <span class="talking-editor__eyebrow">{{ boardTitle() }}</span>
-        <h2 id="talking-editor-title">{{ isEditing() ? 'Edit Talking Card' : 'Add a Talking Card' }}</h2>
-        <p>{{ isEditing() ? 'Refine the card, its knowledge, voice, and visitor actions.' : 'Add a conversational guide anywhere in this board’s flow.' }}</p>
+        <h2 id="talking-editor-title">{{ isEditing() ? 'Edit Talking Card' : isRealEstateSetup() ? 'Create your property guide' : 'Add a Talking Card' }}</h2>
+        <p>{{ isEditing() ? 'Refine the card, its knowledge, voice, and visitor actions.' : isRealEstateSetup() ? 'Visitors can ask about this home, hear from you, and contact you when they’re ready.' : 'Add a conversational guide anywhere in this board’s flow.' }}</p>
       </div>
       <button type="button" class="talking-editor__icon" aria-label="Close Talking Card editor" (click)="close()">
         <span class="material-symbols-outlined">close</span>
@@ -22,7 +22,7 @@
         <button type="button" role="tab" [attr.aria-selected]="editorSection() === 'voice'" [class.is-active]="editorSection() === 'voice'" (click)="setEditorSection('voice')">Voice</button>
         <button type="button" role="tab" [attr.aria-selected]="editorSection() === 'actions'" [class.is-active]="editorSection() === 'actions'" (click)="setEditorSection('actions')">Actions</button>
       </div>
-    } @else {
+    } @else if (!isRealEstateSetup()) {
       <div class="talking-editor__tabs" role="tablist" aria-label="Avatar source">
         <button type="button" role="tab" [attr.aria-selected]="mode() === 'existing'" [class.is-active]="mode() === 'existing'" (click)="setMode('existing')">Use existing avatar</button>
         <button type="button" role="tab" [attr.aria-selected]="mode() === 'new'" [class.is-active]="mode() === 'new'" (click)="setMode('new')">Create a new avatar</button>
@@ -30,7 +30,83 @@
     }
 
     <div class="talking-editor__body">
-      @if (isEditing() && editorSection() === 'card') {
+      @if (isRealEstateSetup()) {
+        <section class="talking-editor__real-estate" aria-labelledby="real-estate-agent-profile-heading">
+          <div class="talking-editor__real-estate-assurance">
+            <span class="material-symbols-outlined">verified_user</span>
+            <span><strong>Prepared for real estate</strong><small>Your guide is concise, property-aware, transparent about uncertainty, and careful not to invent listing details.</small></span>
+          </div>
+
+          <section class="talking-editor__real-estate-panel">
+            <header>
+              <span><small>1</small><strong id="real-estate-agent-profile-heading">Your agent profile</strong></span>
+              @if (mode() === 'existing') { <em>Reusable profile</em> }
+            </header>
+            <div class="talking-editor__real-estate-identity">
+              <div class="talking-editor__real-estate-portrait">
+                @if (imagePreviewUrl()) { <img [src]="imagePreviewUrl()" [alt]="name() + ' profile photo'" /> }
+                @else { <span>{{ realEstateInitials() }}</span> }
+              </div>
+              <div class="talking-editor__real-estate-fields">
+                <div class="talking-editor__grid">
+                  <label><span>Agent name *</span><input maxlength="120" [ngModel]="name()" (ngModelChange)="name.set($event); updateRealEstateAdditionalGuidance(realEstateAdditionalGuidance())" /></label>
+                  <label><span>Agency or role</span><input maxlength="240" [ngModel]="role()" (ngModelChange)="role.set($event); updateRealEstateAdditionalGuidance(realEstateAdditionalGuidance())" placeholder="Listing agent" /></label>
+                </div>
+                <label class="talking-editor__portrait-button">
+                  <span class="material-symbols-outlined">add_photo_alternate</span>
+                  {{ imagePreviewUrl() ? 'Replace profile photo' : 'Add profile photo' }}
+                  <input type="file" accept="image/*" [disabled]="imageProcessing()" (change)="onImageSelected($event)" />
+                </label>
+                @if (imageProcessing()) { <small><span class="material-symbols-outlined talking-editor__spin">progress_activity</span> Preparing your profile photo…</small> }
+              </div>
+            </div>
+            @if (prefill(); as listing) {
+              @if (listing.contactPhone || listing.contactEmail) {
+                <div class="talking-editor__real-estate-contact">
+                  <span class="material-symbols-outlined">contact_phone</span>
+                  <span><strong>Contact details already connected</strong><small>{{ realEstateContactSummary() }}</small></span>
+                </div>
+              }
+            }
+          </section>
+
+          <section class="talking-editor__real-estate-panel">
+            <header><span><small>2</small><strong>Welcome visitors</strong></span><em>Ready to use</em></header>
+            <label><span>Opening message *</span><textarea rows="3" maxlength="500" [ngModel]="openingMessage()" (ngModelChange)="openingMessage.set($event)"></textarea></label>
+            <small>This is the first thing visitors hear or read when they open the Talking Card.</small>
+          </section>
+
+          <section class="talking-editor__real-estate-panel">
+            <header><span><small>3</small><strong>Conversation voice</strong></span><em>{{ voiceChoice() === 'personal' ? 'Your voice' : 'Selected' }}</em></header>
+            <div class="talking-editor__real-estate-voice">
+              <span class="material-symbols-outlined">graphic_eq</span>
+              <span><strong>{{ realEstateVoiceLabel() }}</strong><small>{{ realEstateVoiceDescription() }}</small></span>
+              <button type="button" [disabled]="voiceConfigLoading() || personalVoiceLoading()" (click)="previewRealEstateVoice()">
+                <span class="material-symbols-outlined">{{ voicePreviewPlayingKey() ? 'stop' : 'play_arrow' }}</span>
+                {{ voicePreviewPlayingKey() ? 'Stop' : 'Preview' }}
+              </button>
+              <button type="button" (click)="toggleRealEstateVoiceOptions()">{{ realEstateVoiceOptionsOpen() ? 'Done' : 'Change' }}</button>
+            </div>
+            @if (voiceChoice() === 'personal') {
+              <small>Your private voice remains in your library; visitors only hear it when this guide speaks.</small>
+            }
+          </section>
+
+          <details class="talking-editor__real-estate-optional">
+            <summary><span class="material-symbols-outlined">tune</span><span><strong>Optional finishing touches</strong><small>Add scheduling or a special instruction</small></span><span class="material-symbols-outlined">expand_more</span></summary>
+            <div>
+              <label><span>Showing or scheduling link</span><input type="url" maxlength="2000" inputmode="url" placeholder="https://calendly.com/your-name" [ngModel]="realEstateScheduleUrl()" (ngModelChange)="updateRealEstateScheduleUrl($event)" /><small>Optional. A secure HTTPS link will appear as “Schedule a showing.”</small></label>
+              @if (actionFormMessage()) { <small class="talking-editor__field-warning"><span class="material-symbols-outlined">info</span>{{ actionFormMessage() }}</small> }
+              <label><span>Anything else your guide should emphasize or avoid?</span><textarea rows="3" maxlength="600" placeholder="For example: emphasize the garden and keep answers relaxed." [ngModel]="realEstateAdditionalGuidance()" (ngModelChange)="updateRealEstateAdditionalGuidance($event)"></textarea><small>Property facts still come from this board, so this profile can be reused safely on other listings.</small></label>
+            </div>
+          </details>
+
+          <div class="talking-editor__real-estate-ready">
+            <span class="material-symbols-outlined">visibility</span>
+            <span><strong>Ready for visitors</strong><small>The unfinished setup card remains private. Creating this guide makes the completed Talking Card available wherever this board is visible.</small></span>
+          </div>
+        </section>
+      } @else if (isEditing() && editorSection() === 'card') {
         <section class="talking-editor__edit-section" aria-labelledby="talking-editor-card-heading">
           <header class="talking-editor__section-heading">
             <span class="material-symbols-outlined">badge</span>
@@ -199,7 +275,7 @@
         </section>
       }
 
-      @if ((mode() === 'new' || (selectedAtlas() && selectedAtlasEditable())) && (!isEditing() || editorSection() === 'voice')) {
+      @if ((mode() === 'new' || (selectedAtlas() && selectedAtlasEditable())) && (!isEditing() || editorSection() === 'voice') && (!isRealEstateSetup() || realEstateVoiceOptionsOpen())) {
         <section class="talking-editor__voice-picker" aria-labelledby="talking-editor-voice-title">
           <header>
             <div>
@@ -372,7 +448,7 @@
         <p class="talking-editor__notice"><span class="material-symbols-outlined">lock</span>This public avatar’s voice is managed by its creator. You can still edit this card’s presentation and links.</p>
       }
 
-      @if (!isEditing()) {
+      @if (!isEditing() && !isRealEstateSetup()) {
       <div class="talking-editor__grid">
         <label><span>Opening message *</span><textarea rows="3" maxlength="500" [ngModel]="openingMessage()" (ngModelChange)="openingMessage.set($event)"></textarea></label>
         <div>
@@ -381,7 +457,7 @@
       </div>
       }
 
-      @if (!isEditing() || editorSection() === 'actions') {
+      @if ((!isEditing() || editorSection() === 'actions') && !isRealEstateSetup()) {
         <section class="talking-editor__edit-section talking-editor__actions-section" aria-labelledby="talking-editor-actions-heading">
           <header class="talking-editor__section-heading">
             <span class="material-symbols-outlined">ads_click</span>
@@ -428,7 +504,7 @@
       <button type="button" class="talking-editor__secondary" (click)="close()">Cancel</button>
       <button type="button" class="talking-editor__primary" [disabled]="!canSave()" (click)="save()">
         @if (saving()) { <span class="material-symbols-outlined talking-editor__spin">progress_activity</span> {{ saveStage() || 'Saving…' }} }
-        @else { <span class="material-symbols-outlined">{{ isEditing() ? 'save' : 'record_voice_over' }}</span> {{ isEditing() ? 'Save changes' : 'Add Talking Card' }} }
+        @else { <span class="material-symbols-outlined">{{ isEditing() ? 'save' : 'record_voice_over' }}</span> {{ isEditing() ? 'Save changes' : isRealEstateSetup() ? 'Create my Talking Card' : 'Add Talking Card' }} }
       </button>
     </footer>
   </section>

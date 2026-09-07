@@ -36,6 +36,25 @@ describe('listing contact card', () => {
     });
   });
 
+  it('removes a duplicated agent name and trailing contact label from malformed agency copy', () => {
+    const details = listingContactCardDetails({
+      title: 'Contact Edmond Mbadu',
+      subtitle: 'Questions about this home?',
+      notes: [
+        'Interested in this home? Contact Edmond Mbadu to ask a question or arrange a private showing.',
+        'Edmond Mbadu',
+        'Edmond Mbadu Executive Realty Services Phone:',
+        'Phone: 12156877614',
+        'Email: mbadungoma@gmail.com',
+      ].join('\n'),
+      tags: ['listing-contact'],
+    });
+
+    expect(details.agency).toBe('Executive Realty Services');
+    expect(details.phone).toBe('12156877614');
+    expect(details.email).toBe('mbadungoma@gmail.com');
+  });
+
   it('uses a short invitation for narration and excludes inherited MLS prose', () => {
     const narration = listingContactNarration(legacyCard);
     expect(narration).toContain('Interested in this home?');

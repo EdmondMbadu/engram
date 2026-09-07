@@ -1,4 +1,5 @@
 import {
+  buildListingAgentPersonaPrompt,
   hasListingTalkingCard,
   isListingTalkingCardPlaceholder,
   placeListingTalkingCard,
@@ -34,5 +35,20 @@ describe('real-estate Talking Card setup', () => {
   it('puts the completed guide at the end when an older board has no contact card', () => {
     const guide = { id: 'guide', title: 'Ask Jenny', tags: ['talking-card'], conversation: { atlasId: 'agent-wiki' } };
     expect(placeListingTalkingCard([tour], guide).map((card) => card.id)).toEqual(['tour', 'guide']);
+  });
+
+  it('builds a board-agnostic, safety-grounded agent prompt', () => {
+    const prompt = buildListingAgentPersonaPrompt(
+      ' Jenny Morgan ',
+      ' North Star Realty ',
+      'Emphasize the garden and answer in a relaxed tone.',
+    );
+
+    expect(prompt).toContain('virtual property guide for Jenny Morgan of North Star Realty');
+    expect(prompt).toContain('never imply that this is a live conversation');
+    expect(prompt).toContain('Never invent or assume price');
+    expect(prompt).toContain('protected traits');
+    expect(prompt).toContain('Additional guidance from the agent: Emphasize the garden');
+    expect(prompt).not.toContain('Billy Casper');
   });
 });

@@ -19,7 +19,13 @@ export type BoardCardConversation = {
 };
 
 export type TalkingCardEditorPrefill = {
+  experience?: 'real-estate';
   draftKey?: string;
+  propertyTitle?: string;
+  imageUrl?: string;
+  preferredAtlasId?: string;
+  contactEmail?: string;
+  contactPhone?: string;
   name?: string;
   role?: string;
   personaPrompt?: string;

@@ -17,6 +17,21 @@
         </div>
         <div><span>Talking Card</span><h2 id="talking-chat-title">{{ avatarName() }}</h2><p>{{ cardSubtitle() }}</p></div>
       </div>
+      @if (showContactActions()) {
+        <nav class="talking-chat__contact" [attr.aria-label]="contactName() ? 'Contact ' + contactName() : 'Contact listing agent'">
+          @if (contactPhoneHref()) {
+            <a [href]="contactPhoneHref()" aria-label="Call listing agent"><span class="material-symbols-outlined" aria-hidden="true">call</span><span>Call</span></a>
+          }
+          @if (contactEmailHref()) {
+            <a [href]="contactEmailHref()" aria-label="Email listing agent"><span class="material-symbols-outlined" aria-hidden="true">mail</span><span>Email</span></a>
+          }
+          @for (action of actions(); track action.id) {
+            @if (action.kind === 'schedule') {
+              <a [href]="action.url" target="_blank" rel="noopener noreferrer" aria-label="Schedule a showing"><span class="material-symbols-outlined" aria-hidden="true">calendar_month</span><span>Schedule</span></a>
+            }
+          }
+        </nav>
+      }
       <button
         type="button"
         class="talking-chat__close"

@@ -20,6 +20,7 @@ import {
   type TalkingCardEditorPrefill,
   type TalkingCardEditorValue,
 } from '../boards/talking-card';
+import { buildListingAgentPersonaPrompt } from '../boards/listing-talking-card';
 import {
   PersonalVoiceService,
   type PersonalVoice,
@@ -58,6 +59,8 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
   private personalVoiceRecordingStartedAt = 0;
   private personalVoiceRecordingTimer: ReturnType<typeof setInterval> | null = null;
   private discardPersonalVoiceRecording = false;
+  private voiceSelectionTouched = false;
+  private realEstatePromptBase = '';
 
   readonly boardId = input('');
   readonly boardTitle = input('Board');
@@ -124,6 +127,10 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
   readonly draftReady = signal(false);
   readonly draftStatus = signal<'restored' | 'saved' | null>(null);
   readonly isEditing = computed(() => !!this.editingCard());
+  readonly isRealEstateSetup = computed(() => !this.isEditing() && this.prefill()?.experience === 'real-estate');
+  readonly realEstateAdditionalGuidance = signal('');
+  readonly realEstateVoiceOptionsOpen = signal(false);
+  readonly realEstateScheduleUrl = computed(() => this.scheduleAction()?.url || '');
 
   readonly ownedAtlases = computed(() => this.atlasService.atlases()
     .filter((atlas) => this.atlasService.canAdminAtlas(atlas)));
@@ -216,8 +223,12 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
       await this.initializeEditingCard();
     } else {
       this.applyPrefill();
+      if (this.isRealEstateSetup() && this.prefill()?.preferredAtlasId?.trim()) {
+        await this.initializePreferredRealEstateAtlas(this.prefill()!.preferredAtlasId!.trim());
+      }
     }
     await Promise.all([this.restoreDraft(), this.loadPersonalVoices()]);
+    this.applyPreferredRealEstateVoice();
   }
 
   private applyPrefill(): void {
@@ -228,6 +239,37 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
     if (prefill.personaPrompt?.trim()) this.personaPrompt.set(prefill.personaPrompt.trim().slice(0, 40_000));
     if (prefill.openingMessage?.trim()) this.openingMessage.set(prefill.openingMessage.trim().slice(0, 500));
     if (prefill.ctaLabel?.trim()) this.ctaLabel.set(prefill.ctaLabel.trim().slice(0, 48));
+    if (prefill.imageUrl?.trim()) {
+      const imageUrl = prefill.imageUrl.trim().slice(0, 2000);
+      this.imagePreviewUrl.set(imageUrl);
+      this.uploadedImageUrl.set(imageUrl);
+    }
+    if (!this.isRealEstateSetup()) return;
+    this.mode.set('new');
+    this.placement.set('end');
+    this.realEstatePromptBase = prefill.personaPrompt?.trim()
+      || buildListingAgentPersonaPrompt(this.name(), this.realEstateAgency(this.role()));
+    this.personaPrompt.set(this.realEstatePromptBase);
+  }
+
+  private async initializePreferredRealEstateAtlas(preferredAtlasId: string): Promise<void> {
+    let atlas = this.availableAtlases().find((candidate) => candidate.id === preferredAtlasId) ?? null;
+    if (!atlas) {
+      atlas = await this.atlasService.getAccessibleAtlasById(preferredAtlasId);
+      if (atlas && !this.availableAtlases().some((candidate) => candidate.id === atlas!.id)) {
+        this.publicAtlases.update((items) => [...items, atlas!]);
+      }
+    }
+    if (!atlas || !this.atlasService.canAdminAtlas(atlas)) return;
+    const profileImageUrl = this.imagePreviewUrl();
+    this.mode.set('existing');
+    this.selectExistingAtlas(atlas.id);
+    if (!this.imagePreviewUrl() && profileImageUrl) {
+      this.imagePreviewUrl.set(profileImageUrl);
+      this.uploadedImageUrl.set(profileImageUrl);
+    }
+    this.personaPrompt.set(this.realEstatePromptBase);
+    if (this.publicBoard()) this.publishAvatar.set(true);
   }
 
   setMode(mode: EditorMode): void {
@@ -408,6 +450,7 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
   }
 
   selectDefaultVoice(): void {
+    this.voiceSelectionTouched = true;
     this.stopVoicePreview();
     this.voiceChoice.set('default');
     this.catalogVoiceId.set('');
@@ -416,6 +459,7 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
   }
 
   selectCatalogVoice(voice: StackNarratorVoice): void {
+    this.voiceSelectionTouched = true;
     this.stopVoicePreview();
     this.voiceChoice.set('catalog');
     this.catalogVoiceId.set(voice.id);
@@ -424,6 +468,7 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
   }
 
   selectPersonalVoice(voice: PersonalVoice): void {
+    this.voiceSelectionTouched = true;
     this.stopVoicePreview();
     this.voiceChoice.set('personal');
     this.personalVoiceId.set(voice.id);
@@ -433,11 +478,84 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
 
   keepSavedVoice(): void {
     if (this.initialVoiceConfig()?.source !== 'designed') return;
+    this.voiceSelectionTouched = true;
     this.stopVoicePreview();
     this.voiceChoice.set('saved');
     this.catalogVoiceId.set('');
     this.personalVoiceId.set('');
     this.voiceErrorMessage.set(null);
+  }
+
+  realEstateInitials(): string {
+    return this.name().split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]?.toUpperCase()).join('') || 'RE';
+  }
+
+  realEstateContactSummary(): string {
+    return [this.prefill()?.contactPhone?.trim(), this.prefill()?.contactEmail?.trim()].filter(Boolean).join(' · ');
+  }
+
+  realEstateVoiceLabel(): string {
+    if (this.voiceConfigLoading() || this.personalVoiceLoading()) return 'Finding your voice…';
+    if (this.voiceChoice() === 'personal') return this.selectedPersonalVoice()?.name || 'Your personal voice';
+    if (this.voiceChoice() === 'catalog') return this.selectedCatalogVoice()?.name || 'Included voice';
+    if (this.voiceChoice() === 'saved') return this.savedVoiceLabel();
+    return 'Default conversation voice';
+  }
+
+  realEstateVoiceDescription(): string {
+    if (this.voiceChoice() === 'personal') return 'Your private saved voice';
+    if (this.voiceChoice() === 'catalog') {
+      const voice = this.selectedCatalogVoice();
+      return voice ? `${voice.accent} · ${voice.style}` : 'Included LivingWiki voice';
+    }
+    if (this.voiceChoice() === 'saved') return 'Already saved to your agent profile';
+    return 'Clear, neutral LivingWiki voice';
+  }
+
+  async previewRealEstateVoice(): Promise<void> {
+    if (this.voiceChoice() === 'personal') {
+      const voice = this.selectedPersonalVoice();
+      if (voice) await this.toggleVoicePreview(`personal:${voice.id}:${voice.voiceRevision}`, undefined, voice.narratorVoiceId);
+      return;
+    }
+    if (this.voiceChoice() === 'catalog') {
+      const voice = this.selectedCatalogVoice();
+      if (voice) await this.toggleVoicePreview(`catalog:${voice.id}`, voice);
+      return;
+    }
+    await this.toggleVoicePreview(this.voiceChoice() === 'saved' ? 'saved' : 'default');
+  }
+
+  toggleRealEstateVoiceOptions(): void {
+    this.realEstateVoiceOptionsOpen.update((open) => !open);
+  }
+
+  updateRealEstateScheduleUrl(value: string): void {
+    const url = value.trim().slice(0, 2000);
+    const existing = this.scheduleAction();
+    if (!url) {
+      if (existing) this.actions.update((actions) => actions.filter((action) => action.id !== existing.id));
+      this.actionValidationMessage.set(null);
+      return;
+    }
+    const schedule: TalkingCardAction = {
+      id: existing?.id || 'listing-showing-schedule',
+      kind: 'schedule',
+      label: 'Schedule a showing',
+      url,
+      description: 'Choose a convenient time to tour this property.',
+    };
+    this.actions.update((actions) => existing
+      ? actions.map((action) => action.id === existing.id ? schedule : action)
+      : [schedule, ...actions.filter((action) => action.kind !== 'schedule')]);
+    this.actionValidationMessage.set(null);
+  }
+
+  updateRealEstateAdditionalGuidance(value: string): void {
+    const guidance = value.slice(0, 600);
+    this.realEstateAdditionalGuidance.set(guidance);
+    const agency = this.realEstateAgency(this.role());
+    this.personaPrompt.set(buildListingAgentPersonaPrompt(this.name(), agency, guidance));
   }
 
   async toggleVoicePreview(
@@ -713,13 +831,13 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
     try {
       let atlas: AtlasItem | null = this.selectedAtlas();
       let atlasId = atlas?.id ?? '';
-      let title = this.isEditing()
+      let title = this.isEditing() || this.isRealEstateSetup()
         ? this.name().trim()
         : atlas?.chat_guide?.name?.trim() || atlas?.name || this.name().trim();
-      let subtitle = this.isEditing()
+      let subtitle = this.isEditing() || this.isRealEstateSetup()
         ? this.role().trim()
         : atlas?.chat_guide?.label?.trim() || atlas?.description || this.role().trim();
-      let imageUrl = this.isEditing()
+      let imageUrl = this.isEditing() || this.isRealEstateSetup()
         ? this.uploadedImageUrl() || this.imagePreviewUrl()
         : atlas?.chat_guide?.image_url?.trim() || atlas?.logo_url?.trim() || atlas?.hero_url?.trim() || '';
       const rawActions = this.actions();
@@ -791,7 +909,7 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
         }
       } else if (atlas) {
         const imageFile = this.imageFile();
-        if (this.isEditing() && imageFile && !this.uploadedImageUrl()) {
+        if ((this.isEditing() || this.isRealEstateSetup()) && imageFile && !this.uploadedImageUrl()) {
           this.saveStage.set('Uploading optimized portrait…');
           imageUrl = await this.atlasService.uploadTalkingCardAvatarImage(atlas.id, imageFile);
           this.uploadedImageUrl.set(imageUrl);
@@ -800,7 +918,7 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
           await this.atlasService.updateAtlas(atlas.id, { is_public: true });
         }
         if (this.atlasService.canAdminAtlas(atlas)) {
-          if (this.isEditing()) {
+          if (this.isEditing() || this.isRealEstateSetup()) {
             this.saveStage.set('Saving avatar profile…');
             await Promise.all([
               this.atlasService.updateChatGuideConfig(atlas.id, {
@@ -840,7 +958,7 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
         title,
         subtitle,
         imageUrl,
-        ...(this.isEditing() ? { personaPrompt: this.personaPrompt().trim().slice(0, 40000) } : {}),
+        ...(this.isEditing() || this.isRealEstateSetup() ? { personaPrompt: this.personaPrompt().trim().slice(0, 40000) } : {}),
         openingMessage: this.openingMessage().trim().slice(0, 500),
         ctaLabel: this.ctaLabel().trim().slice(0, 48) || 'Talk to me',
         actions,
@@ -884,8 +1002,18 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
       this.selectedAtlasId.set(record.selectedAtlasId);
       this.createdAtlasId.set(record.createdAtlasId);
       this.name.set(record.name);
-      this.role.set(record.role);
-      this.personaPrompt.set(record.personaPrompt);
+      const restoredRole = this.isRealEstateSetup()
+        ? this.normalizedRealEstateRole(record.role, record.name)
+        : record.role;
+      this.role.set(restoredRole);
+      this.realEstateAdditionalGuidance.set(record.additionalGuidance ?? '');
+      this.personaPrompt.set(this.isRealEstateSetup()
+        ? buildListingAgentPersonaPrompt(
+            record.name,
+            this.realEstateAgency(restoredRole, record.name),
+            record.additionalGuidance ?? '',
+          )
+        : record.personaPrompt);
       this.openingMessage.set(record.openingMessage);
       this.ctaLabel.set(record.ctaLabel);
       this.actions.set(normalizeTalkingCardActions(record.actions));
@@ -893,14 +1021,18 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
       this.catalogVoiceId.set(record.catalogVoiceId);
       this.personalVoiceId.set(record.personalVoiceId ?? '');
       this.voiceChoice.set(record.voiceChoice);
-      this.publishAvatar.set(record.publishAvatar);
+      this.publishAvatar.set(this.isRealEstateSetup() && this.publicBoard() ? true : record.publishAvatar);
       this.imageFile.set(record.imageFile);
-      this.uploadedImageUrl.set(record.uploadedImageUrl);
+      const restoredImageUrl = record.uploadedImageUrl
+        || (this.isRealEstateSetup() ? this.prefill()?.imageUrl?.trim() || '' : '');
+      this.uploadedImageUrl.set(restoredImageUrl);
       this.documentFiles.set(record.documentFiles);
       if (record.imageFile) {
         const previous = this.imagePreviewUrl();
         if (previous.startsWith('blob:')) URL.revokeObjectURL(previous);
         this.imagePreviewUrl.set(URL.createObjectURL(record.imageFile));
+      } else if (restoredImageUrl) {
+        this.imagePreviewUrl.set(restoredImageUrl);
       }
       const selected = this.availableAtlases().find((atlas) => atlas.id === record.selectedAtlasId);
       if (record.mode === 'existing' && selected) {
@@ -928,6 +1060,7 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
       name: this.name(),
       role: this.role(),
       personaPrompt: this.personaPrompt(),
+      additionalGuidance: this.realEstateAdditionalGuidance(),
       openingMessage: this.openingMessage(),
       ctaLabel: this.ctaLabel(),
       actions: this.actions(),
@@ -986,6 +1119,26 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
     return error instanceof Error && error.message.trim()
       ? error.message
       : 'The Talking Card could not be saved.';
+  }
+
+  private realEstateAgency(role: string, agentName = this.name()): string {
+    let normalized = role.replace(/\s+/g, ' ').trim();
+    if (/^listing agent$/i.test(normalized)) return '';
+    normalized = normalized.replace(/\s*·\s*listing agent$/i, '').trim();
+    const name = agentName.replace(/\s+/g, ' ').trim();
+    if (name && normalized.toLocaleLowerCase().startsWith(name.toLocaleLowerCase())) {
+      normalized = normalized.slice(name.length).trim();
+    }
+    return normalized.replace(/\b(?:phone|email)\s*:.*$/i, '').trim();
+  }
+
+  private normalizedRealEstateRole(role: string, agentName: string): string {
+    const normalized = role.replace(/\s+/g, ' ').trim();
+    if (!/\b(?:phone|email)\s*:/i.test(normalized) && !/listing agent$/i.test(normalized)) {
+      return normalized;
+    }
+    const agency = this.realEstateAgency(normalized, agentName);
+    return agency ? `${agency} · Listing agent` : 'Listing agent';
   }
 
   private async optimizeAvatarImage(file: File): Promise<File> {
@@ -1093,6 +1246,20 @@ export class TalkingCardEditorComponent implements OnDestroy, OnInit {
     this.personalVoiceCanAdd.set(library.canAddVoice);
     this.personalVoicePaid.set(library.paid);
     this.personalVoiceAdmin.set(library.admin);
+    this.applyPreferredRealEstateVoice();
+  }
+
+  private applyPreferredRealEstateVoice(): void {
+    if (!this.isRealEstateSetup()
+      || this.mode() !== 'new'
+      || this.voiceSelectionTouched
+      || this.draftStatus() === 'restored'
+      || this.voiceChoice() !== 'default') return;
+    const defaultVoiceId = this.personalVoiceDefaultId();
+    if (!defaultVoiceId || !this.personalVoices().some((voice) => voice.id === defaultVoiceId)) return;
+    this.voiceChoice.set('personal');
+    this.personalVoiceId.set(defaultVoiceId);
+    this.catalogVoiceId.set('');
   }
 
   private async setPersonalVoiceFile(file: File, knownDuration?: number): Promise<void> {

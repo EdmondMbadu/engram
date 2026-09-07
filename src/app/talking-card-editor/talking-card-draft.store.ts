@@ -16,6 +16,7 @@ export interface TalkingCardDraftRecord {
   name: string;
   role: string;
   personaPrompt: string;
+  additionalGuidance?: string;
   openingMessage: string;
   ctaLabel: string;
   placement: 'start' | 'end' | 'keep';
@@ -184,6 +185,7 @@ export class TalkingCardDraftStore {
       name: this.stringValue(record.name),
       role: this.stringValue(record.role),
       personaPrompt: this.stringValue(record.personaPrompt).slice(0, 40000),
+      additionalGuidance: this.stringValue(record.additionalGuidance).slice(0, 600),
       openingMessage: this.stringValue(record.openingMessage).slice(0, 500),
       ctaLabel: this.stringValue(record.ctaLabel).slice(0, 48),
       placement,

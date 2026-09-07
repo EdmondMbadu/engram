@@ -191,6 +191,7 @@ import {
   type ListingContactCardDetails,
 } from './listing-contact-card';
 import {
+  buildListingAgentPersonaPrompt,
   hasListingTalkingCard,
   isListingTalkingCardPlaceholder as isListingTalkingCardPlaceholderRecord,
   placeListingTalkingCard,
@@ -1891,19 +1892,27 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     if (!board) return null;
     const contactCard = board.cards.find((card) => isListingContactCardRecord(card));
     const contact = contactCard ? contactDetailsForListingCard(contactCard) : null;
-    const agentName = contact?.name || '';
+    const agentName = contact?.name || this.userName();
     const firstName = agentName.split(/\s+/).filter(Boolean)[0] || 'the agent';
+    const normalizedAgentName = agentName.replace(/\s+/g, ' ').trim().toLocaleLowerCase();
+    const preferredGuide = this.boards()
+      .flatMap((candidate) => candidate.cards)
+      .find((card) => card.tags.includes('listing-agent-guide')
+        && !!card.conversation?.atlasId
+        && (!normalizedAgentName || card.title.replace(/\s+/g, ' ').trim().toLocaleLowerCase() === normalizedAgentName));
     return {
+      experience: 'real-estate',
       draftKey: 'listing-agent-setup',
+      propertyTitle: board.title,
+      imageUrl: this.userPhotoUrl(),
+      preferredAtlasId: preferredGuide?.conversation?.atlasId || '',
+      contactEmail: contact?.email || '',
+      contactPhone: contact?.phone || '',
       name: agentName,
       role: contact?.agency ? `${contact.agency} · Listing agent` : 'Listing agent',
       openingMessage: `Hi${agentName ? `, I’m ${agentName}` : ''}. Ask me about ${board.title}, or how to arrange a private showing.`,
       ctaLabel: `Ask ${firstName}`.slice(0, 48),
-      personaPrompt: [
-        agentName ? `You are ${agentName}, the real-estate agent presenting ${board.title}. Speak naturally in the first person.` : `You are the real-estate agent presenting ${board.title}.`,
-        'Answer concisely and use the property context supplied with this Talking Card.',
-        'Never invent property facts, pricing, availability, disclosures, or showing times. When information is missing or may have changed, say so and invite the visitor to contact the agent directly.',
-      ].join(' '),
+      personaPrompt: buildListingAgentPersonaPrompt(agentName, contact?.agency || ''),
     };
   });
   readonly talkingConversationCard = computed(() => {
@@ -1915,6 +1924,13 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
     const cardId = this.talkingConversationCardId();
     if (!cardId) return null;
     return this.boards().find((board) => board.cards.some((card) => card.id === cardId)) ?? null;
+  });
+  readonly talkingConversationContact = computed(() => {
+    const card = this.talkingConversationCard();
+    const board = this.talkingConversationBoard();
+    if (!card?.tags.includes('listing-agent-guide') || !board) return null;
+    const contactCard = board.cards.find((candidate) => !candidate.authorOnly && this.isListingContactCard(candidate));
+    return contactCard ? contactDetailsForListingCard(contactCard) : null;
   });
   readonly relatedCardEditorOpen = signal(false);
   readonly relatedCardParentId = signal<string | null>(null);
@@ -7290,6 +7306,13 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
 
   talkingCardBoardContext(board: Board | null, card: BoardCard): string {
     if (!board || !card.tags.includes('listing-agent-guide')) return '';
+    const contactCard = board.cards.find((candidate) => !candidate.authorOnly && this.isListingContactCard(candidate));
+    const contact = contactCard ? contactDetailsForListingCard(contactCard) : null;
+    const publicContact = contact
+      ? [contact.name, contact.agency, contact.phone ? `Phone: ${contact.phone}` : '', contact.email ? `Email: ${contact.email}` : '']
+          .filter(Boolean)
+          .join(' · ')
+      : '';
     const chapters = board.cards
       .filter((candidate) => candidate.id !== card.id
         && !candidate.authorOnly
@@ -7304,6 +7327,7 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
       `Property board: ${board.title}`,
       board.description,
       ...chapters,
+      publicContact ? `Public listing-agent contact: ${publicContact}` : '',
     ].filter(Boolean).join('\n').slice(0, 3500);
   }
 

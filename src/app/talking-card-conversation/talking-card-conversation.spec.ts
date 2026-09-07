@@ -143,6 +143,43 @@ describe('TalkingCardConversationComponent', () => {
     expect(fixture.nativeElement.querySelector('.talking-chat__presence')).not.toBeNull();
   });
 
+  it('shows concise listing-agent contact actions when they are provided', async () => {
+    const fixture = TestBed.createComponent(TalkingCardConversationComponent);
+    fixture.componentRef.setInput('atlasId', 'atlas-1');
+    fixture.componentRef.setInput('contactName', 'Jenny Morgan');
+    fixture.componentRef.setInput('contactPhoneHref', 'tel:7025550102');
+    fixture.componentRef.setInput('contactEmailHref', 'mailto:jenny@example.com');
+    fixture.componentRef.setInput('actions', [{
+      id: 'showing',
+      kind: 'schedule',
+      label: 'Schedule a showing',
+      url: 'https://cal.example.com/jenny',
+    }]);
+    spyOn(fixture.componentInstance, 'startVoice').and.resolveTo();
+
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const contact = fixture.nativeElement.querySelector('.talking-chat__contact') as HTMLElement;
+    expect(contact.getAttribute('aria-label')).toBe('Contact Jenny Morgan');
+    expect(contact.querySelector<HTMLAnchorElement>('a[href="tel:7025550102"]')?.textContent).toContain('Call');
+    expect(contact.querySelector<HTMLAnchorElement>('a[href="mailto:jenny@example.com"]')?.textContent).toContain('Email');
+    expect(contact.querySelector<HTMLAnchorElement>('a[href="https://cal.example.com/jenny"]')?.textContent).toContain('Schedule');
+  });
+
+  it('does not show contact controls unless contact or scheduling data is explicitly provided', async () => {
+    const fixture = TestBed.createComponent(TalkingCardConversationComponent);
+    fixture.componentRef.setInput('atlasId', 'atlas-1');
+    spyOn(fixture.componentInstance, 'startVoice').and.resolveTo();
+
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.talking-chat__contact')).toBeNull();
+  });
+
   it('switches to text and ends an active voice session', async () => {
     const fixture = TestBed.createComponent(TalkingCardConversationComponent);
     fixture.componentRef.setInput('atlasId', 'atlas-1');

@@ -137,6 +137,9 @@ export class TalkingCardConversationComponent implements OnInit, OnDestroy {
   readonly actions = input<TalkingCardAction[]>([]);
   readonly starterQuestions = input<string[]>([]);
   readonly boardContext = input('');
+  readonly contactName = input('');
+  readonly contactPhoneHref = input('');
+  readonly contactEmailHref = input('');
   readonly surface = input<'board' | 'live'>('board');
   readonly closed = output<void>();
   readonly activity = output<'message' | 'voice_start' | 'voice_end'>();
@@ -172,6 +175,9 @@ export class TalkingCardConversationComponent implements OnInit, OnDestroy {
     .map((question) => question.replace(/\s+/g, ' ').trim().slice(0, 120))
     .filter(Boolean))).slice(0, 3));
   readonly showStarters = computed(() => this.starters().length > 0 && !this.messages().some((message) => message.role === 'user'));
+  readonly showContactActions = computed(() => !!this.contactPhoneHref()
+    || !!this.contactEmailHref()
+    || this.actions().some((action) => action.kind === 'schedule'));
   readonly voiceVisualGlow = computed(() => `${18 + this.voiceEnergyLevel() * 30}px`);
   readonly voiceStateLabel = computed(() => {
     if (this.voiceStatus() === 'connecting') return 'Connecting…';

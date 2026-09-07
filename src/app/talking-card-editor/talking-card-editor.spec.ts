@@ -171,6 +171,167 @@ describe('TalkingCardEditorComponent', () => {
     expect(draftStore.load).toHaveBeenCalledWith('board:listing-board:listing-agent-setup');
   });
 
+  it('shows the focused real-estate setup with the profile photo and default personal voice', async () => {
+    const fixture = TestBed.createComponent(TalkingCardEditorComponent);
+    fixture.componentRef.setInput('boardId', 'listing-board-focused');
+    fixture.componentRef.setInput('boardTitle', '12 Garden Lane');
+    fixture.componentRef.setInput('prefill', {
+      experience: 'real-estate',
+      draftKey: 'listing-agent-setup',
+      propertyTitle: '12 Garden Lane',
+      imageUrl: 'https://example.com/jenny-profile.jpg',
+      contactEmail: 'jenny@example.com',
+      contactPhone: '702-555-0102',
+      name: 'Jenny Morgan',
+      role: 'North Star Realty · Listing agent',
+      personaPrompt: 'Prepared real-estate prompt.',
+      openingMessage: 'Hi, I’m Jenny. Ask me about 12 Garden Lane.',
+      ctaLabel: 'Ask Jenny',
+    });
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.mode()).toBe('new');
+    expect(fixture.componentInstance.voiceChoice()).toBe('personal');
+    expect(fixture.componentInstance.personalVoiceId()).toBe('voice-1');
+    expect(fixture.componentInstance.imagePreviewUrl()).toBe('https://example.com/jenny-profile.jpg');
+    expect((fixture.nativeElement.querySelector('.talking-editor__real-estate-portrait img') as HTMLImageElement).src)
+      .toContain('jenny-profile.jpg');
+    expect(fixture.nativeElement.textContent).toContain('Create your property guide');
+    expect(fixture.nativeElement.textContent).toContain('Contact details already connected');
+    expect(fixture.nativeElement.textContent).toContain('Create my Talking Card');
+    expect(fixture.nativeElement.textContent).not.toContain('System prompt');
+    expect(fixture.nativeElement.querySelector('.talking-editor__tabs')).toBeNull();
+  });
+
+  it('reuses an owned agent avatar without replacing its saved voice with the personal default', async () => {
+    const fixture = TestBed.createComponent(TalkingCardEditorComponent);
+    fixture.componentRef.setInput('boardId', 'listing-board-reuse');
+    fixture.componentRef.setInput('prefill', {
+      experience: 'real-estate',
+      draftKey: 'listing-agent-setup',
+      preferredAtlasId: 'george',
+      imageUrl: 'https://example.com/profile-fallback.jpg',
+      name: 'George Washington',
+      role: 'Listing agent',
+      personaPrompt: 'Prepared real-estate prompt.',
+      openingMessage: 'Ask me about this property.',
+    });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(fixture.componentInstance.mode()).toBe('existing');
+    expect(fixture.componentInstance.selectedAtlasId()).toBe('george');
+    expect(fixture.componentInstance.voiceChoice()).toBe('default');
+    expect(fixture.componentInstance.imagePreviewUrl()).toBe('https://example.com/profile-fallback.jpg');
+  });
+
+  it('turns the optional showing URL into one concise scheduling action', async () => {
+    const fixture = TestBed.createComponent(TalkingCardEditorComponent);
+    fixture.componentRef.setInput('boardId', 'listing-board-scheduling');
+    fixture.componentRef.setInput('prefill', {
+      experience: 'real-estate',
+      draftKey: 'listing-agent-setup',
+      name: 'Jenny Morgan',
+      personaPrompt: 'Prepared real-estate prompt.',
+      openingMessage: 'Ask me about this property.',
+    });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    fixture.componentInstance.updateRealEstateScheduleUrl('https://cal.example.com/jenny');
+    expect(fixture.componentInstance.actions()).toEqual([jasmine.objectContaining({
+      kind: 'schedule',
+      label: 'Schedule a showing',
+      url: 'https://cal.example.com/jenny',
+    })]);
+    fixture.componentInstance.updateRealEstateScheduleUrl('');
+    expect(fixture.componentInstance.actions()).toEqual([]);
+  });
+
+  it('creates the real-estate guide with its prepared prompt, profile photo, and personal voice', async () => {
+    const fixture = TestBed.createComponent(TalkingCardEditorComponent);
+    fixture.componentRef.setInput('boardId', 'listing-board-save');
+    fixture.componentRef.setInput('prefill', {
+      experience: 'real-estate',
+      draftKey: 'listing-agent-setup',
+      imageUrl: 'https://example.com/jenny-profile.jpg',
+      name: 'Jenny Morgan',
+      role: 'North Star Realty · Listing agent',
+      personaPrompt: 'Prepared real-estate prompt with property safeguards.',
+      openingMessage: 'Hi, I’m Jenny. Ask me about this home.',
+      ctaLabel: 'Ask Jenny',
+    });
+    const saved = spyOn(fixture.componentInstance.saved, 'emit');
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    await fixture.componentInstance.save();
+
+    expect(atlasService.createTalkingCardAtlas).toHaveBeenCalledOnceWith({
+      name: 'Jenny Morgan',
+      role: 'North Star Realty · Listing agent',
+      personaPrompt: 'Prepared real-estate prompt with property safeguards.',
+      isPublic: false,
+    });
+    expect(atlasService.updateAtlas).toHaveBeenCalledWith('new-avatar', {
+      logo_url: 'https://example.com/jenny-profile.jpg',
+    });
+    expect(atlasService.selectAtlasPersonalVoice).toHaveBeenCalledWith('new-avatar', 'voice-1');
+    expect(saved).toHaveBeenCalledWith(jasmine.objectContaining({
+      atlasId: 'new-avatar',
+      title: 'Jenny Morgan',
+      imageUrl: 'https://example.com/jenny-profile.jpg',
+      personaPrompt: 'Prepared real-estate prompt with property safeguards.',
+      ctaLabel: 'Ask Jenny',
+      placement: 'end',
+    }));
+  });
+
+  it('cleans malformed generated agency copy from a restored real-estate draft', async () => {
+    draftStore.load.and.resolveTo({
+      key: 'board:listing-board-legacy-draft:listing-agent-setup',
+      version: 1,
+      boardId: 'listing-board-legacy-draft',
+      mode: 'new',
+      selectedAtlasId: '',
+      createdAtlasId: '',
+      name: 'Edmond Mbadu',
+      role: 'Edmond Mbadu Executive Realty Services Phone: · Listing agent',
+      personaPrompt: 'Old prompt.',
+      openingMessage: 'Ask me about this property.',
+      ctaLabel: 'Ask Edmond',
+      placement: 'end',
+      actions: [],
+      catalogVoiceId: '',
+      personalVoiceId: '',
+      voiceChoice: 'default',
+      publishAvatar: false,
+      imageFile: null,
+      uploadedImageUrl: '',
+      documentFiles: [],
+      updatedAt: '2026-09-07T00:00:00.000Z',
+    });
+    const fixture = TestBed.createComponent(TalkingCardEditorComponent);
+    fixture.componentRef.setInput('boardId', 'listing-board-legacy-draft');
+    fixture.componentRef.setInput('prefill', {
+      experience: 'real-estate',
+      draftKey: 'listing-agent-setup',
+      name: 'Edmond Mbadu',
+      role: 'Executive Realty Services · Listing agent',
+      personaPrompt: 'Prepared prompt.',
+      openingMessage: 'Ask me about this property.',
+    });
+
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(fixture.componentInstance.role()).toBe('Executive Realty Services · Listing agent');
+    expect(fixture.componentInstance.personaPrompt()).toContain('Executive Realty Services');
+    expect(fixture.componentInstance.personaPrompt()).not.toContain('Phone:');
+  });
+
   it('selects a searched avatar and clears the result list', () => {
     const fixture = TestBed.createComponent(TalkingCardEditorComponent);
     fixture.detectChanges();
