@@ -730,4 +730,40 @@ describe('TalkingCardEditorComponent', () => {
     expect(atlasService.updatePersonaPrompt).not.toHaveBeenCalled();
     expect(atlasService.updateChatGuideConfig).not.toHaveBeenCalled();
   });
+
+  it('presents the full avatar deep editor when editing a Talking Card', async () => {
+    const fixture = TestBed.createComponent(TalkingCardEditorComponent);
+    fixture.componentRef.setInput('editingCard', {
+      id: 'listing-guide-card',
+      title: 'Jenny Morgan',
+      subtitle: 'North Star Realty · Listing agent',
+      imageUrl: 'https://example.com/jenny.jpg',
+      placement: 'keep',
+      conversation: {
+        version: 1,
+        provider: 'atlas',
+        atlasId: 'george',
+        openingMessage: 'Ask me about this home.',
+        ctaLabel: 'Ask Jenny',
+      },
+    });
+    fixture.detectChanges();
+    await fixture.whenStable();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.textContent).toContain('Edit Talking Card & avatar');
+    expect(fixture.nativeElement.textContent).toContain('Deep-edit the card, avatar prompt, documents, voice, and visitor actions.');
+    const tabs = Array.from(fixture.nativeElement.querySelectorAll('[role="tab"]'))
+      .map((element: unknown) => (element as HTMLElement).textContent?.trim());
+    expect(tabs).toEqual(['Card', 'Prompt & documents', 'Voice', 'Actions']);
+
+    fixture.componentInstance.setEditorSection('knowledge');
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.textContent).toContain('Avatar prompt & documents');
+    expect(fixture.nativeElement.textContent).toContain('System prompt');
+    expect(fixture.nativeElement.textContent).toContain('Knowledge documents');
+    expect(talkingCardKnowledgeService.listOwnedAtlasDocuments).toHaveBeenCalledWith('george');
+  });
 });

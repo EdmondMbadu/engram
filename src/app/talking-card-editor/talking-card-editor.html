@@ -3,8 +3,8 @@
     <header class="talking-editor__header">
       <div>
         <span class="talking-editor__eyebrow">{{ boardTitle() }}</span>
-        <h2 id="talking-editor-title">{{ isEditing() ? 'Edit Talking Card' : isRealEstateSetup() ? 'Create your property guide' : 'Add a Talking Card' }}</h2>
-        <p>{{ isEditing() ? 'Refine the card, its knowledge, voice, and visitor actions.' : isRealEstateSetup() ? 'Visitors can ask about this home, hear from you, and contact you when they’re ready.' : 'Add a conversational guide anywhere in this board’s flow.' }}</p>
+        <h2 id="talking-editor-title">{{ isEditing() ? 'Edit Talking Card & avatar' : isRealEstateSetup() ? 'Create your property guide' : 'Add a Talking Card' }}</h2>
+        <p>{{ isEditing() ? 'Deep-edit the card, avatar prompt, documents, voice, and visitor actions.' : isRealEstateSetup() ? 'Visitors can ask about this home, hear from you, and contact you when they’re ready.' : 'Add a conversational guide anywhere in this board’s flow.' }}</p>
       </div>
       <button type="button" class="talking-editor__icon" aria-label="Close Talking Card editor" (click)="close()">
         <span class="material-symbols-outlined">close</span>
@@ -18,7 +18,7 @@
       </div>
       <div class="talking-editor__tabs talking-editor__tabs--sections" role="tablist" aria-label="Talking Card settings">
         <button type="button" role="tab" [attr.aria-selected]="editorSection() === 'card'" [class.is-active]="editorSection() === 'card'" (click)="setEditorSection('card')">Card</button>
-        <button type="button" role="tab" [attr.aria-selected]="editorSection() === 'knowledge'" [class.is-active]="editorSection() === 'knowledge'" (click)="setEditorSection('knowledge')">Knowledge</button>
+        <button type="button" role="tab" [attr.aria-selected]="editorSection() === 'knowledge'" [class.is-active]="editorSection() === 'knowledge'" (click)="setEditorSection('knowledge')">Prompt & documents</button>
         <button type="button" role="tab" [attr.aria-selected]="editorSection() === 'voice'" [class.is-active]="editorSection() === 'voice'" (click)="setEditorSection('voice')">Voice</button>
         <button type="button" role="tab" [attr.aria-selected]="editorSection() === 'actions'" [class.is-active]="editorSection() === 'actions'" (click)="setEditorSection('actions')">Actions</button>
       </div>
@@ -238,7 +238,7 @@
         <section class="talking-editor__edit-section" aria-labelledby="talking-editor-knowledge-heading">
           <header class="talking-editor__section-heading">
             <span class="material-symbols-outlined">library_books</span>
-            <span><strong id="talking-editor-knowledge-heading">Prompt and knowledge</strong><small>Shared by every Talking Card that uses this avatar.</small></span>
+            <span><strong id="talking-editor-knowledge-heading">Avatar prompt & documents</strong><small>Shared by every Talking Card that uses this avatar.</small></span>
           </header>
           @if (selectedAtlasEditable()) {
             <label>

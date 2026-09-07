@@ -1318,9 +1318,9 @@
                         role="menu"
                         (click)="$event.stopPropagation()"
                       >
-                        <button type="button" role="menuitem" (click)="closeCardActionMenu(); openEditGalleryCard(item.board.id, item.card)" i18n>
-                          <span class="material-symbols-outlined">edit</span>
-                          Edit card
+                        <button type="button" role="menuitem" (click)="closeCardActionMenu(); isTalkingCard(item.card) ? openEditTalkingCard(item.card, item.board) : openEditGalleryCard(item.board.id, item.card)">
+                          <span class="material-symbols-outlined">{{ isTalkingCard(item.card) ? 'manage_accounts' : 'edit' }}</span>
+                          {{ isTalkingCard(item.card) ? 'Edit Talking Card & avatar' : 'Edit card' }}
                         </button>
                         <button type="button" role="menuitem" (click)="closeCardActionMenu(); openEditGalleryCardPhotos(item.board.id, item.card, $event)">
                           <span class="material-symbols-outlined">add_photo_alternate</span>
@@ -3363,8 +3363,8 @@
                             }
                           } @else {
                             <button type="button" role="menuitem" (click)="closeCardActionMenu(); isTalkingCard(card) ? openEditTalkingCard(card, cardHostBoard(board, card)) : openEditCard(card, cardHostBoard(board, card))">
-                              <span class="material-symbols-outlined">edit</span>
-                              <span>{{ isTalkingCard(card) ? 'Edit Talking Card' : 'Edit card' }}</span>
+                              <span class="material-symbols-outlined">{{ isTalkingCard(card) ? 'manage_accounts' : 'edit' }}</span>
+                              <span>{{ isTalkingCard(card) ? 'Edit Talking Card & avatar' : 'Edit card' }}</span>
                             </button>
                             @if (isTourBoard(board) && card.tour) {
                               <button type="button" role="menuitem" (click)="openAddTourStop(card.id, $event)">
