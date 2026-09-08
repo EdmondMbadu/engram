@@ -168,6 +168,7 @@ import {
   normalizeBoardCardConversation,
   talkingCardActions,
   talkingCardCtaLabel,
+  talkingCardQuestionLabel,
   talkingCardStarters,
   type BoardCardConversation,
   type TalkingCardAction,
@@ -7380,6 +7381,10 @@ export class BoardsComponent implements AfterViewInit, OnDestroy {
 
   talkingCardButtonLabel(card: Pick<BoardCard, 'conversation'>): string {
     return talkingCardCtaLabel(card.conversation);
+  }
+
+  talkingCardQuestionLabel(card: Pick<BoardCard, 'title'>): string {
+    return talkingCardQuestionLabel(card.title);
   }
 
   talkingCardActionLinks(card: Pick<BoardCard, 'conversation'>): TalkingCardAction[] {

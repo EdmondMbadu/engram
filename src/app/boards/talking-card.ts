@@ -166,6 +166,17 @@ export function talkingCardCtaLabel(conversation: BoardCardConversation | null |
   return conversation?.ctaLabel?.trim() || 'Talk to me';
 }
 
+export function talkingCardQuestionLabel(title: string | null | undefined): string {
+  const normalizedTitle = (title ?? '').replace(/\s+/g, ' ').trim();
+  const subject = normalizedTitle
+    .replace(/^ask\s+/i, '')
+    .replace(/\s+(?:a|any)\s+questions?$/i, '')
+    .trim();
+  return subject
+    ? `Ask ${subject} a question`
+    : 'Ask the virtual agent a question';
+}
+
 export function talkingCardActions(conversation: BoardCardConversation | null | undefined): TalkingCardAction[] {
   return normalizeTalkingCardActions(conversation?.actions);
 }

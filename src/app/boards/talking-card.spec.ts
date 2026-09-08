@@ -2,6 +2,7 @@ import {
   normalizeBoardCardConversation,
   normalizeTalkingCardActions,
   talkingCardCtaLabel,
+  talkingCardQuestionLabel,
   talkingCardStarters,
 } from './talking-card';
 
@@ -32,6 +33,13 @@ describe('Talking Card model', () => {
   it('uses an accessible default call to action', () => {
     expect(talkingCardCtaLabel(null)).toBe('Talk to me');
     expect(talkingCardCtaLabel({ version: 1, provider: 'atlas', atlasId: 'a', openingMessage: '' })).toBe('Talk to me');
+  });
+
+  it('turns the avatar title into an unambiguous question invitation', () => {
+    expect(talkingCardQuestionLabel('Edmond Mbadu')).toBe('Ask Edmond Mbadu a question');
+    expect(talkingCardQuestionLabel('Ask Edmond')).toBe('Ask Edmond a question');
+    expect(talkingCardQuestionLabel('Ask Jenny any questions')).toBe('Ask Jenny a question');
+    expect(talkingCardQuestionLabel('')).toBe('Ask the virtual agent a question');
   });
 
   it('normalizes scheduling and additional links while rejecting unsafe URLs', () => {

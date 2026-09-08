@@ -80,11 +80,52 @@
 .talking-card-cta strong { font-size: .86rem; }
 .talking-card-cta small { margin-top: .15rem; color: rgba(255,255,255,.72); font-size: .62rem; }
 .talking-card-cta > .material-symbols-outlined:first-child { display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 50%; color: #0d5737; background: #fff; }
+.board-detail .detail-card--talking .detail-card__summary--talking {
+  min-height: 11.2rem;
+  align-items: start;
+  background:
+    radial-gradient(circle at 92% 0%, rgba(112, 224, 169, .2), transparent 38%),
+    linear-gradient(145deg, #f4fbf7, #fbfaf5 68%);
+}
+.board-detail .detail-card--talking:not(.detail-card--expanded) .board-square__rotor { min-height: 23rem; }
+.board-detail .detail-card--talking:not(.detail-card--expanded) .detail-card__media { aspect-ratio: 16 / 9; }
+.talking-card-invitation { display: grid; min-width: 0; gap: .38rem; }
+.talking-card-invitation__eyebrow {
+  display: inline-flex;
+  width: max-content;
+  max-width: 100%;
+  align-items: center;
+  gap: .3rem;
+  color: #18734f;
+  font-size: .61rem;
+  font-weight: 900;
+  letter-spacing: .1em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.talking-card-invitation__eyebrow .material-symbols-outlined { font-size: 1rem; font-variation-settings: 'FILL' 1; }
+.talking-card-invitation > strong {
+  display: -webkit-box;
+  overflow: hidden;
+  color: #14271f;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(1.15rem, 1.8vw, 1.42rem);
+  font-weight: 600;
+  letter-spacing: -.025em;
+  line-height: 1.08;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.talking-card-invitation > p { margin: 0; color: #65736b; font-size: .72rem; font-weight: 650; line-height: 1.35; }
+.talking-card-cta--invitation { grid-column: 1 / -1; min-height: 3.6rem; margin-top: .08rem; padding: .72rem .85rem; }
+.talking-card-cta--invitation strong { font-size: .9rem; }
+.talking-card-cta--invitation small { font-size: .65rem; }
 .talking-card-cta--live { width: max-content; max-width: 100%; margin: .75rem auto 0; padding: .7rem 1rem; border: 1px solid rgba(255,255,255,.45); border-radius: 999px; background: rgba(18,103,66,.88); backdrop-filter: blur(10px); }
 .talking-card-cta--live > .material-symbols-outlined:first-child { width: auto; height: auto; color: #fff; background: transparent; }
 .talking-card-cta--back { margin-top: 0; }
 .talking-card-action-row { display: flex; flex-wrap: wrap; align-items: stretch; gap: .55rem; margin-top: .7rem; }
 .talking-card-action-row .talking-card-cta { flex: 1 1 58%; min-width: 11rem; margin-top: 0; }
+.talking-card-action-row--links-only .talking-card-link { flex-basis: 100%; }
 .talking-card-link { display: flex; flex: 1 1 42%; min-width: 7.5rem; align-items: center; justify-content: center; gap: .45rem; border: 1px solid color-mix(in srgb, var(--accent) 38%, var(--line)); border-radius: 14px; padding: .72rem .8rem; color: var(--accent); background: color-mix(in srgb, var(--accent) 6%, var(--surface)); text-align: left; text-decoration: none; }
 .talking-card-link.is-schedule { border-color: color-mix(in srgb, #d6a94a 62%, var(--line)); color: #74540c; background: color-mix(in srgb, #f1d68a 17%, var(--surface)); }
 .talking-card-link > .material-symbols-outlined { flex: 0 0 auto; font-size: 1.2rem; }

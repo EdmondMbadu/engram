@@ -3225,6 +3225,7 @@
                   [class.detail-card--inside-alongside]="isAlongsideInnerCard(board, card)"
                   [class.detail-card--photo-only]="isPhotoOnlyCard(card)"
                   [class.detail-card--listing-contact]="isListingContactCard(card)"
+                  [class.detail-card--talking]="isTalkingCard(card)"
                   [class.detail-card--listing-talking-setup]="isListingTalkingCardPlaceholder(card)"
                   [class.detail-card--listing-intro-setup]="isListingIntroCardPlaceholder(card)"
                   [class.detail-card--has-memories]="hasBoardInside(card) || relatedCardCount(card) > 0"
@@ -3574,6 +3575,32 @@
                             }
                           </div>
                         }
+                      } @else if (isTalkingCard(card)) {
+                        <div class="detail-card__summary detail-card__summary--talking">
+                          <div class="talking-card-invitation">
+                            <span class="talking-card-invitation__eyebrow">
+                              <span class="material-symbols-outlined">smart_toy</span>
+                              Virtual agent · Ready to answer
+                            </span>
+                            <strong>{{ talkingCardQuestionLabel(card) }}</strong>
+                            <p>Get answers about {{ card.tags.includes('listing-agent-guide') ? 'this property' : 'this board' }} by text or voice.</p>
+                          </div>
+                          <button
+                            type="button"
+                            class="card-flip-button detail-card__flip-button detail-card__flip-button--inline"
+                            aria-label="Show card back"
+                            (click)="toggleCardFlip(card.id, $event)"
+                            i18n-aria-label
+                          >
+                            <span class="material-symbols-outlined" aria-hidden="true">autorenew</span>
+                            <span>Flip</span>
+                          </button>
+                          <button type="button" class="talking-card-cta talking-card-cta--invitation" (click)="openTalkingCardConversation(card, $event, 'board')">
+                            <span class="material-symbols-outlined">forum</span>
+                            <span><strong>Start a conversation</strong><small>Ask by text or talk live</small></span>
+                            <span class="material-symbols-outlined">arrow_forward</span>
+                          </button>
+                        </div>
                       } @else {
                         <div class="detail-card__summary">
                           <button
@@ -3652,13 +3679,8 @@
                         @if (card.notes) {
                           <p class="detail-card__notes">{{ card.notes }}</p>
                         }
-                        @if (isTalkingCard(card)) {
-                          <div class="talking-card-action-row">
-                            <button type="button" class="talking-card-cta" (click)="openTalkingCardConversation(card, $event, 'board')">
-                              <span class="material-symbols-outlined">mic</span>
-                              <span><strong>{{ talkingCardButtonLabel(card) }}</strong><small>Text or voice conversation</small></span>
-                              <span class="material-symbols-outlined">arrow_forward</span>
-                            </button>
+                        @if (isTalkingCard(card) && talkingCardActionLinks(card).length) {
+                          <div class="talking-card-action-row talking-card-action-row--links-only">
                             @for (action of talkingCardActionLinks(card); track action.id) {
                               <a class="talking-card-link" [class.is-schedule]="action.kind === 'schedule'" [href]="action.url" target="_blank" rel="noopener noreferrer" (click)="trackTalkingCardAction(card, action, $event)">
                                 <span class="material-symbols-outlined">{{ action.kind === 'schedule' ? 'calendar_month' : 'open_in_new' }}</span>
